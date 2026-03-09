@@ -31,3 +31,26 @@ export function trackShare() {
 export function trackNav(destination: string) {
   send('navigate', { destination })
 }
+
+/**
+ * Track scroll depth. Fires once per threshold (25/50/75/100%).
+ * Telegram WebView doesn't always fire native scroll events,
+ * so GA4 enhanced measurement misses engagement → duration=0.
+ */
+export function useScrollDepth() {
+  const fired = new Set<number>()
+
+  return () => {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
+    if (scrollHeight <= 0) return
+    const pct = Math.round((scrollTop / scrollHeight) * 100)
+
+    for (const threshold of [25, 50, 75, 100]) {
+      if (pct >= threshold && !fired.has(threshold)) {
+        fired.add(threshold)
+        send('scroll_depth', { percent_scrolled: threshold, page_path: location.pathname })
+      }
+    }
+  }
+}

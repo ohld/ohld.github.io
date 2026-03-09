@@ -1,7 +1,7 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useMemo } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { Home } from './pages/Home'
-import { trackPageView } from './analytics'
+import { trackPageView, useScrollDepth } from './analytics'
 
 const postsImport = () => import('./pages/Posts').then(m => ({ default: m.Posts }))
 const courseImport = () => import('./pages/AICourse').then(m => ({ default: m.AICourse }))
@@ -39,9 +39,15 @@ function usePreloadChunks() {
 
 function usePageTracking() {
   const location = useLocation()
+  const getScrollDepth = useMemo(() => useScrollDepth(), [location.pathname])
+
   useEffect(() => {
     trackPageView(location.pathname)
-  }, [location.pathname])
+
+    const onScroll = () => getScrollDepth()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [location.pathname, getScrollDepth])
 }
 
 function App() {
