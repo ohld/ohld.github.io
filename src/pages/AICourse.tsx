@@ -58,6 +58,8 @@ const sections: Section[] = [
       { postId: 1581, quote: 'БУМ, игра готова ваншотом (почти)', context: 'Plan mode, $20 vs $100, тип от создателя Claude Code', link: 'https://t.me/danokhlopkov/1581' },
       { postId: 1585, quote: 'Всё, я в 2030. Теперь чисто голосовухами двигаюсь', context: 'Claude Code + Obsidian + голосовой ввод', link: 'https://t.me/danokhlopkov/1585' },
       { postId: 1582, quote: 'Сейчас идея и есть исполнение', context: '70% всего можно запрогать с нуля бесплатно', link: 'https://t.me/danokhlopkov/1582' },
+      { postId: 0, quote: 'Подкаст #1: AI-сетап с @og_mishgun', context: 'YouTube — инструменты, которые реально используем', link: 'https://www.youtube.com/watch?v=yJuzI2u-AnM' },
+      { postId: 0, quote: 'Подкаст #2: Self-hosted AI с @technotears', context: 'YouTube — приватность, self-hosted и Doom голосом', link: 'https://www.youtube.com/watch?v=Fxw6IQuL36o' },
     ],
   },
   {
@@ -102,6 +104,7 @@ const sections: Section[] = [
           { postId: 1588, quote: 'Дал DATABASE_URL — через 7 минут присылается файл с метриками', context: 'Агент сам считает продуктовые метрики', link: 'https://t.me/danokhlopkov/1588' },
           { postId: 1621, quote: '7 шагов: собираем AI-аналитика', context: 'Увольняем джуниора — лонгрид на Хабре', link: 'https://habr.com/ru/articles/996958/' },
           { postId: 1606, quote: 'Собрал доки, библиотеки и best practices в одном месте', context: 'llms-txt — чтобы агент понимал твой продукт', link: 'https://t.me/danokhlopkov/1606' },
+          { postId: 1634, quote: 'DaVinci Resolve + Claude = монтаж подкастов с AI', context: 'Scripting API + AppleScript + whisper для субтитров', link: 'https://t.me/danokhlopkov/1634' },
         ],
       },
       {
@@ -112,6 +115,9 @@ const sections: Section[] = [
           { postId: 1616, quote: '7 ошибок при написании скиллов', context: 'Триггеры, имена, формат — чтобы агент не тупил', link: 'https://t.me/danokhlopkov/1616' },
           { postId: 1626, quote: 'Claude + Codex: Dual Review — моих правок становится меньше', context: 'Два AI ревьюят друг друга', link: 'https://t.me/danokhlopkov/1626' },
           { postId: 1628, quote: '21 неудобный вопрос для агента', context: 'Диагностические вопросы — превращают агента в инструмент', link: 'https://t.me/danokhlopkov/1628' },
+          { postId: 1636, quote: 'Скорми фреймворк агенту и спроси «есть полезное?»', context: 'Как фильтровать Twitter-хайп — 90% не нужно', link: 'https://t.me/danokhlopkov/1636' },
+          { postId: 1637, quote: 'Paperclip: визуальный трекер задач для агентов', context: 'Ты — board member, нанимаешь CEO, он нанимает сотрудников', link: 'https://t.me/danokhlopkov/1637' },
+          { postId: 1641, quote: 'Обзор AI-инструментов марта: paperclip, gstack, x402', context: 'Что попробовал, что осталось, что выкинул', link: 'https://t.me/danokhlopkov/1641' },
           { postId: 1622, quote: 'Будьте аккуратны скачивая программы', context: 'Безопасность: фейковые установщики Claude Code', link: 'https://t.me/danokhlopkov/1622' },
         ],
       },
@@ -125,6 +131,9 @@ const sections: Section[] = [
       { postId: 1611, quote: 'MVP собирается за выходные вайбкодингом', context: 'Где найти идею для SaaS — acquire.com метод', link: 'https://t.me/danokhlopkov/1611' },
       { postId: 1524, quote: 'Джуны RIP', context: 'Как меняется рынок труда', link: 'https://t.me/danokhlopkov/1524' },
       { postId: 1608, quote: 'AI-агенты придумали свою религию', context: 'Чат AI-агентов — комьюнити как ускоритель', link: 'https://t.me/danokhlopkov/1608' },
+      { postId: 1639, quote: '183 AI-бота в Telegram: 44.3M MAU', context: 'Исследование — TG стал дефолтным интерфейсом для AI', link: 'https://t.me/danokhlopkov/1639' },
+      { postId: 1644, quote: 'Продукты → Facebook → TikTok → ChatGPT', context: 'Эскалация внимания — RLHF двигает продуктовые метрики', link: 'https://t.me/danokhlopkov/1644' },
+      { postId: 1645, quote: 'Не стань хикки-вайбкодером', context: 'Команда с видением > один человек с агентами', link: 'https://t.me/danokhlopkov/1645' },
     ],
   },
   {

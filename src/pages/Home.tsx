@@ -51,16 +51,16 @@ export function Home() {
 
       <div
         className="content-card"
-        onClick={() => openUrl('https://www.youtube.com/watch?v=yJuzI2u-AnM', 'home', 'youtube_video')}
+        onClick={() => openUrl('https://www.youtube.com/watch?v=Fxw6IQuL36o', 'home', 'youtube_video')}
         role="link"
       >
         <div className="content-card-meta">
           <span>YOUTUBE</span>
           <span className="content-card-dot" />
-          <span>30 ЯНВ 2026</span>
+          <span>3 МАР 2026</span>
         </div>
         <p className="content-card-title">
-          Позвал Мишу (@og_mishgun) показать его AI-сетап. Обсуждаем инструменты, которые реально используем каждый день.
+          Подкаст #2 с Сашей Нотченко (@technotears) — 16 лет в ML. Про self-hosted AI, приватность и как голосом управлять Doom.
         </p>
       </div>
 
