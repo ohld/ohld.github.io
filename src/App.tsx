@@ -44,6 +44,15 @@ function usePageTracking() {
   useEffect(() => {
     trackPageView(location.pathname)
 
+    const initData = window.Telegram?.WebApp?.initData
+    if (window.__IS_TMA__ && initData) {
+      fetch('https://ohldbot.swanrate.com/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initData, page: location.pathname }),
+      }).catch(() => {})
+    }
+
     const onScroll = () => getScrollDepth()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)

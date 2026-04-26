@@ -58,8 +58,11 @@ const sections: Section[] = [
       { postId: 1581, quote: 'БУМ, игра готова ваншотом (почти)', context: 'Plan mode, $20 vs $100, тип от создателя Claude Code', link: 'https://t.me/danokhlopkov/1581' },
       { postId: 1585, quote: 'Всё, я в 2030. Теперь чисто голосовухами двигаюсь', context: 'Claude Code + Obsidian + голосовой ввод', link: 'https://t.me/danokhlopkov/1585' },
       { postId: 1582, quote: 'Сейчас идея и есть исполнение', context: '70% всего можно запрогать с нуля бесплатно', link: 'https://t.me/danokhlopkov/1582' },
+      { postId: 1654, quote: 'Я в отпуск — AI-агенты работают за меня', context: 'Лайвстрим: как засетапил gstack + paperclip и уехал на яхты', link: 'https://t.me/danokhlopkov/1654' },
+      { postId: 1660, quote: 'Не обновлял свой AI-сетап 2 недели — опоздал', context: 'Каждый день выходит новое — фомо после отпуска', link: 'https://t.me/danokhlopkov/1660' },
       { postId: 0, quote: 'Подкаст #1: AI-сетап с @og_mishgun', context: 'YouTube — инструменты, которые реально используем', link: 'https://www.youtube.com/watch?v=yJuzI2u-AnM' },
       { postId: 0, quote: 'Подкаст #2: Self-hosted AI с @technotears', context: 'YouTube — приватность, self-hosted и Doom голосом', link: 'https://www.youtube.com/watch?v=Fxw6IQuL36o' },
+      { postId: 0, quote: 'Видео: AI-агенты ведут проект, пока я в отпуске', context: 'YouTube — реальный сетап с Claude Code, Paperclip, gstack', link: 'https://youtu.be/E3P0a03mN8A' },
     ],
   },
   {
@@ -105,6 +108,8 @@ const sections: Section[] = [
           { postId: 1621, quote: '7 шагов: собираем AI-аналитика', context: 'Увольняем джуниора — лонгрид на Хабре', link: 'https://habr.com/ru/articles/996958/' },
           { postId: 1606, quote: 'Собрал доки, библиотеки и best practices в одном месте', context: 'llms-txt — чтобы агент понимал твой продукт', link: 'https://t.me/danokhlopkov/1606' },
           { postId: 1634, quote: 'DaVinci Resolve + Claude = монтаж подкастов с AI', context: 'Scripting API + AppleScript + whisper для субтитров', link: 'https://t.me/danokhlopkov/1634' },
+          { postId: 1652, quote: 'Claude + telegram-mcp забанил 3000 ботов после конкурса', context: 'Реальный кейс — за вечер вайбкодом', link: 'https://t.me/danokhlopkov/1652' },
+          { postId: 1659, quote: 'Отпуск закончился — баги фиксились, блог вёлся', context: 'Что работало и что нет: sentry → CTO → PR → ревью → деплой', link: 'https://t.me/danokhlopkov/1659' },
         ],
       },
       {
@@ -134,6 +139,7 @@ const sections: Section[] = [
       { postId: 1639, quote: '183 AI-бота в Telegram: 44.3M MAU', context: 'Исследование — TG стал дефолтным интерфейсом для AI', link: 'https://t.me/danokhlopkov/1639' },
       { postId: 1644, quote: 'Продукты → Facebook → TikTok → ChatGPT', context: 'Эскалация внимания — RLHF двигает продуктовые метрики', link: 'https://t.me/danokhlopkov/1644' },
       { postId: 1645, quote: 'Не стань хикки-вайбкодером', context: 'Команда с видением > один человек с агентами', link: 'https://t.me/danokhlopkov/1645' },
+      { postId: 1655, quote: 'Telegram должен разрешить ботам писать друг другу', context: 'A2A через TG: discovery, маркетплейс агентов, крипто-платежи', link: 'https://t.me/danokhlopkov/1655' },
     ],
   },
   {

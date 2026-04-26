@@ -46,24 +46,10 @@ if (window.__IS_TMA__) {
   tg.expand()
   tg.setHeaderColor('#F5F5F0')
   tg.setBackgroundColor('#F5F5F0')
-
-  // Track mini-app open (fire-and-forget)
-  if (tg.initData) {
-    const trackOpen = () => {
-      fetch('https://ohldbot.swanrate.com/api/track', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          initData: tg.initData,
-          page: window.location.hash.replace('#', '') || '/',
-        }),
-      }).catch(() => {})
-    }
-    trackOpen()
-    // Also track page navigations
-    window.addEventListener('hashchange', trackOpen)
-  }
 }
+// Per-page bot tracking lives in App.tsx's usePageTracking — react-router-dom HashRouter
+// uses pushState which never fires hashchange, so a window-level listener here would only
+// ever record the initial '/' page.
 
 // Universal link opener: uses Telegram native methods in TMA, falls back to window.open
 window.__openUrl__ = (url: string) => {

@@ -1,5 +1,119 @@
 [
   {
+    "id": 1660,
+    "title": "Текущий AI-сетап: claude+gstack+paperclip+cmux+spokenly + Metabase MCP",
+    "date": "2026-04-19",
+    "views": 3610,
+    "fwd": 130,
+    "replies": 0,
+    "tags": [
+      "ai",
+      "data"
+    ],
+    "link": "https://t.me/danokhlopkov/1660"
+  },
+  {
+    "id": 1659,
+    "title": "Итоги отпуска: что AI-агенты сделали без меня — баги, блог, продукт",
+    "date": "2026-04-16",
+    "views": 4840,
+    "fwd": 175,
+    "replies": 0,
+    "tags": [
+      "ai",
+      "startups"
+    ],
+    "link": "https://t.me/danokhlopkov/1659"
+  },
+  {
+    "id": 1658,
+    "title": "Экспресс-лекция по AI-агентам на регате (слайды)",
+    "date": "2026-04-14",
+    "views": 4830,
+    "fwd": 145,
+    "replies": 0,
+    "tags": [
+      "ai",
+      "personal"
+    ],
+    "link": "https://t.me/danokhlopkov/1658"
+  },
+  {
+    "id": 1657,
+    "title": "Limbo акселератор по фандрейзингу — мой опыт ада звонков",
+    "date": "2026-04-04",
+    "views": 7160,
+    "fwd": 95,
+    "replies": 0,
+    "tags": [
+      "startups"
+    ],
+    "link": "https://t.me/danokhlopkov/1657"
+  },
+  {
+    "id": 1655,
+    "title": "A2A: Telegram должен разрешить ботам писать друг другу",
+    "date": "2026-04-03",
+    "views": 6730,
+    "fwd": 220,
+    "replies": 0,
+    "tags": [
+      "ai",
+      "tg_apps"
+    ],
+    "link": "https://t.me/danokhlopkov/1655"
+  },
+  {
+    "id": 1654,
+    "title": "Я в отпуск — AI агенты работают за меня (видео-стрим)",
+    "date": "2026-04-02",
+    "views": 5830,
+    "fwd": 175,
+    "replies": 0,
+    "tags": [
+      "ai"
+    ],
+    "link": "https://t.me/danokhlopkov/1654"
+  },
+  {
+    "id": 1653,
+    "title": "1 апреля: ffmemes wrapped + анонс отпуска с агентами",
+    "date": "2026-04-01",
+    "views": 5130,
+    "fwd": 95,
+    "replies": 0,
+    "tags": [
+      "ai",
+      "personal"
+    ],
+    "link": "https://t.me/danokhlopkov/1653"
+  },
+  {
+    "id": 1652,
+    "title": "Claude + telegram-mcp забанил ботов после конкурса",
+    "date": "2026-03-31",
+    "views": 5130,
+    "fwd": 130,
+    "replies": 0,
+    "tags": [
+      "ai",
+      "social"
+    ],
+    "link": "https://t.me/danokhlopkov/1652"
+  },
+  {
+    "id": 1651,
+    "title": "Бусты на канал ради реакций и автоперевода",
+    "date": "2026-03-31",
+    "views": 4820,
+    "fwd": 25,
+    "replies": 0,
+    "tags": [
+      "personal"
+    ],
+    "link": "https://t.me/danokhlopkov/1651"
+  },
+  {
     "id": 1646,
     "title": "Лайвстрим: ваншотим TG Mini App с оплатой в TON",
     "date": "2026-03-26",
