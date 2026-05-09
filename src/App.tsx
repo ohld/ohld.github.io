@@ -1,7 +1,12 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { trackPageView, useScrollDepth } from './analytics'
+
+// Routes the bot can deep-link into via t.me/ohldbot/ooo?startapp=<slug>
+const VALID_START_PARAMS = new Set([
+  'about', 'posts', 'ai-course', 'closed', 'work-together', 'markdown-vs-html',
+])
 
 const postsImport = () => import('./pages/Posts').then(m => ({ default: m.Posts }))
 const courseImport = () => import('./pages/AICourse').then(m => ({ default: m.AICourse }))
@@ -62,9 +67,20 @@ function usePageTracking() {
   }, [location.pathname, getScrollDepth])
 }
 
+function useStartParamNavigation() {
+  const navigate = useNavigate()
+  useEffect(() => {
+    const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param
+    if (startParam && VALID_START_PARAMS.has(startParam) && location.pathname === '/') {
+      navigate('/' + startParam, { replace: true })
+    }
+  }, [navigate])
+}
+
 function App() {
   usePreloadChunks()
   usePageTracking()
+  useStartParamNavigation()
 
   return (
     <Suspense fallback={null}>

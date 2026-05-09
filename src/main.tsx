@@ -14,6 +14,7 @@ declare global {
         setHeaderColor: (color: string) => void
         setBackgroundColor: (color: string) => void
         initData: string
+        initDataUnsafe?: { start_param?: string }
         platform: string
         BackButton: {
           show: () => void
