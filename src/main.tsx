@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
 
@@ -34,10 +34,11 @@ declare global {
 // initData is non-empty only when opened from Telegram
 window.__IS_TMA__ = !!(window.Telegram?.WebApp?.initData)
 
-// Clean up Telegram's query params from the hash before React Router sees it
-// Telegram opens: /dan-mini-app/#tgWebAppData=... which HashRouter reads as a route
+// Clean up Telegram's tgWebApp params from the hash so they don't leak into UI
+// Telegram opens: /dan-mini-app/#tgWebAppData=... — harmless for BrowserRouter (it ignores hash),
+// but we strip it to keep the URL clean.
 if (window.location.hash && window.location.hash.includes('tgWebApp')) {
-  window.location.hash = '#/'
+  history.replaceState(null, '', window.location.pathname + window.location.search)
 }
 
 if (window.__IS_TMA__) {
@@ -74,8 +75,8 @@ window.__openUrl__ = (url: string) => {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <HashRouter>
+    <BrowserRouter>
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </StrictMode>,
 )

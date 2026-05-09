@@ -3,6 +3,7 @@ import { Footer } from '../components/Footer'
 import { ArrowRightIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
 import { trackNav } from '../analytics'
+import { useDocumentMeta } from '../useDocumentMeta'
 
 const navItems = [
   { path: '/about', title: 'Знакомство', subtitle: 'Обо мне подробнее' },
@@ -14,6 +15,11 @@ const navItems = [
 
 export function Home() {
   const navigate = useNavigate()
+  useDocumentMeta({
+    title: 'Даниил Охлопков — AI, данные, крипта',
+    description: 'Head of Analytics @ TON Foundation. Бесплатный курс по AI-агентам, лучшие посты, консалтинг.',
+    canonical: 'https://ohld.github.io/',
+  })
 
   return (
     <div className="page">

@@ -2,8 +2,14 @@ import { BackButton } from '../components/BackButton'
 import { Footer } from '../components/Footer'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
+import { useDocumentMeta } from '../useDocumentMeta'
 
 export function WorkTogether() {
+  useDocumentMeta({
+    title: 'Го поработаем — Даниил Охлопков',
+    description: 'Консалтинг по AI-агентам, web3 и TON, реклама в @danokhlopkov, коллабы.',
+    canonical: 'https://ohld.github.io/work-together',
+  })
   return (
     <div className="page">
       <div className="subpage-header">

@@ -3,6 +3,7 @@ import { BackButton } from '../components/BackButton'
 import { PostCard } from '../components/PostCard'
 import { Footer } from '../components/Footer'
 import allPosts from '../data/posts.json'
+import { useDocumentMeta } from '../useDocumentMeta'
 
 const TOPIC_TAGS = ['ai', 'crypto', 'ton', 'tg_apps', 'startups', 'data', 'social', 'personal']
 
@@ -21,6 +22,11 @@ const POSTS_PER_PAGE = 30
 const TOP = '__top__'
 
 export function Posts() {
+  useDocumentMeta({
+    title: 'Топ посты — Даниил Охлопков',
+    description: 'Лучшие посты @danokhlopkov: AI-агенты, крипта, TON, стартапы, данные.',
+    canonical: 'https://ohld.github.io/posts',
+  })
   const [activeFilter, setActiveFilter] = useState<string>(TOP)
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE)
 

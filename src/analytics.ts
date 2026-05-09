@@ -1,8 +1,11 @@
-/** GA4 event helper. Sends gtag events if available, no-ops otherwise. */
+/** GA4 + Yandex Metrika event helper. */
+
+const YM_COUNTER = 109129058
 
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void
+    ym?: (counter: number, action: string, ...args: unknown[]) => void
   }
 }
 
@@ -10,11 +13,17 @@ function send(event: string, params?: Record<string, string | number>) {
   if (window.gtag) {
     window.gtag('event', event, params)
   }
+  if (window.ym) {
+    window.ym(YM_COUNTER, 'reachGoal', event, params)
+  }
 }
 
 /** Track SPA page navigation */
 export function trackPageView(path: string) {
   send('page_view', { page_path: path, page_title: document.title })
+  if (window.ym) {
+    window.ym(YM_COUNTER, 'hit', location.href, { title: document.title, referer: document.referrer })
+  }
 }
 
 /** Track outbound link click */

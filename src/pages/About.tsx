@@ -2,6 +2,7 @@ import { BackButton } from '../components/BackButton'
 import { Footer } from '../components/Footer'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
+import { useDocumentMeta } from '../useDocumentMeta'
 
 interface Role {
   title: string
@@ -67,6 +68,11 @@ const experience: Role[] = [
 ]
 
 export function About() {
+  useDocumentMeta({
+    title: 'Обо мне — Даниил Охлопков',
+    description: 'Head of Analytics @ TON Foundation. Опыт: InstaBot, Shazam-ботсети 13.7M юзеров, Forbes 30 under 30 (2022).',
+    canonical: 'https://ohld.github.io/about',
+  })
   return (
     <div className="page">
       <div className="subpage-header">

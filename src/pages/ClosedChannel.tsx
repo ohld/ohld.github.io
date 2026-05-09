@@ -2,8 +2,14 @@ import { BackButton } from '../components/BackButton'
 import { Footer } from '../components/Footer'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
+import { useDocumentMeta } from '../useDocumentMeta'
 
 export function ClosedChannel() {
+  useDocumentMeta({
+    title: 'Закрытый канал — Даниил Охлопков',
+    description: 'Закрытое сообщество AI / web3 / TG+TON фаундеров и билдеров. Живые мысли без AI-слопа.',
+    canonical: 'https://ohld.github.io/closed',
+  })
   return (
     <div className="page">
       <div className="subpage-header">
