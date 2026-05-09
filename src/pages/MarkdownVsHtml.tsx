@@ -2,8 +2,6 @@ import { BackButton } from '../components/BackButton'
 import { useDocumentMeta } from '../useDocumentMeta'
 
 const ARTICLE_HTML = `
-<h1>Markdown мёртв — да здравствует HTML</h1>
-
 <div class="mvh-meta">
   Адаптация статьи Tariq из команды Claude Code · перевод и комментарии Дана Охлопкова<br>
   Оригинал: <a href="https://x.com/trq212/status/2052809885763747935" target="_blank" rel="noopener">x.com/trq212</a> · примеры автора: <a href="https://thariqs.github.io/html-effectiveness" target="_blank" rel="noopener">thariqs.github.io/html-effectiveness</a>
@@ -91,7 +89,7 @@ const ARTICLE_HTML = `
 
 <p>Claude пишет всё более длинные планы и спецификации. На практике markdown-файл больше 100 строк я не дочитываю до конца, и команду тоже не заставлю. HTML же можно нормально структурировать визуально — табы, навигация, sticky оглавление, mobile-responsive вёрстка под телефон vs десктоп.</p>
 
-<p><strong>Личный пример.</strong> Я делаю research-отчёты по on-chain-аналитике TON — на 200-500 строк, со встроенными SQL-запросами, цифрами, ссылками на Dune-дашборды. В markdown'е их открывает только мой непосредственный босс (он живёт в Obsidian). Дальше по цепочке — DE-команда уже читает по диагонали, внешние партнёры просто не открывают. С тем же контентом в HTML с SVG-диаграммами потоков и кликабельными ссылками на дашборды — open rate был бы радикально выше. Это не про красоту, это про то, что без визуальной структуры человек физически не дочитывает до выводов.</p>
+<p><strong>Личный пример.</strong> Я делаю research-отчёты по on-chain-аналитике TON — на 200-500 строк, со встроенными SQL-запросами, цифрами, ссылками на Dune-дашборды. В markdown'е их читают по диагонали: DE-команда пробежалась глазами, внешние партнёры просто не открывают. С тем же контентом в HTML с SVG-диаграммами потоков и кликабельными ссылками на дашборды — open rate был бы радикально выше. Это не про красоту, это про то, что без визуальной структуры человек физически не дочитывает до выводов.</p>
 
 <h3>3. Лёгкость шеринга — главный аргумент</h3>
 
@@ -368,12 +366,16 @@ export function MarkdownVsHtml() {
   })
 
   return (
-    <>
+    <div className="page">
       <style dangerouslySetInnerHTML={{ __html: ARTICLE_CSS }} />
-      <div className="mvh-page">
+      <div className="subpage-header">
         <BackButton />
-        <article dangerouslySetInnerHTML={{ __html: ARTICLE_HTML }} />
+        <h1 className="subpage-title">Markdown мёртв — да здравствует HTML</h1>
+        <p className="subpage-subtitle">
+          Из курса · перевод поста Tariq из команды Claude Code, с моими примерами
+        </p>
       </div>
-    </>
+      <article className="mvh-page" dangerouslySetInnerHTML={{ __html: ARTICLE_HTML }} />
+    </div>
   )
 }

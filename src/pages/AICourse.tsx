@@ -27,6 +27,7 @@ interface CourseEntry {
   quote: string
   context?: string
   link: string
+  internal?: boolean
 }
 
 interface TwitterEntry {
@@ -90,6 +91,7 @@ const sections: Section[] = [
           { postId: 1504, quote: 'Скетч → прототип → спецификация', context: 'Как прогать новый проект с LLM', link: 'https://t.me/danokhlopkov/1504' },
           { postId: 1610, quote: 'Git worktrees: 3-5 параллельных сессий одновременно', context: 'Типсы от создателя CC + self-improving CLAUDE.md', link: 'https://t.me/danokhlopkov/1610' },
           { postId: 1612, quote: 'Задавай наводящие вопросы. Не останавливайся. Покажи, не рассказывай', context: 'Промпты для AI-агентов + playground skill', link: 'https://t.me/danokhlopkov/1612' },
+          { postId: 0, quote: 'Markdown мёртв — да здравствует HTML', context: 'Почему HTML побеждает .md как формат вывода для AI. Перевод поста Tariq из команды Claude Code', link: '/markdown-vs-html', internal: true },
         ],
       },
       {
@@ -214,6 +216,7 @@ export function AICourse() {
                   quote={entry.quote}
                   context={entry.context}
                   link={entry.link}
+                  internal={entry.internal}
                 />
               ))}
             </div>
