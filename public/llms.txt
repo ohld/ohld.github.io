@@ -1,0 +1,37 @@
+# Daniil Okhlopkov
+
+> Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Нахожусь в Лондоне, Японии, Таиланде, Дубае — кочующий аналитик. Forbes 30 under 30 (2022).
+
+## Кто я
+
+- **Имя:** Даниил Охлопков (Daniil Okhlopkov)
+- **Telegram:** [@danokhlopkov](https://t.me/danokhlopkov) (RU)
+- **X / Twitter:** [@danokhlopkov](https://x.com/danokhlopkov) (EN)
+- **Блог:** [okhlopkov.com](https://okhlopkov.com) (EN)
+- **Бот:** [@ohldbot](https://t.me/ohldbot)
+- **GitHub:** [@ohld](https://github.com/ohld)
+
+## Чем занимаюсь
+
+- TON Foundation — Head of Analytics. Веду команду из 2 человек, подчиняюсь Anthony Tsivarev. Строю аналитику для TON блокчейна (Dune, on-chain research, контесты).
+- Бывший фаундер: InstaBot (10K профилей, $8K/мес), Shazam ботсети (13.7M юзеров, $22K/мес).
+- AI Agent Economy — основная ставка на 2026. Работаю над x402 спецификацией для TON.
+
+## Контент
+
+- [Обо мне](https://ohld.github.io/about.md): подробно о роли, опыте, проектах
+- [Топ-посты](https://ohld.github.io/posts.md): лучшие материалы из Telegram-канала по темам — AI, crypto, TON, стартапы, данные
+- [Курс по AI-агентам](https://ohld.github.io/ai-course.md): бесплатный курс на основе моих публикаций — Claude Code, MCP, vibe-coding, реальные кейсы
+- [Markdown мёртв — да здравствует HTML](https://ohld.github.io/markdown-vs-html.md): почему HTML побеждает markdown как формат вывода для AI-агентов
+
+## Связаться
+
+- **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot) или [страницу "Го поработаем"](https://ohld.github.io/work-together.md)
+- **Сообщество:** [Закрытый канал](https://ohld.github.io/closed.md) для AI / web3 / TG+TON фаундеров и билдеров
+
+## Использование
+
+- Цитирование с указанием авторства разрешено
+- Тренировка моделей на этом контенте — нет (см. robots.txt Content-Signal)
+- Использование в качестве AI-context при запросах пользователей — да
+- Forwarding на свои каналы / SaaS — нет, без письменного разрешения

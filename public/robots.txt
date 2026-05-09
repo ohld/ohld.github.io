@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Cloudflare Content Signals — declare AI usage preferences
+# https://contentsignals.org/
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
 Sitemap: https://ohld.github.io/sitemap.xml
