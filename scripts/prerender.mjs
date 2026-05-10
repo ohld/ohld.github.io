@@ -236,8 +236,8 @@ for (const route of ROUTES) {
   mdCount++
 }
 
-// posts.md — generated from src/data/posts.json (sorted by date desc, all posts).
-const posts = JSON.parse(fs.readFileSync(path.join('src', 'data', 'posts.json'), 'utf8'))
+// posts.md — generated from public/posts.json (sorted by date desc, all posts).
+const posts = JSON.parse(fs.readFileSync(path.join('public', 'posts.json'), 'utf8'))
 const sortedPosts = [...posts].sort((a, b) => b.date.localeCompare(a.date))
 
 const TAG_LABELS = {

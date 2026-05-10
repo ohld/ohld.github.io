@@ -1,9 +1,19 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { BackButton } from '../components/BackButton'
 import { PostCard } from '../components/PostCard'
 import { Footer } from '../components/Footer'
-import allPosts from '../data/posts.json'
 import { useDocumentMeta } from '../useDocumentMeta'
+
+interface Post {
+  id: number
+  title: string
+  date: string
+  views: number
+  fwd: number
+  replies: number
+  tags?: string[]
+  link: string
+}
 
 const TOPIC_TAGS = ['ai', 'crypto', 'ton', 'tg_apps', 'startups', 'data', 'social', 'personal']
 
@@ -29,13 +39,21 @@ export function Posts() {
   })
   const [activeFilter, setActiveFilter] = useState<string>(TOP)
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE)
+  const [allPosts, setAllPosts] = useState<Post[]>([])
+
+  useEffect(() => {
+    fetch('/posts.json')
+      .then((r) => r.json())
+      .then(setAllPosts)
+      .catch(() => setAllPosts([]))
+  }, [])
 
   const filtered = useMemo(() => {
-    let posts = [...allPosts] as any[]
+    let posts = [...allPosts]
 
     if (activeFilter === TOP) {
       const now = Date.now()
-      const score = (p: any) => {
+      const score = (p: Post) => {
         const ageMs = now - new Date(p.date).getTime()
         const ageDays = ageMs / (1000 * 60 * 60 * 24)
         const recency = Math.pow(0.5, ageDays / 180)
@@ -48,7 +66,7 @@ export function Posts() {
     }
 
     return posts
-  }, [activeFilter])
+  }, [activeFilter, allPosts])
 
   const visible = filtered.slice(0, visibleCount)
   const hasMore = visibleCount < filtered.length
@@ -87,7 +105,7 @@ export function Posts() {
 
       {/* Posts */}
       <main style={{ flex: 1 }}>
-        {visible.map((post: any) => (
+        {visible.map((post: Post) => (
           <PostCard
             key={post.id}
             title={post.title}
