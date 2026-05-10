@@ -71,7 +71,7 @@ export function About() {
   useDocumentMeta({
     title: 'Обо мне — Даниил Охлопков',
     description: 'Head of Analytics @ TON Foundation. Опыт: InstaBot, Shazam-ботсети 13.7M юзеров, Forbes 30 under 30 (2022).',
-    canonical: 'https://ohld.github.io/about',
+    canonical: 'https://ohld.github.io/about/',
   })
   return (
     <div className="page">

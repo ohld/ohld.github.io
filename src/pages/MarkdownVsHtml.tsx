@@ -362,7 +362,7 @@ export function MarkdownVsHtml() {
   useDocumentMeta({
     title: 'Markdown мёртв — да здравствует HTML | Даниил Охлопков',
     description: 'Почему HTML побеждает markdown как формат вывода для AI-агентов. Плотность инфы, читаемость, шеринг, интерактив. С примерами промптов и реальными кейсами.',
-    canonical: 'https://ohld.github.io/markdown-vs-html',
+    canonical: 'https://ohld.github.io/markdown-vs-html/',
   })
 
   return (

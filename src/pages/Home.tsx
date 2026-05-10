@@ -9,7 +9,7 @@ const navItems = [
   { path: '/about', title: 'Знакомство', subtitle: 'Обо мне подробнее' },
   { path: '/posts', title: 'Топ посты', subtitle: 'Блог и мысли' },
   { path: '/ai-course', title: 'AI Agents курс', subtitle: 'На основе моих публикаций', badge: 'FREE' },
-  { path: '/closed', title: 'Закрытый канал', subtitle: 'Сообщество' },
+  { path: '/private-channel', title: 'Закрытый канал', subtitle: 'Сообщество' },
   { path: '/work-together', title: 'Го поработаем', subtitle: 'Консалтинг' },
 ]
 

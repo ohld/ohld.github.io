@@ -1,12 +1,16 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react'
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { trackPageView, useScrollDepth } from './analytics'
 
-// Routes the bot can deep-link into via t.me/ohldbot/ooo?startapp=<slug>
+// Routes the bot can deep-link into via t.me/ohldbot/ooo?startapp=<slug>.
+// Old `closed` deeplinks remap to `private-channel` for backward compat.
 const VALID_START_PARAMS = new Set([
-  'about', 'posts', 'ai-course', 'closed', 'work-together', 'markdown-vs-html',
+  'about', 'posts', 'ai-course', 'private-channel', 'closed', 'work-together', 'markdown-vs-html',
 ])
+const START_PARAM_REDIRECTS: Record<string, string> = {
+  closed: 'private-channel',
+}
 
 const postsImport = () => import('./pages/Posts').then(m => ({ default: m.Posts }))
 const courseImport = () => import('./pages/AICourse').then(m => ({ default: m.AICourse }))
@@ -72,7 +76,8 @@ function useStartParamNavigation() {
   useEffect(() => {
     const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param
     if (startParam && VALID_START_PARAMS.has(startParam) && location.pathname === '/') {
-      navigate('/' + startParam, { replace: true })
+      const target = START_PARAM_REDIRECTS[startParam] || startParam
+      navigate('/' + target, { replace: true })
     }
   }, [navigate])
 }
@@ -88,7 +93,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/ai-course" element={<AICourse />} />
-        <Route path="/closed" element={<ClosedChannel />} />
+        <Route path="/private-channel" element={<ClosedChannel />} />
+        <Route path="/closed" element={<Navigate to="/private-channel" replace />} />
         <Route path="/work-together" element={<WorkTogether />} />
         <Route path="/about" element={<About />} />
         <Route path="/markdown-vs-html" element={<MarkdownVsHtml />} />

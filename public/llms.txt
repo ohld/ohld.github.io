@@ -27,7 +27,7 @@
 ## Связаться
 
 - **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot) или [страницу "Го поработаем"](https://ohld.github.io/work-together.md)
-- **Сообщество:** [Закрытый канал](https://ohld.github.io/closed.md) для AI / web3 / TG+TON фаундеров и билдеров
+- **Сообщество:** [Закрытый канал](https://ohld.github.io/private-channel.md) для AI / web3 / TG+TON фаундеров и билдеров
 
 ## Использование
 

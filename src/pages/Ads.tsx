@@ -8,7 +8,7 @@ export function WorkTogether() {
   useDocumentMeta({
     title: 'Го поработаем — Даниил Охлопков',
     description: 'Консалтинг по AI-агентам, web3 и TON, реклама в @danokhlopkov, коллабы.',
-    canonical: 'https://ohld.github.io/work-together',
+    canonical: 'https://ohld.github.io/work-together/',
   })
   return (
     <div className="page">

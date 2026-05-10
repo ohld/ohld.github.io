@@ -8,7 +8,7 @@ export function ClosedChannel() {
   useDocumentMeta({
     title: 'Закрытый канал — Даниил Охлопков',
     description: 'Закрытое сообщество AI / web3 / TG+TON фаундеров и билдеров. Живые мысли без AI-слопа.',
-    canonical: 'https://ohld.github.io/closed',
+    canonical: 'https://ohld.github.io/private-channel/',
   })
   return (
     <div className="page">
