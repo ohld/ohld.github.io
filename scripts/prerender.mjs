@@ -2,9 +2,10 @@
  * Lightweight prerender for SPA on GitHub Pages.
  *
  * For each known route, writes:
- *  - dist/<route>/index.html with route-specific <title>, meta, og, canonical
- *    (so React hydrates the right page AND search engines see correct meta
- *    without running JS).
+ *  - dist/<route>/index.html with route-specific <title>, meta, og, canonical,
+ *    optional type-specific schema.org JSON-LD, and a static HTML body fallback
+ *    inside #root (replaced by React's createRoot on mount; visible to crawlers
+ *    and noJS clients).
  *  - dist/<slug>.md — plain Markdown version of the page for LLM crawlers
  *    (referenced from /llms.txt). Static-hosting equivalent of the
  *    "Markdown for Agents" Accept-negotiation pattern.
@@ -14,6 +15,24 @@ import path from 'node:path'
 
 const dist = 'dist'
 const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
+
+const NAV_LINKS = [
+  ['/', 'Главная'],
+  ['/about/', 'Обо мне'],
+  ['/posts/', 'Посты'],
+  ['/ai-course/', 'AI Agents курс'],
+  ['/private-channel/', 'Закрытый канал'],
+  ['/work-together/', 'Го поработаем'],
+]
+
+const HOME_FALLBACK_MD = `# Даниил Охлопков
+
+> Head of Analytics @ TON Foundation. Бесплатный курс по AI-агентам, лучшие посты, консалтинг.
+
+Пишу про AI-агентов, on-chain аналитику и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).
+
+Telegram: [@danokhlopkov](https://t.me/danokhlopkov) · X: [@danokhlopkov](https://x.com/danokhlopkov) · GitHub: [@ohld](https://github.com/ohld)
+`
 
 const ROUTES = [
   {
@@ -58,12 +77,109 @@ function escape(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 }
 
-function rewrite(html, { path: routePath, slug, title, description }) {
+// Inline regex md→html: only what our templates use (h1-3, p, **bold**, [text](url), - lists, > quotes, tables -> stripped to <pre>).
+function mdToHtml(md) {
+  const lines = md.replace(/\r\n/g, '\n').split('\n')
+  const out = []
+  let inList = false
+  let inQuote = false
+  let para = []
+  const flushPara = () => {
+    if (!para.length) return
+    out.push(`<p>${inlineFmt(para.join(' '))}</p>`)
+    para = []
+  }
+  const closeList = () => { if (inList) { out.push('</ul>'); inList = false } }
+  const closeQuote = () => { if (inQuote) { out.push('</blockquote>'); inQuote = false } }
+  const inlineFmt = (s) => {
+    let t = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, txt, url) => `<a href="${url.replace(/"/g, '&quot;')}">${txt}</a>`)
+    return t
+  }
+  for (const raw of lines) {
+    const line = raw.trimEnd()
+    if (!line.trim()) { flushPara(); closeList(); closeQuote(); continue }
+    if (line.startsWith('|')) { flushPara(); closeList(); closeQuote(); continue } // skip tables
+    if (line.startsWith('### ')) { flushPara(); closeList(); closeQuote(); out.push(`<h3>${inlineFmt(line.slice(4))}</h3>`); continue }
+    if (line.startsWith('## ')) { flushPara(); closeList(); closeQuote(); out.push(`<h2>${inlineFmt(line.slice(3))}</h2>`); continue }
+    if (line.startsWith('# ')) { flushPara(); closeList(); closeQuote(); out.push(`<h1>${inlineFmt(line.slice(2))}</h1>`); continue }
+    if (line.startsWith('- ')) { flushPara(); closeQuote(); if (!inList) { out.push('<ul>'); inList = true } out.push(`<li>${inlineFmt(line.slice(2))}</li>`); continue }
+    if (line.startsWith('> ')) { flushPara(); closeList(); if (!inQuote) { out.push('<blockquote>'); inQuote = true } out.push(`<p>${inlineFmt(line.slice(2))}</p>`); continue }
+    if (line.startsWith('---')) { flushPara(); closeList(); closeQuote(); out.push('<hr/>'); continue }
+    closeList(); closeQuote(); para.push(line)
+  }
+  flushPara(); closeList(); closeQuote()
+  return out.join('\n')
+}
+
+function buildFallback(title, mdBody) {
+  const article = mdToHtml(mdBody)
+  const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
+  return `<header><h1>${escape(title)}</h1></header><article>${article}</article><nav>${nav}</nav>`
+}
+
+function getRouteMd(route) {
+  const tplPath = path.join('scripts', 'markdown', `${route.slug}.md`)
+  if (fs.existsSync(tplPath)) {
+    // Strip the leading "# title" line so we don't duplicate the <h1> in fallback's <header>.
+    const raw = fs.readFileSync(tplPath, 'utf8')
+    return raw.replace(/^#\s+[^\n]*\n+/, '')
+  }
+  return null
+}
+
+const SCHEMA_BY_SLUG = {
+  'markdown-vs-html': (r) => ({
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: 'Markdown мёртв — да здравствует HTML',
+    description: r.description,
+    datePublished: '2026-05-09',
+    dateModified: '2026-05-10',
+    author: { '@type': 'Person', name: 'Даниил Охлопков', url: 'https://ohld.github.io/' },
+    image: 'https://github.com/ohld.png',
+    mainEntityOfPage: 'https://ohld.github.io/markdown-vs-html/',
+    inLanguage: 'ru',
+  }),
+  'ai-course': (r) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: 'AI Agents курс',
+    description: r.description,
+    provider: { '@type': 'Person', name: 'Даниил Охлопков', url: 'https://ohld.github.io/' },
+    inLanguage: 'ru',
+    isAccessibleForFree: true,
+    url: 'https://ohld.github.io/ai-course/',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online', courseWorkload: 'PT5H' },
+  }),
+  about: () => ({
+    '@context': 'https://schema.org',
+    '@type': 'ProfilePage',
+    mainEntity: { '@id': 'https://ohld.github.io/#person' },
+    url: 'https://ohld.github.io/about/',
+  }),
+  posts: (r) => ({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Топ посты — Даниил Охлопков',
+    description: r.description,
+    url: 'https://ohld.github.io/posts/',
+    isPartOf: { '@id': 'https://ohld.github.io/#website' },
+    inLanguage: 'ru',
+  }),
+}
+
+function rewrite(html, route) {
+  const { path: routePath, slug, title, description } = route
   // Trailing slash = canonical form on GitHub Pages (served as 200 directly;
   // non-slash variant 301-redirects). Must match sitemap.xml.
   const url = `https://ohld.github.io${routePath}/`
   const mdHref = `/${slug}.md`
-  return html
+  const mdBody = getRouteMd(route)
+  const fallback = mdBody ? buildFallback(title, mdBody) : buildFallback(title, '')
+  let out = html
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(title)}</title>`)
     .replace(/(<meta name="description" content=")[^"]*(")/, `$1${escape(description)}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${escape(title)}$2`)
@@ -82,10 +198,23 @@ function rewrite(html, { path: routePath, slug, title, description }) {
         return `${open}${json}${close}`
       }
     })
+    .replace('<!-- body-fallback -->', fallback)
+  const extraSchemaFn = SCHEMA_BY_SLUG[slug]
+  if (extraSchemaFn) {
+    const extraJson = JSON.stringify(extraSchemaFn(route), null, 2)
+    const block = `<script type="application/ld+json">\n${extraJson}\n</script>\n  </head>`
+    out = out.replace('</head>', block)
+  }
+  return out
 }
 
 // ---- HTML prerender ----
 let htmlCount = 0
+// Home: rewrite #root fallback in dist/index.html (vite build wrote it, we patch in place).
+const homeFallback = buildFallback('Даниил Охлопков', HOME_FALLBACK_MD.replace(/^#\s+[^\n]*\n+/, ''))
+const homeOut = indexHtml.replace('<!-- body-fallback -->', homeFallback)
+fs.writeFileSync(path.join(dist, 'index.html'), homeOut)
+
 for (const route of ROUTES) {
   const html = rewrite(indexHtml, route)
   const dir = path.join(dist, route.path)
