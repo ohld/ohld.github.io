@@ -36,36 +36,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ohld.github.io/about.md</loc>
-    <lastmod>2026-05-10</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/posts.md</loc>
-    <lastmod>2026-05-10</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/ai-course.md</loc>
-    <lastmod>2026-05-10</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/private-channel.md</loc>
-    <lastmod>2026-05-10</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/work-together.md</loc>
-    <lastmod>2026-05-10</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/markdown-vs-html.md</loc>
-    <lastmod>2026-05-10</lastmod>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://ohld.github.io/llms.txt</loc>
     <lastmod>2026-05-10</lastmod>
     <priority>0.5</priority>
