@@ -35,3 +35,9 @@
 - Тренировка моделей на этом контенте — нет (см. robots.txt Content-Signal)
 - Использование в качестве AI-context при запросах пользователей — да
 - Forwarding на свои каналы / SaaS — нет, без письменного разрешения
+
+## Optional
+
+- [Полный контент-бандл](https://ohld.github.io/llms-full.txt): все страницы в одном файле для one-shot fetch
+- [Блог EN](https://okhlopkov.com): английский блог
+- [GitHub](https://github.com/ohld): открытый код, MCP-серверы

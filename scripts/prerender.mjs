@@ -20,37 +20,37 @@ const ROUTES = [
     path: '/about',
     slug: 'about',
     title: 'Обо мне — Даниил Охлопков',
-    description: 'Head of Analytics @ TON Foundation. Опыт: InstaBot, Shazam-ботсети 13.7M юзеров, Forbes 30 under 30 (2022).',
+    description: 'Даниил Охлопков — Head of Analytics @ TON Foundation. Опыт: InstaBot, Shazam-ботсети 13.7M юзеров, Forbes 30 under 30 (2022).',
   },
   {
     path: '/posts',
     slug: 'posts',
     title: 'Топ посты — Даниил Охлопков',
-    description: 'Лучшие посты @danokhlopkov: AI-агенты, крипта, TON, стартапы, данные.',
+    description: 'Даниил Охлопков — лучшие посты @danokhlopkov: AI-агенты, крипта, TON, стартапы, данные.',
   },
   {
     path: '/ai-course',
     slug: 'ai-course',
     title: 'AI Agents курс — Даниил Охлопков',
-    description: 'Бесплатный курс по AI-агентам на основе моих публикаций. Claude Code, MCP, vibe-coding, реальные кейсы.',
+    description: 'Даниил Охлопков — бесплатный курс по AI-агентам на основе моих публикаций. Claude Code, MCP, vibe-coding, реальные кейсы.',
   },
   {
     path: '/private-channel',
     slug: 'private-channel',
     title: 'Закрытый канал — Даниил Охлопков',
-    description: 'Закрытое сообщество AI / web3 / TG+TON фаундеров и билдеров. Живые мысли без AI-слопа.',
+    description: 'Даниил Охлопков — закрытое сообщество AI / web3 / TG+TON фаундеров и билдеров. Живые мысли без AI-слопа.',
   },
   {
     path: '/work-together',
     slug: 'work-together',
     title: 'Го поработаем — Даниил Охлопков',
-    description: 'Консалтинг по AI-агентам, web3 и TON, реклама в @danokhlopkov, коллабы.',
+    description: 'Даниил Охлопков — консалтинг по AI-агентам, web3 и TON, реклама в @danokhlopkov, коллабы.',
   },
   {
     path: '/markdown-vs-html',
     slug: 'markdown-vs-html',
     title: 'Markdown мёртв — да здравствует HTML | Даниил Охлопков',
-    description: 'Почему HTML побеждает markdown как формат вывода для AI-агентов. Плотность инфы, читаемость, шеринг, интерактив. С примерами промптов и реальными кейсами.',
+    description: 'Даниил Охлопков — почему HTML побеждает markdown как формат вывода для AI-агентов. Плотность инфы, читаемость, шеринг, интерактив. С примерами промптов и реальными кейсами.',
   },
 ]
 
@@ -58,10 +58,11 @@ function escape(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 }
 
-function rewrite(html, { path: routePath, title, description }) {
+function rewrite(html, { path: routePath, slug, title, description }) {
   // Trailing slash = canonical form on GitHub Pages (served as 200 directly;
   // non-slash variant 301-redirects). Must match sitemap.xml.
   const url = `https://ohld.github.io${routePath}/`
+  const mdHref = `/${slug}.md`
   return html
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(title)}</title>`)
     .replace(/(<meta name="description" content=")[^"]*(")/, `$1${escape(description)}$2`)
@@ -71,6 +72,16 @@ function rewrite(html, { path: routePath, title, description }) {
     .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${escape(title)}$2`)
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${escape(description)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`)
+    .replace(/<link rel="alternate" type="text\/markdown" href="[^"]*" \/><!-- alternate-md -->/, `<link rel="alternate" type="text/markdown" href="${mdHref}" /><!-- alternate-md -->`)
+    .replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/, (_m, open, json, close) => {
+      try {
+        const data = JSON.parse(json)
+        data.mainEntityOfPage = url
+        return `${open}\n    ${JSON.stringify(data, null, 2).replace(/\n/g, '\n    ')}\n    ${close}`
+      } catch {
+        return `${open}${json}${close}`
+      }
+    })
 }
 
 // ---- HTML prerender ----
@@ -159,4 +170,17 @@ for (const r of REDIRECTS) {
   redirectCount++
 }
 
-console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects`)
+// ---- llms-full.txt — concatenated bundle of all .md files ----
+const BUNDLE_SLUGS = ['about', 'ai-course', 'posts', 'private-channel', 'work-together', 'markdown-vs-html']
+const bundleHeader = `# Daniil Okhlopkov — Full Content Bundle
+
+> Combined Markdown of all pages on ohld.github.io. For AI crawlers that prefer one-shot fetch.
+
+`
+const bundleParts = BUNDLE_SLUGS.map(slug => {
+  const content = fs.readFileSync(path.join(dist, `${slug}.md`), 'utf8')
+  return `## Source: /${slug}.md\n\n${content}`
+})
+fs.writeFileSync(path.join(dist, 'llms-full.txt'), bundleHeader + bundleParts.join('\n\n---\n\n'))
+
+console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects + llms-full.txt`)
