@@ -12,6 +12,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { execSync } from 'node:child_process'
 
 const dist = 'dist'
 const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
@@ -171,6 +172,27 @@ const SCHEMA_BY_SLUG = {
   }),
 }
 
+const BREADCRUMBS_BY_SLUG = {
+  'about': [['Главная', 'https://ohld.github.io/'], ['Обо мне', 'https://ohld.github.io/about/']],
+  'posts': [['Главная', 'https://ohld.github.io/'], ['Топ посты', 'https://ohld.github.io/posts/']],
+  'ai-course': [['Главная', 'https://ohld.github.io/'], ['AI Agents курс', 'https://ohld.github.io/ai-course/']],
+  'private-channel': [['Главная', 'https://ohld.github.io/'], ['Закрытый канал', 'https://ohld.github.io/private-channel/']],
+  'work-together': [['Главная', 'https://ohld.github.io/'], ['Го поработаем', 'https://ohld.github.io/work-together/']],
+  'markdown-vs-html': [['Главная', 'https://ohld.github.io/'], ['AI Agents курс', 'https://ohld.github.io/ai-course/'], ['Markdown мёртв', 'https://ohld.github.io/markdown-vs-html/']],
+}
+
+function buildBreadcrumb(slug) {
+  const items = BREADCRUMBS_BY_SLUG[slug]
+  if (!items) return null
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map(([name, item], i) => ({
+      '@type': 'ListItem', position: i + 1, name, item,
+    })),
+  }
+}
+
 function rewrite(html, route) {
   const { path: routePath, slug, title, description } = route
   // Trailing slash = canonical form on GitHub Pages (served as 200 directly;
@@ -203,6 +225,12 @@ function rewrite(html, route) {
   if (extraSchemaFn) {
     const extraJson = JSON.stringify(extraSchemaFn(route), null, 2)
     const block = `<script type="application/ld+json">\n${extraJson}\n</script>\n  </head>`
+    out = out.replace('</head>', block)
+  }
+  const crumb = buildBreadcrumb(slug)
+  if (crumb) {
+    const crumbJson = JSON.stringify(crumb, null, 2)
+    const block = `<script type="application/ld+json">\n${crumbJson}\n</script>\n  </head>`
     out = out.replace('</head>', block)
   }
   return out
@@ -244,6 +272,23 @@ const TAG_LABELS = {
   ai: 'AI', crypto: 'Crypto', ton: 'TON', tg_apps: 'TG Apps',
   startups: 'Startups', data: 'Data', social: 'Social', personal: 'Личное',
 }
+
+// Top-50 by Posts.tsx scoring (fwd × time-decay) — injected into /posts/index.html
+// for crawler discovery of post URLs (React renders the live list client-side).
+const nowMs = Date.now()
+const scoreOf = (p) => {
+  const ageDays = (nowMs - new Date(p.date).getTime()) / 86400000
+  return p.fwd * (0.3 + 0.7 * Math.pow(0.5, ageDays / 180))
+}
+const top50 = [...posts].sort((a, b) => scoreOf(b) - scoreOf(a)).slice(0, 50)
+const top50Items = top50.map(p => {
+  const tagsLabel = (p.tags || []).map(t => TAG_LABELS[t] || t).join(', ')
+  return `<li><a href="${p.link}">${escape(p.title)}</a> · ${p.date}${tagsLabel ? ` · ${escape(tagsLabel)}` : ''}</li>`
+}).join('')
+const top50Section = `<section><h2>Топ-50 постов</h2><ul>${top50Items}</ul></section>`
+const postsIndexPath = path.join(dist, 'posts', 'index.html')
+const postsIndex = fs.readFileSync(postsIndexPath, 'utf8')
+fs.writeFileSync(postsIndexPath, postsIndex.replace('</article>', `</article>${top50Section}`))
 
 const postsLines = [
   '# Топ посты — Даниил Охлопков',
@@ -311,5 +356,57 @@ const bundleParts = BUNDLE_SLUGS.map(slug => {
   return `## Source: /${slug}.md\n\n${content}`
 })
 fs.writeFileSync(path.join(dist, 'llms-full.txt'), bundleHeader + bundleParts.join('\n\n---\n\n'))
+
+// ---- Per-URL lastmod in sitemap from git history ----
+const FALLBACK_LASTMOD = '2026-05-10'
+const URL_SOURCES = {
+  'https://ohld.github.io/': ['index.html', 'src/pages/Home.tsx'],
+  'https://ohld.github.io/about/': ['src/pages/About.tsx', 'scripts/markdown/about.md'],
+  'https://ohld.github.io/posts/': ['src/pages/Posts.tsx', 'public/posts.json'],
+  'https://ohld.github.io/ai-course/': ['src/pages/AICourse.tsx', 'scripts/markdown/ai-course.md'],
+  'https://ohld.github.io/private-channel/': ['src/pages/ClosedChannel.tsx', 'scripts/markdown/private-channel.md'],
+  'https://ohld.github.io/work-together/': ['src/pages/Ads.tsx', 'scripts/markdown/work-together.md'],
+  'https://ohld.github.io/markdown-vs-html/': ['src/pages/MarkdownVsHtml.tsx', 'scripts/markdown/markdown-vs-html.md'],
+  'https://ohld.github.io/about.md': ['scripts/markdown/about.md'],
+  'https://ohld.github.io/posts.md': ['public/posts.json', 'scripts/markdown/posts.md'],
+  'https://ohld.github.io/ai-course.md': ['scripts/markdown/ai-course.md'],
+  'https://ohld.github.io/private-channel.md': ['scripts/markdown/private-channel.md'],
+  'https://ohld.github.io/work-together.md': ['scripts/markdown/work-together.md'],
+  'https://ohld.github.io/markdown-vs-html.md': ['scripts/markdown/markdown-vs-html.md'],
+  'https://ohld.github.io/llms.txt': ['public/llms.txt'],
+  'https://ohld.github.io/llms-full.txt': [
+    'scripts/markdown/about.md', 'scripts/markdown/ai-course.md', 'scripts/markdown/posts.md',
+    'scripts/markdown/private-channel.md', 'scripts/markdown/work-together.md', 'scripts/markdown/markdown-vs-html.md',
+    'public/posts.json',
+  ],
+}
+
+function gitLastmod(files) {
+  try {
+    const out = execSync(`git log -1 --format=%cI -- ${files.map(f => `'${f}'`).join(' ')}`, { encoding: 'utf8' }).trim()
+    if (!out) return FALLBACK_LASTMOD
+    return out.slice(0, 10)
+  } catch {
+    return FALLBACK_LASTMOD
+  }
+}
+
+const sitemapPath = path.join(dist, 'sitemap.xml')
+if (fs.existsSync(sitemapPath)) {
+  let sitemap = fs.readFileSync(sitemapPath, 'utf8')
+  let urlPatched = 0
+  sitemap = sitemap.replace(/<url>([\s\S]*?)<\/url>/g, (block) => {
+    const locMatch = block.match(/<loc>([^<]+)<\/loc>/)
+    if (!locMatch) return block
+    const loc = locMatch[1].trim()
+    const sources = URL_SOURCES[loc]
+    if (!sources) return block
+    const lm = gitLastmod(sources)
+    urlPatched++
+    return block.replace(/<lastmod>[^<]*<\/lastmod>/, `<lastmod>${lm}</lastmod>`)
+  })
+  fs.writeFileSync(sitemapPath, sitemap)
+  console.log(`✓ Sitemap: per-URL lastmod set for ${urlPatched} URLs`)
+}
 
 console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects + llms-full.txt`)
