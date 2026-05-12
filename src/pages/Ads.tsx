@@ -53,7 +53,7 @@ export function WorkTogether() {
       </div>
 
       <div className="info-card">
-        <p className="info-card-price">$1 200</p>
+        <p className="info-card-price">$1 600</p>
         <p>
           Только нативная реклама. Сам изучаю продукт и пишу своими словами.
         </p>

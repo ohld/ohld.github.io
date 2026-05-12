@@ -367,18 +367,6 @@ const URL_SOURCES = {
   'https://ohld.github.io/private-channel/': ['src/pages/ClosedChannel.tsx', 'scripts/markdown/private-channel.md'],
   'https://ohld.github.io/work-together/': ['src/pages/Ads.tsx', 'scripts/markdown/work-together.md'],
   'https://ohld.github.io/markdown-vs-html/': ['src/pages/MarkdownVsHtml.tsx', 'scripts/markdown/markdown-vs-html.md'],
-  'https://ohld.github.io/about.md': ['scripts/markdown/about.md'],
-  'https://ohld.github.io/posts.md': ['public/posts.json', 'scripts/markdown/posts.md'],
-  'https://ohld.github.io/ai-course.md': ['scripts/markdown/ai-course.md'],
-  'https://ohld.github.io/private-channel.md': ['scripts/markdown/private-channel.md'],
-  'https://ohld.github.io/work-together.md': ['scripts/markdown/work-together.md'],
-  'https://ohld.github.io/markdown-vs-html.md': ['scripts/markdown/markdown-vs-html.md'],
-  'https://ohld.github.io/llms.txt': ['public/llms.txt'],
-  'https://ohld.github.io/llms-full.txt': [
-    'scripts/markdown/about.md', 'scripts/markdown/ai-course.md', 'scripts/markdown/posts.md',
-    'scripts/markdown/private-channel.md', 'scripts/markdown/work-together.md', 'scripts/markdown/markdown-vs-html.md',
-    'public/posts.json',
-  ],
 }
 
 function gitLastmod(files) {
@@ -401,7 +389,9 @@ if (fs.existsSync(sitemapPath)) {
     const loc = locMatch[1].trim()
     const sources = URL_SOURCES[loc]
     if (!sources) return block
-    const lm = gitLastmod(sources)
+    const currentLastmod = block.match(/<lastmod>([^<]*)<\/lastmod>/)?.[1]?.trim()
+    const gitLm = gitLastmod(sources)
+    const lm = currentLastmod && currentLastmod > gitLm ? currentLastmod : gitLm
     urlPatched++
     return block.replace(/<lastmod>[^<]*<\/lastmod>/, `<lastmod>${lm}</lastmod>`)
   })
