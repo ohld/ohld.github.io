@@ -390,13 +390,18 @@ if (fs.existsSync(sitemapPath)) {
     const sources = URL_SOURCES[loc]
     if (!sources) return block
     const currentLastmod = block.match(/<lastmod>([^<]*)<\/lastmod>/)?.[1]?.trim()
+    if (!currentLastmod) return block
     const gitLm = gitLastmod(sources)
-    const lm = currentLastmod && currentLastmod > gitLm ? currentLastmod : gitLm
+    const lm = currentLastmod > gitLm ? currentLastmod : gitLm
     urlPatched++
     return block.replace(/<lastmod>[^<]*<\/lastmod>/, `<lastmod>${lm}</lastmod>`)
   })
   fs.writeFileSync(sitemapPath, sitemap)
-  console.log(`✓ Sitemap: per-URL lastmod set for ${urlPatched} URLs`)
+  if (urlPatched > 0) {
+    console.log(`✓ Sitemap: per-URL lastmod set for ${urlPatched} URLs`)
+  } else {
+    console.log('✓ Sitemap: no lastmod entries to patch')
+  }
 }
 
 console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects + llms-full.txt`)
