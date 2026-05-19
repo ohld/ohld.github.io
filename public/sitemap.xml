@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://ohld.github.io/</loc>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/about/</loc>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/posts/</loc>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/ai-course/</loc>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/private-channel/</loc>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/work-together/</loc>
-  </url>
-  <url>
-    <loc>https://ohld.github.io/markdown-vs-html/</loc>
-  </url>
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://ohld.github.io/sitemap-pages.xml</loc>
+    <lastmod>2026-05-19T09:33:19.000Z</lastmod>
+  </sitemap>
+</sitemapindex>
