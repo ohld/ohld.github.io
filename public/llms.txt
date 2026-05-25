@@ -21,6 +21,9 @@
 
 - [Обо мне](https://okhlopkov.com/about.md): подробно о роли, опыте, проектах
 - [Блог](https://okhlopkov.com/blog.md): Telegram-посты, сохранённые как индексируемые страницы
+- [AI-агенты: с чего начать в 2026](https://okhlopkov.com/blog-ai-agents-s-chego-nachat.md): Telegram-derived карта материалов про AI-агентов
+- [Claude Code vs Codex](https://okhlopkov.com/blog-claude-code-vs-codex-perehod.md): личный snapshot перехода с Claude Code на Codex
+- [AI-трансформация в компании](https://okhlopkov.com/blog-ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain.md): общий контекст, skills и GBrain/OpenBrain
 - [Статьи](https://okhlopkov.com/articles.md): SEO-гайды, сравнения, туториалы и source-pack driven материалы
 - [AI-инструменты для дизайнеров](https://okhlopkov.com/articles-ai-tools-for-designers-design-engineering-agents.md): design engineering, AI-assisted frontend, Paper/Figma-to-code и борьба с AI-slop
 - [Markdown мёртв — да здравствует HTML](https://okhlopkov.com/markdown-vs-html.md): почему HTML побеждает markdown как формат вывода для AI-агентов

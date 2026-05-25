@@ -34,7 +34,7 @@ const requiredPackageScripts = [
 
 const EXPECTED_LEGACY_PAGES = 88
 const EXPECTED_REDIRECTS = 23
-const REQUIRED_STATIC_PATHS = [
+const BASE_STATIC_PATHS = [
   '/',
   '/en/',
   '/en/blog/',
@@ -47,6 +47,34 @@ const REQUIRED_STATIC_PATHS = [
   '/articles/markdown-vs-html/',
   '/privacy/',
 ]
+const GENERATED_BLOG_POSTS_PATH = 'content/blog-posts'
+const REQUIRED_STATIC_PATHS = [
+  ...BASE_STATIC_PATHS,
+  ...readGeneratedBlogPaths(),
+]
+
+function parseFrontmatter(raw, filename = 'markdown file') {
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
+  if (!match) throw new Error(`${filename}: missing frontmatter`)
+  const meta = {}
+  for (const line of match[1].split('\n')) {
+    const separator = line.indexOf(':')
+    if (separator === -1) continue
+    meta[line.slice(0, separator).trim()] = line.slice(separator + 1).trim()
+  }
+  return meta
+}
+
+function readGeneratedBlogPaths() {
+  if (!fs.existsSync(GENERATED_BLOG_POSTS_PATH)) return []
+  return fs.readdirSync(GENERATED_BLOG_POSTS_PATH)
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => {
+      const meta = parseFrontmatter(fs.readFileSync(`${GENERATED_BLOG_POSTS_PATH}/${file}`, 'utf8'), file)
+      return `/blog/${meta.slug}/`
+    })
+    .sort()
+}
 
 function parseCsv(text) {
   const rows = []

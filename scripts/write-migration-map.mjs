@@ -4,6 +4,7 @@ import path from 'node:path'
 
 const SITE_URL = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/, '')
 const legacyPagesPath = path.join('content', 'legacy-pages', 'pages.json')
+const blogPostsPath = path.join('content', 'blog-posts')
 const outPath = path.join('migration', 'url-map.csv')
 
 const redirects = [
@@ -184,6 +185,26 @@ const newStaticPages = [
   ['/privacy/', 'new_static_page', 'en', 'Privacy policy for Pinterest app review and site data practices'],
 ]
 
+function parseFrontmatter(raw, filename = 'markdown file') {
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
+  if (!match) throw new Error(`${filename}: missing frontmatter`)
+  const meta = {}
+  for (const line of match[1].split('\n')) {
+    const separator = line.indexOf(':')
+    if (separator === -1) continue
+    meta[line.slice(0, separator).trim()] = line.slice(separator + 1).trim()
+  }
+  return meta
+}
+
+function readGeneratedBlogPosts() {
+  if (!fs.existsSync(blogPostsPath)) return []
+  return fs.readdirSync(blogPostsPath)
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => parseFrontmatter(fs.readFileSync(path.join(blogPostsPath, file), 'utf8'), file))
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+}
+
 function csvCell(value) {
   const s = value == null ? '' : String(value)
   return `"${s.replace(/"/g, '""')}"`
@@ -279,6 +300,23 @@ for (const [pagePath, action, lang, note] of newStaticPages) {
     '',
     'static_app_route',
     note,
+  ]))
+}
+
+for (const post of readGeneratedBlogPosts()) {
+  const pagePath = `/blog/${post.slug}/`
+  lines.push(row([
+    '',
+    '',
+    'new_static_page',
+    `${SITE_URL}${pagePath}`,
+    pagePath,
+    '200',
+    'index, follow',
+    'ru',
+    post.title || '',
+    'telegram_derived_blog_post',
+    `Blog post from Telegram #${post.sourceTelegramId}; original post text preserved, SEO layer added.`,
   ]))
 }
 

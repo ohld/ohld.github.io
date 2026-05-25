@@ -547,6 +547,96 @@ a,
   letter-spacing: 0.08em;
 }
 
+.generated-blog-post .subpage-header {
+  margin-bottom: 0;
+}
+
+.article-source-note,
+.keyword-note {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.48);
+  padding: 16px;
+}
+
+.article-source-note > span,
+.keyword-note span {
+  display: block;
+  margin-bottom: 7px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.article-source-note p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.article-source-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.keyword-note {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.keyword-note strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.generated-blog-body {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.generated-blog-body h2,
+.generated-blog-body h3 {
+  scroll-margin-top: 80px;
+}
+
+.generated-blog-body h3 {
+  font-size: 19px;
+  line-height: 1.22;
+  letter-spacing: 0;
+  margin-bottom: 8px;
+}
+
+.generated-blog-body pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.generated-blog-body pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre;
+}
+
+.telegram-original {
+  border-left-color: rgba(95, 111, 133, 0.62);
+}
+
 .youtube-source-card {
   display: grid;
   grid-template-columns: 1fr;
@@ -1411,6 +1501,7 @@ html, body {
   .blog-card-thumb { height: 100%; border-right: 1px solid var(--border-light); border-bottom: none; }
   .youtube-source-card { grid-template-columns: minmax(260px, 0.72fr) 1fr; }
   .youtube-source-card img { height: 100%; border-right: 1px solid var(--border-light); border-bottom: none; }
+  .keyword-note { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .content-card-title { font-size: 21px; }
   .post-item { padding: 28px 32px; }
 }

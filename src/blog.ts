@@ -1,3 +1,5 @@
+import { generatedBlogItems } from './generatedBlogPosts'
+
 export interface BlogArticle {
   slug: string
   title: string
@@ -25,6 +27,7 @@ export interface BlogListItem {
 }
 
 export const russianBlogItems: BlogListItem[] = [
+  ...generatedBlogItems,
   {
     path: '/claude-code-nastrojka-mcp-hooks-skills-2026/',
     title: 'Мой сетап Claude Code после 4 месяцев ежедневной работы',

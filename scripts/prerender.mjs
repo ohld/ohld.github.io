@@ -19,6 +19,7 @@ const SITE_URL = (process.env.SITE_URL || DEFAULT_SITE_URL).replace(/\/+$/, '')
 const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
 const STATIC_UPDATED_DATE = '2026-05-25'
 const STATIC_UPDATED_AT = `${STATIC_UPDATED_DATE}T00:00:00+03:00`
+const BLOG_POSTS_DIR = path.join('content', 'blog-posts')
 
 const NAV_LINKS = [
   ['/', 'Главная'],
@@ -90,15 +91,50 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 ## Последнее из блога
 
-- [Мой сетап Claude Code после 4 месяцев ежедневной работы](/claude-code-nastrojka-mcp-hooks-skills-2026/)
-- [Второй мозг: личный AI-ассистент с Obsidian и Claude Code](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
-- [Лучшие скиллы и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/)
+- [AI-трансформация в компании: общий контекст, skills и GBrain](/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/)
+- [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
 
 ## SEO-статьи
 
 - [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/articles/ai-tools-for-designers-design-engineering-agents/)
 - [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/)
 `
+
+function parseFrontmatter(raw, filename = 'markdown file') {
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
+  if (!match) throw new Error(`${filename}: missing frontmatter`)
+  const meta = {}
+  for (const line of match[1].split('\n')) {
+    const separator = line.indexOf(':')
+    if (separator === -1) continue
+    meta[line.slice(0, separator).trim()] = line.slice(separator + 1).trim()
+  }
+  return { meta, body: match[2].trim() }
+}
+
+function splitList(value = '', separator = ',') {
+  return value.split(separator).map((item) => item.trim()).filter(Boolean)
+}
+
+function loadGeneratedBlogPosts() {
+  if (!fs.existsSync(BLOG_POSTS_DIR)) return []
+  return fs.readdirSync(BLOG_POSTS_DIR)
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => {
+      const fullPath = path.join(BLOG_POSTS_DIR, file)
+      const { meta, body } = parseFrontmatter(fs.readFileSync(fullPath, 'utf8'), fullPath)
+      return {
+        ...meta,
+        tags: splitList(meta.tags || ''),
+        secondaryKeywords: splitList(meta.secondaryKeywords || '', ';'),
+        body,
+      }
+    })
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+}
+
+const GENERATED_BLOG_POSTS = loadGeneratedBlogPosts()
 
 const ROUTES = [
   {
@@ -214,6 +250,33 @@ const ROUTES = [
   },
 ]
 
+for (const post of GENERATED_BLOG_POSTS) {
+  ROUTES.push({
+    path: `/blog/${post.slug}`,
+    slug: `blog-${post.slug}`,
+    title: post.title,
+    description: post.description,
+    lang: 'ru',
+    alternates: {
+      ru: `${SITE_URL}/blog/${post.slug}/`,
+      'x-default': `${SITE_URL}/blog/${post.slug}/`,
+    },
+    kind: 'generated-blog-post',
+    publishedAt: post.publishedAt,
+    updatedAt: post.updatedAt,
+    sourceTelegramId: post.sourceTelegramId,
+    sourceTelegramUrl: post.sourceTelegramUrl,
+    primaryKeyword: post.primaryKeyword,
+    secondaryKeywords: post.secondaryKeywords,
+    tags: post.tags,
+    views: post.views,
+    forwards: post.forwards,
+    comments: post.comments,
+    reactions: post.reactions,
+    markdown: post.body,
+  })
+}
+
 function escape(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 }
@@ -314,6 +377,9 @@ function buildFallback(title, mdBody) {
 }
 
 function getRouteMd(route) {
+  if (route.kind === 'generated-blog-post') {
+    return route.markdown || ''
+  }
   const tplPath = path.join('scripts', 'markdown', `${route.slug}.md`)
   if (fs.existsSync(tplPath)) {
     // Strip the leading "# title" line so we don't duplicate the <h1> in fallback's <header>.
@@ -412,6 +478,29 @@ const SCHEMA_BY_SLUG = {
   }),
 }
 
+function generatedBlogPostSchema(route) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: route.title,
+    description: route.description,
+    datePublished: route.publishedAt,
+    dateModified: route.updatedAt || STATIC_UPDATED_DATE,
+    author: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
+    publisher: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
+    image: 'https://github.com/ohld.png',
+    mainEntityOfPage: `${SITE_URL}${route.path}/`,
+    inLanguage: 'ru',
+    keywords: [route.primaryKeyword, ...(route.secondaryKeywords || [])].filter(Boolean),
+    isBasedOn: route.sourceTelegramUrl,
+    interactionStatistic: [
+      { '@type': 'InteractionCounter', interactionType: 'https://schema.org/ViewAction', userInteractionCount: Number(route.views || 0) },
+      { '@type': 'InteractionCounter', interactionType: 'https://schema.org/ShareAction', userInteractionCount: Number(route.forwards || 0) },
+      { '@type': 'InteractionCounter', interactionType: 'https://schema.org/CommentAction', userInteractionCount: Number(route.comments || 0) },
+    ],
+  }
+}
+
 const BREADCRUMBS_BY_SLUG = {
   'en': [['Home', `${SITE_URL}/`], ['English', `${SITE_URL}/en/`]],
   'en-blog': [['Home', `${SITE_URL}/en/`], ['Blog', `${SITE_URL}/en/blog/`]],
@@ -426,8 +515,10 @@ const BREADCRUMBS_BY_SLUG = {
   'privacy': [['Home', `${SITE_URL}/`], ['Privacy Policy', `${SITE_URL}/privacy/`]],
 }
 
-function buildBreadcrumb(slug) {
-  const items = BREADCRUMBS_BY_SLUG[slug]
+function buildBreadcrumb(route) {
+  const items = route.kind === 'generated-blog-post'
+    ? [['Главная', `${SITE_URL}/`], ['Блог', `${SITE_URL}/blog/`], [route.title, `${SITE_URL}${route.path}/`]]
+    : BREADCRUMBS_BY_SLUG[route.slug]
   if (!items) return null
   return {
     '@context': 'https://schema.org',
@@ -474,13 +565,15 @@ function rewrite(html, route) {
       }
     })
     .replace('<!-- body-fallback -->', fallback)
-  const extraSchemaFn = SCHEMA_BY_SLUG[slug]
-  if (extraSchemaFn) {
-    const extraJson = JSON.stringify(extraSchemaFn(route), null, 2)
+  const extraSchema = route.kind === 'generated-blog-post'
+    ? generatedBlogPostSchema(route)
+    : SCHEMA_BY_SLUG[slug]?.(route)
+  if (extraSchema) {
+    const extraJson = JSON.stringify(extraSchema, null, 2)
     const block = `<script type="application/ld+json">\n${extraJson}\n</script>\n  </head>`
     out = out.replace('</head>', block)
   }
-  const crumb = buildBreadcrumb(slug)
+  const crumb = buildBreadcrumb(route)
   if (crumb) {
     const crumbJson = JSON.stringify(crumb, null, 2)
     const block = `<script type="application/ld+json">\n${crumbJson}\n</script>\n  </head>`
@@ -523,7 +616,11 @@ for (const route of ROUTES) {
   if (route.robots?.startsWith('noindex')) continue
   const src = path.join(templatesDir, `${route.slug}.md`)
   const dest = path.join(dist, `${route.slug}.md`)
-  fs.copyFileSync(src, dest)
+  if (route.kind === 'generated-blog-post') {
+    fs.writeFileSync(dest, `# ${route.title}\n\n${route.markdown}\n`)
+  } else {
+    fs.copyFileSync(src, dest)
+  }
   mdCount++
 }
 
@@ -585,7 +682,19 @@ for (const r of REDIRECTS) {
 }
 
 // ---- llms-full.txt — concatenated bundle of all .md files ----
-const BUNDLE_SLUGS = ['en', 'en-about', 'about', 'blog', 'en-blog', 'articles', 'en-articles', 'articles-ai-tools-for-designers-design-engineering-agents', 'markdown-vs-html', 'privacy']
+const BUNDLE_SLUGS = [
+  'en',
+  'en-about',
+  'about',
+  'blog',
+  'en-blog',
+  'articles',
+  'en-articles',
+  'articles-ai-tools-for-designers-design-engineering-agents',
+  'markdown-vs-html',
+  'privacy',
+  ...GENERATED_BLOG_POSTS.map((post) => `blog-${post.slug}`),
+]
 const bundleHeader = `# Daniil Okhlopkov — Full Content Bundle
 
 > Combined Markdown of all pages on okhlopkov.com. For AI crawlers that prefer one-shot fetch.
@@ -954,6 +1063,9 @@ function writeLegacyPages() {
 }
 
 const legacyPages = writeLegacyPages()
+for (const post of GENERATED_BLOG_POSTS) {
+  addSitemapUrl(`/blog/${post.slug}/`, post.updatedAt || STATIC_UPDATED_DATE)
+}
 for (const page of legacyPages) {
   if (page.path) addSitemapUrl(page.path)
 }

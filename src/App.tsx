@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react'
-import { Routes, Route, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { EnglishHome } from './pages/EnglishHome'
 import { SiteHeader } from './components/SiteHeader'
@@ -22,6 +22,7 @@ const englishBlogIndexImport = () => import('./pages/EnglishBlogIndex').then(m =
 const articlesIndexImport = () => import('./pages/ArticlesIndex').then(m => ({ default: m.ArticlesIndex }))
 const englishArticlesIndexImport = () => import('./pages/EnglishArticlesIndex').then(m => ({ default: m.EnglishArticlesIndex }))
 const articlePageImport = () => import('./pages/BlogArticle').then(m => ({ default: m.BlogArticle }))
+const generatedBlogPostImport = () => import('./pages/GeneratedBlogPost').then(m => ({ default: m.GeneratedBlogPost }))
 const closedImport = () => import('./pages/ClosedChannel').then(m => ({ default: m.ClosedChannel }))
 const aboutImport = () => import('./pages/About').then(m => ({ default: m.About }))
 const englishAboutImport = () => import('./pages/EnglishAbout').then(m => ({ default: m.EnglishAbout }))
@@ -33,6 +34,7 @@ const EnglishBlogIndex = lazy(englishBlogIndexImport)
 const ArticlesIndex = lazy(articlesIndexImport)
 const EnglishArticlesIndex = lazy(englishArticlesIndexImport)
 const ArticlePage = lazy(articlePageImport)
+const GeneratedBlogPost = lazy(generatedBlogPostImport)
 const ClosedChannel = lazy(closedImport)
 const About = lazy(aboutImport)
 const EnglishAbout = lazy(englishAboutImport)
@@ -48,6 +50,7 @@ function usePreloadChunks() {
       articlesIndexImport()
       englishArticlesIndexImport()
       articlePageImport()
+      generatedBlogPostImport()
       closedImport()
       aboutImport()
       englishAboutImport()
@@ -64,11 +67,6 @@ function usePreloadChunks() {
         : clearTimeout(id as number)
     }
   }, [])
-}
-
-function LegacyArticleRedirect() {
-  const { slug } = useParams()
-  return <Navigate to={`/articles/${slug || ''}`} replace />
 }
 
 function usePageTracking() {
@@ -134,7 +132,8 @@ function App() {
           <Route path="/en/about" element={<EnglishAbout />} />
           <Route path="/posts" element={<Navigate to="/blog" replace />} />
           <Route path="/blog" element={<BlogIndex />} />
-          <Route path="/blog/:slug" element={<LegacyArticleRedirect />} />
+          <Route path="/blog/ai-tools-for-designers-design-engineering-agents" element={<Navigate to="/articles/ai-tools-for-designers-design-engineering-agents" replace />} />
+          <Route path="/blog/:slug" element={<GeneratedBlogPost />} />
           <Route path="/articles" element={<ArticlesIndex />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
           <Route path="/ai-agents" element={<Navigate to="/articles" replace />} />

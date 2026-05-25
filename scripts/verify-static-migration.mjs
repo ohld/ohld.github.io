@@ -6,6 +6,7 @@ const siteUrl = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/
 const legacyPagesPath = process.env.VERIFY_LEGACY_PAGES || 'content/legacy-pages/pages.json'
 const migrationMapPath = process.env.VERIFY_MIGRATION_MAP || 'migration/url-map.csv'
 const backlinkCriticalPath = process.env.VERIFY_BACKLINK_CRITICAL || 'migration/backlink-critical-urls.csv'
+const blogPostsPath = process.env.VERIFY_BLOG_POSTS || 'content/blog-posts'
 const verbose = process.env.VERIFY_VERBOSE === '1'
 const requireStrict404 = process.env.VERIFY_REQUIRE_STRICT_404 === '1'
 const requireRealRedirects = process.env.VERIFY_REQUIRE_REAL_REDIRECTS === '1'
@@ -35,6 +36,28 @@ const topLegacySmokePages = [
     title: 'How to get a Telegram channel subscribers list in python',
   },
 ]
+
+function parseBlogFrontmatter(raw, filename = 'markdown file') {
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
+  if (!match) throw new Error(`${filename}: missing frontmatter`)
+  const meta = {}
+  for (const line of match[1].split('\n')) {
+    const separator = line.indexOf(':')
+    if (separator === -1) continue
+    meta[line.slice(0, separator).trim()] = line.slice(separator + 1).trim()
+  }
+  return meta
+}
+
+function loadGeneratedBlogPosts() {
+  if (!fs.existsSync(blogPostsPath)) return []
+  return fs.readdirSync(blogPostsPath)
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => parseBlogFrontmatter(fs.readFileSync(`${blogPostsPath}/${file}`, 'utf8'), file))
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+}
+
+const generatedBlogPosts = loadGeneratedBlogPosts()
 
 const staticPages = [
   {
@@ -93,6 +116,13 @@ const staticPages = [
     ogLocale: 'en_US',
     hreflangs: ['en', 'x-default'],
   },
+  ...generatedBlogPosts.map((post) => ({
+    path: `/blog/${post.slug}/`,
+    title: post.title,
+    lang: 'ru',
+    ogLocale: 'ru_RU',
+    hreflangs: ['ru', 'x-default'],
+  })),
 ]
 
 const redirects = [
@@ -139,6 +169,17 @@ const blogArticleChecks = [
   },
 ]
 
+const generatedBlogChecks = generatedBlogPosts.map((post) => ({
+  path: `/blog/${post.slug}/`,
+  title: post.title,
+  sourceTelegramUrl: post.sourceTelegramUrl,
+  requiredText: [
+    'Оригинальный Telegram-пост',
+    'Что обсуждали в Telegram-чате',
+    'Связанные материалы',
+  ],
+}))
+
 const migrationMapStaticPaths = [
   '/',
   '/en/',
@@ -151,6 +192,7 @@ const migrationMapStaticPaths = [
   '/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
   '/privacy/',
+  ...generatedBlogPosts.map((post) => `/blog/${post.slug}/`),
 ]
 
 function loadLegacyPages() {
@@ -405,6 +447,22 @@ async function verifyBlogArticle({ path, thumbnail, youtubeUrl, requiredText }) 
   console.log(`✓ blog article ${path}`)
 }
 
+async function verifyGeneratedBlogPost({ path, sourceTelegramUrl, requiredText }) {
+  const res = await fetchManual(path)
+  assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
+  const html = await res.text()
+  assert(html.includes('"@type": "BlogPosting"'), `${path}: missing BlogPosting JSON-LD`)
+  assert(html.includes('"isBasedOn":'), `${path}: missing source JSON-LD`)
+  assert(html.includes(sourceTelegramUrl), `${path}: missing source Telegram URL`)
+  assert(html.includes('"dateModified": "2026-05-25"'), `${path}: missing generated post dateModified`)
+  assert(html.includes('/blog/'), `${path}: missing internal blog links`)
+  assert(html.includes('/articles/'), `${path}: missing internal article links`)
+  for (const text of requiredText) {
+    assert(html.includes(text), `${path}: missing required text "${text}"`)
+  }
+  console.log(`✓ generated blog post ${path}`)
+}
+
 async function verifyRedirect([from, to]) {
   const res = await fetchManual(from)
   if (res.status >= 300 && res.status < 400) {
@@ -521,6 +579,7 @@ async function verifyCrawlerFiles() {
   assert(llms.includes(siteUrl), '/llms.txt: missing canonical site URL')
   assert(llms.includes('## Контент'), '/llms.txt: missing content section')
   assert(llms.includes(`${siteUrl}/blog.md`), '/llms.txt: missing blog markdown link')
+  assert(llms.includes(`${siteUrl}/blog-ai-agents-s-chego-nachat.md`), '/llms.txt: missing generated blog markdown link')
   assert(llms.includes(`${siteUrl}/privacy.md`), '/llms.txt: missing privacy markdown link')
 
   const bundleRes = await fetchManual('/llms-full.txt')
@@ -528,6 +587,7 @@ async function verifyCrawlerFiles() {
   const bundle = await bundleRes.text()
   assert(bundle.includes('## Source: /about.md'), '/llms-full.txt: missing about bundle source')
   assert(bundle.includes('## Source: /articles.md'), '/llms-full.txt: missing articles bundle source')
+  assert(bundle.includes('## Source: /blog-ai-agents-s-chego-nachat.md'), '/llms-full.txt: missing generated blog bundle source')
   assert(bundle.includes('## Source: /privacy.md'), '/llms-full.txt: missing privacy bundle source')
   console.log('✓ crawler files')
 }
@@ -675,6 +735,7 @@ async function main() {
   console.log(`Verifying ${baseUrl}`)
   for (const page of staticPages) await verifyStaticPage(page)
   for (const page of blogArticleChecks) await verifyBlogArticle(page)
+  for (const page of generatedBlogChecks) await verifyGeneratedBlogPost(page)
   await verifyLegacyPages(legacyPages)
   for (const redirect of redirects) await verifyRedirect(redirect)
   for (const path of noindexPages) await verifyNoindexPage(path)
