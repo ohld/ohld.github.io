@@ -1,41 +1,58 @@
 import { lazy, Suspense, useEffect, useMemo } from 'react'
-import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { Home } from './pages/Home'
+import { EnglishHome } from './pages/EnglishHome'
+import { SiteHeader } from './components/SiteHeader'
 import { trackPageView, useScrollDepth } from './analytics'
 
 // Routes the bot can deep-link into via t.me/ohldbot/ooo?startapp=<slug>.
 // Old `closed` deeplinks remap to `private-channel` for backward compat.
 const VALID_START_PARAMS = new Set([
-  'about', 'posts', 'ai-course', 'private-channel', 'closed', 'work-together', 'markdown-vs-html',
+  'about', 'posts', 'blog', 'ai-agents', 'ai-course', 'private-channel', 'closed', 'work-together', 'markdown-vs-html',
 ])
 const START_PARAM_REDIRECTS: Record<string, string> = {
+  'ai-agents': 'articles',
+  'ai-course': 'articles',
+  posts: 'blog',
   closed: 'private-channel',
 }
 
-const postsImport = () => import('./pages/Posts').then(m => ({ default: m.Posts }))
-const courseImport = () => import('./pages/AICourse').then(m => ({ default: m.AICourse }))
+const blogIndexImport = () => import('./pages/BlogIndex').then(m => ({ default: m.BlogIndex }))
+const englishBlogIndexImport = () => import('./pages/EnglishBlogIndex').then(m => ({ default: m.EnglishBlogIndex }))
+const articlesIndexImport = () => import('./pages/ArticlesIndex').then(m => ({ default: m.ArticlesIndex }))
+const englishArticlesIndexImport = () => import('./pages/EnglishArticlesIndex').then(m => ({ default: m.EnglishArticlesIndex }))
+const articlePageImport = () => import('./pages/BlogArticle').then(m => ({ default: m.BlogArticle }))
 const closedImport = () => import('./pages/ClosedChannel').then(m => ({ default: m.ClosedChannel }))
-const adsImport = () => import('./pages/Ads').then(m => ({ default: m.WorkTogether }))
 const aboutImport = () => import('./pages/About').then(m => ({ default: m.About }))
+const englishAboutImport = () => import('./pages/EnglishAbout').then(m => ({ default: m.EnglishAbout }))
 const mvhImport = () => import('./pages/MarkdownVsHtml').then(m => ({ default: m.MarkdownVsHtml }))
+const privacyImport = () => import('./pages/Privacy').then(m => ({ default: m.Privacy }))
 
-const Posts = lazy(postsImport)
-const AICourse = lazy(courseImport)
+const BlogIndex = lazy(blogIndexImport)
+const EnglishBlogIndex = lazy(englishBlogIndexImport)
+const ArticlesIndex = lazy(articlesIndexImport)
+const EnglishArticlesIndex = lazy(englishArticlesIndexImport)
+const ArticlePage = lazy(articlePageImport)
 const ClosedChannel = lazy(closedImport)
-const WorkTogether = lazy(adsImport)
 const About = lazy(aboutImport)
+const EnglishAbout = lazy(englishAboutImport)
 const MarkdownVsHtml = lazy(mvhImport)
+const Privacy = lazy(privacyImport)
 
 // Preload all chunks after home page renders so subpages open instantly
 function usePreloadChunks() {
   useEffect(() => {
     const preload = () => {
-      postsImport()
-      courseImport()
+      blogIndexImport()
+      englishBlogIndexImport()
+      articlesIndexImport()
+      englishArticlesIndexImport()
+      articlePageImport()
       closedImport()
-      adsImport()
       aboutImport()
+      englishAboutImport()
       mvhImport()
+      privacyImport()
     }
     // requestIdleCallback not available in Telegram WebView (iOS)
     const id = typeof requestIdleCallback !== 'undefined'
@@ -47,6 +64,11 @@ function usePreloadChunks() {
         : clearTimeout(id as number)
     }
   }, [])
+}
+
+function LegacyArticleRedirect() {
+  const { slug } = useParams()
+  return <Navigate to={`/articles/${slug || ''}`} replace />
 }
 
 function usePageTracking() {
@@ -100,18 +122,34 @@ function App() {
   useStartParamNavigation()
 
   return (
-    <Suspense fallback={null}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/posts" element={<Posts />} />
-        <Route path="/ai-course" element={<AICourse />} />
-        <Route path="/private-channel" element={<ClosedChannel />} />
-        <Route path="/closed" element={<Navigate to="/private-channel" replace />} />
-        <Route path="/work-together" element={<WorkTogether />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/markdown-vs-html" element={<MarkdownVsHtml />} />
-      </Routes>
-    </Suspense>
+    <>
+      <SiteHeader />
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/ru" element={<Navigate to="/" replace />} />
+          <Route path="/en" element={<EnglishHome />} />
+          <Route path="/en/blog" element={<EnglishBlogIndex />} />
+          <Route path="/en/articles" element={<EnglishArticlesIndex />} />
+          <Route path="/en/about" element={<EnglishAbout />} />
+          <Route path="/posts" element={<Navigate to="/blog" replace />} />
+          <Route path="/blog" element={<BlogIndex />} />
+          <Route path="/blog/:slug" element={<LegacyArticleRedirect />} />
+          <Route path="/articles" element={<ArticlesIndex />} />
+          <Route path="/articles/:slug" element={<ArticlePage />} />
+          <Route path="/ai-agents" element={<Navigate to="/articles" replace />} />
+          <Route path="/ai-course" element={<Navigate to="/articles" replace />} />
+          <Route path="/private-channel" element={<ClosedChannel />} />
+          <Route path="/closed" element={<Navigate to="/private-channel" replace />} />
+          <Route path="/projects" element={<Navigate to="/about" replace />} />
+          <Route path="/work-together" element={<Navigate to="/about" replace />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/markdown-vs-html" element={<Navigate to="/articles/markdown-vs-html" replace />} />
+          <Route path="/articles/markdown-vs-html" element={<MarkdownVsHtml />} />
+          <Route path="/privacy" element={<Privacy />} />
+        </Routes>
+      </Suspense>
+    </>
   )
 }
 

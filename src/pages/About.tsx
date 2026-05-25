@@ -2,6 +2,7 @@ import { BackButton } from '../components/BackButton'
 import { Footer } from '../components/Footer'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
+import { absoluteUrl } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 
 interface Role {
@@ -71,7 +72,7 @@ export function About() {
   useDocumentMeta({
     title: 'Обо мне — Даниил Охлопков',
     description: 'Head of Analytics @ TON Foundation. Опыт: InstaBot, Shazam-ботсети 13.7M юзеров, Forbes 30 under 30 (2022).',
-    canonical: 'https://ai.okhlopkov.com/about/',
+    canonical: absoluteUrl('/about/'),
   })
   return (
     <div className="page">

@@ -1,6 +1,6 @@
 /** GA4 + Yandex Metrika event helper. */
 
-const YM_COUNTER = 109129058
+const YM_COUNTER = 46266270
 
 declare global {
   interface Window {

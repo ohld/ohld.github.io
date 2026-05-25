@@ -4,21 +4,28 @@ interface DocumentMeta {
   title: string
   description?: string
   canonical?: string
+  lang?: string
+  alternates?: Record<string, string>
+  robots?: string
 }
 
 /**
  * Per-page <title>, <meta description>, og:* and canonical link.
  * Updates the existing tags rather than appending new ones — safe to call across navigations.
  */
-export function useDocumentMeta({ title, description, canonical }: DocumentMeta) {
+export function useDocumentMeta({ title, description, canonical, lang = 'ru', alternates, robots = 'index, follow' }: DocumentMeta) {
   useEffect(() => {
     document.title = title
+    document.documentElement.lang = lang
+    const ogLocale = lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'ru_RU'
 
     setMeta('name', 'description', description)
     setMeta('property', 'og:title', title)
     setMeta('property', 'og:description', description)
+    setMeta('property', 'og:locale', ogLocale)
     setMeta('name', 'twitter:title', title)
     setMeta('name', 'twitter:description', description)
+    setMeta('name', 'robots', robots)
 
     if (canonical) {
       let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
@@ -29,10 +36,17 @@ export function useDocumentMeta({ title, description, canonical }: DocumentMeta)
       }
       link.href = canonical
       setMeta('property', 'og:url', canonical)
-      setHreflang('ru', canonical)
-      setHreflang('x-default', canonical)
+      const nextAlternates = alternates || { ru: canonical, 'x-default': canonical }
+      document
+        .querySelectorAll<HTMLLinkElement>('link[rel="alternate"][hreflang]')
+        .forEach((el) => {
+          if (!nextAlternates[el.hreflang]) el.remove()
+        })
+      for (const [hrefLang, href] of Object.entries(nextAlternates)) {
+        setHreflang(hrefLang, href)
+      }
     }
-  }, [title, description, canonical])
+  }, [title, description, canonical, lang, alternates, robots])
 }
 
 function setMeta(attr: 'name' | 'property', key: string, content: string | undefined) {

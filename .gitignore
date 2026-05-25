@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Local secrets and raw exports for migration work. The repo is public.
+.env
+.env.*
+!.env.example
+private/
+content/ghost-export/
+*.session
+*.session-journal
+telegram.session*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +32,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.gstack/

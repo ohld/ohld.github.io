@@ -1,0 +1,147 @@
+name: Deploy static site to VPS
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref to deploy
+        required: false
+        default: main
+
+concurrency:
+  group: okhlopkov-vps-deploy
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run preflight:okhlopkov
+      - run: docker build --build-arg SITE_URL=https://okhlopkov.com --build-arg VITE_SITE_URL=https://okhlopkov.com -t okhlopkov-site:ci .
+      - name: Verify Docker image migration rules
+        run: |
+          docker run -d --rm --name okhlopkov-site-ci -p 127.0.0.1:4184:80 okhlopkov-site:ci
+          trap 'docker stop okhlopkov-site-ci' EXIT
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:4184/healthz; then
+              break
+            fi
+            if [ "$attempt" -eq 30 ]; then
+              echo "Docker image health check did not become ready"
+              exit 1
+            fi
+            sleep 1
+          done
+          VERIFY_BASE_URL=http://127.0.0.1:4184 \
+          SITE_URL=https://okhlopkov.com \
+          VERIFY_REQUIRE_STRICT_404=1 \
+          VERIFY_REQUIRE_REAL_REDIRECTS=1 \
+          VERIFY_REQUIRE_ORIGIN_HEADERS=1 \
+          npm run verify:migration
+          SMOKE_BASE_URL=http://127.0.0.1:4184 \
+          SITE_URL=https://okhlopkov.com \
+          npm run smoke:browser
+
+  deploy:
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: okhlopkov-vps
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+      - name: Configure SSH
+        env:
+          VPS_HOST: ${{ secrets.OKHLOPKOV_VPS_HOST }}
+          VPS_USER: ${{ secrets.OKHLOPKOV_VPS_USER }}
+          VPS_SSH_KEY: ${{ secrets.OKHLOPKOV_VPS_SSH_KEY }}
+        run: |
+          test -n "$VPS_HOST"
+          test -n "$VPS_USER"
+          test -n "$VPS_SSH_KEY"
+          mkdir -p ~/.ssh
+          printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/okhlopkov_vps
+          chmod 600 ~/.ssh/okhlopkov_vps
+          ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts
+      - name: Sync repo to VPS
+        env:
+          VPS_HOST: ${{ secrets.OKHLOPKOV_VPS_HOST }}
+          VPS_USER: ${{ secrets.OKHLOPKOV_VPS_USER }}
+          VPS_PATH: ${{ secrets.OKHLOPKOV_VPS_PATH }}
+        run: |
+          test -n "$VPS_PATH"
+          ssh -i ~/.ssh/okhlopkov_vps "$VPS_USER@$VPS_HOST" "mkdir -p '$VPS_PATH'"
+          rsync -az --delete \
+            --exclude '.git/' \
+            --exclude 'node_modules/' \
+            --exclude 'dist/' \
+            --exclude '.DS_Store' \
+            -e "ssh -i ~/.ssh/okhlopkov_vps" \
+            ./ "$VPS_USER@$VPS_HOST:$VPS_PATH/"
+      - name: Build and restart container
+        env:
+          VPS_HOST: ${{ secrets.OKHLOPKOV_VPS_HOST }}
+          VPS_USER: ${{ secrets.OKHLOPKOV_VPS_USER }}
+          VPS_PATH: ${{ secrets.OKHLOPKOV_VPS_PATH }}
+          OKHLOPKOV_PORT: ${{ vars.OKHLOPKOV_PORT || '8080' }}
+          OKHLOPKOV_SITE_URL: ${{ vars.OKHLOPKOV_SITE_URL || 'https://okhlopkov.com' }}
+        run: |
+          ssh -i ~/.ssh/okhlopkov_vps "$VPS_USER@$VPS_HOST" \
+            "cd '$VPS_PATH' && OKHLOPKOV_PORT='$OKHLOPKOV_PORT' SITE_URL='$OKHLOPKOV_SITE_URL' VITE_SITE_URL='$OKHLOPKOV_SITE_URL' docker compose up -d --build"
+      - name: Verify deployed health
+        env:
+          VPS_HOST: ${{ secrets.OKHLOPKOV_VPS_HOST }}
+          VPS_USER: ${{ secrets.OKHLOPKOV_VPS_USER }}
+          OKHLOPKOV_PORT: ${{ vars.OKHLOPKOV_PORT || '8080' }}
+        run: |
+          ssh -i ~/.ssh/okhlopkov_vps "$VPS_USER@$VPS_HOST" \
+            "for attempt in \$(seq 1 30); do if curl -fsS 'http://127.0.0.1:$OKHLOPKOV_PORT/healthz'; then exit 0; fi; if [ \"\$attempt\" -eq 30 ]; then echo 'Deployed health check did not become ready'; exit 1; fi; sleep 1; done"
+      - name: Verify deployed migration rules
+        env:
+          VPS_HOST: ${{ secrets.OKHLOPKOV_VPS_HOST }}
+          VPS_USER: ${{ secrets.OKHLOPKOV_VPS_USER }}
+          OKHLOPKOV_PORT: ${{ vars.OKHLOPKOV_PORT || '8080' }}
+          OKHLOPKOV_SITE_URL: ${{ vars.OKHLOPKOV_SITE_URL || 'https://okhlopkov.com' }}
+        run: |
+          ssh -i ~/.ssh/okhlopkov_vps \
+            -o ExitOnForwardFailure=yes \
+            -N \
+            -L 127.0.0.1:18080:127.0.0.1:$OKHLOPKOV_PORT \
+            "$VPS_USER@$VPS_HOST" &
+          tunnel_pid=$!
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:18080/healthz; then
+              break
+            fi
+            if [ "$attempt" -eq 30 ]; then
+              echo "SSH tunnel health check did not become ready"
+              kill "$tunnel_pid" || true
+              exit 1
+            fi
+            sleep 1
+          done
+          set +e
+          VERIFY_BASE_URL="http://127.0.0.1:18080" \
+          SITE_URL="$OKHLOPKOV_SITE_URL" \
+          VERIFY_REQUIRE_STRICT_404=1 \
+          VERIFY_REQUIRE_REAL_REDIRECTS=1 \
+          VERIFY_REQUIRE_ORIGIN_HEADERS=1 \
+          npm run verify:migration
+          verify_rc=$?
+          SMOKE_BASE_URL="http://127.0.0.1:18080" \
+          SITE_URL="$OKHLOPKOV_SITE_URL" \
+          npm run smoke:browser
+          smoke_rc=$?
+          kill "$tunnel_pid" || true
+          if [ "$verify_rc" -ne 0 ]; then
+            exit "$verify_rc"
+          fi
+          exit "$smoke_rc"

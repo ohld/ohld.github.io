@@ -1,15 +1,18 @@
 import type { MouseEvent } from 'react'
+import type { ReactElement } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { TelegramIcon, TwitterXIcon, YoutubeIcon, GithubIcon, LinkedinIcon, InstagramIcon } from './Icons'
 import { openUrl } from '../openUrl'
+import { isEnglishPath, navLinks, socialLinks } from '../site'
 
-const socials = [
-  { label: 'Telegram', url: 'https://t.me/danokhlopkov', icon: <TelegramIcon /> },
-  { label: 'YouTube', url: 'https://youtube.com/@danokhlopkov', icon: <YoutubeIcon /> },
-  { label: 'Instagram', url: 'https://instagram.com/d7733o', icon: <InstagramIcon /> },
-  { label: 'X', url: 'https://x.com/danokhlopkov', icon: <TwitterXIcon /> },
-  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/danokhlopkov/', icon: <LinkedinIcon /> },
-  { label: 'GitHub', url: 'https://github.com/ohld', icon: <GithubIcon /> },
-]
+const iconByLabel: Record<string, ReactElement> = {
+  Telegram: <TelegramIcon />,
+  YouTube: <YoutubeIcon />,
+  Instagram: <InstagramIcon />,
+  X: <TwitterXIcon />,
+  LinkedIn: <LinkedinIcon />,
+  GitHub: <GithubIcon />,
+}
 
 function handleSocialClick(event: MouseEvent<HTMLAnchorElement>, url: string, label: string) {
   if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
@@ -20,10 +23,23 @@ function handleSocialClick(event: MouseEvent<HTMLAnchorElement>, url: string, la
 }
 
 export function Footer() {
+  const location = useLocation()
+  const isEnglish = isEnglishPath(location.pathname)
+
   return (
     <footer className="footer">
+      <nav className="footer-links" aria-label={isEnglish ? 'Site sections' : 'Разделы сайта'}>
+        <Link to="/">RU</Link>
+        <Link to="/en/">EN</Link>
+        {navLinks.filter((link) => link.path !== '/').map((link) => (
+          <Link key={link.path} to={isEnglish ? link.enPath || link.path : link.path}>
+            {isEnglish ? link.en : link.ru}
+          </Link>
+        ))}
+        <Link to="/privacy">Privacy</Link>
+      </nav>
       <div className="footer-socials">
-        {socials.map((s) => (
+        {socialLinks.map((s) => (
           <a
             key={s.url}
             href={s.url}
@@ -33,11 +49,11 @@ export function Footer() {
             title={s.label}
             onClick={(event) => handleSocialClick(event, s.url, s.label)}
           >
-            {s.icon}
+            {iconByLabel[s.label]}
           </a>
         ))}
       </div>
-      <span className="footer-copy">© 2026 Даниил Охлопков</span>
+      <span className="footer-copy">© 2026 {isEnglish ? 'Daniil Okhlopkov' : 'Даниил Охлопков'}</span>
     </footer>
   )
 }

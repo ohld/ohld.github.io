@@ -7,7 +7,7 @@
 - **Имя:** Даниил Охлопков (Daniil Okhlopkov)
 - **Telegram:** [@danokhlopkov](https://t.me/danokhlopkov) (RU)
 - **X / Twitter:** [@danokhlopkov](https://x.com/danokhlopkov) (EN)
-- **Блог:** [okhlopkov.com](https://okhlopkov.com) (EN)
+- **Блог:** [okhlopkov.com](https://okhlopkov.com) (RU/EN)
 - **Бот:** [@ohldbot](https://t.me/ohldbot)
 - **GitHub:** [@ohld](https://github.com/ohld)
 
@@ -19,15 +19,16 @@
 
 ## Контент
 
-- [Обо мне](https://ai.okhlopkov.com/about.md): подробно о роли, опыте, проектах
-- [Топ-посты](https://ai.okhlopkov.com/posts.md): лучшие материалы из Telegram-канала по темам — AI, crypto, TON, стартапы, данные
-- [Курс по AI-агентам](https://ai.okhlopkov.com/ai-course.md): бесплатный курс на основе моих публикаций — Claude Code, MCP, vibe-coding, реальные кейсы
-- [Markdown мёртв — да здравствует HTML](https://ai.okhlopkov.com/markdown-vs-html.md): почему HTML побеждает markdown как формат вывода для AI-агентов
+- [Обо мне](https://okhlopkov.com/about.md): подробно о роли, опыте, проектах
+- [Блог](https://okhlopkov.com/blog.md): Telegram-посты, сохранённые как индексируемые страницы
+- [Статьи](https://okhlopkov.com/articles.md): SEO-гайды, сравнения, туториалы и source-pack driven материалы
+- [AI-инструменты для дизайнеров](https://okhlopkov.com/articles-ai-tools-for-designers-design-engineering-agents.md): design engineering, AI-assisted frontend, Paper/Figma-to-code и борьба с AI-slop
+- [Markdown мёртв — да здравствует HTML](https://okhlopkov.com/markdown-vs-html.md): почему HTML побеждает markdown как формат вывода для AI-агентов
+- [Privacy Policy](https://okhlopkov.com/privacy.md): privacy policy for okhlopkov.com and the Pinterest Content Ideas integration
 
 ## Связаться
 
-- **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot) или [страницу "Го поработаем"](https://ai.okhlopkov.com/work-together.md)
-- **Сообщество:** [Закрытый канал](https://ai.okhlopkov.com/private-channel.md) для AI / web3 / TG+TON фаундеров и билдеров
+- **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot) или [страницу обо мне](https://okhlopkov.com/about.md)
 
 ## Использование
 
@@ -38,6 +39,6 @@
 
 ## Optional
 
-- [Полный контент-бандл](https://ai.okhlopkov.com/llms-full.txt): все страницы в одном файле для one-shot fetch
-- [Блог EN](https://okhlopkov.com): английский блог
+- [Полный контент-бандл](https://okhlopkov.com/llms-full.txt): все страницы в одном файле для one-shot fetch
+- [English homepage](https://okhlopkov.com/en/): English entry point
 - [GitHub](https://github.com/ohld): открытый код, MCP-серверы

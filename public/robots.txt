@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ai.okhlopkov.com/sitemap.xml
+Sitemap: https://okhlopkov.com/sitemap.xml

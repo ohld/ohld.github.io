@@ -1,0 +1,18 @@
+services:
+  okhlopkov-site:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SITE_URL: ${SITE_URL:-https://okhlopkov.com}
+        VITE_SITE_URL: ${VITE_SITE_URL:-https://okhlopkov.com}
+    image: okhlopkov-site:local
+    restart: unless-stopped
+    ports:
+      - "${OKHLOPKOV_BIND:-127.0.0.1}:${OKHLOPKOV_PORT:-8080}:80"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/healthz | grep -q ok"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

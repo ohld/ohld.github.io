@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.DS_Store
+npm-debug.log
+.env
+.env.*
+private/
+content/ghost-export/
+*.session
+*.session-journal
+telegram.session*
