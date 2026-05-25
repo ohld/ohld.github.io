@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { BackButton } from '../components/BackButton'
 import { Footer } from '../components/Footer'
 import { ArrowRightIcon } from '../components/Icons'
@@ -31,7 +30,7 @@ export function EnglishArticlesIndex() {
 
       <main className="blog-list" aria-label="English articles">
         {englishArticleItems.map((article) => (
-          <Link className="blog-card" to={article.path} key={article.path}>
+          <a className="blog-card" href={article.path} key={article.path}>
             {article.thumbnail && (
               <img className="blog-card-thumb" src={article.thumbnail} alt="" loading="lazy" />
             )}
@@ -48,7 +47,7 @@ export function EnglishArticlesIndex() {
               </div>
               <span className="blog-card-link">Read <ArrowRightIcon size={16} /></span>
             </div>
-          </Link>
+          </a>
         ))}
       </main>
 

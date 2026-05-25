@@ -24,6 +24,12 @@ const viewports = [
   { name: 'mobile', width: 390, height: 844 },
 ]
 
+const clickChecks = [
+  { start: '/blog/', selector: '.blog-card', label: 'blog first card' },
+  { start: '/en/blog/', selector: '.blog-card', label: 'en blog first card' },
+  { start: '/', selector: '#home-blog-title + .home-card-list .home-list-link', label: 'home latest blog' },
+]
+
 const executableCandidates = [
   process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
@@ -43,6 +49,11 @@ function canonicalPath(route) {
 
 function expectedCanonical(route) {
   return `${siteUrl}${canonicalPath(route)}`
+}
+
+function expectedCanonicalForUrl(url) {
+  const parsed = new URL(url, baseUrl)
+  return `${siteUrl}${canonicalPath(parsed.pathname)}`
 }
 
 function findExecutable() {
@@ -116,6 +127,37 @@ async function main() {
       })
     }
 
+    for (const check of clickChecks) {
+      errors.length = 0
+      await page.goto(`${baseUrl}${check.start}`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+      const link = page.locator(check.selector).first()
+      const href = await link.getAttribute('href')
+      await link.click()
+      await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {})
+      await page.waitForFunction(() => {
+        const bodyChars = document.body.innerText.trim().length
+        return Boolean(document.querySelector('.footer')) && bodyChars >= 500
+      }, { timeout: 4000 }).catch(() => {})
+      const data = await page.evaluate(() => ({
+        title: document.title,
+        canonical: document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '',
+        robots: document.querySelector('meta[name="robots"]')?.getAttribute('content') || '',
+        bodyChars: document.body.innerText.trim().length,
+        hasHeader: Boolean(document.querySelector('.site-header')),
+        hasFooter: Boolean(document.querySelector('.footer')),
+        overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        headerMainOverlap: false,
+      }))
+      results.push({
+        viewport: viewport.name,
+        route: `${check.start} click:${check.label}`,
+        expectedCanonical: href ? expectedCanonicalForUrl(href) : '',
+        status: 200,
+        errors: [...errors],
+        ...data,
+      })
+    }
+
     await page.close()
   }
 
@@ -124,7 +166,7 @@ async function main() {
   let failed = false
   for (const result of results) {
     const issues = []
-    const expected = expectedCanonical(result.route)
+    const expected = result.expectedCanonical || expectedCanonical(result.route)
     if (result.status !== 200) issues.push(`status ${result.status}`)
     if (!result.hasHeader) issues.push('missing header')
     if (!result.hasFooter) issues.push('missing footer')

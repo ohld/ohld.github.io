@@ -75,10 +75,10 @@ export function Home() {
         <h2 id="home-blog-title">Последнее из блога</h2>
         <div className="home-card-list">
           {latestBlogItems.map((item) => (
-            <Link className="home-list-link" to={item.path} key={item.path}>
+            <a className="home-list-link" href={item.path} key={item.path}>
               <span>{item.title}</span>
               <ArrowRightIcon size={16} />
-            </Link>
+            </a>
           ))}
         </div>
       </section>

@@ -379,6 +379,7 @@ a,
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
+  margin-top: 20px;
   padding: 0 16px;
 }
 

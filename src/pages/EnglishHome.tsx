@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Footer } from '../components/Footer'
 import { ArrowRightIcon } from '../components/Icons'
 import { trackNav } from '../analytics'
@@ -74,10 +74,10 @@ export function EnglishHome() {
         <h2 id="home-en-blog-title">Latest blog</h2>
         <div className="home-card-list">
           {latestBlogItems.map((item) => (
-            <Link className="home-list-link" to={item.path} key={item.path}>
+            <a className="home-list-link" href={item.path} key={item.path}>
               <span>{item.title}</span>
               <ArrowRightIcon size={16} />
-            </Link>
+            </a>
           ))}
         </div>
       </section>
@@ -86,10 +86,10 @@ export function EnglishHome() {
         <h2 id="home-en-articles-title">Articles</h2>
         <div className="home-card-list">
           {latestArticleItems.map((item) => (
-            <Link className="home-list-link" to={item.path} key={item.path}>
+            <a className="home-list-link" href={item.path} key={item.path}>
               <span>{item.title}</span>
               <ArrowRightIcon size={16} />
-            </Link>
+            </a>
           ))}
         </div>
       </section>
