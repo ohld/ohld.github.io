@@ -39,33 +39,6 @@ export function GeneratedBlogPost() {
           <p className="subpage-subtitle">{post.description}</p>
         </div>
 
-        <aside className="article-source-note">
-          <span>Блог, не SEO-статья</span>
-          <p>
-            Основа страницы — оригинальный Telegram-пост #{post.sourceTelegramId}. Текст поста сохранён,
-            SEO-слой добавлен через заголовок, структуру, Wordstat-запросы и community insights.
-          </p>
-          <div className="article-source-links">
-            <a href={post.sourceTelegramUrl} target="_blank" rel="noopener noreferrer">Открыть пост в Telegram</a>
-            <Link to="/articles/">Все SEO-статьи отдельно</Link>
-          </div>
-        </aside>
-
-        <aside className="keyword-note">
-          <div>
-            <span>Основной запрос</span>
-            <strong>{post.primaryKeyword}</strong>
-          </div>
-          <div>
-            <span>Дополнительные запросы</span>
-            <strong>{post.secondaryKeywords.join(', ')}</strong>
-          </div>
-          <div>
-            <span>Сигналы ohldbot</span>
-            <strong>{post.views} просмотров · {post.forwards} репостов · {post.comments} комментов</strong>
-          </div>
-        </aside>
-
         <div
           className="generated-blog-body"
           dangerouslySetInnerHTML={{ __html: markdownToHtml(post.body) }}
@@ -75,8 +48,8 @@ export function GeneratedBlogPost() {
           <h2>Дальше</h2>
           <div className="related-links">
             <Link to="/blog/">Все посты блога</Link>
-            <Link to="/articles/">SEO-статьи и туториалы</Link>
-            <a href="https://t.me/ohld_chat" target="_blank" rel="noopener noreferrer">Обсудить в Telegram-чате</a>
+            <Link to="/articles/">Статьи и туториалы</Link>
+            <Link to="/about/">Обо мне</Link>
           </div>
         </section>
       </article>

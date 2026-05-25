@@ -8,7 +8,7 @@ import { russianArticleItems, russianBlogItems } from '../blog'
 
 const navItems = [
   { path: '/blog', title: 'Блог', subtitle: 'Telegram-посты как индексируемые материалы' },
-  { path: '/articles', title: 'Статьи', subtitle: 'SEO-гайды, сравнения и туториалы', badge: 'NEW' },
+  { path: '/articles', title: 'Статьи', subtitle: 'Гайды, сравнения и туториалы', badge: 'NEW' },
   { path: '/about', title: 'Обо мне', subtitle: 'Бэкграунд, опыт и ссылки' },
 ]
 
@@ -46,7 +46,7 @@ export function Home() {
         <section className="home-section home-intro" aria-labelledby="home-intro-title">
           <h2 id="home-intro-title">Коротко</h2>
           <p>
-            Это сайт Дана Охлопкова про практические AI-агенты, Claude Code, Codex, MCP, TON-данные и Telegram-автоматизацию. Главная страница — роутер: блог с моими Telegram-постами, SEO-статьи и короткий about.
+            Это сайт Дана Охлопкова про практические AI-агенты, Claude Code, Codex, MCP, TON-данные и Telegram-автоматизацию. Главная страница — роутер: блог с моими Telegram-постами, статьи и короткий about.
           </p>
         </section>
       </main>
@@ -84,7 +84,7 @@ export function Home() {
       </section>
 
       <section className="home-section" aria-labelledby="home-articles-title">
-        <h2 id="home-articles-title">SEO-статьи</h2>
+        <h2 id="home-articles-title">Статьи</h2>
         <div className="home-card-list">
           {latestArticles.map((article) => (
             <Link className="home-list-link" to={article.path} key={article.path}>

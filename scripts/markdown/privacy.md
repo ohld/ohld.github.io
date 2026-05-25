@@ -18,7 +18,7 @@ Pinterest data is used to maintain a private visual moodboard, create local refe
 
 ## Storage
 
-Reference data may be stored locally or in private systems controlled by Daniil Okhlopkov. Raw Pinterest source packs, access tokens, and private manifests are not intentionally published in the public okhlopkov.com repository.
+Reference data may be stored locally or in private systems controlled by Daniil Okhlopkov. Raw Pinterest references, access tokens, and private manifests are not intentionally published in the public okhlopkov.com repository.
 
 ## Sharing
 

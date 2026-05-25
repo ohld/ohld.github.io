@@ -24,7 +24,7 @@
 - [AI-агенты: с чего начать в 2026](https://okhlopkov.com/blog-ai-agents-s-chego-nachat.md): Telegram-derived карта материалов про AI-агентов
 - [Claude Code vs Codex](https://okhlopkov.com/blog-claude-code-vs-codex-perehod.md): личный snapshot перехода с Claude Code на Codex
 - [AI-трансформация в компании](https://okhlopkov.com/blog-ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain.md): общий контекст, skills и GBrain/OpenBrain
-- [Статьи](https://okhlopkov.com/articles.md): SEO-гайды, сравнения, туториалы и source-pack driven материалы
+- [Статьи](https://okhlopkov.com/articles.md): гайды, сравнения, туториалы и материалы из собранных источников
 - [AI-инструменты для дизайнеров](https://okhlopkov.com/articles-ai-tools-for-designers-design-engineering-agents.md): design engineering, AI-assisted frontend, Paper/Figma-to-code и борьба с AI-slop
 - [Markdown мёртв — да здравствует HTML](https://okhlopkov.com/markdown-vs-html.md): почему HTML побеждает markdown как формат вывода для AI-агентов
 - [Privacy Policy](https://okhlopkov.com/privacy.md): privacy policy for okhlopkov.com and the Pinterest Content Ideas integration

@@ -184,7 +184,7 @@ export function BlogArticle() {
         </section>
 
         <section>
-          <h2>Source pack</h2>
+          <h2>Источники</h2>
           <ul>
             <li><a href="https://www.youtube.com/watch?v=fIEMOzz0_AI" target="_blank" rel="noopener noreferrer">YouTube-запись стрима</a></li>
             <li><a href="https://paper.design/" target="_blank" rel="noopener noreferrer">Paper</a> и <a href="https://paper.design/docs/mcp" target="_blank" rel="noopener noreferrer">Paper MCP</a></li>
@@ -195,7 +195,7 @@ export function BlogArticle() {
 
         <section className="related-links">
           <h2>Дальше по теме</h2>
-          <Link to="/articles/">Все SEO-статьи</Link>
+          <Link to="/articles/">Все статьи</Link>
           <Link to="/blog/">Блог из Telegram-постов</Link>
           <a href="/claude-code-nastrojka-mcp-hooks-skills-2026/">Мой сетап Claude Code 2026</a>
           <a href="/luchshie-skills-mcp-claude-code-agent-browser/">Лучшие skills и MCP для Claude Code</a>

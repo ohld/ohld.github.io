@@ -22,7 +22,6 @@ export interface GeneratedBlogPost {
   readingTime: string
   tags: string[]
   sourceTelegramId: string
-  sourceTelegramUrl: string
   primaryKeyword: string
   secondaryKeywords: string[]
   views: string
@@ -61,7 +60,6 @@ function parseFrontmatter(raw: string): GeneratedBlogPost {
     readingTime: meta.readingTime,
     tags,
     sourceTelegramId: meta.sourceTelegramId,
-    sourceTelegramUrl: meta.sourceTelegramUrl,
     primaryKeyword: meta.primaryKeyword,
     secondaryKeywords,
     views: meta.views,

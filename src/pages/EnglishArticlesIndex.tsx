@@ -8,7 +8,7 @@ import { useDocumentMeta } from '../useDocumentMeta'
 export function EnglishArticlesIndex() {
   useDocumentMeta({
     title: 'Articles — Daniil Okhlopkov',
-    description: 'English SEO articles, tutorials and preserved explainers by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP and automation.',
+    description: 'English tutorials and preserved explainers by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP and automation.',
     canonical: absoluteUrl('/en/articles/'),
     lang: 'en',
     alternates: {
@@ -24,7 +24,7 @@ export function EnglishArticlesIndex() {
         <BackButton to="/en/" />
         <h1 className="subpage-title">Articles</h1>
         <p className="subpage-subtitle">
-          English tutorials and preserved evergreen explainers. New SEO experiments are Russian-first, then translated when there is real demand.
+          English tutorials and preserved evergreen explainers. New Russian-first experiments get translated when there is real demand.
         </p>
       </div>
 

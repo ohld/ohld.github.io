@@ -2,8 +2,8 @@
 
 English tutorials, comparisons and preserved explainers by Daniil Okhlopkov.
 
-New SEO experiments are Russian-first. English versions are kept when the page
-already exists in English or has clear global demand.
+New Russian-first experiments are translated when the page already exists in
+English or has clear global demand.
 
 ## English articles
 

@@ -167,7 +167,7 @@ const redirects = [
     new_path: '/articles/ai-tools-for-designers-design-engineering-agents/',
     action: '308_redirect',
     source: 'static_ia_cleanup',
-    note: 'The design engineering piece is an SEO article, not a Telegram-derived blog post.',
+    note: 'The design engineering piece is an article, not a Telegram-derived blog post.',
   },
 ]
 
@@ -179,8 +179,8 @@ const newStaticPages = [
   ['/en/about/', 'new_static_page', 'en', 'English about page'],
   ['/about/', 'new_static_page', 'ru', 'About page'],
   ['/blog/', 'new_static_page', 'ru', 'Indexable blog for Telegram-derived posts'],
-  ['/articles/', 'new_static_page', 'ru', 'SEO article index'],
-  ['/articles/ai-tools-for-designers-design-engineering-agents/', 'new_static_page', 'ru', 'First YouTube-derived SEO article with component examples'],
+  ['/articles/', 'new_static_page', 'ru', 'Article index'],
+  ['/articles/ai-tools-for-designers-design-engineering-agents/', 'new_static_page', 'ru', 'First YouTube-derived article with component examples'],
   ['/articles/markdown-vs-html/', 'new_static_page', 'ru', 'Existing static article route moved under Articles'],
   ['/privacy/', 'new_static_page', 'en', 'Privacy policy for Pinterest app review and site data practices'],
 ]
@@ -316,7 +316,7 @@ for (const post of readGeneratedBlogPosts()) {
     'ru',
     post.title || '',
     'telegram_derived_blog_post',
-    `Blog post from Telegram #${post.sourceTelegramId}; original post text preserved, SEO layer added.`,
+    `Blog post from Dan Telegram source #${post.sourceTelegramId}; adapted as a native site article.`,
   ]))
 }
 

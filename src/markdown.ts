@@ -101,6 +101,12 @@ export function markdownToHtml(markdown: string) {
       closeQuote()
       continue
     }
+    if (line.trim() === '>') {
+      flushParagraph()
+      closeList()
+      closeQuote()
+      continue
+    }
     if (line.startsWith('|') && lines[index + 1]?.trimEnd().startsWith('|') && isTableDivider(lines[index + 1].trimEnd())) {
       flushParagraph()
       closeList()
@@ -161,7 +167,7 @@ export function markdownToHtml(markdown: string) {
       flushParagraph()
       closeList()
       if (!inQuote) {
-        out.push('<blockquote class="telegram-original">')
+        out.push('<blockquote class="article-quote">')
         inQuote = true
       }
       out.push(`<p>${inlineFormat(line.slice(2))}</p>`)

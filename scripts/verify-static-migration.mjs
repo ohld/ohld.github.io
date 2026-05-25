@@ -164,7 +164,7 @@ const blogArticleChecks = [
       'Коротко',
       'Почему агенты делают AI-slop',
       'Промпт, который можно дать агенту',
-      'Все SEO-статьи',
+      'Все статьи',
     ],
   },
 ]
@@ -172,10 +172,8 @@ const blogArticleChecks = [
 const generatedBlogChecks = generatedBlogPosts.map((post) => ({
   path: `/blog/${post.slug}/`,
   title: post.title,
-  sourceTelegramUrl: post.sourceTelegramUrl,
   requiredText: [
-    'Оригинальный Telegram-пост',
-    'Что обсуждали в Telegram-чате',
+    'Что добавилось из обсуждений',
     'Связанные материалы',
   ],
 }))
@@ -447,13 +445,17 @@ async function verifyBlogArticle({ path, thumbnail, youtubeUrl, requiredText }) 
   console.log(`✓ blog article ${path}`)
 }
 
-async function verifyGeneratedBlogPost({ path, sourceTelegramUrl, requiredText }) {
+async function verifyGeneratedBlogPost({ path, requiredText }) {
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
   assert(html.includes('"@type": "BlogPosting"'), `${path}: missing BlogPosting JSON-LD`)
-  assert(html.includes('"isBasedOn":'), `${path}: missing source JSON-LD`)
-  assert(html.includes(sourceTelegramUrl), `${path}: missing source Telegram URL`)
+  assert(!html.includes('"isBasedOn":'), `${path}: should not expose source Telegram URL in JSON-LD`)
+  assert(!html.includes('Оригинальный Telegram-пост'), `${path}: should not label Telegram text as original post`)
+  assert(!html.includes('Открыть пост в Telegram'), `${path}: should not link to source Telegram post`)
+  assert(!html.includes('<p>&gt;</p>') && !html.includes('&gt;</p>'), `${path}: leaked bare markdown quote marker`)
+  assert(!html.includes('SEO'), `${path}: leaked internal search-production label`)
+  assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)
   assert(html.includes('"dateModified": "2026-05-25"'), `${path}: missing generated post dateModified`)
   assert(html.includes('/blog/'), `${path}: missing internal blog links`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)

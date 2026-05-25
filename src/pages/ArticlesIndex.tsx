@@ -9,7 +9,7 @@ import { useDocumentMeta } from '../useDocumentMeta'
 export function ArticlesIndex() {
   useDocumentMeta({
     title: 'Статьи — Даниил Охлопков',
-    description: 'SEO-гайды, туториалы, сравнения AI-инструментов и плотные разборы Даниила Охлопкова: OpenClaw, Claude Code, Codex, Cursor, MCP и agent workflows.',
+    description: 'Туториалы, сравнения AI-инструментов и плотные разборы Даниила Охлопкова: OpenClaw, Claude Code, Codex, Cursor, MCP и agent workflows.',
     canonical: absoluteUrl('/articles/'),
     lang: 'ru',
     alternates: {
@@ -25,11 +25,11 @@ export function ArticlesIndex() {
         <BackButton />
         <h1 className="subpage-title">Статьи</h1>
         <p className="subpage-subtitle">
-          Туториалы, сравнения и SEO-материалы. Это не просто переписанные посты, а source-pack driven страницы с таблицами, промптами, видео и обновлениями.
+          Туториалы, сравнения и практические разборы. Это не просто переписанные посты, а страницы с источниками, таблицами, промптами, видео и обновлениями.
         </p>
       </div>
 
-      <main className="blog-list" aria-label="SEO статьи">
+      <main className="blog-list" aria-label="Статьи">
         {russianArticleItems.map((article) => (
           <Link className={`blog-card ${article.thumbnail ? 'blog-card-with-thumb' : 'blog-card-no-thumb'}`} to={article.path} key={article.path}>
             {article.thumbnail && (

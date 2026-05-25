@@ -81,12 +81,12 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 ## Коротко
 
-Это сайт Дана Охлопкова про практические AI-агенты, Claude Code, Codex, MCP, TON-данные и Telegram-автоматизацию. Главная страница — роутер: блог с моими Telegram-постами, SEO-статьи и короткий about.
+Это сайт Дана Охлопкова про практические AI-агенты, Claude Code, Codex, MCP, TON-данные и Telegram-автоматизацию. Главная страница — роутер: блог с моими Telegram-постами, статьи и короткий about.
 
 ## Разделы
 
-- [Блог](/blog/) — Telegram-посты, сохранённые как индексируемые страницы.
-- [Статьи](/articles/) — SEO-гайды, сравнения, туториалы и source-pack driven материалы.
+- [Блог](/blog/) — Telegram-посты, превращённые в нормальные страницы.
+- [Статьи](/articles/) — гайды, сравнения, туториалы и материалы из собранных источников.
 - [Обо мне](/about/) — бэкграунд, опыт и ссылки.
 
 ## Последнее из блога
@@ -95,7 +95,7 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 - [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
 - [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
 
-## SEO-статьи
+## Статьи
 
 - [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/articles/ai-tools-for-designers-design-engineering-agents/)
 - [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/)
@@ -199,7 +199,7 @@ const ROUTES = [
     path: '/en/articles',
     slug: 'en-articles',
     title: 'Articles — Daniil Okhlopkov',
-    description: 'English SEO articles, tutorials and preserved explainers by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP and automation.',
+    description: 'English tutorials and preserved explainers by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP and automation.',
     lang: 'en',
     alternates: {
       ru: `${SITE_URL}/articles/`,
@@ -211,7 +211,7 @@ const ROUTES = [
     path: '/articles',
     slug: 'articles',
     title: 'Статьи — Даниил Охлопков',
-    description: 'SEO-гайды, туториалы, сравнения AI-инструментов и плотные разборы Даниила Охлопкова: OpenClaw, Claude Code, Codex, Cursor, MCP и agent workflows.',
+    description: 'Туториалы, сравнения AI-инструментов и плотные разборы Даниила Охлопкова: OpenClaw, Claude Code, Codex, Cursor, MCP и agent workflows.',
     alternates: {
       ru: `${SITE_URL}/articles/`,
       en: `${SITE_URL}/en/articles/`,
@@ -265,7 +265,6 @@ for (const post of GENERATED_BLOG_POSTS) {
     publishedAt: post.publishedAt,
     updatedAt: post.updatedAt,
     sourceTelegramId: post.sourceTelegramId,
-    sourceTelegramUrl: post.sourceTelegramUrl,
     primaryKeyword: post.primaryKeyword,
     secondaryKeywords: post.secondaryKeywords,
     tags: post.tags,
@@ -343,6 +342,7 @@ function mdToHtml(md) {
     }
     if (line.startsWith('```')) { flushPara(); closeList(); closeQuote(); inCode = true; codeLines = []; continue }
     if (!line.trim()) { flushPara(); closeList(); closeQuote(); continue }
+    if (line.trim() === '>') { flushPara(); closeList(); closeQuote(); continue }
     if (line.startsWith('|') && lines[index + 1]?.trimEnd().startsWith('|') && isTableDivider(lines[index + 1].trimEnd())) {
       flushPara(); closeList(); closeQuote()
       const headers = splitTableRow(line)
@@ -492,12 +492,6 @@ function generatedBlogPostSchema(route) {
     mainEntityOfPage: `${SITE_URL}${route.path}/`,
     inLanguage: 'ru',
     keywords: [route.primaryKeyword, ...(route.secondaryKeywords || [])].filter(Boolean),
-    isBasedOn: route.sourceTelegramUrl,
-    interactionStatistic: [
-      { '@type': 'InteractionCounter', interactionType: 'https://schema.org/ViewAction', userInteractionCount: Number(route.views || 0) },
-      { '@type': 'InteractionCounter', interactionType: 'https://schema.org/ShareAction', userInteractionCount: Number(route.forwards || 0) },
-      { '@type': 'InteractionCounter', interactionType: 'https://schema.org/CommentAction', userInteractionCount: Number(route.comments || 0) },
-    ],
   }
 }
 

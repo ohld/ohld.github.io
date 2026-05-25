@@ -24,7 +24,7 @@ export function BlogIndex() {
         <BackButton />
         <h1 className="subpage-title">Блог</h1>
         <p className="subpage-subtitle">
-          Мои Telegram-посты, сохранённые как нормальные страницы: живой текст остаётся, SEO-слой и community insights добавляются сверху.
+          Мои Telegram-посты, превращённые в нормальные страницы: живой текст остаётся, а сверху добавляются структура, контекст и полезные ссылки.
         </p>
       </div>
 

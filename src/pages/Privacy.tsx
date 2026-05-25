@@ -67,7 +67,7 @@ export function Privacy() {
       <div className="info-card">
         <p>
           Reference data may be stored locally or in private systems controlled by Daniil
-          Okhlopkov. Raw Pinterest source packs, access tokens, and private manifests are not
+          Okhlopkov. Raw Pinterest references, access tokens, and private manifests are not
           intentionally published in the public okhlopkov.com repository.
         </p>
       </div>

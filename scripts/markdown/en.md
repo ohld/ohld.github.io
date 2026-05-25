@@ -6,7 +6,7 @@
 
 I lead analytics at TON Foundation: on-chain data, research, ecosystem metrics and tools that help people understand the blockchain faster.
 
-This site is a map of my evergreen work: practical AI-agent workflows, Telegram-derived blog posts, SEO articles and consulting context. Most new material is Russian-first, but the strongest pieces will also get English versions.
+This site is a map of my evergreen work: practical AI-agent workflows, Telegram-derived blog posts, articles and consulting context. Most new material is Russian-first, but the strongest pieces will also get English versions.
 
 ## Focus
 
