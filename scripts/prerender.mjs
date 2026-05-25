@@ -12,7 +12,6 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { execFileSync } from 'node:child_process'
 
 const dist = 'dist'
 const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
@@ -357,47 +356,29 @@ const bundleParts = BUNDLE_SLUGS.map(slug => {
 })
 fs.writeFileSync(path.join(dist, 'llms-full.txt'), bundleHeader + bundleParts.join('\n\n---\n\n'))
 
-// ---- Per-URL lastmod in sitemap from git history ----
-const FALLBACK_LASTMOD = '2026-05-10'
-const URL_SOURCES = {
-  'https://ohld.github.io/': ['index.html', 'src/pages/Home.tsx'],
-  'https://ohld.github.io/about/': ['src/pages/About.tsx', 'scripts/markdown/about.md'],
-  'https://ohld.github.io/posts/': ['src/pages/Posts.tsx', 'public/posts.json'],
-  'https://ohld.github.io/ai-course/': ['src/pages/AICourse.tsx', 'scripts/markdown/ai-course.md'],
-  'https://ohld.github.io/private-channel/': ['src/pages/ClosedChannel.tsx', 'scripts/markdown/private-channel.md'],
-  'https://ohld.github.io/work-together/': ['src/pages/Ads.tsx', 'scripts/markdown/work-together.md'],
-  'https://ohld.github.io/markdown-vs-html/': ['src/pages/MarkdownVsHtml.tsx', 'scripts/markdown/markdown-vs-html.md'],
-}
-
-function gitLastmod(files) {
-  try {
-    const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', ...files], { encoding: 'utf8' }).trim()
-    if (!out) return FALLBACK_LASTMOD
-    return out.slice(0, 10)
-  } catch {
-    return FALLBACK_LASTMOD
-  }
-}
+// ---- Minimal XML sitemap for Google Search Console ----
+const SITEMAP_URLS = [
+  'https://ohld.github.io/',
+  'https://ohld.github.io/about/',
+  'https://ohld.github.io/posts/',
+  'https://ohld.github.io/ai-course/',
+  'https://ohld.github.io/private-channel/',
+  'https://ohld.github.io/work-together/',
+  'https://ohld.github.io/markdown-vs-html/',
+]
 
 function xmlText(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
-const sitemapUrls = Object.entries(URL_SOURCES).map(([loc, sources]) => ({
-  loc,
-  lastmod: gitLastmod(sources),
-}))
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapUrls.map(({ loc, lastmod }) => `  <url>
+${SITEMAP_URLS.map(loc => `  <url>
     <loc>${xmlText(loc)}</loc>
-    <lastmod>${lastmod}</lastmod>
   </url>`).join('\n')}
 </urlset>
 `
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap)
-fs.writeFileSync(path.join(dist, 'sitemap-pages.xml'), sitemap)
-fs.writeFileSync(path.join(dist, 'sitemap.txt'), sitemapUrls.map(({ loc }) => loc).join('\n') + '\n')
-console.log(`✓ Sitemap: generated ${sitemapUrls.length} canonical URLs`)
+console.log(`✓ Sitemap: generated ${SITEMAP_URLS.length} canonical URLs`)
 
 console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects + llms-full.txt`)
