@@ -2,9 +2,6 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeftIcon } from './Icons'
 
-const isTMA = window.__IS_TMA__
-const tg = window.Telegram?.WebApp
-
 interface BackButtonProps {
   to?: string
 }
@@ -13,7 +10,8 @@ export function BackButton({ to = '/' }: BackButtonProps = {}) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!isTMA || !tg?.BackButton) return
+    const tg = window.Telegram?.WebApp
+    if (!window.__IS_TMA__ || !tg?.BackButton) return
 
     tg.BackButton.show()
     const handler = () => navigate(to)
@@ -26,7 +24,7 @@ export function BackButton({ to = '/' }: BackButtonProps = {}) {
   }, [navigate, to])
 
   // In TMA — native back button handles it, hide the HTML one
-  if (isTMA) return null
+  if (window.__IS_TMA__) return null
 
   return (
     <button className="back-nav" onClick={() => navigate(to)}>

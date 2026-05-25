@@ -35,7 +35,7 @@ export function Posts() {
   useDocumentMeta({
     title: 'Топ посты — Даниил Охлопков',
     description: 'Лучшие посты @danokhlopkov: AI-агенты, крипта, TON, стартапы, данные.',
-    canonical: 'https://ohld.github.io/posts/',
+    canonical: 'https://ai.okhlopkov.com/posts/',
   })
   const [activeFilter, setActiveFilter] = useState<string>(TOP)
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE)

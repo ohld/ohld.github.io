@@ -29,6 +29,8 @@ export function useDocumentMeta({ title, description, canonical }: DocumentMeta)
       }
       link.href = canonical
       setMeta('property', 'og:url', canonical)
+      setHreflang('ru', canonical)
+      setHreflang('x-default', canonical)
     }
   }, [title, description, canonical])
 }
@@ -42,4 +44,15 @@ function setMeta(attr: 'name' | 'property', key: string, content: string | undef
     document.head.appendChild(el)
   }
   el.content = content
+}
+
+function setHreflang(lang: string, href: string) {
+  let el = document.querySelector<HTMLLinkElement>(`link[rel="alternate"][hreflang="${lang}"]`)
+  if (!el) {
+    el = document.createElement('link')
+    el.rel = 'alternate'
+    el.hreflang = lang
+    document.head.appendChild(el)
+  }
+  el.href = href
 }

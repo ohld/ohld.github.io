@@ -19,15 +19,15 @@
 
 ## Контент
 
-- [Обо мне](https://ohld.github.io/about.md): подробно о роли, опыте, проектах
-- [Топ-посты](https://ohld.github.io/posts.md): лучшие материалы из Telegram-канала по темам — AI, crypto, TON, стартапы, данные
-- [Курс по AI-агентам](https://ohld.github.io/ai-course.md): бесплатный курс на основе моих публикаций — Claude Code, MCP, vibe-coding, реальные кейсы
-- [Markdown мёртв — да здравствует HTML](https://ohld.github.io/markdown-vs-html.md): почему HTML побеждает markdown как формат вывода для AI-агентов
+- [Обо мне](https://ai.okhlopkov.com/about.md): подробно о роли, опыте, проектах
+- [Топ-посты](https://ai.okhlopkov.com/posts.md): лучшие материалы из Telegram-канала по темам — AI, crypto, TON, стартапы, данные
+- [Курс по AI-агентам](https://ai.okhlopkov.com/ai-course.md): бесплатный курс на основе моих публикаций — Claude Code, MCP, vibe-coding, реальные кейсы
+- [Markdown мёртв — да здравствует HTML](https://ai.okhlopkov.com/markdown-vs-html.md): почему HTML побеждает markdown как формат вывода для AI-агентов
 
 ## Связаться
 
-- **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot) или [страницу "Го поработаем"](https://ohld.github.io/work-together.md)
-- **Сообщество:** [Закрытый канал](https://ohld.github.io/private-channel.md) для AI / web3 / TG+TON фаундеров и билдеров
+- **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot) или [страницу "Го поработаем"](https://ai.okhlopkov.com/work-together.md)
+- **Сообщество:** [Закрытый канал](https://ai.okhlopkov.com/private-channel.md) для AI / web3 / TG+TON фаундеров и билдеров
 
 ## Использование
 
@@ -38,6 +38,6 @@
 
 ## Optional
 
-- [Полный контент-бандл](https://ohld.github.io/llms-full.txt): все страницы в одном файле для one-shot fetch
+- [Полный контент-бандл](https://ai.okhlopkov.com/llms-full.txt): все страницы в одном файле для one-shot fetch
 - [Блог EN](https://okhlopkov.com): английский блог
 - [GitHub](https://github.com/ohld): открытый код, MCP-серверы

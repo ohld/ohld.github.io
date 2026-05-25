@@ -39,8 +39,8 @@ function usePreloadChunks() {
     }
     // requestIdleCallback not available in Telegram WebView (iOS)
     const id = typeof requestIdleCallback !== 'undefined'
-      ? requestIdleCallback(preload)
-      : setTimeout(preload, 100)
+      ? requestIdleCallback(preload, { timeout: 3000 })
+      : setTimeout(preload, 1600)
     return () => {
       typeof cancelIdleCallback !== 'undefined'
         ? cancelIdleCallback(id as number)
@@ -56,29 +56,41 @@ function usePageTracking() {
   useEffect(() => {
     trackPageView(location.pathname)
 
-    const initData = window.Telegram?.WebApp?.initData
-    if (window.__IS_TMA__ && initData) {
+    const trackBotPageView = () => {
+      const initData = window.Telegram?.WebApp?.initData
+      if (!window.__IS_TMA__ || !initData) return
       fetch('https://ohldbot.swanrate.com/api/track', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ initData, page: location.pathname }),
       }).catch(() => {})
     }
+    trackBotPageView()
 
     const onScroll = () => getScrollDepth()
+    const onTelegramReady = () => trackBotPageView()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    window.addEventListener('telegram-webapp-ready', onTelegramReady)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('telegram-webapp-ready', onTelegramReady)
+    }
   }, [location.pathname, getScrollDepth])
 }
 
 function useStartParamNavigation() {
   const navigate = useNavigate()
   useEffect(() => {
-    const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param
-    if (startParam && VALID_START_PARAMS.has(startParam) && location.pathname === '/') {
-      const target = START_PARAM_REDIRECTS[startParam] || startParam
-      navigate('/' + target, { replace: true })
+    const maybeNavigate = () => {
+      const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param
+      if (startParam && VALID_START_PARAMS.has(startParam) && location.pathname === '/') {
+        const target = START_PARAM_REDIRECTS[startParam] || startParam
+        navigate('/' + target, { replace: true })
+      }
     }
+    maybeNavigate()
+    window.addEventListener('telegram-webapp-ready', maybeNavigate)
+    return () => window.removeEventListener('telegram-webapp-ready', maybeNavigate)
   }, [navigate])
 }
 

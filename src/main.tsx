@@ -31,27 +31,43 @@ declare global {
   }
 }
 
-// Detect if running inside Telegram Mini App (not just having the SDK loaded)
-// initData is non-empty only when opened from Telegram
-window.__IS_TMA__ = !!(window.Telegram?.WebApp?.initData)
+window.__IS_TMA__ = false
 
-// Clean up Telegram's tgWebApp params from the hash so they don't leak into UI
-// Telegram opens: /dan-mini-app/#tgWebAppData=... — harmless for BrowserRouter (it ignores hash),
-// but we strip it to keep the URL clean.
-if (window.location.hash && window.location.hash.includes('tgWebApp')) {
-  history.replaceState(null, '', window.location.pathname + window.location.search)
+function hasTelegramLaunchParams() {
+  return window.location.hash.includes('tgWebApp') || window.location.search.includes('tgWebApp')
 }
 
-if (window.__IS_TMA__) {
-  const tg = window.Telegram!.WebApp!
+function initTelegramWebApp() {
+  const tg = window.Telegram?.WebApp
+  window.__IS_TMA__ = !!tg?.initData
+  if (!window.__IS_TMA__ || !tg) return
+
   tg.ready()
   tg.expand()
   tg.setHeaderColor('#F5F5F0')
   tg.setBackgroundColor('#F5F5F0')
+
+  if (window.location.hash.includes('tgWebApp')) {
+    history.replaceState(null, '', window.location.pathname + window.location.search)
+  }
+
+  window.dispatchEvent(new Event('telegram-webapp-ready'))
 }
-// Per-page bot tracking lives in App.tsx's usePageTracking — react-router-dom HashRouter
-// uses pushState which never fires hashchange, so a window-level listener here would only
-// ever record the initial '/' page.
+
+function loadTelegramSdkIfNeeded() {
+  if (window.Telegram?.WebApp) {
+    initTelegramWebApp()
+    return
+  }
+  if (!hasTelegramLaunchParams()) return
+
+  const script = document.createElement('script')
+  script.src = 'https://telegram.org/js/telegram-web-app.js'
+  script.async = true
+  script.onload = initTelegramWebApp
+  script.onerror = () => { window.__IS_TMA__ = false }
+  document.head.appendChild(script)
+}
 
 // Universal link opener: uses Telegram native methods in TMA, falls back to window.open
 window.__openUrl__ = (url: string) => {
@@ -81,3 +97,5 @@ createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
   </StrictMode>,
 )
+
+loadTelegramSdkIfNeeded()

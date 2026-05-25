@@ -25,13 +25,56 @@ const NAV_LINKS = [
   ['/work-together/', 'Го поработаем'],
 ]
 
+const SOCIAL_LINKS = [
+  ['https://t.me/danokhlopkov', 'Telegram'],
+  ['https://youtube.com/@danokhlopkov', 'YouTube'],
+  ['https://instagram.com/d7733o', 'Instagram'],
+  ['https://x.com/danokhlopkov', 'X'],
+  ['https://www.linkedin.com/in/danokhlopkov/', 'LinkedIn'],
+  ['https://github.com/ohld', 'GitHub'],
+]
+
 const HOME_FALLBACK_MD = `# Даниил Охлопков
 
-> Head of Analytics @ TON Foundation. Бесплатный курс по AI-агентам, лучшие посты, консалтинг.
+> Head of Analytics @ TON Foundation. AI-агенты, on-chain аналитика, Telegram/TON, лучшие посты и консалтинг.
 
-Пишу про AI-агентов, on-chain аналитику и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).
+## Коротко
 
-Telegram: [@danokhlopkov](https://t.me/danokhlopkov) · X: [@danokhlopkov](https://x.com/danokhlopkov) · GitHub: [@ohld](https://github.com/ohld)
+Я Даниил Охлопков. Сейчас веду аналитику в TON Foundation: on-chain данные, Dune, research, метрики экосистемы и инструменты, которые помогают людям быстрее понимать блокчейн. До этого был CTO Via Protocol, строил data platform для VC, делал Telegram-ботов и попал в Forbes 30 Under 30 Russia.
+
+Этот сайт — входная точка во всё, что я публикую: бесплатный курс по AI-агентам, лучшие посты из Telegram, рабочие форматы для консалтинга и ссылки на соцсети. Если нужно понять, чем я занимаюсь и где со мной пересечься, здесь меньше шума, чем в ленте.
+
+## Фокус
+
+### AI-агенты
+
+Пишу и собираю реальные флоу с Claude Code, MCP, Obsidian и локальными автоматизациями. Не про магию в промптах, а про то, как агентам давать контекст, задачи, ревью и рабочий контур.
+
+### TON и данные
+
+В TON Foundation занимаюсь аналитикой, on-chain research и инструментами для аналитиков. Мне интересны понятные метрики, нормальные датасеты и инфраструктура, на которой можно принимать продуктовые решения.
+
+### Telegram ecosystem
+
+Давно живу внутри Telegram: боты, Mini Apps, каналы, Ads, TG+TON связки. До TON строил ботовые продукты с миллионами пользователей и до сих пор смотрю на Telegram как на самый живой интерфейс для AI.
+
+## Что открыть
+
+Если ты пришёл за практикой — начинай с AI Agents курса. Если нужен бэкграунд — открой «Обо мне». Если хочешь быстро понять мой стиль мышления, лучше всего работают топовые посты: там AI, стартапы, TON, Telegram и немного личного опыта без корпоративного слопа.
+
+## С чего начать
+
+Для AI-агентов я собрал маршрут из своих постов, стримов и лонгридов: от «что вообще поменялось» до конкретных рабочих флоу с Claude Code, plan mode, worktrees, MCP и личным вторым мозгом в Obsidian. Это не академический курс, а набор материалов, после которого можно пойти и навайбкодить что-то живое.
+
+Для TON и данных я чаще показываю подход: как смотреть на экосистему через метрики, где искать источники, как не путать красивый график с выводом и почему нормальная аналитика начинается с вопроса, а не с SQL. Для Telegram — пишу про распределение, Mini Apps, ботов, каналы и то, как AI постепенно становится нормальным пользовательским интерфейсом.
+
+Если нужен не контент, а работа руками, есть отдельная страница «Го поработаем»: консалтинг по AI-агентам, web3/TON, Telegram и рекламе в канале. Обычно я полезен там, где нужно быстро собрать картину, превратить хаос в план и довести до первого живого прототипа.
+
+Основная лента у меня в Telegram: там быстрые мысли, тесты инструментов, ссылки и рабочие заметки. YouTube — для разговоров и стримов с людьми, которые реально используют AI в работе. X — международный контекст про crypto, AI и data. Instagram живёт отдельно: больше личного и travel, меньше профессиональной инфы. Я не пытаюсь тащить одно и то же во все сети; каждая площадка нужна под свой формат, а сайт остаётся картой evergreen материалов, которые не должны утонуть в ленте.
+
+## Видео
+
+[Подкаст #2 с Сашей Нотченко (@technotears)](https://www.youtube.com/watch?v=Fxw6IQuL36o) — 16 лет в ML. Про self-hosted AI, приватность и как голосом управлять Doom.
 `
 
 const ROUTES = [
@@ -116,7 +159,8 @@ function mdToHtml(md) {
 function buildFallback(title, mdBody) {
   const article = mdToHtml(mdBody)
   const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
-  return `<header><h1>${escape(title)}</h1></header><article>${article}</article><nav>${nav}</nav>`
+  const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
+  return `<header><h1>${escape(title)}</h1></header><article>${article}</article><nav>${nav}</nav><footer>${socials}</footer>`
 }
 
 function getRouteMd(route) {
@@ -137,9 +181,9 @@ const SCHEMA_BY_SLUG = {
     description: r.description,
     datePublished: '2026-05-09',
     dateModified: '2026-05-10',
-    author: { '@type': 'Person', name: 'Даниил Охлопков', url: 'https://ohld.github.io/' },
+    author: { '@type': 'Person', name: 'Даниил Охлопков', url: 'https://ai.okhlopkov.com/' },
     image: 'https://github.com/ohld.png',
-    mainEntityOfPage: 'https://ohld.github.io/markdown-vs-html/',
+    mainEntityOfPage: 'https://ai.okhlopkov.com/markdown-vs-html/',
     inLanguage: 'ru',
   }),
   'ai-course': (r) => ({
@@ -147,37 +191,37 @@ const SCHEMA_BY_SLUG = {
     '@type': 'Course',
     name: 'AI Agents курс',
     description: r.description,
-    provider: { '@type': 'Person', name: 'Даниил Охлопков', url: 'https://ohld.github.io/' },
+    provider: { '@type': 'Person', name: 'Даниил Охлопков', url: 'https://ai.okhlopkov.com/' },
     inLanguage: 'ru',
     isAccessibleForFree: true,
-    url: 'https://ohld.github.io/ai-course/',
+    url: 'https://ai.okhlopkov.com/ai-course/',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online', courseWorkload: 'PT5H' },
   }),
   about: () => ({
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
-    mainEntity: { '@id': 'https://ohld.github.io/#person' },
-    url: 'https://ohld.github.io/about/',
+    mainEntity: { '@id': 'https://ai.okhlopkov.com/#person' },
+    url: 'https://ai.okhlopkov.com/about/',
   }),
   posts: (r) => ({
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Топ посты — Даниил Охлопков',
     description: r.description,
-    url: 'https://ohld.github.io/posts/',
-    isPartOf: { '@id': 'https://ohld.github.io/#website' },
+    url: 'https://ai.okhlopkov.com/posts/',
+    isPartOf: { '@id': 'https://ai.okhlopkov.com/#website' },
     inLanguage: 'ru',
   }),
 }
 
 const BREADCRUMBS_BY_SLUG = {
-  'about': [['Главная', 'https://ohld.github.io/'], ['Обо мне', 'https://ohld.github.io/about/']],
-  'posts': [['Главная', 'https://ohld.github.io/'], ['Топ посты', 'https://ohld.github.io/posts/']],
-  'ai-course': [['Главная', 'https://ohld.github.io/'], ['AI Agents курс', 'https://ohld.github.io/ai-course/']],
-  'private-channel': [['Главная', 'https://ohld.github.io/'], ['Закрытый канал', 'https://ohld.github.io/private-channel/']],
-  'work-together': [['Главная', 'https://ohld.github.io/'], ['Го поработаем', 'https://ohld.github.io/work-together/']],
-  'markdown-vs-html': [['Главная', 'https://ohld.github.io/'], ['AI Agents курс', 'https://ohld.github.io/ai-course/'], ['Markdown мёртв', 'https://ohld.github.io/markdown-vs-html/']],
+  'about': [['Главная', 'https://ai.okhlopkov.com/'], ['Обо мне', 'https://ai.okhlopkov.com/about/']],
+  'posts': [['Главная', 'https://ai.okhlopkov.com/'], ['Топ посты', 'https://ai.okhlopkov.com/posts/']],
+  'ai-course': [['Главная', 'https://ai.okhlopkov.com/'], ['AI Agents курс', 'https://ai.okhlopkov.com/ai-course/']],
+  'private-channel': [['Главная', 'https://ai.okhlopkov.com/'], ['Закрытый канал', 'https://ai.okhlopkov.com/private-channel/']],
+  'work-together': [['Главная', 'https://ai.okhlopkov.com/'], ['Го поработаем', 'https://ai.okhlopkov.com/work-together/']],
+  'markdown-vs-html': [['Главная', 'https://ai.okhlopkov.com/'], ['AI Agents курс', 'https://ai.okhlopkov.com/ai-course/'], ['Markdown мёртв', 'https://ai.okhlopkov.com/markdown-vs-html/']],
 }
 
 function buildBreadcrumb(slug) {
@@ -196,7 +240,7 @@ function rewrite(html, route) {
   const { path: routePath, slug, title, description } = route
   // Trailing slash = canonical form on GitHub Pages (served as 200 directly;
   // non-slash variant 301-redirects). Must match sitemap.xml.
-  const url = `https://ohld.github.io${routePath}/`
+  const url = `https://ai.okhlopkov.com${routePath}/`
   const mdHref = `/${slug}.md`
   const mdBody = getRouteMd(route)
   const fallback = mdBody ? buildFallback(title, mdBody) : buildFallback(title, '')
@@ -209,6 +253,8 @@ function rewrite(html, route) {
     .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${escape(title)}$2`)
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${escape(description)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`)
+    .replace(/(<link rel="alternate" hreflang="ru" href=")[^"]*(")/, `$1${url}$2`)
+    .replace(/(<link rel="alternate" hreflang="x-default" href=")[^"]*(")/, `$1${url}$2`)
     .replace(/<link rel="alternate" type="text\/markdown" href="[^"]*" \/><!-- alternate-md -->/, `<link rel="alternate" type="text/markdown" href="${mdHref}" /><!-- alternate-md -->`)
     .replace(/(<script type="application\/ld\+json">)([\s\S]*?)(<\/script>)/, (_m, open, json, close) => {
       try {
@@ -317,7 +363,7 @@ const REDIRECTS = [
 ]
 let redirectCount = 0
 for (const r of REDIRECTS) {
-  const targetUrl = `https://ohld.github.io${r.to}`
+  const targetUrl = `https://ai.okhlopkov.com${r.to}`
   const stub = `<!doctype html>
 <html lang="ru">
 <head>
@@ -347,7 +393,7 @@ for (const r of REDIRECTS) {
 const BUNDLE_SLUGS = ['about', 'ai-course', 'posts', 'private-channel', 'work-together', 'markdown-vs-html']
 const bundleHeader = `# Daniil Okhlopkov — Full Content Bundle
 
-> Combined Markdown of all pages on ohld.github.io. For AI crawlers that prefer one-shot fetch.
+> Combined Markdown of all pages on ai.okhlopkov.com. For AI crawlers that prefer one-shot fetch.
 
 `
 const bundleParts = BUNDLE_SLUGS.map(slug => {
@@ -358,13 +404,13 @@ fs.writeFileSync(path.join(dist, 'llms-full.txt'), bundleHeader + bundleParts.jo
 
 // ---- Minimal XML sitemap for Google Search Console ----
 const SITEMAP_URLS = [
-  'https://ohld.github.io/',
-  'https://ohld.github.io/about/',
-  'https://ohld.github.io/posts/',
-  'https://ohld.github.io/ai-course/',
-  'https://ohld.github.io/private-channel/',
-  'https://ohld.github.io/work-together/',
-  'https://ohld.github.io/markdown-vs-html/',
+  'https://ai.okhlopkov.com/',
+  'https://ai.okhlopkov.com/about/',
+  'https://ai.okhlopkov.com/posts/',
+  'https://ai.okhlopkov.com/ai-course/',
+  'https://ai.okhlopkov.com/private-channel/',
+  'https://ai.okhlopkov.com/work-together/',
+  'https://ai.okhlopkov.com/markdown-vs-html/',
 ]
 
 function xmlText(s) {
