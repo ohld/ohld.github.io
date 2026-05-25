@@ -30,7 +30,7 @@ export function EnglishArticlesIndex() {
 
       <main className="blog-list" aria-label="English articles">
         {englishArticleItems.map((article) => (
-          <a className="blog-card" href={article.path} key={article.path}>
+          <a className={`blog-card ${article.thumbnail ? 'blog-card-with-thumb' : 'blog-card-no-thumb'}`} href={article.path} key={article.path}>
             {article.thumbnail && (
               <img className="blog-card-thumb" src={article.thumbnail} alt="" loading="lazy" />
             )}

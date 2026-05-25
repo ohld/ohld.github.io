@@ -1498,6 +1498,7 @@ html, body {
   .home-section h2 { font-size: 20px; }
   .home-focus-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .blog-card { grid-template-columns: minmax(220px, 0.72fr) 1fr; }
+  .blog-card-no-thumb { grid-template-columns: 1fr; }
   .blog-card-thumb { height: 100%; border-right: 1px solid var(--border-light); border-bottom: none; }
   .youtube-source-card { grid-template-columns: minmax(260px, 0.72fr) 1fr; }
   .youtube-source-card img { height: 100%; border-right: 1px solid var(--border-light); border-bottom: none; }

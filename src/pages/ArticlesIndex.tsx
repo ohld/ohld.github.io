@@ -31,7 +31,7 @@ export function ArticlesIndex() {
 
       <main className="blog-list" aria-label="SEO статьи">
         {russianArticleItems.map((article) => (
-          <Link className="blog-card" to={article.path} key={article.path}>
+          <Link className={`blog-card ${article.thumbnail ? 'blog-card-with-thumb' : 'blog-card-no-thumb'}`} to={article.path} key={article.path}>
             {article.thumbnail && (
               <img className="blog-card-thumb" src={article.thumbnail} alt="" loading="lazy" />
             )}
