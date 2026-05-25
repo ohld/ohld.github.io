@@ -2,5 +2,3 @@ User-agent: *
 Allow: /
 
 Sitemap: https://ohld.github.io/sitemap.xml
-Sitemap: https://ohld.github.io/sitemap-pages.xml
-Sitemap: https://ohld.github.io/sitemap.txt

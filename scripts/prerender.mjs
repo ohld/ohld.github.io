@@ -12,7 +12,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
-import { execSync } from 'node:child_process'
+import { execFileSync } from 'node:child_process'
 
 const dist = 'dist'
 const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
@@ -371,7 +371,7 @@ const URL_SOURCES = {
 
 function gitLastmod(files) {
   try {
-    const out = execSync(`git log -1 --format=%cI -- ${files.map(f => `'${f}'`).join(' ')}`, { encoding: 'utf8' }).trim()
+    const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', ...files], { encoding: 'utf8' }).trim()
     if (!out) return FALLBACK_LASTMOD
     return out.slice(0, 10)
   } catch {
@@ -379,29 +379,25 @@ function gitLastmod(files) {
   }
 }
 
-const sitemapPath = path.join(dist, 'sitemap.xml')
-if (fs.existsSync(sitemapPath)) {
-  let sitemap = fs.readFileSync(sitemapPath, 'utf8')
-  let urlPatched = 0
-  sitemap = sitemap.replace(/<url>([\s\S]*?)<\/url>/g, (block) => {
-    const locMatch = block.match(/<loc>([^<]+)<\/loc>/)
-    if (!locMatch) return block
-    const loc = locMatch[1].trim()
-    const sources = URL_SOURCES[loc]
-    if (!sources) return block
-    const currentLastmod = block.match(/<lastmod>([^<]*)<\/lastmod>/)?.[1]?.trim()
-    if (!currentLastmod) return block
-    const gitLm = gitLastmod(sources)
-    const lm = currentLastmod > gitLm ? currentLastmod : gitLm
-    urlPatched++
-    return block.replace(/<lastmod>[^<]*<\/lastmod>/, `<lastmod>${lm}</lastmod>`)
-  })
-  fs.writeFileSync(sitemapPath, sitemap)
-  if (urlPatched > 0) {
-    console.log(`✓ Sitemap: per-URL lastmod set for ${urlPatched} URLs`)
-  } else {
-    console.log('✓ Sitemap: no lastmod entries to patch')
-  }
+function xmlText(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
+
+const sitemapUrls = Object.entries(URL_SOURCES).map(([loc, sources]) => ({
+  loc,
+  lastmod: gitLastmod(sources),
+}))
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapUrls.map(({ loc, lastmod }) => `  <url>
+    <loc>${xmlText(loc)}</loc>
+    <lastmod>${lastmod}</lastmod>
+  </url>`).join('\n')}
+</urlset>
+`
+fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap)
+fs.writeFileSync(path.join(dist, 'sitemap-pages.xml'), sitemap)
+fs.writeFileSync(path.join(dist, 'sitemap.txt'), sitemapUrls.map(({ loc }) => loc).join('\n') + '\n')
+console.log(`✓ Sitemap: generated ${sitemapUrls.length} canonical URLs`)
 
 console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects + llms-full.txt`)
