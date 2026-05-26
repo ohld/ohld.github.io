@@ -156,12 +156,12 @@
   {
     "path": "/claude-code-compaction-explained/",
     "slug": "claude-code-compaction-explained",
-    "title": "Claude Code Compaction: How Context Compression Works (2026)",
-    "description": "How Claude Code compaction compresses your conversation. Real examples of custom compaction prompts, what gets lost, and how to keep critical context.",
+    "title": "Claude Code /compact: Context Compression, Compaction Prompts, What Survives",
+    "description": "How Claude Code /compact works: context compression, what survives compaction, prompt caching cost, PreCompact/PostCompact hooks, and practical recovery tips.",
     "lang": "en",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-25",
-    "readingTime": "5 min",
+    "updatedAt": "2026-05-26",
+    "readingTime": "11 min",
     "tags": [
       "Telegram"
     ],
@@ -170,12 +170,12 @@
   {
     "path": "/claude-code-compaction-kak-rabotaet/",
     "slug": "claude-code-compaction-kak-rabotaet",
-    "title": "Compaction в Claude Code: как работает сжатие контекста",
-    "description": "Как работает compaction в Claude Code. Кастомные промпты сжатия, что теряется и как сохранить важный контекст.",
+    "title": "/compact в Claude Code: как работает сжатие контекста",
+    "description": "Как использовать /compact в Claude Code: что переживает compaction, что теряется, как сохранить CLAUDE.md, skills и важный контекст.",
     "lang": "ru",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-25",
-    "readingTime": "4 мин",
+    "updatedAt": "2026-05-26",
+    "readingTime": "9 мин",
     "tags": [
       "Telegram"
     ],
@@ -240,12 +240,12 @@
   {
     "path": "/claude-code-setup-mcp-hooks-skills-2026/",
     "slug": "claude-code-setup-mcp-hooks-skills-2026",
-    "title": "My Claude Code Setup After 4 Months of Daily Use (2026)",
-    "description": "My daily Claude Code config: MCP servers, custom hooks, skills, and real costs. Practitioner setup, not rewritten docs.",
+    "title": "My Claude Code Setup: MCP Servers, Hooks, Skills and Agents (2026)",
+    "description": "My daily Claude Code setup: CLAUDE.md, MCP servers, hooks, skills, subagents, troubleshooting, and the choices that actually matter in 2026.",
     "lang": "en",
     "publishedAt": "2026-02-23",
-    "updatedAt": "2026-05-25",
-    "readingTime": "8 min",
+    "updatedAt": "2026-05-26",
+    "readingTime": "14 min",
     "tags": [
       "Claude Code"
     ],

@@ -810,6 +810,37 @@ button:focus-visible,
   margin: 22px 0;
 }
 
+.article-body table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin: 20px 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.article-body th,
+.article-body td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-light);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.article-body th {
+  font-weight: 650;
+  background: rgba(23, 95, 152, 0.055);
+}
+
+.article-body pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;
+}
+
 .article-task-list,
 .article-inline-list {
   margin: 0 0 18px;
@@ -1038,7 +1069,8 @@ button:focus-visible,
   }
 
   .code-block code,
-  .generated-blog-body pre code {
+  .generated-blog-body pre code,
+  .article-body pre code {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
     word-break: break-word;
