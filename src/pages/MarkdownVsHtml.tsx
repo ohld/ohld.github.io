@@ -1,6 +1,7 @@
 import { BackButton } from '../components/BackButton'
 import { Footer } from '../components/Footer'
 import { absoluteUrl } from '../site'
+import { buildArticleStructuredData, htmlToPlainText } from '../structuredData'
 import { useDocumentMeta } from '../useDocumentMeta'
 
 const ARTICLE_HTML = `
@@ -361,10 +362,30 @@ const ARTICLE_CSS = `
 `
 
 export function MarkdownVsHtml() {
+  const canonical = absoluteUrl('/articles/markdown-vs-html/')
+  const description = 'Почему HTML побеждает markdown как формат вывода для AI-агентов. Плотность инфы, читаемость, шеринг, интерактив. С примерами промптов и реальными кейсами.'
+  const title = 'Markdown мёртв — да здравствует HTML | Даниил Охлопков'
+  const tags = ['AI Agents', 'HTML', 'Claude Code']
+
   useDocumentMeta({
-    title: 'Markdown мёртв — да здравствует HTML | Даниил Охлопков',
-    description: 'Почему HTML побеждает markdown как формат вывода для AI-агентов. Плотность инфы, читаемость, шеринг, интерактив. С примерами промптов и реальными кейсами.',
-    canonical: absoluteUrl('/articles/markdown-vs-html/'),
+    title,
+    description,
+    canonical,
+    type: 'article',
+    publishedTime: '2026-05-09',
+    modifiedTime: '2026-05-10',
+    tags,
+    section: 'Статьи',
+    jsonLd: buildArticleStructuredData({
+      title,
+      description,
+      canonical,
+      publishedAt: '2026-05-09',
+      updatedAt: '2026-05-10',
+      tags,
+      section: 'Статьи',
+      bodyText: htmlToPlainText(ARTICLE_HTML),
+    }),
   })
 
   return (
@@ -377,7 +398,7 @@ export function MarkdownVsHtml() {
           Из курса · перевод поста Tariq из команды Claude Code, с моими примерами
         </p>
       </div>
-      <article className="mvh-page" dangerouslySetInnerHTML={{ __html: ARTICLE_HTML }} />
+      <article id="article-content" className="mvh-page" dangerouslySetInnerHTML={{ __html: ARTICLE_HTML }} />
       <Footer />
     </div>
   )

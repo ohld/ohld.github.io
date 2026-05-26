@@ -278,6 +278,11 @@ const ROUTES = [
     slug: 'articles-ai-tools-for-designers-design-engineering-agents',
     title: 'AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code',
     description: 'Разбор стрима про design engineering: как дизайнерам работать с AI-агентами, почему появляется AI-slop, зачем нужны design tokens, Paper, Mobbin MCP и хороший контекст для Codex/Claude Code.',
+    publishedAt: '2026-05-25',
+    updatedAt: '2026-05-25',
+    tags: ['AI Agents', 'Design Engineering', 'Frontend'],
+    section: 'Статьи',
+    image: 'https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg',
   },
   {
     path: '/private-channel',
@@ -291,6 +296,10 @@ const ROUTES = [
     slug: 'markdown-vs-html',
     title: 'Markdown мёртв — да здравствует HTML | Даниил Охлопков',
     description: 'Даниил Охлопков — почему HTML побеждает markdown как формат вывода для AI-агентов. Плотность инфы, читаемость, шеринг, интерактив. С примерами промптов и реальными кейсами.',
+    publishedAt: '2026-05-09',
+    updatedAt: '2026-05-10',
+    tags: ['AI Agents', 'HTML', 'Claude Code'],
+    section: 'Статьи',
   },
   {
     path: '/privacy',
@@ -389,9 +398,75 @@ function stripTags(html = '') {
     .trim()
 }
 
+function markdownToText(markdown = '') {
+  return stripTags(mdToHtml(markdown))
+}
+
+function jsonForHtml(data) {
+  return JSON.stringify(data, null, 2).replace(/</g, '\\u003c')
+}
+
 function absoluteImageUrl(url = '') {
   if (!url) return ''
   return url.startsWith('/') ? `${SITE_URL}${url}` : url
+}
+
+const AUTHOR_SCHEMA = {
+  '@type': 'Person',
+  name: 'Даниил Охлопков',
+  alternateName: 'Daniil Okhlopkov',
+  url: `${SITE_URL}/`,
+}
+
+function isArticleRoute(route) {
+  return route.kind === 'generated-blog-post'
+    || route.kind === 'article-page'
+    || route.slug === 'markdown-vs-html'
+    || route.slug === 'articles-ai-tools-for-designers-design-engineering-agents'
+}
+
+function routeArticleText(route) {
+  if (route.bodyHtml) return stripTags(route.bodyHtml)
+  if (route.markdown) return markdownToText(route.markdown)
+  const markdown = getRouteMd(route)
+  return markdown ? markdownToText(markdown) : ''
+}
+
+function articleSchema(route, overrides = {}) {
+  const pageUrl = `${SITE_URL}${route.path}/`
+  const articleUrl = `${pageUrl}#article-content`
+  const tags = (route.tags || overrides.tags || []).filter(Boolean)
+  const text = routeArticleText(route)
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': articleUrl,
+    headline: route.title,
+    description: route.description,
+    datePublished: route.publishedAt || overrides.datePublished,
+    dateModified: route.updatedAt || overrides.dateModified || route.publishedAt || STATIC_UPDATED_AT,
+    author: AUTHOR_SCHEMA,
+    publisher: AUTHOR_SCHEMA,
+    image: [route.image || absoluteImageUrl(route.heroImage) || overrides.image || 'https://github.com/ohld.png'],
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': pageUrl,
+    },
+    url: articleUrl,
+    inLanguage: route.lang || 'ru',
+    keywords: tags,
+    articleSection: route.section || overrides.section,
+    about: tags.map((name) => ({ '@type': 'Thing', name })),
+    text,
+    articleBody: text,
+    ...overrides,
+  }
+  for (const [key, value] of Object.entries(schema)) {
+    if (value === undefined || value === '' || (Array.isArray(value) && value.length === 0)) {
+      delete schema[key]
+    }
+  }
+  return schema
 }
 
 // Inline regex md→html: only what our templates use (headings, lists,
@@ -504,17 +579,18 @@ function mdToHtml(md) {
   return out.join('\n')
 }
 
-function buildFallback(title, mdBody) {
+function buildFallback(title, mdBody, withArticleContentId = false) {
   const article = mdToHtml(mdBody)
   const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
   const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
-  return `<header><h1>${escape(title)}</h1></header><article>${article}</article><nav>${nav}</nav><footer>${socials}</footer>`
+  const articleId = withArticleContentId ? ' id="article-content"' : ''
+  return `<header><h1>${escape(title)}</h1></header><article${articleId}>${article}</article><nav>${nav}</nav><footer>${socials}</footer>`
 }
 
 function buildArticleFallback(route) {
   const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
   const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
-  return `<article data-article-engine="article">
+  return `<article id="article-content" data-article-engine="article">
     <header>
       <h1>${escape(route.title)}</h1>
       ${route.description ? `<p>${escape(route.description)}</p>` : ''}
@@ -528,7 +604,7 @@ function buildGeneratedBlogFallback(route) {
   const article = mdToHtml(route.markdown || '')
   const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
   const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
-  return `<article data-article-engine="article">
+  return `<article id="article-content" data-article-engine="article">
     <header>
       <h1>${escape(route.title)}</h1>
       ${route.description ? `<p>${escape(route.description)}</p>` : ''}
@@ -552,18 +628,7 @@ function getRouteMd(route) {
 }
 
 const SCHEMA_BY_SLUG = {
-  'markdown-vs-html': (r) => ({
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: 'Markdown мёртв — да здравствует HTML',
-    description: r.description,
-    datePublished: '2026-05-09',
-    dateModified: '2026-05-10',
-    author: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    image: 'https://github.com/ohld.png',
-    mainEntityOfPage: `${SITE_URL}/articles/markdown-vs-html/`,
-    inLanguage: 'ru',
-  }),
+  'markdown-vs-html': (r) => articleSchema(r),
   about: () => ({
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
@@ -617,18 +682,7 @@ const SCHEMA_BY_SLUG = {
     about: ['AI agents', 'Claude Code', 'Codex', 'MCP', 'Telegram'],
     inLanguage: 'en',
   }),
-  'articles-ai-tools-for-designers-design-engineering-agents': (r) => ({
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: r.title,
-    description: r.description,
-    datePublished: '2026-05-25',
-    dateModified: '2026-05-25',
-    author: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    publisher: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    image: 'https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg',
-    mainEntityOfPage: `${SITE_URL}/articles/ai-tools-for-designers-design-engineering-agents/`,
-    inLanguage: 'ru',
+  'articles-ai-tools-for-designers-design-engineering-agents': (r) => articleSchema(r, {
     video: {
       '@type': 'VideoObject',
       name: 'ИИ не вывозит норм дизайн или это skill issue? | Подкаст «Мой AI сетап»',
@@ -641,36 +695,18 @@ const SCHEMA_BY_SLUG = {
 }
 
 function generatedBlogPostSchema(route) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: route.title,
-    description: route.description,
-    datePublished: route.publishedAt,
-    dateModified: route.updatedAt || STATIC_UPDATED_DATE,
-    author: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    publisher: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    image: 'https://github.com/ohld.png',
-    mainEntityOfPage: `${SITE_URL}${route.path}/`,
-    inLanguage: 'ru',
+  return articleSchema(route, {
     keywords: [route.primaryKeyword, ...(route.secondaryKeywords || [])].filter(Boolean),
-  }
+    about: (route.tags || []).map((name) => ({ '@type': 'Thing', name })),
+    articleSection: 'Блог',
+  })
 }
 
 function articlePageSchema(route) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: route.title,
-    description: route.description,
-    datePublished: route.publishedAt,
+  return articleSchema(route, {
     dateModified: route.updatedAt ? `${route.updatedAt}T00:00:00+03:00` : STATIC_UPDATED_AT,
-    author: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    publisher: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    image: route.image || 'https://github.com/ohld.png',
-    mainEntityOfPage: `${SITE_URL}${route.path}/`,
-    inLanguage: route.lang || 'ru',
-  }
+    articleSection: route.lang === 'en' ? 'Blog' : 'Блог',
+  })
 }
 
 const BREADCRUMBS_BY_SLUG = {
@@ -705,6 +741,27 @@ function buildBreadcrumb(route) {
   }
 }
 
+function isoDateTime(value) {
+  if (!value) return ''
+  if (value.includes('T')) return value
+  return `${value}T00:00:00+03:00`
+}
+
+function buildArticleOgMeta(route) {
+  const tags = (route.tags || []).filter(Boolean)
+  const published = isoDateTime(route.publishedAt)
+  const modified = isoDateTime(route.updatedAt || route.publishedAt)
+  const section = route.section || (route.lang === 'en' ? 'Blog' : 'Блог')
+  const rows = [
+    published && `<meta property="article:published_time" content="${escape(published)}" />`,
+    modified && `<meta property="article:modified_time" content="${escape(modified)}" />`,
+    '<meta property="article:author" content="Даниил Охлопков" />',
+    section && `<meta property="article:section" content="${escape(section)}" />`,
+    ...tags.map((tag) => `<meta property="article:tag" content="${escape(tag)}" />`),
+  ].filter(Boolean)
+  return rows.map((row) => `  ${row}`).join('\n')
+}
+
 function rewrite(html, route) {
   const { path: routePath, slug, title, description } = route
   // Trailing slash = canonical form on GitHub Pages (served as 200 directly;
@@ -714,13 +771,15 @@ function rewrite(html, route) {
   const isNoindex = route.robots?.startsWith('noindex')
   const lang = route.lang || 'ru'
   const ogLocale = lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'ru_RU'
+  const articleRoute = isArticleRoute(route)
+  const ogType = articleRoute ? 'article' : 'website'
   const image = route.image || 'https://github.com/ohld.png'
   const mdBody = getRouteMd(route)
   const fallback = route.kind === 'article-page'
     ? buildArticleFallback(route)
     : route.kind === 'generated-blog-post'
       ? buildGeneratedBlogFallback(route)
-      : mdBody ? buildFallback(title, mdBody) : buildFallback(title, '')
+      : mdBody ? buildFallback(title, mdBody, articleRoute) : buildFallback(title, '', articleRoute)
   let out = applySiteUrl(html)
     .replace(/<html lang="[^"]+">/, `<html lang="${lang}">`)
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(title)}</title>`)
@@ -728,6 +787,7 @@ function rewrite(html, route) {
     .replace(/(<meta name="robots" content=")[^"]*(")/, `$1${route.robots || 'index, follow'}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${escape(title)}$2`)
     .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${escape(description)}$2`)
+    .replace(/(<meta property="og:type" content=")[^"]*(")/, `$1${ogType}$2`)
     .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${url}$2`)
     .replace(/(<meta property="og:locale" content=")[^"]*(")/, `$1${ogLocale}$2`)
     .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${image}$2`)
@@ -764,15 +824,18 @@ function rewrite(html, route) {
       }
     : SCHEMA_BY_SLUG[slug]?.(route)
   if (extraSchema) {
-    const extraJson = JSON.stringify(extraSchema, null, 2)
-    const block = `<script type="application/ld+json">\n${extraJson}\n</script>\n  </head>`
+    const extraJson = jsonForHtml(extraSchema)
+    const block = `<script id="page-structured-data" type="application/ld+json">\n${extraJson}\n</script>\n  </head>`
     out = out.replace('</head>', block)
   }
   const crumb = buildBreadcrumb(route)
   if (crumb) {
-    const crumbJson = JSON.stringify(crumb, null, 2)
-    const block = `<script type="application/ld+json">\n${crumbJson}\n</script>\n  </head>`
+    const crumbJson = jsonForHtml(crumb)
+    const block = `<script id="breadcrumb-structured-data" type="application/ld+json">\n${crumbJson}\n</script>\n  </head>`
     out = out.replace('</head>', block)
+  }
+  if (articleRoute) {
+    out = out.replace('</head>', `${buildArticleOgMeta(route)}\n  </head>`)
   }
   return out
 }

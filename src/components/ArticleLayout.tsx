@@ -3,6 +3,7 @@ import { BackButton } from './BackButton'
 import { Footer } from './Footer'
 import { enhanceCodeBlocks } from '../codeBlocks'
 import { absoluteUrl } from '../site'
+import { buildArticleStructuredData, htmlToPlainText } from '../structuredData'
 import { useDocumentMeta } from '../useDocumentMeta'
 
 interface ArticleLayoutProps {
@@ -11,12 +12,18 @@ interface ArticleLayoutProps {
   canonical: string
   lang?: string
   date: string
+  publishedAt?: string
+  updatedAt?: string
   readingTime: string
   backTo?: string
   heroImage?: string
   heroAlt?: string
+  schemaImage?: string
   alternates?: Record<string, string>
   bodyHtml?: string
+  bodyText?: string
+  tags?: string[]
+  section?: string
   children?: ReactNode
 }
 
@@ -26,20 +33,48 @@ export function ArticleLayout({
   canonical,
   lang = 'ru',
   date,
+  publishedAt,
+  updatedAt,
   readingTime,
   backTo,
   heroImage,
   heroAlt,
+  schemaImage,
   alternates,
   bodyHtml,
+  bodyText,
+  tags = [],
+  section = lang === 'en' ? 'Blog' : 'Блог',
   children,
 }: ArticleLayoutProps) {
+  const canonicalUrl = absoluteUrl(canonical)
+  const structuredImage = schemaImage || heroImage
+  const articleText = bodyText || (bodyHtml ? htmlToPlainText(bodyHtml) : '')
+  const jsonLd = buildArticleStructuredData({
+    title,
+    description,
+    canonical: canonicalUrl,
+    lang,
+    publishedAt: publishedAt || date,
+    updatedAt: updatedAt || date,
+    image: structuredImage ? absoluteUrl(structuredImage) : undefined,
+    tags,
+    section,
+    bodyText: articleText,
+  })
+
   useDocumentMeta({
     title: `${title} — Даниил Охлопков`,
     description,
-    canonical: absoluteUrl(canonical),
+    canonical: canonicalUrl,
     lang,
-    image: heroImage ? absoluteUrl(heroImage) : undefined,
+    image: structuredImage ? absoluteUrl(structuredImage) : undefined,
+    type: 'article',
+    publishedTime: publishedAt || date,
+    modifiedTime: updatedAt || date,
+    tags,
+    section,
+    jsonLd,
     alternates: alternates
       ? Object.fromEntries(Object.entries(alternates).map(([key, href]) => [key, absoluteUrl(href)]))
       : undefined,
@@ -51,7 +86,7 @@ export function ArticleLayout({
 
   return (
     <div className="page">
-      <article className="blog-article generated-blog-post article-engine" data-article-engine="article">
+      <article id="article-content" className="blog-article generated-blog-post article-engine" data-article-engine="article">
         <div className="subpage-header">
           <BackButton to={backTo} />
           <div className="blog-article-meta">

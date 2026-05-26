@@ -12,6 +12,8 @@ export function ImportedArticle() {
 
   if (!article) return <Navigate to="/" replace />
 
+  const bodyHtml = getImportedArticleBody(article.path)
+
   return (
     <ArticleLayout
       title={article.title}
@@ -19,14 +21,18 @@ export function ImportedArticle() {
       canonical={article.path}
       lang={article.lang}
       date={article.updatedAt}
+      publishedAt={article.publishedAt}
+      updatedAt={article.updatedAt}
       readingTime={article.readingTime}
       backTo={article.lang === 'en' ? '/en/blog/' : '/blog/'}
       heroImage={article.heroImage}
+      tags={article.tags}
+      section={article.lang === 'en' ? 'Blog' : 'Блог'}
       alternates={importedArticleAlternates(article.path) || {
         [article.lang]: article.path,
         'x-default': article.path,
       }}
-      bodyHtml={getImportedArticleBody(article.path)}
+      bodyHtml={bodyHtml}
     />
   )
 }

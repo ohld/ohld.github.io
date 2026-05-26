@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { EnglishHome } from './pages/EnglishHome'
@@ -79,9 +79,16 @@ function usePreloadChunks() {
 function usePageTracking() {
   const location = useLocation()
   const getScrollDepth = useMemo(() => useScrollDepth(), [location.pathname])
+  const didSeeInitialRoute = useRef(false)
 
   useEffect(() => {
-    trackPageView(location.pathname)
+    const isInitialRoute = !didSeeInitialRoute.current
+    didSeeInitialRoute.current = true
+    let pageViewFrame: number | null = null
+
+    if (!isInitialRoute) {
+      pageViewFrame = window.requestAnimationFrame(() => trackPageView(location.pathname))
+    }
 
     const trackBotPageView = () => {
       const initData = window.Telegram?.WebApp?.initData
@@ -99,6 +106,7 @@ function usePageTracking() {
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('telegram-webapp-ready', onTelegramReady)
     return () => {
+      if (pageViewFrame !== null) window.cancelAnimationFrame(pageViewFrame)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('telegram-webapp-ready', onTelegramReady)
     }

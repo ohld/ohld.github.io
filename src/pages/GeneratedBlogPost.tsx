@@ -2,6 +2,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import { ArticleLayout } from '../components/ArticleLayout'
 import { getGeneratedBlogPost } from '../generatedBlogPosts'
 import { markdownToHtml } from '../markdown'
+import { markdownToPlainText } from '../structuredData'
 
 export function GeneratedBlogPost() {
   const { slug } = useParams()
@@ -16,6 +17,8 @@ export function GeneratedBlogPost() {
       canonical={`/blog/${post.slug}/`}
       lang="ru"
       date={post.updatedAt}
+      publishedAt={post.publishedAt}
+      updatedAt={post.updatedAt}
       readingTime={post.readingTime}
       alternates={{
         ru: `/blog/${post.slug}/`,
@@ -23,6 +26,9 @@ export function GeneratedBlogPost() {
       }}
       heroImage={post.coverImage}
       heroAlt={post.coverAlt}
+      tags={post.tags}
+      section="Блог"
+      bodyText={markdownToPlainText(post.body)}
       bodyHtml={markdownToHtml(post.body)}
     />
   )

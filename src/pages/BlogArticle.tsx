@@ -30,7 +30,12 @@ export function BlogArticle() {
       description={article.description}
       canonical={articlePath(article.slug)}
       date={article.updatedAt}
+      publishedAt={article.publishedAt}
+      updatedAt={article.updatedAt}
       readingTime={article.readingTime}
+      schemaImage={article.youtube?.thumbnail}
+      tags={article.tags}
+      section="Статьи"
       alternates={{
         ru: articlePath(article.slug),
         'x-default': articlePath(article.slug),

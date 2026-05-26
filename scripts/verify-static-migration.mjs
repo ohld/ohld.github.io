@@ -396,6 +396,16 @@ function verifyAnalyticsSnippet(html, path) {
   assert(html.includes(`https://mc.yandex.ru/watch/${yandexMetrikaId}`), `${path}: missing Yandex Metrika noscript pixel`)
 }
 
+function verifyArticleContentAnalyticsMarkup(html, path) {
+  assert(readMeta(html, 'og:type') === 'article', `${path}: og:type should be article`)
+  assert(readMeta(html, 'article:author') === 'Даниил Охлопков', `${path}: missing article author meta`)
+  assert(html.includes('id="page-structured-data"'), `${path}: missing page JSON-LD script id`)
+  assert(html.includes(`"@id": "${canonicalUrl(path)}#article-content"`), `${path}: missing article JSON-LD @id`)
+  assert(html.includes(`"url": "${canonicalUrl(path)}#article-content"`), `${path}: missing article JSON-LD content URL`)
+  assert(html.includes('"text":'), `${path}: missing article JSON-LD text`)
+  assert(html.includes('id="article-content"'), `${path}: missing article content anchor`)
+}
+
 async function verifyRootVerificationMeta() {
   const res = await fetchManual('/')
   assert(res.status === 200, `/: expected 200 for verification meta check, got ${res.status}`)
@@ -415,6 +425,7 @@ async function verifyImportedArticle({ path, title }) {
   assert(readMeta(html, 'canonical') === canonicalUrl(path), `${path}: canonical mismatch`)
   assert(readMeta(html, 'robots') === 'index, follow', `${path}: robots mismatch`)
   assert(html.includes('data-article-engine="article"'), `${path}: missing common article engine marker`)
+  verifyArticleContentAnalyticsMarkup(html, path)
   assert(!html.includes('legacy-'), `${path}: page leaked old renderer class/name`)
   assert(!html.includes('Static migration update:'), `${path}: public page leaked migration update note`)
   assert(!html.includes('Original Ghost modified date'), `${path}: public page leaked Ghost modified note`)
@@ -485,6 +496,7 @@ async function verifyBlogArticle({ path, thumbnail, youtubeUrl, requiredText }) 
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
   assert(html.includes('"@type": "BlogPosting"'), `${path}: missing BlogPosting JSON-LD`)
+  verifyArticleContentAnalyticsMarkup(html, path)
   assert(html.includes('"@type": "VideoObject"'), `${path}: missing VideoObject JSON-LD`)
   assert(html.includes('"dateModified": "2026-05-25"'), `${path}: missing article dateModified`)
   assert(html.includes(thumbnail), `${path}: missing YouTube thumbnail`)
@@ -502,6 +514,7 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
   assert(html.includes('"@type": "BlogPosting"'), `${path}: missing BlogPosting JSON-LD`)
+  verifyArticleContentAnalyticsMarkup(html, path)
   assert(!html.includes('"isBasedOn":'), `${path}: should not expose source Telegram URL in JSON-LD`)
   assert(!html.includes('Оригинальный Telegram-пост'), `${path}: should not label Telegram text as original post`)
   assert(!html.includes('Открыть пост в Telegram'), `${path}: should not link to source Telegram post`)

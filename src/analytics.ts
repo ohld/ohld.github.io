@@ -20,7 +20,13 @@ function send(event: string, params?: Record<string, string | number>) {
 
 /** Track SPA page navigation */
 export function trackPageView(path: string) {
-  send('page_view', { page_path: path, page_title: document.title })
+  if (window.gtag) {
+    window.gtag('event', 'page_view', {
+      page_path: path,
+      page_location: location.href,
+      page_title: document.title,
+    })
+  }
   if (window.ym) {
     window.ym(YM_COUNTER, 'hit', location.href, { title: document.title, referer: document.referrer })
   }
