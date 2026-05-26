@@ -1,6 +1,6 @@
 import { BackButton } from '../components/BackButton'
+import { BlogCard } from '../components/BlogCard'
 import { Footer } from '../components/Footer'
-import { ArrowRightIcon } from '../components/Icons'
 import { englishBlogItems } from '../blog'
 import { absoluteUrl } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
@@ -30,24 +30,7 @@ export function EnglishBlogIndex() {
 
       <main className="blog-list" aria-label="English blog articles">
         {englishBlogItems.map((article) => (
-          <a className={`blog-card ${article.thumbnail ? 'blog-card-with-thumb' : 'blog-card-no-thumb'}`} href={article.path} key={article.path}>
-            {article.thumbnail && (
-              <img className="blog-card-thumb" src={article.thumbnail} alt="" loading="lazy" />
-            )}
-            <div className="blog-card-body">
-              <div className="content-card-meta">
-                <span>{article.publishedAt}</span>
-                <span className="content-card-dot" />
-                <span>{article.readingTime}</span>
-              </div>
-              <h2>{article.title}</h2>
-              <p>{article.description}</p>
-              <div className="blog-card-tags" aria-label="Tags">
-                {article.tags.map((tag) => <span key={tag}>{tag}</span>)}
-              </div>
-              <span className="blog-card-link">Read <ArrowRightIcon size={16} /></span>
-            </div>
-          </a>
+          <BlogCard article={article} ctaLabel="Read" tagsLabel="Tags" key={article.path} />
         ))}
       </main>
 

@@ -11,6 +11,7 @@ interface BlogListItem {
   publishedAt: string
   readingTime: string
   tags: string[]
+  thumbnail?: string
 }
 
 export interface GeneratedBlogPost {
@@ -21,6 +22,8 @@ export interface GeneratedBlogPost {
   updatedAt: string
   readingTime: string
   tags: string[]
+  coverImage?: string
+  coverAlt?: string
   sourceTelegramId: string
   primaryKeyword: string
   secondaryKeywords: string[]
@@ -59,6 +62,8 @@ function parseFrontmatter(raw: string): GeneratedBlogPost {
     updatedAt: meta.updatedAt,
     readingTime: meta.readingTime,
     tags,
+    coverImage: meta.coverImage,
+    coverAlt: meta.coverAlt,
     sourceTelegramId: meta.sourceTelegramId,
     primaryKeyword: meta.primaryKeyword,
     secondaryKeywords,
@@ -81,6 +86,7 @@ export const generatedBlogItems: BlogListItem[] = generatedBlogPosts.map((post) 
   publishedAt: post.publishedAt,
   readingTime: post.readingTime,
   tags: post.tags,
+  thumbnail: post.coverImage,
 }))
 
 export function getGeneratedBlogPost(slug: string | undefined) {

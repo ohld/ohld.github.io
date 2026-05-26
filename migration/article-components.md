@@ -26,7 +26,8 @@ This is the first formatting contract for future `/blog/` posts and
 1. `<article>` with one `<h1>`.
 2. Short dek/description under the title.
 3. `Last updated` date as visible text and `dateModified` in JSON-LD.
-4. TL;DR or "Коротко" block for answer-engine style extraction.
+4. Short abstract/dek for answer-engine style extraction. Do not label it
+   "Коротко" or "TL;DR" unless the label is part of the original post.
 5. Main body with semantic `<h2>`/`<h3>` sections.
 6. Source pack section: YouTube, Telegram posts, transcripts, docs, tools.
 7. Optional community insights section from Telegram chat discussion.
@@ -51,6 +52,11 @@ SEO work should happen around the post:
 - internal links;
 - FAQ/AEO blocks;
 - `Community insights` section.
+
+If the original Telegram post contains a useful image or visual, bring it into
+the site article. Use it as the cover/OG image when it can sell the article in
+cards and social previews; otherwise place it near the section it explains.
+Do not leave Telegram visuals behind during adaptation.
 
 `Community insights` can synthesize what people discussed in Telegram chats
 after the post was published. That section can be rewritten more aggressively in
@@ -88,6 +94,12 @@ Sources:
 
 - https://help.youtube.com/support/youtube/bin/answer.py?answer=132596&hl=en
 - https://support.google.com/youtube/answer/2991785?hl=en
+
+## X/Twitter Links
+
+Do not rely on official X/Twitter embeds for article layout. The widget often
+does not render reliably under current platform/CSP constraints and degrades
+into raw text. Use a normal contextual hyperlink inside the paragraph instead.
 
 ## Core Blocks
 

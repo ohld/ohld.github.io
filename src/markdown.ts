@@ -38,8 +38,7 @@ export function markdownToHtml(markdown: string) {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n')
   const out: string[] = []
   let paragraph: string[] = []
-  let inList = false
-  let listTag: 'ul' | 'ol' = 'ul'
+  const listStack: Array<{ tag: 'ul' | 'ol', indent: number, openLi: boolean }> = []
   let inQuote = false
   let inCode = false
   let codeLines: string[] = []
@@ -49,18 +48,40 @@ export function markdownToHtml(markdown: string) {
     out.push(`<p>${inlineFormat(paragraph.join(' '))}</p>`)
     paragraph = []
   }
-  const closeList = () => {
-    if (!inList) return
-    out.push(`</${listTag}>`)
-    inList = false
+  const closeListLevel = () => {
+    const current = listStack.pop()
+    if (!current) return
+    if (current.openLi) out.push('</li>')
+    out.push(`</${current.tag}>`)
   }
-  const openList = (tag: 'ul' | 'ol') => {
-    if (inList && listTag !== tag) closeList()
-    if (!inList) {
-      listTag = tag
-      out.push(`<${tag}>`)
-      inList = true
+  const closeList = () => {
+    while (listStack.length) closeListLevel()
+  }
+  const writeListItem = (tag: 'ul' | 'ol', indent: number, content: string) => {
+    while (listStack.length && indent < listStack[listStack.length - 1].indent) {
+      closeListLevel()
     }
+
+    let current = listStack[listStack.length - 1]
+    if (current && indent === current.indent && current.tag !== tag) {
+      closeListLevel()
+      current = listStack[listStack.length - 1]
+    }
+    if (!current || indent > current.indent || current.tag !== tag) {
+      if (current && current.openLi && indent <= current.indent) {
+        out.push('</li>')
+        current.openLi = false
+      }
+      out.push(`<${tag}>`)
+      listStack.push({ tag, indent, openLi: false })
+    } else if (current.openLi) {
+      out.push('</li>')
+      current.openLi = false
+    }
+
+    const active = listStack[listStack.length - 1]
+    out.push(`<li>${inlineFormat(content)}`)
+    active.openLi = true
   }
   const closeQuote = () => {
     if (!inQuote) return
@@ -149,18 +170,18 @@ export function markdownToHtml(markdown: string) {
       out.push(`<h1>${inlineFormat(line.slice(2))}</h1>`)
       continue
     }
-    if (line.startsWith('- ')) {
+    const unordered = raw.match(/^(\s*)([-*•▪])\s+(.+)$/)
+    if (unordered) {
       flushParagraph()
       closeQuote()
-      openList('ul')
-      out.push(`<li>${inlineFormat(line.slice(2))}</li>`)
+      writeListItem('ul', unordered[1].replace(/\t/g, '  ').length, unordered[3])
       continue
     }
-    if (/^\d+\.\s+/.test(line)) {
+    const ordered = raw.match(/^(\s*)\d+[.)]\s+(.+)$/)
+    if (ordered) {
       flushParagraph()
       closeQuote()
-      openList('ol')
-      out.push(`<li>${inlineFormat(line.replace(/^\d+\.\s+/, ''))}</li>`)
+      writeListItem('ol', ordered[1].replace(/\t/g, '  ').length, ordered[2])
       continue
     }
     if (line.startsWith('> ')) {

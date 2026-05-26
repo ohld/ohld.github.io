@@ -47,7 +47,7 @@ const ARTICLE_HTML = `
 
 <ul class="mvh-bullets">
   <li>Структура документа — заголовки, форматирование (как markdown, только богаче)</li>
-  <li>Таблицы — нормальные, с merged cells и стилями, а не убогий markdown table</li>
+  <li>Таблицы — нормальные, с merged cells и стилями вместо убогого markdown table</li>
   <li>Дизайн — через CSS</li>
   <li>Иллюстрации и диаграммы — через SVG</li>
   <li>Интерактив — через HTML + JS + CSS</li>
@@ -56,7 +56,7 @@ const ARTICLE_HTML = `
   <li>Пространственные данные — absolute positioning, canvas</li>
 </ul>
 
-<p>Когда модель лишена этого арсенала, она занимается <em>странным</em> — рисует ASCII-арт или, мой любимый паттерн, пытается передать цвет юникод-символами разной плотности (▒▓█). Это уже карго-культ markdown'а, а не его сила.</p>
+<p>Когда модель лишена этого арсенала, она занимается <em>странным</em> — рисует ASCII-арт или, мой любимый паттерн, пытается передать цвет юникод-символами разной плотности (▒▓█). Это уже карго-культ markdown'а; сила формата тут теряется.</p>
 
 <div class="mvh-diagram">
   <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
@@ -91,7 +91,7 @@ const ARTICLE_HTML = `
 
 <p>Claude пишет всё более длинные планы и спецификации. На практике markdown-файл больше 100 строк я не дочитываю до конца, и команду тоже не заставлю. HTML же можно нормально структурировать визуально — табы, навигация, sticky оглавление, mobile-responsive вёрстка под телефон vs десктоп.</p>
 
-<p><strong>Личный пример.</strong> Я делаю research-отчёты по on-chain-аналитике TON — на 200-500 строк, со встроенными SQL-запросами, цифрами, ссылками на Dune-дашборды. В markdown'е их читают по диагонали: DE-команда пробежалась глазами, внешние партнёры просто не открывают. С тем же контентом в HTML с SVG-диаграммами потоков и кликабельными ссылками на дашборды — open rate был бы радикально выше. Это не про красоту, это про то, что без визуальной структуры человек физически не дочитывает до выводов.</p>
+<p><strong>Личный пример.</strong> Я делаю research-отчёты по on-chain-аналитике TON — на 200-500 строк, со встроенными SQL-запросами, цифрами, ссылками на Dune-дашборды. В markdown'е их читают по диагонали: DE-команда пробежалась глазами, внешние партнёры просто не открывают. С тем же контентом в HTML с SVG-диаграммами потоков и кликабельными ссылками на дашборды open rate был бы радикально выше: визуальная структура помогает физически дочитать до выводов.</p>
 
 <h3>3. Лёгкость шеринга — главный аргумент</h3>
 
@@ -112,13 +112,13 @@ const ARTICLE_HTML = `
 
 <h3>4. Двусторонний интерактив</h3>
 
-<p>Это та часть, которая для меня была откровением. HTML может не просто <em>показывать</em> — он может <em>принимать ввод</em>. Слайдеры для подбора параметров анимации. Drag-and-drop для перетаскивания тикетов между колонками. Live-preview шаблона при редактировании промпта.</p>
+<p>Это та часть, которая для меня была откровением. HTML может <em>показывать</em> и <em>принимать ввод</em>. Слайдеры для подбора параметров анимации. Drag-and-drop для перетаскивания тикетов между колонками. Live-preview шаблона при редактировании промпта.</p>
 
-<p>Финальный ход — кнопка <code>Copy as JSON</code> или <code>Copy as Prompt</code>, которая собирает результат твоих манипуляций обратно в текст, который ты вставляешь в Claude Code. Получается <strong>одноразовый редактор под конкретную задачу</strong> — не продукт, не reusable tool, а артефакт на 30 минут.</p>
+<p>Финальный ход — кнопка <code>Copy as JSON</code> или <code>Copy as Prompt</code>, которая собирает результат твоих манипуляций обратно в текст, который ты вставляешь в Claude Code. Получается <strong>одноразовый редактор под конкретную задачу</strong>: артефакт на 30 минут, который не обязан становиться продуктом или reusable tool.</p>
 
 <h3>5. Контекст — суперсила Claude Code</h3>
 
-<p>Почему именно Claude Code, а не claude.ai или Claude Design? Потому что у Claude Code есть всё:</p>
+<p>Почему именно Claude Code? Потому что у него есть всё:</p>
 
 <ul class="mvh-bullets">
   <li>Файловая система — может прочитать твой codebase, ai-docs, заметки</li>
@@ -131,7 +131,7 @@ const ARTICLE_HTML = `
 
 <h3>6. Это просто кайфово</h3>
 
-<p>Делать HTML-документы с Claude — это весело. Чувствуешь, что ты создатель, а не просто заказчик. И этого, в общем, уже достаточно как причины.</p>
+<p>Делать HTML-документы с Claude — это весело. Чувствуешь себя создателем, который участвует в форме результата. И этого, в общем, уже достаточно как причины.</p>
 
 <h2 id="sravnenie">Сравнение в одной таблице</h2>
 
@@ -180,7 +180,7 @@ const ARTICLE_HTML = `
 
 <h3>Дизайн и прототипы</h3>
 
-<p>HTML невероятно выразителен для дизайна — даже если финальный таргет не веб. Claude может набросать дизайн в HTML, а потом перевести его в React/Swift/whatever. И главное — можно прототипировать <em>интеракции</em>, а не только статику.</p>
+<p>HTML невероятно выразителен для дизайна — даже если финальный таргет не веб. Claude может набросать дизайн в HTML, а потом перевести его в React/Swift/whatever. И главное — можно прототипировать <em>интеракции</em> вместе со статикой.</p>
 
 <div class="mvh-prompt-box">
   <div class="mvh-prompt-label">Промпт-пример</div>
@@ -255,7 +255,7 @@ const ARTICLE_HTML = `
 
 <p>Главное — <strong>не создавай <code>/html</code> skill</strong>. Не надо. Достаточно просто сказать <em>«сделай HTML-файл»</em> или <em>«сделай HTML-артефакт»</em>. Со временем, может быть, оформишь в скилл — но для начала промпчи from scratch, чтобы прочувствовать паттерн в разных кейсах.</p>
 
-<p>Хитрость не в скилле, а в том, чтобы понять <strong>чего ты хочешь от артефакта</strong> и как ты будешь его использовать.</p>
+<p>Хитрость начинается с понимания, <strong>чего ты хочешь от артефакта</strong> и как ты будешь его использовать.</p>
 
 <div class="mvh-callout">
   <div class="mvh-callout-title">Где смотреть готовые HTML</div>
@@ -318,7 +318,7 @@ const ARTICLE_CSS = `
 .mvh-page a:hover { text-decoration-thickness: 2px; }
 .mvh-page .mvh-meta { color: var(--mvh-muted); font-size: 14px; margin-bottom: 32px; border-bottom: 1px solid var(--mvh-border); padding-bottom: 16px; }
 .mvh-page .mvh-meta a { color: var(--mvh-muted); }
-.mvh-page blockquote { margin: 20px 0; padding: 14px 20px; background: var(--mvh-soft); border-left: 4px solid var(--mvh-accent); font-style: italic; color: var(--mvh-muted); }
+.mvh-page blockquote { margin: 20px 0; padding: 14px 20px; background: var(--mvh-soft); border: 1px solid var(--mvh-border); border-radius: 6px; font-style: italic; color: var(--mvh-muted); }
 .mvh-page blockquote p { margin: 4px 0; }
 .mvh-page code { font-family: "SF Mono", "Menlo", "Consolas", monospace; font-size: 14px; background: var(--mvh-soft); padding: 2px 6px; border-radius: 3px; }
 .mvh-page table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 15px; }
@@ -328,8 +328,8 @@ const ARTICLE_CSS = `
 .mvh-page .mvh-callout-title { font-weight: 600; margin-bottom: 6px; color: var(--mvh-accent); }
 .mvh-page .mvh-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
 .mvh-page .mvh-pros, .mvh-page .mvh-cons { padding: 16px 20px; border-radius: 6px; background: var(--mvh-soft); }
-.mvh-page .mvh-pros { border-left: 4px solid var(--mvh-pro); }
-.mvh-page .mvh-cons { border-left: 4px solid var(--mvh-con); }
+.mvh-page .mvh-pros { border: 1px solid rgba(45, 122, 62, 0.26); }
+.mvh-page .mvh-cons { border: 1px solid rgba(176, 58, 46, 0.26); }
 .mvh-page .mvh-pros h4, .mvh-page .mvh-cons h4 { margin: 0 0 10px; font-size: 15px; }
 .mvh-page .mvh-pros h4 { color: var(--mvh-pro); }
 .mvh-page .mvh-cons h4 { color: var(--mvh-con); }

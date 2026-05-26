@@ -20,6 +20,8 @@ const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
 const STATIC_UPDATED_DATE = '2026-05-25'
 const STATIC_UPDATED_AT = `${STATIC_UPDATED_DATE}T00:00:00+03:00`
 const BLOG_POSTS_DIR = path.join('content', 'blog-posts')
+const IMPORTED_ARTICLES_INDEX = path.join('content', 'articles', 'imported-index.json')
+const IMPORTED_ARTICLES_CONTENT = path.join('content', 'articles', 'imported-content.json')
 
 const NAV_LINKS = [
   ['/', 'Главная'],
@@ -68,37 +70,36 @@ function canonicalPathname(pathname) {
   return pathname.endsWith('/') ? pathname : `${pathname}/`
 }
 
-function localizedLegacyPath(pathname, targetLang) {
+function importedArticleAlternates(pathname, lang) {
   const current = canonicalPathname(pathname)
   const pair = LOCALIZED_PAIRS.find(([ru, en]) => ru === current || en === current)
-  if (pair) return targetLang === 'en' ? pair[1] : pair[0]
-  return targetLang === 'en' ? '/en/' : '/'
+  if (!pair) {
+    return {
+      [lang]: `${SITE_URL}${current}`,
+      'x-default': `${SITE_URL}${current}`,
+    }
+  }
+  return {
+    ru: `${SITE_URL}${pair[0]}`,
+    en: `${SITE_URL}${pair[1]}`,
+    'x-default': `${SITE_URL}${current}`,
+  }
 }
 
 const HOME_FALLBACK_MD = `# Даниил Охлопков
 
-> AI-агенты на практике: Codex, Claude Code, MCP, OpenClaw, TON-данные и Telegram-автоматизация.
-
-## Коротко
-
-Это сайт Дана Охлопкова про практические AI-агенты, Claude Code, Codex, MCP, TON-данные и Telegram-автоматизацию. Главная страница — роутер: блог с моими Telegram-постами, статьи и короткий about.
+> Практика [AI-агентов](/topics/ai-agents/): [Codex](/topics/codex/), [Claude Code](/topics/claude-code/), [MCP](/topics/mcp/), [GStack](/topics/gstack/), [OpenClaw](/topics/openclaw/), [TON-данные](/topics/ton-data/) и [Telegram-автоматизация](/topics/telegram-automation/).
 
 ## Разделы
 
-- [Блог](/blog/) — Telegram-посты, превращённые в нормальные страницы.
+- [Блог](/blog/) — записи и рабочие заметки.
+  - [AI-трансформация в компании: общий контекст, skills и GBrain](/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/)
+  - [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
+  - [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
 - [Статьи](/articles/) — гайды, сравнения, туториалы и материалы из собранных источников.
+  - [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/articles/ai-tools-for-designers-design-engineering-agents/)
+  - [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/)
 - [Обо мне](/about/) — бэкграунд, опыт и ссылки.
-
-## Последнее из блога
-
-- [AI-трансформация в компании: общий контекст, skills и GBrain](/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/)
-- [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
-- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
-
-## Статьи
-
-- [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/articles/ai-tools-for-designers-design-engineering-agents/)
-- [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/)
 `
 
 function parseFrontmatter(raw, filename = 'markdown file') {
@@ -135,6 +136,60 @@ function loadGeneratedBlogPosts() {
 }
 
 const GENERATED_BLOG_POSTS = loadGeneratedBlogPosts()
+
+function loadImportedArticleRows() {
+  if (!fs.existsSync(IMPORTED_ARTICLES_INDEX) || !fs.existsSync(IMPORTED_ARTICLES_CONTENT)) return []
+  const index = JSON.parse(fs.readFileSync(IMPORTED_ARTICLES_INDEX, 'utf8'))
+  const content = JSON.parse(fs.readFileSync(IMPORTED_ARTICLES_CONTENT, 'utf8'))
+  const bodyByPath = new Map(content.map((article) => [article.path, article.bodyHtml || '']))
+  return index.map((article) => ({
+    ...article,
+    bodyHtml: bodyByPath.get(article.path) || '',
+  }))
+}
+
+const IMPORTED_ARTICLES = loadImportedArticleRows()
+
+const TOPIC_PAGES = [
+  ['ai-agents', 'AI-агенты', 'Практические материалы про агентные флоу, Claude Code, Codex, skills, ревью и рабочий контекст.'],
+  ['claude-code', 'Claude Code', 'Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code.'],
+  ['codex', 'Codex', 'Переходы между Codex и Claude Code, review loops, desktop app и context hygiene.'],
+  ['mcp', 'MCP', 'MCP-серверы, agent-browser, Telegram/Coolify интеграции и практическое расширение агентных инструментов.'],
+  ['gstack', 'GStack', 'GStack, office-hours, goal loops и HTML-progress как рабочий цикл для AI-агента.'],
+  ['gbrain', 'GBrain', 'GBrain/OpenBrain, retrieval layer, shared context and memory for agents.'],
+  ['ai-coding', 'AI coding', 'Практика coding agents: specs, plan mode, review, context hygiene и переносимость флоу.'],
+  ['ai-transformation', 'AI-трансформация', 'Как компании превращают AI-доступы, skills и общий контекст в рабочую систему.'],
+  ['refactoring', 'Рефакторинг', 'Архитектурные ревью, improve-codebase-architecture и аккуратная докрутка вайбкода.'],
+  ['ai-tools', 'AI-инструменты', 'Инструменты для агентного рабочего флоу: что пробовать, что выкидывать, где реальная польза.'],
+  ['design-engineering', 'Design engineering', 'AI-assisted frontend, Figma-to-code, design tokens, taste и борьба с AI-slop.'],
+  ['html', 'HTML', 'HTML как формат для AI-agent артефактов, статей, компонентов и LLM-readable страниц.'],
+  ['second-brain', 'Second Brain', 'Obsidian, markdown vaults, wiki-ссылки, raw notes и персональный рабочий контекст для агентов.'],
+  ['web-scraping', 'Web scraping', 'Browser automation, agent-browser и новые способы доставать данные из сайтов.'],
+  ['frameworks', 'Фреймворки для агентов', 'Beads, Gastown, first-party tools and the cost of adopting someone else’s agent framework.'],
+  ['workflow', 'Workflow', 'Agent workflows: setup, context, review loops, progress artifacts and daily usage.'],
+  ['community', 'Community', 'Telegram-чаты, обсуждения, community insights and the feedback loop around AI-agent content.'],
+  ['openclaw', 'OpenClaw', 'Заготовка под OpenClaw hub: practical setup, Codex/Hermes сравнения и skills flow.'],
+  ['ton-data', 'TON-данные', 'On-chain analytics, TON research, Dune, EVAA, USDT и AI-ассистенты для анализа данных.'],
+  ['telegram-automation', 'Telegram-автоматизация', 'Telegram bots, Mini Apps, voice workflows, AI-агенты в чатах и автоматизация через Telegram.'],
+]
+
+function topicMarkdown(title, description) {
+  return `${description}
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+`
+}
 
 const ROUTES = [
   {
@@ -188,7 +243,7 @@ const ROUTES = [
     path: '/blog',
     slug: 'blog',
     title: 'Блог — Даниил Охлопков',
-    description: 'Блог Даниила Охлопкова: Telegram-посты, переработанные в индексируемые материалы про AI-агентов, Claude Code, Codex, MCP и рабочие флоу.',
+    description: 'Блог Даниила Охлопкова: записи и рабочие заметки про AI-агентов, Claude Code, Codex, MCP и рабочие флоу.',
     alternates: {
       ru: `${SITE_URL}/blog/`,
       en: `${SITE_URL}/en/blog/`,
@@ -272,7 +327,48 @@ for (const post of GENERATED_BLOG_POSTS) {
     forwards: post.forwards,
     comments: post.comments,
     reactions: post.reactions,
+    heroImage: post.coverImage,
+    image: absoluteImageUrl(post.coverImage) || 'https://github.com/ohld.png',
     markdown: post.body,
+  })
+}
+
+for (const [slug, title, description] of TOPIC_PAGES) {
+  ROUTES.push({
+    path: `/topics/${slug}`,
+    slug: `topic-${slug}`,
+    title: `${title} — Даниил Охлопков`,
+    description,
+    lang: 'ru',
+    alternates: {
+      ru: `${SITE_URL}/topics/${slug}/`,
+      'x-default': `${SITE_URL}/topics/${slug}/`,
+    },
+    kind: 'topic-page',
+    topicTitle: title,
+    markdown: topicMarkdown(title, description),
+  })
+}
+
+for (const article of IMPORTED_ARTICLES) {
+  if (!article.path || !article.bodyHtml) continue
+  const canonical = canonicalPathname(article.path)
+  const routePath = canonical === '/' ? '/' : canonical.slice(0, -1)
+  const slug = `article-${canonical.replace(/^\/|\/$/g, '').replace(/\//g, '-')}`
+  ROUTES.push({
+    path: routePath,
+    slug,
+    title: article.title || 'Daniil Okhlopkov',
+    description: article.description || '',
+    lang: article.lang || 'ru',
+    kind: 'article-page',
+    publishedAt: article.publishedAt,
+    updatedAt: article.updatedAt || STATIC_UPDATED_DATE,
+    markdown: articleMarkdown(article, article.bodyHtml),
+    bodyHtml: article.bodyHtml,
+    heroImage: article.heroImage,
+    image: absoluteImageUrl(article.heroImage) || 'https://github.com/ohld.png',
+    alternates: importedArticleAlternates(canonical, article.lang || 'ru'),
   })
 }
 
@@ -284,13 +380,26 @@ function applySiteUrl(html) {
   return html.replaceAll(DEFAULT_SITE_URL, SITE_URL)
 }
 
+function stripTags(html = '') {
+  return html
+    .replace(/<script\b[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style\b[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function absoluteImageUrl(url = '') {
+  if (!url) return ''
+  return url.startsWith('/') ? `${SITE_URL}${url}` : url
+}
+
 // Inline regex md→html: only what our templates use (headings, lists,
 // blockquotes, links, tables and fenced code/prompt blocks).
 function mdToHtml(md) {
   const lines = md.replace(/\r\n/g, '\n').split('\n')
   const out = []
-  let inList = false
-  let listTag = 'ul'
+  const listStack = []
   let inQuote = false
   let para = []
   let inCode = false
@@ -300,15 +409,39 @@ function mdToHtml(md) {
     out.push(`<p>${inlineFmt(para.join(' '))}</p>`)
     para = []
   }
-  const openList = (tag) => {
-    if (inList && listTag !== tag) closeList()
-    if (!inList) {
-      listTag = tag
-      out.push(`<${tag}>`)
-      inList = true
-    }
+  const closeListLevel = () => {
+    const current = listStack.pop()
+    if (!current) return
+    if (current.openLi) out.push('</li>')
+    out.push(`</${current.tag}>`)
   }
-  const closeList = () => { if (inList) { out.push(`</${listTag}>`); inList = false } }
+  const closeList = () => {
+    while (listStack.length) closeListLevel()
+  }
+  const writeListItem = (tag, indent, content) => {
+    while (listStack.length && indent < listStack[listStack.length - 1].indent) {
+      closeListLevel()
+    }
+    let current = listStack[listStack.length - 1]
+    if (current && indent === current.indent && current.tag !== tag) {
+      closeListLevel()
+      current = listStack[listStack.length - 1]
+    }
+    if (!current || indent > current.indent || current.tag !== tag) {
+      if (current && current.openLi && indent <= current.indent) {
+        out.push('</li>')
+        current.openLi = false
+      }
+      out.push(`<${tag}>`)
+      listStack.push({ tag, indent, openLi: false })
+    } else if (current.openLi) {
+      out.push('</li>')
+      current.openLi = false
+    }
+    const active = listStack[listStack.length - 1]
+    out.push(`<li>${inlineFmt(content)}`)
+    active.openLi = true
+  }
   const closeQuote = () => { if (inQuote) { out.push('</blockquote>'); inQuote = false } }
   const flushCode = () => {
     if (!inCode) return
@@ -359,8 +492,10 @@ function mdToHtml(md) {
     if (line.startsWith('### ')) { flushPara(); closeList(); closeQuote(); out.push(`<h3>${inlineFmt(line.slice(4))}</h3>`); continue }
     if (line.startsWith('## ')) { flushPara(); closeList(); closeQuote(); out.push(`<h2>${inlineFmt(line.slice(3))}</h2>`); continue }
     if (line.startsWith('# ')) { flushPara(); closeList(); closeQuote(); out.push(`<h1>${inlineFmt(line.slice(2))}</h1>`); continue }
-    if (line.startsWith('- ')) { flushPara(); closeQuote(); openList('ul'); out.push(`<li>${inlineFmt(line.slice(2))}</li>`); continue }
-    if (/^\d+\.\s+/.test(line)) { flushPara(); closeQuote(); openList('ol'); out.push(`<li>${inlineFmt(line.replace(/^\d+\.\s+/, ''))}</li>`); continue }
+    const unordered = raw.match(/^(\s*)([-*•▪])\s+(.+)$/)
+    if (unordered) { flushPara(); closeQuote(); writeListItem('ul', unordered[1].replace(/\t/g, '  ').length, unordered[3]); continue }
+    const ordered = raw.match(/^(\s*)\d+[.)]\s+(.+)$/)
+    if (ordered) { flushPara(); closeQuote(); writeListItem('ol', ordered[1].replace(/\t/g, '  ').length, ordered[2]); continue }
     if (line.startsWith('> ')) { flushPara(); closeList(); if (!inQuote) { out.push('<blockquote>'); inQuote = true } out.push(`<p>${inlineFmt(line.slice(2))}</p>`); continue }
     if (line.startsWith('---')) { flushPara(); closeList(); closeQuote(); out.push('<hr/>'); continue }
     closeList(); closeQuote(); para.push(line)
@@ -376,8 +511,35 @@ function buildFallback(title, mdBody) {
   return `<header><h1>${escape(title)}</h1></header><article>${article}</article><nav>${nav}</nav><footer>${socials}</footer>`
 }
 
+function buildArticleFallback(route) {
+  const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
+  const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
+  return `<article data-article-engine="article">
+    <header>
+      <h1>${escape(route.title)}</h1>
+      ${route.description ? `<p>${escape(route.description)}</p>` : ''}
+    </header>
+    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(route.title)}" /></figure>` : ''}
+    <section>${route.bodyHtml || ''}</section>
+  </article><nav>${nav}</nav><footer>${socials}</footer>`
+}
+
+function buildGeneratedBlogFallback(route) {
+  const article = mdToHtml(route.markdown || '')
+  const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
+  const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
+  return `<article data-article-engine="article">
+    <header>
+      <h1>${escape(route.title)}</h1>
+      ${route.description ? `<p>${escape(route.description)}</p>` : ''}
+    </header>
+    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(route.title)}" /></figure>` : ''}
+    <section>${article}</section>
+  </article><nav>${nav}</nav><footer>${socials}</footer>`
+}
+
 function getRouteMd(route) {
-  if (route.kind === 'generated-blog-post') {
+  if (route.kind === 'generated-blog-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
     return route.markdown || ''
   }
   const tplPath = path.join('scripts', 'markdown', `${route.slug}.md`)
@@ -464,13 +626,13 @@ const SCHEMA_BY_SLUG = {
     dateModified: '2026-05-25',
     author: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
     publisher: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    image: 'https://i.ytimg.com/vi/fIEMOzz0_AI/hqdefault.jpg',
+    image: 'https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg',
     mainEntityOfPage: `${SITE_URL}/articles/ai-tools-for-designers-design-engineering-agents/`,
     inLanguage: 'ru',
     video: {
       '@type': 'VideoObject',
       name: 'ИИ не вывозит норм дизайн или это skill issue? | Подкаст «Мой AI сетап»',
-      thumbnailUrl: ['https://i.ytimg.com/vi/fIEMOzz0_AI/hqdefault.jpg'],
+      thumbnailUrl: ['https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg'],
       uploadDate: '2026-05-21',
       embedUrl: 'https://www.youtube.com/embed/fIEMOzz0_AI',
       url: 'https://www.youtube.com/watch?v=fIEMOzz0_AI',
@@ -495,6 +657,22 @@ function generatedBlogPostSchema(route) {
   }
 }
 
+function articlePageSchema(route) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: route.title,
+    description: route.description,
+    datePublished: route.publishedAt,
+    dateModified: route.updatedAt ? `${route.updatedAt}T00:00:00+03:00` : STATIC_UPDATED_AT,
+    author: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
+    publisher: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
+    image: route.image || 'https://github.com/ohld.png',
+    mainEntityOfPage: `${SITE_URL}${route.path}/`,
+    inLanguage: route.lang || 'ru',
+  }
+}
+
 const BREADCRUMBS_BY_SLUG = {
   'en': [['Home', `${SITE_URL}/`], ['English', `${SITE_URL}/en/`]],
   'en-blog': [['Home', `${SITE_URL}/en/`], ['Blog', `${SITE_URL}/en/blog/`]],
@@ -512,6 +690,10 @@ const BREADCRUMBS_BY_SLUG = {
 function buildBreadcrumb(route) {
   const items = route.kind === 'generated-blog-post'
     ? [['Главная', `${SITE_URL}/`], ['Блог', `${SITE_URL}/blog/`], [route.title, `${SITE_URL}${route.path}/`]]
+    : route.kind === 'article-page'
+      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Blog' : 'Блог', `${SITE_URL}${route.lang === 'en' ? '/en/blog/' : '/blog/'}`], [route.title, `${SITE_URL}${route.path}/`]]
+    : route.kind === 'topic-page'
+      ? [['Главная', `${SITE_URL}/`], ['Темы', `${SITE_URL}/articles/`], [route.topicTitle || route.title, `${SITE_URL}${route.path}/`]]
     : BREADCRUMBS_BY_SLUG[route.slug]
   if (!items) return null
   return {
@@ -532,8 +714,13 @@ function rewrite(html, route) {
   const isNoindex = route.robots?.startsWith('noindex')
   const lang = route.lang || 'ru'
   const ogLocale = lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'ru_RU'
+  const image = route.image || 'https://github.com/ohld.png'
   const mdBody = getRouteMd(route)
-  const fallback = mdBody ? buildFallback(title, mdBody) : buildFallback(title, '')
+  const fallback = route.kind === 'article-page'
+    ? buildArticleFallback(route)
+    : route.kind === 'generated-blog-post'
+      ? buildGeneratedBlogFallback(route)
+      : mdBody ? buildFallback(title, mdBody) : buildFallback(title, '')
   let out = applySiteUrl(html)
     .replace(/<html lang="[^"]+">/, `<html lang="${lang}">`)
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(title)}</title>`)
@@ -543,8 +730,10 @@ function rewrite(html, route) {
     .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${escape(description)}$2`)
     .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${url}$2`)
     .replace(/(<meta property="og:locale" content=")[^"]*(")/, `$1${ogLocale}$2`)
+    .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${image}$2`)
     .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${escape(title)}$2`)
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${escape(description)}$2`)
+    .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${image}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`)
     .replace(/<link rel="alternate" hreflang="[^"]+" href="[^"]+" \/>\n?    /g, '')
     .replace('    <link rel="alternate" type="text/markdown"', `${buildHreflang(route, url)}    <link rel="alternate" type="text/markdown"`)
@@ -561,6 +750,18 @@ function rewrite(html, route) {
     .replace('<!-- body-fallback -->', fallback)
   const extraSchema = route.kind === 'generated-blog-post'
     ? generatedBlogPostSchema(route)
+    : route.kind === 'article-page'
+      ? articlePageSchema(route)
+    : route.kind === 'topic-page'
+      ? {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: route.topicTitle || route.title,
+        description: route.description,
+        url: `${SITE_URL}${route.path}/`,
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        inLanguage: 'ru',
+      }
     : SCHEMA_BY_SLUG[slug]?.(route)
   if (extraSchema) {
     const extraJson = JSON.stringify(extraSchema, null, 2)
@@ -610,7 +811,7 @@ for (const route of ROUTES) {
   if (route.robots?.startsWith('noindex')) continue
   const src = path.join(templatesDir, `${route.slug}.md`)
   const dest = path.join(dist, `${route.slug}.md`)
-  if (route.kind === 'generated-blog-post') {
+  if (route.kind === 'generated-blog-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
     fs.writeFileSync(dest, `# ${route.title}\n\n${route.markdown}\n`)
   } else {
     fs.copyFileSync(src, dest)
@@ -618,7 +819,7 @@ for (const route of ROUTES) {
   mdCount++
 }
 
-// ---- Redirects (legacy URLs) ----
+// ---- Redirects (old URLs) ----
 // Write stub HTML + .md for old slugs that 301-equivalent to the new canonical
 // via meta-refresh + canonical tag (no real 301 possible on GH Pages).
 // SPA-side React Router also handles these via <Navigate> for in-app nav.
@@ -626,7 +827,7 @@ const REDIRECTS = [
   { from: '/closed', fromSlug: 'closed', to: '/private-channel/', toSlug: 'private-channel' },
   { from: '/ru', fromSlug: 'ru', to: '/', toSlug: 'home' },
   { from: '/work-together', fromSlug: 'work-together', to: '/about/', toSlug: 'about' },
-  { from: '/markdown-vs-html', fromSlug: 'markdown-vs-html-legacy', to: '/articles/markdown-vs-html/', toSlug: 'markdown-vs-html' },
+  { from: '/markdown-vs-html', fromSlug: 'markdown-vs-html-old', to: '/articles/markdown-vs-html/', toSlug: 'markdown-vs-html' },
   { from: '/posts', fromSlug: 'posts', to: '/blog/', toSlug: 'blog' },
   { from: '/ai-agents', fromSlug: 'ai-agents', to: '/articles/', toSlug: 'articles' },
   { from: '/ai-course', fromSlug: 'ai-course', to: '/articles/', toSlug: 'articles' },
@@ -646,6 +847,8 @@ const REDIRECTS = [
   { from: '/tag/telegram-en', fromSlug: 'tag-telegram-en', to: '/en/', toSlug: 'en' },
   { from: '/tag/web-scraping', fromSlug: 'tag-web-scraping', to: '/web-scraping-ai-agents-2026/', toSlug: 'web-scraping-ai-agents-2026' },
   { from: '/cn', fromSlug: 'cn', to: '/en/', toSlug: 'en' },
+  { from: '/my-tg-bots', fromSlug: 'my-tg-bots', to: '/about/', toSlug: 'about' },
+  { from: '/vibe-coding-guide-2026', fromSlug: 'vibe-coding-guide-2026', to: '/articles/', toSlug: 'articles' },
 ]
 let redirectCount = 0
 for (const r of REDIRECTS) {
@@ -688,6 +891,7 @@ const BUNDLE_SLUGS = [
   'markdown-vs-html',
   'privacy',
   ...GENERATED_BLOG_POSTS.map((post) => `blog-${post.slug}`),
+  ...TOPIC_PAGES.map(([slug]) => `topic-${slug}`),
 ]
 const bundleHeader = `# Daniil Okhlopkov — Full Content Bundle
 
@@ -747,321 +951,26 @@ function xmlText(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
-function hasCyrillic(s = '') {
-  return /[\u0400-\u04FF]/.test(s)
-}
+function articleMarkdown(article, body) {
+  const title = article.title || 'Daniil Okhlopkov'
+  const description = article.description ? `\n\n> ${article.description}` : ''
+  const sourceUrl = `${SITE_URL}${article.path}`
+  return `# ${title}${description}
 
-function hasCjk(s = '') {
-  return /[\u3400-\u9FFF]/.test(s)
-}
+Source: ${sourceUrl}
 
-function inferLegacyLang(page) {
-  const pathName = page.path || ''
-  const sample = `${page.title || ''}\n${page.description || ''}\n${stripTags(page.article_html || '').slice(0, 1200)}`
-  if (pathName.startsWith('/cn-') || pathName === '/cn/' || hasCjk(sample)) return 'zh'
-  if (pathName.startsWith('/en-')) return 'en'
-  if (hasCyrillic(sample)) return 'ru'
-  return page.lang === 'zh' || page.lang === 'cn' ? 'zh' : page.lang === 'en' ? 'en' : 'ru'
-}
-
-function legacyLabels(lang) {
-  if (lang === 'ru') {
-    return {
-      home: 'Главная',
-      about: 'Обо мне',
-      blog: 'Блог',
-      articles: 'Статьи',
-      note: 'Страница сохранена при статической миграции',
-      originalModified: 'Дата изменения в Ghost',
-      updated: 'Обновлено',
-      readTime: (minutes) => `${minutes} мин чтения`,
-      preserved: `Static migration update: ${STATIC_UPDATED_DATE}`,
-      author: 'Дан Охлопков',
-    }
-  }
-  if (lang === 'zh') {
-    return {
-      home: 'Home',
-      about: 'About',
-      blog: 'Blog',
-      articles: 'Articles',
-      note: 'Preserved during the static migration',
-      originalModified: 'Original Ghost modified date',
-      updated: 'Updated',
-      readTime: (minutes) => `${minutes} min read`,
-      preserved: `Static migration update: ${STATIC_UPDATED_DATE}`,
-      author: 'Daniil Okhlopkov',
-    }
-  }
-  return {
-    home: 'Home',
-    about: 'About',
-    blog: 'Blog',
-    articles: 'Articles',
-    note: 'Preserved during the static migration',
-    originalModified: 'Original Ghost modified date',
-    updated: 'Updated',
-    readTime: (minutes) => `${minutes} min read`,
-    preserved: `Static migration update: ${STATIC_UPDATED_DATE}`,
-    author: 'Daniil Okhlopkov',
-  }
-}
-
-function stripTags(html = '') {
-  return html
-    .replace(/<script\b[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style\b[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
-function formatDate(value, lang) {
-  if (!value) return ''
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return value
-  const locale = lang === 'ru' ? 'ru-RU' : lang === 'zh' ? 'zh-CN' : 'en-US'
-  return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short', day: 'numeric' }).format(date)
-}
-
-function readingTime(html = '', lang = 'en') {
-  const text = stripTags(html)
-  const units = lang === 'zh'
-    ? Math.max(1, Math.round(text.replace(/\s/g, '').length / 500))
-    : Math.max(1, Math.round(text.split(/\s+/).filter(Boolean).length / 220))
-  return units
-}
-
-function legacyImageUrl(url, { absolute = false } = {}) {
-  if (!url) return ''
-  const local = url.replace(/^https?:\/\/okhlopkov\.com/i, '').replace(/^https?:\/\/ai\.okhlopkov\.com/i, '')
-  if (absolute) return local.startsWith('/') ? `${SITE_URL}${local}` : url
-  return local.startsWith('/') ? local : url
-}
-
-function extractLegacyBody(articleHtml = '') {
-  const content = articleHtml.match(/<section\b[^>]*class="[^"]*\bgh-content\b[^"]*"[^>]*>([\s\S]*?)<\/section>/i)?.[1] || articleHtml
-  return content
-    .replace(/<script\b[\s\S]*?<\/script>/gi, '')
-    .replace(/<style\b[\s\S]*?<\/style>/gi, '')
-    .replace(/\s(href|src)="https?:\/\/okhlopkov\.com([^"]*)"/gi, ' $1="$2"')
-    .replace(/\s(href|src)="https?:\/\/ai\.okhlopkov\.com([^"]*)"/gi, ' $1="$2"')
-}
-
-function legacyPageHtml(page) {
-  const title = page.title || 'Daniil Okhlopkov'
-  const description = page.description || 'Archived article from okhlopkov.com'
-  const canonical = `${SITE_URL}${page.path}`
-  const lang = inferLegacyLang(page)
-  const labels = legacyLabels(lang)
-  const image = legacyImageUrl(page.og_image, { absolute: true }) || 'https://github.com/ohld.png'
-  const heroImage = legacyImageUrl(page.og_image)
-  const originalModifiedAt = page.modified_at || page.published_at || STATIC_UPDATED_AT
-  const publishedAt = formatDate(page.published_at, lang)
-  const updatedAt = formatDate(STATIC_UPDATED_AT, lang)
-  const originalUpdatedAt = formatDate(originalModifiedAt, lang)
-  const articleBody = extractLegacyBody(page.article_html)
-  const minutes = readingTime(articleBody, lang)
-  const ruPath = localizedLegacyPath(page.path, 'ru')
-  const enPath = localizedLegacyPath(page.path, 'en')
-  const isAuthorPage = page.path?.startsWith('/author/')
-  const isCollectionPage = page.path?.startsWith('/tag/') || page.path === '/cn/'
-  const schemaType = isAuthorPage ? 'ProfilePage' : isCollectionPage ? 'CollectionPage' : 'BlogPosting'
-  const legacySchema = schemaType === 'BlogPosting' ? {
-    '@context': 'https://schema.org',
-    '@type': schemaType,
-    headline: title,
-    description,
-    image,
-    datePublished: page.published_at || originalModifiedAt,
-    dateModified: STATIC_UPDATED_AT,
-    author: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    publisher: { '@type': 'Person', name: 'Даниил Охлопков', url: `${SITE_URL}/` },
-    mainEntityOfPage: canonical,
-    inLanguage: lang,
-  } : {
-    '@context': 'https://schema.org',
-    '@type': schemaType,
-    name: title,
-    description,
-    url: canonical,
-    image,
-    dateModified: STATIC_UPDATED_AT,
-    isPartOf: { '@type': 'WebSite', name: 'okhlopkov.com', url: SITE_URL },
-    inLanguage: lang,
-  }
-  return `<!doctype html>
-<html lang="${xmlText(lang)}">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${escape(title)}</title>
-  <meta name="description" content="${escape(description)}" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="${canonical}" />
-  <meta property="og:type" content="${schemaType === 'BlogPosting' ? 'article' : 'website'}" />
-  <meta property="og:title" content="${escape(title)}" />
-  <meta property="og:description" content="${escape(description)}" />
-  <meta property="og:url" content="${canonical}" />
-  <meta property="og:image" content="${image}" />
-  ${schemaType === 'BlogPosting' && page.published_at ? `<meta property="article:published_time" content="${page.published_at}" />` : ''}
-  ${schemaType === 'BlogPosting' ? `<meta property="article:modified_time" content="${STATIC_UPDATED_AT}" />` : ''}
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${escape(title)}" />
-  <meta name="twitter:description" content="${escape(description)}" />
-  <meta name="twitter:image" content="${image}" />
-  <script type="application/ld+json">
-${JSON.stringify(legacySchema, null, 2)}
-  </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-9Z5T725JJD');
-  </script>
-  <script>
-    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-    ym(46266270, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });
-  </script>
-  <style>
-    :root { --bg:#F5F5F0; --text:#1A1A1A; --accent:#5F6F85; --border:#1A1A1A; --border-light:rgba(26,26,26,.1); --white-overlay:rgba(255,255,255,.4); }
-    * { box-sizing:border-box; }
-    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif; line-height:1.47; -webkit-font-smoothing:antialiased; }
-    a { color:inherit; text-decoration:none; }
-    .site-header { width:100%; max-width:820px; margin:0 auto; padding:16px 20px 8px; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; }
-    .site-header-brand { display:inline-flex; align-items:center; gap:8px; min-height:36px; font-family:'JetBrains Mono','SF Mono',monospace; font-size:12px; color:var(--accent); }
-    .site-header-mark { width:8px; height:8px; background:var(--text); border-radius:1px; }
-    .site-header-nav { grid-column:1 / -1; grid-row:2; display:flex; gap:4px; overflow-x:auto; padding-bottom:2px; }
-    .site-header-link, .language-switcher a, .footer-links a { min-height:36px; display:inline-flex; align-items:center; font-family:'JetBrains Mono','SF Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--accent); }
-    .site-header-link { padding:0 10px; border:1px solid var(--border-light); border-radius:2px; white-space:nowrap; }
-    .language-switcher { display:inline-flex; grid-column:2; grid-row:1; justify-self:end; border:1px solid var(--border); border-radius:2px; }
-    .language-switcher a { min-width:42px; justify-content:center; color:var(--text); }
-    .language-switcher a + a { border-left:1px solid var(--border); }
-    .language-switcher-active { background:var(--text); color:var(--bg) !important; }
-    .page { max-width:820px; margin:0 auto; }
-    .legacy-article { display:flex; flex-direction:column; gap:28px; padding:0 16px; }
-    .legacy-article-header { padding:24px 24px 20px; border-bottom:1px solid var(--border); display:flex; flex-direction:column; align-items:flex-start; }
-    .legacy-meta { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px; font-family:'JetBrains Mono','SF Mono',monospace; font-size:10px; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; }
-    .legacy-dot { width:3px; height:3px; border-radius:50%; background:var(--accent); align-self:center; }
-    .legacy-title { font-size:32px; line-height:1.1; font-weight:700; letter-spacing:0; margin:0 0 12px; }
-    .legacy-description { margin:0; font-size:14px; line-height:1.6; color:rgba(26,26,26,.62); }
-    .legacy-hero-image { margin:0; border:1px solid var(--border); border-radius:4px; overflow:hidden; background:var(--white-overlay); }
-    .legacy-hero-image img { display:block; width:100%; aspect-ratio:16 / 9; object-fit:cover; }
-    .legacy-content { border-top:1px solid var(--border-light); padding-top:24px; }
-    .legacy-content :first-child { margin-top:0; }
-    .legacy-content h1, .legacy-content .article-title, .legacy-content .article-header, .legacy-content .article-byline, .legacy-content .article-image, .legacy-content .post-card-tags, .legacy-content .author-list { display:none !important; }
-    .legacy-content h2 { font-size:24px; line-height:1.18; letter-spacing:0; margin:34px 0 12px; }
-    .legacy-content h3 { font-size:19px; line-height:1.22; letter-spacing:0; margin:28px 0 10px; }
-    .legacy-content p, .legacy-content li { font-size:17px; line-height:1.7; color:rgba(26,26,26,.8); }
-    .legacy-content p { margin:0 0 16px; }
-    .legacy-content ul, .legacy-content ol { padding-left:22px; margin:0 0 18px; }
-    .legacy-content li + li { margin-top:8px; }
-    .legacy-content a { color:#315E8A; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.18em; }
-    .legacy-content a:hover { color:var(--text); }
-    .legacy-content img { max-width:100%; height:auto; border-radius:4px; }
-    .legacy-content figure { margin:22px 0; }
-    .legacy-content blockquote { margin:18px 0; padding:16px 18px; border-left:3px solid var(--text); background:rgba(255,255,255,.48); }
-    .legacy-content blockquote p { margin:0; color:var(--text); }
-    .legacy-content pre { overflow:auto; padding:16px; border:1px solid var(--border); border-radius:4px; background:rgba(255,255,255,.45); }
-    .legacy-content code { padding:.1em .32em; border:1px solid var(--border-light); border-radius:3px; background:rgba(255,255,255,.55); font-family:'JetBrains Mono','SF Mono',monospace; font-size:.86em; color:var(--text); }
-    .legacy-content pre code { padding:0; border:0; background:transparent; font-size:13px; line-height:1.55; }
-    .legacy-migration-note { border-top:1px solid var(--border-light); padding-top:18px; font-size:12px; line-height:1.6; color:rgba(26,26,26,.52); }
-    .footer { margin-top:auto; padding:40px 24px 24px; border-top:1px solid var(--border); display:grid; gap:20px; }
-    .footer-links { display:flex; flex-wrap:wrap; gap:12px; }
-    .footer-socials { display:flex; flex-wrap:wrap; gap:8px; }
-    .footer-socials a { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--border-light); border-radius:2px; color:var(--accent); }
-    .footer-copy { font-family:'JetBrains Mono','SF Mono',monospace; font-size:10px; color:rgba(26,26,26,.46); text-transform:uppercase; letter-spacing:.08em; }
-    @media (min-width:768px) { .site-header { grid-template-columns:auto 1fr auto; padding:22px 32px 10px; } .site-header-nav { grid-column:auto; grid-row:auto; justify-content:center; } .language-switcher { grid-column:auto; grid-row:auto; } .legacy-title { font-size:40px; } .legacy-article { padding-left:24px; padding-right:24px; } }
-    @media (min-width:1024px) { .site-header { padding-left:40px; padding-right:40px; } .legacy-article { padding-left:40px; padding-right:40px; } .legacy-article-header { padding:40px 40px 28px; } .legacy-title { font-size:48px; } }
-  </style>
-</head>
-<body>
-  <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-  <header class="site-header">
-    <a class="site-header-brand" href="${lang === 'en' ? '/en/' : '/'}"><span class="site-header-mark"></span><span>okhlopkov.com</span></a>
-    <nav class="site-header-nav" aria-label="${lang === 'ru' ? 'Основная навигация' : 'Primary navigation'}">
-      <a class="site-header-link" href="${lang === 'en' ? '/en/' : '/'}">${labels.home}</a>
-      <a class="site-header-link" href="${lang === 'en' ? '/en/blog/' : '/blog/'}">${labels.blog}</a>
-      <a class="site-header-link" href="${lang === 'en' ? '/en/articles/' : '/articles/'}">${labels.articles}</a>
-      <a class="site-header-link" href="${lang === 'en' ? '/en/about/' : '/about/'}">${labels.about}</a>
-    </nav>
-    <nav class="language-switcher" aria-label="${lang === 'ru' ? 'Выбор языка' : 'Language'}">
-      <a class="${lang === 'ru' ? 'language-switcher-active' : ''}" href="${ruPath}">RU</a>
-      <a class="${lang === 'en' ? 'language-switcher-active' : ''}" href="${enPath}">EN</a>
-    </nav>
-  </header>
-  <div class="page">
-    <main class="legacy-article">
-      <article>
-        <header class="legacy-article-header">
-          <div class="legacy-meta">
-            ${publishedAt ? `<span>${escape(publishedAt)}</span><span class="legacy-dot"></span>` : ''}
-            <span>${labels.updated} ${escape(updatedAt)}</span>
-            <span class="legacy-dot"></span>
-            <span>${labels.readTime(minutes)}</span>
-          </div>
-          <h1 class="legacy-title">${xmlText(title)}</h1>
-          ${description ? `<p class="legacy-description">${xmlText(description)}</p>` : ''}
-        </header>
-        ${heroImage ? `<figure class="legacy-hero-image"><img src="${escape(heroImage)}" alt="${escape(title)}" fetchpriority="high" /></figure>` : ''}
-        <section class="legacy-content">${articleBody}</section>
-        <aside class="legacy-migration-note">
-          <p>${labels.preserved}. ${labels.note}.</p>
-          ${originalUpdatedAt ? `<p>${labels.originalModified}: ${escape(originalUpdatedAt)}.</p>` : ''}
-        </aside>
-      </article>
-    </main>
-    <footer class="footer">
-      <nav class="footer-links" aria-label="${lang === 'ru' ? 'Разделы сайта' : 'Site sections'}">
-        <a href="/">RU</a>
-        <a href="/en/">EN</a>
-        <a href="${lang === 'en' ? '/en/blog/' : '/blog/'}">${labels.blog}</a>
-        <a href="${lang === 'en' ? '/en/articles/' : '/articles/'}">${labels.articles}</a>
-        <a href="${lang === 'en' ? '/en/about/' : '/about/'}">${labels.about}</a>
-        <a href="/privacy/">Privacy</a>
-      </nav>
-      <div class="footer-socials">
-        <a href="https://t.me/danokhlopkov" rel="me noopener noreferrer" aria-label="Telegram">TG</a>
-        <a href="https://youtube.com/@danokhlopkov" rel="me noopener noreferrer" aria-label="YouTube">YT</a>
-        <a href="https://instagram.com/d7733o" rel="me noopener noreferrer" aria-label="Instagram">IG</a>
-        <a href="https://x.com/danokhlopkov" rel="me noopener noreferrer" aria-label="X">X</a>
-        <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me noopener noreferrer" aria-label="LinkedIn">IN</a>
-        <a href="https://github.com/ohld" rel="me noopener noreferrer" aria-label="GitHub">GH</a>
-      </div>
-      <span class="footer-copy">© 2026 ${labels.author}</span>
-    </footer>
-  </div>
-</body>
-</html>
+${stripTags(body)}
 `
 }
 
-function loadLegacyPages() {
-  const src = path.join('content', 'legacy-pages', 'pages.json')
-  if (!fs.existsSync(src)) return []
-  return JSON.parse(fs.readFileSync(src, 'utf8'))
-}
-
-function writeLegacyPages() {
-  const pages = loadLegacyPages()
-  for (const page of pages) {
-    if (!page.path || !page.article_html) continue
-    const dir = path.join(dist, page.path)
-    fs.mkdirSync(dir, { recursive: true })
-    fs.writeFileSync(path.join(dir, 'index.html'), legacyPageHtml(page))
-  }
-  return pages
-}
-
-const legacyPages = writeLegacyPages()
 for (const post of GENERATED_BLOG_POSTS) {
   addSitemapUrl(`/blog/${post.slug}/`, post.updatedAt || STATIC_UPDATED_DATE)
 }
-for (const page of legacyPages) {
-  if (page.path) addSitemapUrl(page.path)
+for (const [slug] of TOPIC_PAGES) {
+  addSitemapUrl(`/topics/${slug}/`)
+}
+for (const article of IMPORTED_ARTICLES) {
+  if (article.path) addSitemapUrl(article.path)
 }
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -1072,4 +981,4 @@ ${SITEMAP_URLS.map(sitemapUrlXml).join('\n')}
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap)
 console.log(`✓ Sitemap: generated ${SITEMAP_URLS.length} canonical URLs`)
 
-console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects + ${legacyPages.length} legacy pages + llms-full.txt`)
+console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects + ${IMPORTED_ARTICLES.length} imported articles + llms-full.txt`)

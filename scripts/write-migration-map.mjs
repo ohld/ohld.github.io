@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 const SITE_URL = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/, '')
-const legacyPagesPath = path.join('content', 'legacy-pages', 'pages.json')
+const importedArticlesPath = path.join('content', 'articles', 'imported-index.json')
 const blogPostsPath = path.join('content', 'blog-posts')
 const outPath = path.join('migration', 'url-map.csv')
 
@@ -27,7 +27,7 @@ const redirects = [
     new_path: '/about/',
     action: '308_redirect',
     source: 'external_backlink_target',
-    note: 'HackerNoon links to the legacy projects page; redirect to About until a dedicated Projects page exists.',
+    note: 'HackerNoon links to the old projects page; redirect to About until a dedicated Projects page exists.',
   },
   {
     old_path: '/tag/ai-agents/',
@@ -47,71 +47,85 @@ const redirects = [
     old_path: '/tag/ai/',
     new_path: '/articles/',
     action: '308_redirect',
-    source: 'legacy_internal_link',
-    note: 'Old AI tag appears in preserved legacy articles; redirect to the Articles index.',
+    source: 'old_internal_link',
+    note: 'Old AI tag appears in imported articles; redirect to the Articles index.',
   },
   {
     old_path: '/tag/analytics/',
     new_path: '/blog/',
     action: '308_redirect',
-    source: 'legacy_internal_link',
-    note: 'Old analytics tag appears in preserved legacy articles; redirect to the blog index.',
+    source: 'old_internal_link',
+    note: 'Old analytics tag appears in imported articles; redirect to the blog index.',
   },
   {
     old_path: '/tag/claude-code/',
     new_path: '/articles/',
     action: '308_redirect',
-    source: 'legacy_internal_link',
-    note: 'Old Claude Code tag appears in preserved legacy articles; redirect to the Articles index.',
+    source: 'old_internal_link',
+    note: 'Old Claude Code tag appears in imported articles; redirect to the Articles index.',
   },
   {
     old_path: '/tag/crypto/',
     new_path: '/blog/',
     action: '308_redirect',
-    source: 'legacy_internal_link',
-    note: 'Old crypto tag appears in preserved legacy articles; redirect to the blog index.',
+    source: 'old_internal_link',
+    note: 'Old crypto tag appears in imported articles; redirect to the blog index.',
   },
   {
     old_path: '/tag/dokku/',
     new_path: '/cloudflare-certificates-dokku/',
     action: '308_redirect',
-    source: 'legacy_internal_link',
-    note: 'Old Dokku tag appears in preserved legacy articles; redirect to the strongest preserved Dokku article.',
+    source: 'old_internal_link',
+    note: 'Old Dokku tag appears in imported articles; redirect to the strongest imported Dokku article.',
   },
   {
     old_path: '/tag/parsing/',
     new_path: '/how-to-get-a-telegram-channel-subscribers-list-in-python/',
     action: '308_redirect',
-    source: 'legacy_internal_link',
-    note: 'Old parsing tag appears in preserved legacy articles; redirect to the strongest preserved parsing article.',
+    source: 'old_internal_link',
+    note: 'Old parsing tag appears in imported articles; redirect to the strongest imported parsing article.',
   },
   {
     old_path: '/tag/telegram-cn/',
     new_path: '/en/',
     action: '308_redirect',
-    source: 'legacy_internal_link',
+    source: 'old_internal_link',
     note: 'Old Chinese Telegram tag is not maintained as a collection; redirect to the maintained English entry.',
   },
   {
     old_path: '/tag/telegram-en/',
     new_path: '/en/',
     action: '308_redirect',
-    source: 'legacy_internal_link',
+    source: 'old_internal_link',
     note: 'Old English Telegram tag is not maintained as a collection; redirect to the maintained English entry.',
   },
   {
     old_path: '/tag/web-scraping/',
     new_path: '/web-scraping-ai-agents-2026/',
     action: '308_redirect',
-    source: 'legacy_internal_link',
-    note: 'Old web scraping tag appears in preserved legacy articles; redirect to the strongest preserved web scraping article.',
+    source: 'old_internal_link',
+    note: 'Old web scraping tag appears in imported articles; redirect to the strongest imported web scraping article.',
   },
   {
     old_path: '/cn/',
     new_path: '/en/',
     action: '308_redirect',
-    source: 'legacy_language_entry',
-    note: 'Legacy CN entry is not a maintained content surface in the static migration.',
+    source: 'old_language_entry',
+    note: 'Old CN entry is not a maintained content surface in the static migration.',
+  },
+  {
+    old_path: '/my-tg-bots/',
+    new_path: '/about/',
+    action: '308_redirect',
+    source: 'old_internal_link',
+    note: 'Old Telegram bots page is folded into About and background.',
+  },
+  {
+    old_path: '/vibe-coding-guide-2026/',
+    new_path: '/articles/',
+    action: '308_redirect',
+    source: 'old_internal_link',
+    note: 'Old vibe-coding guide link redirects to the maintained Articles collection.',
   },
   {
     old_path: '/ru/',
@@ -124,7 +138,7 @@ const redirects = [
     old_path: '/closed/',
     new_path: '/private-channel/',
     action: '308_redirect_noindex_destination',
-    source: 'legacy_private_page',
+    source: 'old_private_page',
     note: 'Private channel page is direct-only and excluded from sitemap.',
   },
   {
@@ -182,6 +196,26 @@ const newStaticPages = [
   ['/articles/', 'new_static_page', 'ru', 'Article index'],
   ['/articles/ai-tools-for-designers-design-engineering-agents/', 'new_static_page', 'ru', 'First YouTube-derived article with component examples'],
   ['/articles/markdown-vs-html/', 'new_static_page', 'ru', 'Existing static article route moved under Articles'],
+  ['/topics/ai-agents/', 'new_static_page', 'ru', 'Topic collection for AI agents internal linking'],
+  ['/topics/claude-code/', 'new_static_page', 'ru', 'Topic collection for Claude Code internal linking'],
+  ['/topics/codex/', 'new_static_page', 'ru', 'Topic collection for Codex internal linking'],
+  ['/topics/mcp/', 'new_static_page', 'ru', 'Topic collection for MCP internal linking'],
+  ['/topics/gstack/', 'new_static_page', 'ru', 'Topic collection for GStack internal linking'],
+  ['/topics/gbrain/', 'new_static_page', 'ru', 'Topic collection for GBrain internal linking'],
+  ['/topics/ai-coding/', 'new_static_page', 'ru', 'Topic collection for AI coding internal linking'],
+  ['/topics/ai-transformation/', 'new_static_page', 'ru', 'Topic collection for AI transformation internal linking'],
+  ['/topics/refactoring/', 'new_static_page', 'ru', 'Topic collection for refactoring internal linking'],
+  ['/topics/ai-tools/', 'new_static_page', 'ru', 'Topic collection for AI tools internal linking'],
+  ['/topics/design-engineering/', 'new_static_page', 'ru', 'Topic collection for design engineering internal linking'],
+  ['/topics/html/', 'new_static_page', 'ru', 'Topic collection for HTML internal linking'],
+  ['/topics/second-brain/', 'new_static_page', 'ru', 'Topic collection for second brain internal linking'],
+  ['/topics/web-scraping/', 'new_static_page', 'ru', 'Topic collection for web scraping internal linking'],
+  ['/topics/frameworks/', 'new_static_page', 'ru', 'Topic collection for agent frameworks internal linking'],
+  ['/topics/workflow/', 'new_static_page', 'ru', 'Topic collection for workflow internal linking'],
+  ['/topics/community/', 'new_static_page', 'ru', 'Topic collection for community internal linking'],
+  ['/topics/openclaw/', 'new_static_page', 'ru', 'Topic collection for future OpenClaw content'],
+  ['/topics/ton-data/', 'new_static_page', 'ru', 'Topic collection for TON data and analytics'],
+  ['/topics/telegram-automation/', 'new_static_page', 'ru', 'Topic collection for Telegram automation'],
   ['/privacy/', 'new_static_page', 'en', 'Privacy policy for Pinterest app review and site data practices'],
 ]
 
@@ -214,29 +248,11 @@ function row(cells) {
   return cells.map(csvCell).join(',')
 }
 
-function readLegacyPages() {
-  if (!fs.existsSync(legacyPagesPath)) {
-    throw new Error(`${legacyPagesPath} does not exist. Run npm run snapshot:legacy first.`)
+function readImportedArticles() {
+  if (!fs.existsSync(importedArticlesPath)) {
+    throw new Error(`${importedArticlesPath} does not exist. Run the article import before building the migration map.`)
   }
-  return JSON.parse(fs.readFileSync(legacyPagesPath, 'utf8'))
-}
-
-function stripTags(html = '') {
-  return html
-    .replace(/<script\b[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style\b[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
-function inferLegacyLang(page) {
-  const pathName = page.path || ''
-  const sample = `${page.title || ''}\n${page.description || ''}\n${stripTags(page.article_html || '').slice(0, 1200)}`
-  if (pathName.startsWith('/cn-') || pathName === '/cn/' || /[\u3400-\u9FFF]/.test(sample)) return 'zh'
-  if (pathName.startsWith('/en-')) return 'en'
-  if (/[\u0400-\u04FF]/.test(sample)) return 'ru'
-  return page.lang === 'zh' || page.lang === 'cn' ? 'zh' : page.lang === 'en' ? 'en' : 'ru'
+  return JSON.parse(fs.readFileSync(importedArticlesPath, 'utf8'))
 }
 
 const headers = [
@@ -255,19 +271,19 @@ const headers = [
 
 const lines = [row(headers)]
 
-for (const page of readLegacyPages()) {
+for (const article of readImportedArticles()) {
   lines.push(row([
-    page.old_url || `${SITE_URL}${page.path}`,
-    page.path,
+    `${SITE_URL}${article.path}`,
+    article.path,
     'preserve_same_path',
-    `${SITE_URL}${page.path}`,
-    page.path,
+    `${SITE_URL}${article.path}`,
+    article.path,
     '200',
     'index, follow',
-    inferLegacyLang(page),
-    page.title || '',
-    'gsc_preserve_or_301_snapshot',
-    'Preserved as standalone static HTML with original path, canonical URL and migration dateModified.',
+    article.lang,
+    article.title || '',
+    'imported_article',
+    'Imported into the normal article catalog with original path, canonical URL and shared article renderer.',
   ]))
 }
 

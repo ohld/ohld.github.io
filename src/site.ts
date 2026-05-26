@@ -64,6 +64,7 @@ export function localizedPath(pathname: string, lang: 'ru' | 'en') {
 }
 
 export function absoluteUrl(path = '/') {
+  if (/^https?:\/\//.test(path)) return path
   const cleanPath = path.startsWith('/') ? path : `/${path}`
   return `${SITE_URL}${cleanPath}`
 }

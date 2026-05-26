@@ -21,11 +21,22 @@ persistent Ghost content volume. Do not replace that service directly.
 
 ## Deploy paths
 
-Current GitHub Pages deploy remains in `.github/workflows/deploy.yml` for the
-existing `ai.okhlopkov.com`/Pages surface. It runs `npm run preflight:pages`, so
-Pages output uses `https://ai.okhlopkov.com` in canonical URLs, `robots.txt` and
-`sitemap.xml`, then verifies legacy URLs, sitemap and backlink-critical paths
-against the built `dist/` and runs browser smoke before publishing.
+Current GitHub Pages deploy remains in `.github/workflows/deploy.yml` and should
+become the canonical `okhlopkov.com` deploy path once GitHub Pages custom domain
+is set to the root domain. It runs `npm run preflight:pages`, so Pages output
+uses `https://okhlopkov.com` in canonical URLs, `robots.txt` and `sitemap.xml`,
+then verifies legacy URLs, sitemap and backlink-critical paths against the built
+`dist/` and runs browser smoke before publishing. `ai.okhlopkov.com` is a
+temporary preview hostname and should be removed after the root-domain Pages
+cutover.
+
+For the Pages cutover, configure the repository Pages custom domain as
+`okhlopkov.com`, not `ai.okhlopkov.com`. GitHub's documented root-domain DNS is
+four `A` records to `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and
+`185.199.111.153`; optional IPv6 uses the four GitHub Pages `AAAA` records.
+`www.okhlopkov.com` can be a DNS-only `CNAME` to `ohld.github.io` so GitHub
+Pages redirects it to the configured apex domain. Keep Cloudflare proxy disabled
+for these records.
 
 For the future `okhlopkov.com` origin, use the Docker path:
 

@@ -16,6 +16,7 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/articles/',
   '/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
+  '/topics/ai-agents/',
   '/about/',
 ].join(','))
   .split(',')
@@ -28,9 +29,16 @@ const viewports = [
 ]
 
 const clickChecks = [
-  { start: '/blog/', selector: '.blog-card', label: 'blog first card' },
-  { start: '/en/blog/', selector: '.blog-card', label: 'en blog first card' },
-  { start: '/', selector: '#home-blog-title + .home-card-list .home-list-link', label: 'home latest blog' },
+  { start: '/blog/', selector: '.blog-card-hitarea', label: 'blog first card' },
+  { start: '/en/blog/', selector: '.blog-card-hitarea', label: 'en blog first card' },
+  { start: '/', selector: '.home-route-panel .home-list-link', label: 'home latest blog' },
+  { start: '/', selector: '.page-header-bio a', label: 'home topic' },
+]
+
+const codeBlockChecks = [
+  { route: '/claude-code-setup-mcp-hooks-skills-2026/', min: 1, label: 'imported article code blocks' },
+  { route: '/articles/ai-tools-for-designers-design-engineering-agents/', min: 1, label: 'article prompt code block' },
+  { route: '/blog/improve-codebase-architecture-prompt/', min: 1, label: 'generated blog code block' },
 ]
 
 const executableCandidates = [
@@ -161,6 +169,34 @@ async function main() {
       })
     }
 
+    for (const check of codeBlockChecks) {
+      errors.length = 0
+      await page.goto(`${baseUrl}${check.route}`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+      await page.waitForSelector('.code-block-copy', { timeout: 5000 }).catch(() => {})
+      const data = await page.evaluate(() => ({
+        title: document.title,
+        canonical: document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '',
+        robots: document.querySelector('meta[name="robots"]')?.getAttribute('content') || '',
+        bodyChars: document.body.innerText.trim().length,
+        hasHeader: Boolean(document.querySelector('.site-header')),
+        hasFooter: Boolean(document.querySelector('.footer')),
+        overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        headerMainOverlap: false,
+        codeBlocks: document.querySelectorAll('.code-block').length,
+        copyButtons: document.querySelectorAll('.code-block-copy').length,
+        tokenSpans: document.querySelectorAll('[class^="code-token-"]').length,
+      }))
+      results.push({
+        viewport: viewport.name,
+        route: `${check.route} code:${check.label}`,
+        expectedCanonical: expectedCanonical(check.route),
+        expectedCodeBlocks: check.min,
+        status: 200,
+        errors: [...errors],
+        ...data,
+      })
+    }
+
     await page.close()
   }
 
@@ -176,6 +212,8 @@ async function main() {
     if (result.bodyChars < 500) issues.push(`short body ${result.bodyChars}`)
     if (result.overflowX > 2) issues.push(`horizontal overflow ${result.overflowX}`)
     if (result.headerMainOverlap) issues.push('header/main overlap')
+    if (result.expectedCodeBlocks && result.codeBlocks < result.expectedCodeBlocks) issues.push(`code blocks ${result.codeBlocks || 0} < ${result.expectedCodeBlocks}`)
+    if (result.expectedCodeBlocks && result.copyButtons < result.expectedCodeBlocks) issues.push(`copy buttons ${result.copyButtons || 0} < ${result.expectedCodeBlocks}`)
     if (result.canonical !== expected) issues.push(`canonical ${result.canonical || '<empty>'} != ${expected}`)
     if (!['index, follow', 'noindex, follow'].includes(result.robots)) issues.push(`robots ${result.robots || '<empty>'}`)
     if (result.errors.length) issues.push(result.errors.join('; '))

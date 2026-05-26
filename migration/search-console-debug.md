@@ -1,7 +1,8 @@
 # Search Console Sitemap Debug Checklist
 
-This checklist is for GitHub Pages/custom-domain deployments of
-`okhlopkov.com` and `ai.okhlopkov.com`.
+This checklist is for the GitHub Pages/custom-domain deployment of
+`okhlopkov.com`. The old `ai.okhlopkov.com` preview should not be used as the
+canonical SEO host after cutover.
 
 ## Official Rules To Respect
 
@@ -27,7 +28,7 @@ Sources:
 
 ## Current Live Observations
 
-Checked on 2026-05-25:
+Checked on 2026-05-25 and 2026-05-26:
 
 - `https://ai.okhlopkov.com/sitemap.xml` returns `200` and `application/xml`,
   but the live sitemap still lists only the old `ai.okhlopkov.com` URLs.
@@ -36,11 +37,12 @@ Checked on 2026-05-25:
   `https://ai.okhlopkov.com/sitemap.xml`.
 - `https://okhlopkov.com/sitemap.xml` currently returns the Ghost sitemap index,
   not the static migration sitemap from this branch.
-- The static migration sitemap should list 99 canonical URLs and include
+- The static migration sitemap should list 124 canonical URLs and include
   `lastmod` for each indexable URL.
 - Live `ai.okhlopkov.com` pages use `https://ai.okhlopkov.com/...` as canonical.
-- This migration branch generates canonical URLs for `https://okhlopkov.com/...`,
-  but it is not live on the main domain yet.
+- This migration branch and the GitHub Pages workflow now generate canonical
+  URLs for `https://okhlopkov.com/...`, but they are not live on the main domain
+  yet.
 - Live `ai.okhlopkov.com` HTML is not an empty SPA shell: pages include headings,
   meta tags and canonical links in the raw response.
 - `https://www.okhlopkov.com/` returns `404`, and `www.ai.okhlopkov.com` does not
@@ -64,8 +66,8 @@ the same problem.
 3. Canonical mismatch:
    sitemap lists one host while page HTML declares another canonical host.
 4. New branch not deployed:
-   local sitemap has 99 canonical URLs, but live `ai.okhlopkov.com` still has
-   the old 7-URL sitemap.
+   local sitemap has 124 canonical URLs, but live `ai.okhlopkov.com` is a
+   temporary preview/old host and may still be missing or stale.
 5. Wrong domain target:
    `okhlopkov.com` is still Ghost/Hetzner/Cloudflare, so GSC for the root domain
    sees Ghost sitemap and old content until DNS/origin changes.
@@ -105,6 +107,5 @@ Expected result for indexable pages:
 - indexing allowed: yes;
 - canonical selected by Google matches our declared canonical.
 
-For `ai.okhlopkov.com`, the first manual GSC check should be URL Inspection for
-`https://ai.okhlopkov.com/about/`: verify `Google-selected canonical` and whether
-GSC attributes the URL to the submitted sitemap.
+After cutover, the first manual GSC checks should use `https://okhlopkov.com/`
+URLs only. Do not submit `ai.okhlopkov.com` as the canonical sitemap host.

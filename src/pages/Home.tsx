@@ -1,19 +1,16 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Footer } from '../components/Footer'
-import { ArrowRightIcon } from '../components/Icons'
 import { trackNav } from '../analytics'
 import { absoluteUrl, SITE_DESCRIPTION } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 import { russianArticleItems, russianBlogItems } from '../blog'
+import { topicPath } from '../topics'
 
 const navItems = [
-  { path: '/blog', title: 'Блог', subtitle: 'Telegram-посты как индексируемые материалы' },
-  { path: '/articles', title: 'Статьи', subtitle: 'Гайды, сравнения и туториалы', badge: 'NEW' },
+  { path: '/blog', title: 'Блог', subtitle: 'Записи и рабочие заметки', items: russianBlogItems.slice(0, 3) },
+  { path: '/articles', title: 'Статьи', subtitle: 'Гайды, сравнения и туториалы', badge: 'NEW', items: russianArticleItems.slice(0, 2) },
   { path: '/about', title: 'Обо мне', subtitle: 'Бэкграунд, опыт и ссылки' },
 ]
-
-const latestBlogItems = russianBlogItems.slice(0, 3)
-const latestArticles = russianArticleItems.slice(0, 2)
 
 export function Home() {
   const navigate = useNavigate()
@@ -38,62 +35,38 @@ export function Home() {
           <span className="page-header-mono">@danokhlopkov</span>
         </div>
         <p className="page-header-bio">
-          AI-агенты на практике: Codex, Claude Code, MCP, OpenClaw и рабочие флоу.
+          Практика <a href={topicPath('ai-agents')}>AI-агентов</a>: <a href={topicPath('codex')}>Codex</a>, <a href={topicPath('claude-code')}>Claude Code</a>, <a href={topicPath('mcp')}>MCP</a>, <a href={topicPath('gstack')}>GStack</a>, <a href={topicPath('openclaw')}>OpenClaw</a>, <a href={topicPath('ton-data')}>TON-данные</a> и <a href={topicPath('telegram-automation')}>Telegram-автоматизация</a>.
         </p>
       </header>
 
-      <main>
-        <section className="home-section home-intro" aria-labelledby="home-intro-title">
-          <h2 id="home-intro-title">Коротко</h2>
-          <p>
-            Это сайт Дана Охлопкова про практические AI-агенты, Claude Code, Codex, MCP, TON-данные и Telegram-автоматизацию. Главная страница — роутер: блог с моими Telegram-постами, статьи и короткий about.
-          </p>
-        </section>
-      </main>
-
-      <nav className="nav-border" aria-label="Основные разделы">
+      <main className="home-sections" aria-label="Основные разделы">
         {navItems.map((item) => (
-          <button
-            key={item.path}
-            type="button"
-            className="nav-row"
-            onClick={() => { trackNav(item.path); navigate(item.path) }}
-          >
-            <div className="nav-row-content">
-              <span className="nav-row-title">{item.title}</span>
-              <span className="nav-row-subtitle">{item.subtitle}</span>
-            </div>
-            <div className="nav-row-right">
-              {item.badge && <span className="nav-row-badge">{item.badge}</span>}
-              <ArrowRightIcon size={20} style={{ opacity: 0.3 }} />
-            </div>
-          </button>
+          <section className="home-route-panel" key={item.path}>
+            <button
+              type="button"
+              className="nav-row"
+              onClick={() => { trackNav(item.path); navigate(item.path) }}
+            >
+              <div className="nav-row-content">
+                <span className="nav-row-title">{item.title}</span>
+                <span className="nav-row-subtitle">{item.subtitle}</span>
+              </div>
+              <div className="nav-row-right">
+                {item.badge && <span className="nav-row-badge">{item.badge}</span>}
+              </div>
+            </button>
+            {item.items && (
+              <div className="home-card-list">
+                {item.items.map((entry) => (
+                  <a className="home-list-link" href={entry.path} key={entry.path}>
+                    <span>{entry.title}</span>
+                  </a>
+                ))}
+              </div>
+            )}
+          </section>
         ))}
-      </nav>
-
-      <section className="home-section" aria-labelledby="home-blog-title">
-        <h2 id="home-blog-title">Последнее из блога</h2>
-        <div className="home-card-list">
-          {latestBlogItems.map((item) => (
-            <a className="home-list-link" href={item.path} key={item.path}>
-              <span>{item.title}</span>
-              <ArrowRightIcon size={16} />
-            </a>
-          ))}
-        </div>
-      </section>
-
-      <section className="home-section" aria-labelledby="home-articles-title">
-        <h2 id="home-articles-title">Статьи</h2>
-        <div className="home-card-list">
-          {latestArticles.map((article) => (
-            <Link className="home-list-link" to={article.path} key={article.path}>
-              <span>{article.title}</span>
-              <ArrowRightIcon size={16} />
-            </Link>
-          ))}
-        </div>
-      </section>
+      </main>
 
       <Footer />
     </div>

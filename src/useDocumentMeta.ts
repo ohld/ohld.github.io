@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { SITE_IMAGE } from './site'
 
 interface DocumentMeta {
   title: string
@@ -7,17 +8,19 @@ interface DocumentMeta {
   lang?: string
   alternates?: Record<string, string>
   robots?: string
+  image?: string
 }
 
 /**
  * Per-page <title>, <meta description>, og:* and canonical link.
  * Updates the existing tags rather than appending new ones — safe to call across navigations.
  */
-export function useDocumentMeta({ title, description, canonical, lang = 'ru', alternates, robots = 'index, follow' }: DocumentMeta) {
+export function useDocumentMeta({ title, description, canonical, lang = 'ru', alternates, robots = 'index, follow', image }: DocumentMeta) {
   useEffect(() => {
     document.title = title
     document.documentElement.lang = lang
     const ogLocale = lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'ru_RU'
+    const socialImage = image || SITE_IMAGE
 
     setMeta('name', 'description', description)
     setMeta('property', 'og:title', title)
@@ -26,6 +29,8 @@ export function useDocumentMeta({ title, description, canonical, lang = 'ru', al
     setMeta('name', 'twitter:title', title)
     setMeta('name', 'twitter:description', description)
     setMeta('name', 'robots', robots)
+    setMeta('property', 'og:image', socialImage)
+    setMeta('name', 'twitter:image', socialImage)
 
     if (canonical) {
       let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
@@ -46,7 +51,7 @@ export function useDocumentMeta({ title, description, canonical, lang = 'ru', al
         setHreflang(hrefLang, href)
       }
     }
-  }, [title, description, canonical, lang, alternates, robots])
+  }, [title, description, canonical, lang, alternates, robots, image])
 }
 
 function setMeta(attr: 'name' | 'property', key: string, content: string | undefined) {

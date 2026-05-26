@@ -4,6 +4,7 @@ import { Home } from './pages/Home'
 import { EnglishHome } from './pages/EnglishHome'
 import { SiteHeader } from './components/SiteHeader'
 import { trackPageView, useScrollDepth } from './analytics'
+import { enhanceCodeBlocks } from './codeBlocks'
 
 // Routes the bot can deep-link into via t.me/ohldbot/ooo?startapp=<slug>.
 // Old `closed` deeplinks remap to `private-channel` for backward compat.
@@ -23,11 +24,13 @@ const articlesIndexImport = () => import('./pages/ArticlesIndex').then(m => ({ d
 const englishArticlesIndexImport = () => import('./pages/EnglishArticlesIndex').then(m => ({ default: m.EnglishArticlesIndex }))
 const articlePageImport = () => import('./pages/BlogArticle').then(m => ({ default: m.BlogArticle }))
 const generatedBlogPostImport = () => import('./pages/GeneratedBlogPost').then(m => ({ default: m.GeneratedBlogPost }))
+const topicPageImport = () => import('./pages/TopicPage').then(m => ({ default: m.TopicPage }))
 const closedImport = () => import('./pages/ClosedChannel').then(m => ({ default: m.ClosedChannel }))
 const aboutImport = () => import('./pages/About').then(m => ({ default: m.About }))
 const englishAboutImport = () => import('./pages/EnglishAbout').then(m => ({ default: m.EnglishAbout }))
 const mvhImport = () => import('./pages/MarkdownVsHtml').then(m => ({ default: m.MarkdownVsHtml }))
 const privacyImport = () => import('./pages/Privacy').then(m => ({ default: m.Privacy }))
+const importedArticleImport = () => import('./pages/ImportedArticle').then(m => ({ default: m.ImportedArticle }))
 
 const BlogIndex = lazy(blogIndexImport)
 const EnglishBlogIndex = lazy(englishBlogIndexImport)
@@ -35,11 +38,13 @@ const ArticlesIndex = lazy(articlesIndexImport)
 const EnglishArticlesIndex = lazy(englishArticlesIndexImport)
 const ArticlePage = lazy(articlePageImport)
 const GeneratedBlogPost = lazy(generatedBlogPostImport)
+const TopicPage = lazy(topicPageImport)
 const ClosedChannel = lazy(closedImport)
 const About = lazy(aboutImport)
 const EnglishAbout = lazy(englishAboutImport)
 const MarkdownVsHtml = lazy(mvhImport)
 const Privacy = lazy(privacyImport)
+const ImportedArticle = lazy(importedArticleImport)
 
 // Preload all chunks after home page renders so subpages open instantly
 function usePreloadChunks() {
@@ -51,11 +56,13 @@ function usePreloadChunks() {
       englishArticlesIndexImport()
       articlePageImport()
       generatedBlogPostImport()
+      topicPageImport()
       closedImport()
       aboutImport()
       englishAboutImport()
       mvhImport()
       privacyImport()
+      importedArticleImport()
     }
     // requestIdleCallback not available in Telegram WebView (iOS)
     const id = typeof requestIdleCallback !== 'undefined'
@@ -98,6 +105,15 @@ function usePageTracking() {
   }, [location.pathname, getScrollDepth])
 }
 
+function useCodeBlockEnhancement() {
+  const location = useLocation()
+
+  useEffect(() => {
+    const id = window.requestAnimationFrame(() => enhanceCodeBlocks(document))
+    return () => window.cancelAnimationFrame(id)
+  }, [location.pathname])
+}
+
 function useStartParamNavigation() {
   const navigate = useNavigate()
   useEffect(() => {
@@ -117,6 +133,7 @@ function useStartParamNavigation() {
 function App() {
   usePreloadChunks()
   usePageTracking()
+  useCodeBlockEnhancement()
   useStartParamNavigation()
 
   return (
@@ -136,6 +153,7 @@ function App() {
           <Route path="/blog/:slug" element={<GeneratedBlogPost />} />
           <Route path="/articles" element={<ArticlesIndex />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
+          <Route path="/topics/:slug" element={<TopicPage />} />
           <Route path="/ai-agents" element={<Navigate to="/articles" replace />} />
           <Route path="/ai-course" element={<Navigate to="/articles" replace />} />
           <Route path="/private-channel" element={<ClosedChannel />} />
@@ -146,6 +164,8 @@ function App() {
           <Route path="/markdown-vs-html" element={<Navigate to="/articles/markdown-vs-html" replace />} />
           <Route path="/articles/markdown-vs-html" element={<MarkdownVsHtml />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/:slug" element={<ImportedArticle />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
     </>

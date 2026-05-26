@@ -29,7 +29,8 @@ const forbiddenPathHints = [
 ]
 
 const checkedFiles = [
-  'content/legacy-pages/pages.json',
+  'content/articles/imported-index.json',
+  'content/articles/imported-content.json',
   'migration/url-map.csv',
   'migration/README.md',
   'migration/visual-assets.md',

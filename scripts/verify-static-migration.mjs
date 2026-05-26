@@ -3,7 +3,8 @@ import fs from 'node:fs'
 
 const baseUrl = (process.env.VERIFY_BASE_URL || 'http://127.0.0.1:4174').replace(/\/$/, '')
 const siteUrl = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/, '')
-const legacyPagesPath = process.env.VERIFY_LEGACY_PAGES || 'content/legacy-pages/pages.json'
+const importedArticlesPath = process.env.VERIFY_IMPORTED_ARTICLES || 'content/articles/imported-index.json'
+const importedArticleContentPath = process.env.VERIFY_IMPORTED_ARTICLE_CONTENT || 'content/articles/imported-content.json'
 const migrationMapPath = process.env.VERIFY_MIGRATION_MAP || 'migration/url-map.csv'
 const backlinkCriticalPath = process.env.VERIFY_BACKLINK_CRITICAL || 'migration/backlink-critical-urls.csv'
 const blogPostsPath = process.env.VERIFY_BLOG_POSTS || 'content/blog-posts'
@@ -18,7 +19,7 @@ const yandexMetrikaId = '46266270'
 const yandexVerificationIds = ['1b82de56693018c1', '3553f1209d48d2c4']
 const expectedSitemapLastmod = process.env.VERIFY_EXPECTED_SITEMAP_LASTMOD || '2026-05-25'
 
-const topLegacySmokePages = [
+const topImportedSmokePages = [
   {
     path: '/claude-code-setup-mcp-hooks-skills-2026/',
     title: 'My Claude Code Setup After 4 Months of Daily Use (2026)',
@@ -58,6 +59,29 @@ function loadGeneratedBlogPosts() {
 }
 
 const generatedBlogPosts = loadGeneratedBlogPosts()
+
+const topicPages = [
+  ['/topics/ai-agents/', 'AI-агенты — Даниил Охлопков'],
+  ['/topics/claude-code/', 'Claude Code — Даниил Охлопков'],
+  ['/topics/codex/', 'Codex — Даниил Охлопков'],
+  ['/topics/mcp/', 'MCP — Даниил Охлопков'],
+  ['/topics/gstack/', 'GStack — Даниил Охлопков'],
+  ['/topics/gbrain/', 'GBrain — Даниил Охлопков'],
+  ['/topics/ai-coding/', 'AI coding — Даниил Охлопков'],
+  ['/topics/ai-transformation/', 'AI-трансформация — Даниил Охлопков'],
+  ['/topics/refactoring/', 'Рефакторинг — Даниил Охлопков'],
+  ['/topics/ai-tools/', 'AI-инструменты — Даниил Охлопков'],
+  ['/topics/design-engineering/', 'Design engineering — Даниил Охлопков'],
+  ['/topics/html/', 'HTML — Даниил Охлопков'],
+  ['/topics/second-brain/', 'Second Brain — Даниил Охлопков'],
+  ['/topics/web-scraping/', 'Web scraping — Даниил Охлопков'],
+  ['/topics/frameworks/', 'Фреймворки для агентов — Даниил Охлопков'],
+  ['/topics/workflow/', 'Workflow — Даниил Охлопков'],
+  ['/topics/community/', 'Community — Даниил Охлопков'],
+  ['/topics/openclaw/', 'OpenClaw — Даниил Охлопков'],
+  ['/topics/ton-data/', 'TON-данные — Даниил Охлопков'],
+  ['/topics/telegram-automation/', 'Telegram-автоматизация — Даниил Охлопков'],
+]
 
 const staticPages = [
   {
@@ -116,6 +140,13 @@ const staticPages = [
     ogLocale: 'en_US',
     hreflangs: ['en', 'x-default'],
   },
+  ...topicPages.map(([path, title]) => ({
+    path,
+    title,
+    lang: 'ru',
+    ogLocale: 'ru_RU',
+    hreflangs: ['ru', 'x-default'],
+  })),
   ...generatedBlogPosts.map((post) => ({
     path: `/blog/${post.slug}/`,
     title: post.title,
@@ -149,6 +180,8 @@ const redirects = [
   ['/tag/telegram-en/', '/en/'],
   ['/tag/web-scraping/', '/web-scraping-ai-agents-2026/'],
   ['/cn/', '/en/'],
+  ['/my-tg-bots/', '/about/'],
+  ['/vibe-coding-guide-2026/', '/articles/'],
 ]
 
 const noindexPages = [
@@ -158,10 +191,9 @@ const noindexPages = [
 const blogArticleChecks = [
   {
     path: '/articles/ai-tools-for-designers-design-engineering-agents/',
-    thumbnail: 'https://i.ytimg.com/vi/fIEMOzz0_AI/hqdefault.jpg',
+    thumbnail: 'https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg',
     youtubeUrl: 'https://www.youtube.com/watch?v=fIEMOzz0_AI',
     requiredText: [
-      'Коротко',
       'Почему агенты делают AI-slop',
       'Промпт, который можно дать агенту',
       'Все статьи',
@@ -174,7 +206,7 @@ const generatedBlogChecks = generatedBlogPosts.map((post) => ({
   title: post.title,
   requiredText: [
     'Что добавилось из обсуждений',
-    'Связанные материалы',
+    'Читать ещё',
   ],
 }))
 
@@ -189,13 +221,19 @@ const migrationMapStaticPaths = [
   '/articles/',
   '/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
+  ...topicPages.map(([path]) => path),
   '/privacy/',
   ...generatedBlogPosts.map((post) => `/blog/${post.slug}/`),
 ]
 
-function loadLegacyPages() {
-  if (!fs.existsSync(legacyPagesPath)) return []
-  return JSON.parse(fs.readFileSync(legacyPagesPath, 'utf8'))
+function loadImportedArticles() {
+  if (!fs.existsSync(importedArticlesPath)) return []
+  return JSON.parse(fs.readFileSync(importedArticlesPath, 'utf8'))
+}
+
+function loadImportedArticleContent() {
+  if (!fs.existsSync(importedArticleContentPath)) return []
+  return JSON.parse(fs.readFileSync(importedArticleContentPath, 'utf8'))
 }
 
 function loadBacklinkCriticalRows() {
@@ -369,33 +407,47 @@ async function verifyRootVerificationMeta() {
   console.log(`✓ yandex verification meta (${yandexVerificationIds.length})`)
 }
 
-async function verifyLegacyPage({ path, title }) {
+async function verifyImportedArticle({ path, title }) {
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
   if (title) assert(readTitle(html) === normalizeText(title), `${path}: title mismatch`)
   assert(readMeta(html, 'canonical') === canonicalUrl(path), `${path}: canonical mismatch`)
   assert(readMeta(html, 'robots') === 'index, follow', `${path}: robots mismatch`)
-  assert(html.includes('Static migration update: 2026-05-25'), `${path}: missing migration update note`)
+  assert(html.includes('data-article-engine="article"'), `${path}: missing common article engine marker`)
+  assert(!html.includes('legacy-'), `${path}: page leaked old renderer class/name`)
+  assert(!html.includes('Static migration update:'), `${path}: public page leaked migration update note`)
+  assert(!html.includes('Original Ghost modified date'), `${path}: public page leaked Ghost modified note`)
+  assert(!html.includes('Original post:'), `${path}: public page leaked original post label`)
+  assert(!html.includes('Оригинал:'), `${path}: public page leaked original post label`)
+  assert(!html.includes('Continue reading'), `${path}: public page leaked old continue-reading footer`)
+  assert(!html.includes('Читайте также'), `${path}: public page leaked old continue-reading footer`)
   assert(html.includes('"dateModified": "2026-05-25T00:00:00+03:00"'), `${path}: missing JSON-LD dateModified`)
-  assert(!path.startsWith('/author/') && !path.startsWith('/tag/') && path !== '/cn/', `${path}: service page leaked into legacy snapshot`)
-  if (verbose) console.log(`✓ legacy ${path}`)
+  assert(!path.startsWith('/author/') && !path.startsWith('/tag/') && path !== '/cn/', `${path}: service page leaked into imported articles`)
+  if (path === '/en-beads-gastown-framework-ai-agents/' || path === '/beads-gastown-framework-ai-agenty/') {
+    assert(html.includes('https://x.com/trq212/status/2014480496013803643'), `${path}: missing X source link`)
+    assert(!html.includes('https://platform.twitter.com/widgets.js'), `${path}: should not load broken X/Twitter widgets script`)
+  }
+  if (path === '/en-second-brain-obsidian-claude-code-assistant/' || path === '/vtoroj-mozg-ai-assistent-obsidian-claude-code/') {
+    assert(html.includes('<ul class="article-task-list">'), `${path}: setup checklist is not normalized as a semantic list`)
+  }
+  if (verbose) console.log(`✓ imported article ${path}`)
 }
 
-async function verifyLegacyPages(legacyPages) {
-  assert(legacyPages.length > 0, `${legacyPagesPath}: no legacy pages loaded`)
+async function verifyImportedArticles(importedArticles) {
+  assert(importedArticles.length > 0, `${importedArticlesPath}: no imported articles loaded`)
   const paths = new Set()
-  for (const page of legacyPages) {
-    assert(page.path, 'legacy page without path')
-    assert(!paths.has(page.path), `duplicate legacy path: ${page.path}`)
-    paths.add(page.path)
-    await verifyLegacyPage(page)
+  for (const article of importedArticles) {
+    assert(article.path, 'imported article without path')
+    assert(!paths.has(article.path), `duplicate imported article path: ${article.path}`)
+    paths.add(article.path)
+    await verifyImportedArticle(article)
   }
 
-  for (const smoke of topLegacySmokePages) {
-    assert(paths.has(smoke.path), `${legacyPagesPath}: missing top legacy page ${smoke.path}`)
+  for (const smoke of topImportedSmokePages) {
+    assert(paths.has(smoke.path), `${importedArticlesPath}: missing top imported article ${smoke.path}`)
   }
-  console.log(`✓ legacy pages (${legacyPages.length})`)
+  console.log(`✓ imported articles (${importedArticles.length})`)
 }
 
 function readHtmlLang(html) {
@@ -438,7 +490,7 @@ async function verifyBlogArticle({ path, thumbnail, youtubeUrl, requiredText }) 
   assert(html.includes(thumbnail), `${path}: missing YouTube thumbnail`)
   assert(html.includes(youtubeUrl), `${path}: missing YouTube watch URL`)
   assert(html.includes('<table>') || html.includes('<table class="article-table"'), `${path}: missing table markup`)
-  assert(html.includes('<pre><code>') || html.includes('class="copy-block"'), `${path}: missing code/prompt block`)
+  assert(html.includes('<pre><code'), `${path}: missing code/prompt block`)
   for (const text of requiredText) {
     assert(html.includes(text), `${path}: missing required text "${text}"`)
   }
@@ -456,6 +508,8 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(!html.includes('<p>&gt;</p>') && !html.includes('&gt;</p>'), `${path}: leaked bare markdown quote marker`)
   assert(!html.includes('SEO'), `${path}: leaked internal search-production label`)
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)
+  assert(!html.includes('>Коротко<'), `${path}: leaked generic summary heading`)
+  assert(!html.includes('Эта страница не про'), `${path}: leaked AI-tell contrast construction`)
   assert(html.includes('"dateModified": "2026-05-25"'), `${path}: missing generated post dateModified`)
   assert(html.includes('/blog/'), `${path}: missing internal blog links`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
@@ -630,17 +684,17 @@ async function verifyOriginHeaders() {
   console.log('✓ origin cache headers')
 }
 
-function verifyMigrationMap(legacyPages) {
+function verifyMigrationMap(importedArticles) {
   const rows = loadMigrationMapRows()
   const byNewPath = new Map(rows.filter((row) => row.new_path).map((row) => [row.new_path, row]))
   const byOldPath = new Map(rows.filter((row) => row.old_path).map((row) => [row.old_path, row]))
 
-  for (const page of legacyPages) {
-    const row = byOldPath.get(page.path)
-    assert(row, `${migrationMapPath}: missing preserved legacy path ${page.path}`)
-    assert(row.action === 'preserve_same_path', `${migrationMapPath}: ${page.path} action mismatch`)
-    assert(row.new_path === page.path, `${migrationMapPath}: ${page.path} new_path mismatch`)
-    assert(row.expected_status === '200', `${migrationMapPath}: ${page.path} expected_status mismatch`)
+  for (const article of importedArticles) {
+    const row = byOldPath.get(article.path)
+    assert(row, `${migrationMapPath}: missing preserved imported article path ${article.path}`)
+    assert(row.action === 'preserve_same_path', `${migrationMapPath}: ${article.path} action mismatch`)
+    assert(row.new_path === article.path, `${migrationMapPath}: ${article.path} new_path mismatch`)
+    assert(row.expected_status === '200', `${migrationMapPath}: ${article.path} expected_status mismatch`)
   }
 
   for (const [from, to] of redirects) {
@@ -688,7 +742,7 @@ async function verifyMigrationMapUrls(rows) {
   console.log(`✓ migration URL rows (${pageCount} pages, ${redirectCount} redirects)`)
 }
 
-function verifyLegacyInternalLinks(legacyPages, migrationRows) {
+function verifyImportedInternalLinks(importedContent, migrationRows) {
   const knownPaths = new Set()
   for (const row of migrationRows) {
     if (row.old_path) knownPaths.add(row.old_path)
@@ -696,8 +750,8 @@ function verifyLegacyInternalLinks(legacyPages, migrationRows) {
   }
   const unmapped = new Map()
 
-  for (const page of legacyPages) {
-    for (const match of (page.article_html || '').matchAll(/href=["']([^"']+)["']/g)) {
+  for (const article of importedContent) {
+    for (const match of (article.bodyHtml || '').matchAll(/href=["']([^"']+)["']/g)) {
       const href = match[1]
       if (!href.startsWith('/')) continue
       const url = new URL(href, siteUrl)
@@ -706,12 +760,12 @@ function verifyLegacyInternalLinks(legacyPages, migrationRows) {
       const pathname = url.pathname.endsWith('/') ? url.pathname : `${url.pathname}/`
       if (knownPaths.has(pathname)) continue
       if (!unmapped.has(pathname)) unmapped.set(pathname, new Set())
-      unmapped.get(pathname).add(page.path)
+      unmapped.get(pathname).add(article.path)
     }
   }
 
-  assert(unmapped.size === 0, `legacy internal links missing from URL map: ${[...unmapped.keys()].join(', ')}`)
-  console.log('✓ legacy internal links')
+  assert(unmapped.size === 0, `imported article internal links missing from URL map: ${[...unmapped.keys()].join(', ')}`)
+  console.log('✓ imported article internal links')
 }
 
 async function verifyMissingUrl() {
@@ -732,19 +786,20 @@ async function verifyMissingUrl() {
 }
 
 async function main() {
-  const legacyPages = loadLegacyPages()
+  const importedArticles = loadImportedArticles()
+  const importedContent = loadImportedArticleContent()
   const backlinkCriticalRows = loadBacklinkCriticalRows()
   console.log(`Verifying ${baseUrl}`)
   for (const page of staticPages) await verifyStaticPage(page)
   for (const page of blogArticleChecks) await verifyBlogArticle(page)
   for (const page of generatedBlogChecks) await verifyGeneratedBlogPost(page)
-  await verifyLegacyPages(legacyPages)
+  await verifyImportedArticles(importedArticles)
   for (const redirect of redirects) await verifyRedirect(redirect)
   for (const path of noindexPages) await verifyNoindexPage(path)
   await verifyBacklinkCriticalUrls(backlinkCriticalRows)
-  const migrationRows = verifyMigrationMap(legacyPages)
+  const migrationRows = verifyMigrationMap(importedArticles)
   await verifyMigrationMapUrls(migrationRows)
-  verifyLegacyInternalLinks(legacyPages, migrationRows)
+  verifyImportedInternalLinks(importedContent, migrationRows)
   await verifySitemap(migrationRows)
   await verifyCrawlerFiles()
   await verifyRootVerificationMeta()

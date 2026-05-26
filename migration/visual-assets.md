@@ -21,6 +21,7 @@ explain, compare, prove, or make the page shareable.
 Preferred sources:
 
 - Dan's own screenshots and screen recordings;
+- images and visuals attached to Dan's original Telegram posts;
 - YouTube thumbnails from Dan's own videos;
 - generated images from Nano Banana or another model;
 - public product screenshots when they are used as factual references;
@@ -102,3 +103,24 @@ Good placements:
 For Telegram-derived posts, keep Dan's original text intact and add visuals as
 an editorial layer around the post, the same way we add headings, FAQ, source
 packs and community insights.
+
+If the source Telegram post has an image, screenshot, chart or other visual,
+reuse it by default. Pick the strongest placement:
+
+- hero/OG image when the visual summarizes the post or makes the card more
+  clickable;
+- inline figure when it supports a specific section;
+- both only when the image remains useful in the article body after serving as
+  the cover.
+
+Use the OHLDBot channel media fetcher for source assets when available:
+
+```bash
+cd /Users/ohld/Documents/GitHub/ohldbot
+python scripts/ohld_agent_api.py channel-media --channel danokhlopkov --message-id <id> --include-base64
+```
+
+If the private API token is not available, public Telegram CDN assets from
+`https://t.me/danokhlopkov/<id>?embed=1&mode=tme` are acceptable for Dan's own
+public channel posts. Store the final asset locally under
+`public/assets/blog/<article-slug>/` instead of hotlinking Telegram.

@@ -1,0 +1,54 @@
+import { Navigate, useParams } from 'react-router-dom'
+import { BackButton } from '../components/BackButton'
+import { BlogCard } from '../components/BlogCard'
+import { Footer } from '../components/Footer'
+import { absoluteUrl } from '../site'
+import { getTopic, getTopicItems, topicPath } from '../topics'
+import { useDocumentMeta } from '../useDocumentMeta'
+
+export function TopicPage() {
+  const { slug } = useParams()
+  const topic = getTopic(slug)
+  const items = getTopicItems(slug)
+
+  if (!topic) return <Navigate to="/articles/" replace />
+
+  useDocumentMeta({
+    title: `${topic.title} — Даниил Охлопков`,
+    description: topic.description,
+    canonical: absoluteUrl(topicPath(topic.slug)),
+    lang: 'ru',
+    alternates: {
+      ru: absoluteUrl(topicPath(topic.slug)),
+      'x-default': absoluteUrl(topicPath(topic.slug)),
+    },
+  })
+
+  return (
+    <div className="page">
+      <div className="subpage-header">
+        <BackButton />
+        <h1 className="subpage-title">{topic.title}</h1>
+        <p className="subpage-subtitle">{topic.description}</p>
+      </div>
+
+      <main className="blog-list" aria-label={`Материалы по теме ${topic.title}`}>
+        {!items.length && (
+          <article className="blog-card blog-card-no-thumb">
+            <a className="blog-card-hitarea" href="/articles/" aria-label="Статьи и туториалы" />
+            <div className="blog-card-body">
+              <h2>Статьи и туториалы</h2>
+              <p>Пока отдельного хаба нет, ближайшие материалы лежат в общем разделе статей.</p>
+              <span className="blog-card-link">Открыть</span>
+            </div>
+          </article>
+        )}
+        {items.map((item) => (
+          <BlogCard article={item} ctaLabel="Читать" key={item.path} />
+        ))}
+      </main>
+
+      <Footer />
+    </div>
+  )
+}

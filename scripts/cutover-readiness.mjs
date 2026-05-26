@@ -12,18 +12,17 @@ const requiredFiles = [
   'Dockerfile',
   'compose.yaml',
   'nginx.conf',
-  'content/legacy-pages/pages.json',
+  'content/articles/imported-index.json',
+  'content/articles/imported-content.json',
   'migration/backlink-critical-urls.csv',
   'migration/cutover-checklist.md',
   'migration/vps-deploy.md',
   'scripts/verify-static-migration.mjs',
   'scripts/browser-smoke.mjs',
-  'scripts/check-legacy-drift.mjs',
 ]
 
 const requiredPackageScripts = [
   'build:okhlopkov',
-  'check:legacy-drift',
   'check:public-safety',
   'cutover:live',
   'preflight:okhlopkov',
@@ -32,8 +31,8 @@ const requiredPackageScripts = [
   'verify:migration',
 ]
 
-const EXPECTED_LEGACY_PAGES = 88
-const EXPECTED_REDIRECTS = 23
+const EXPECTED_IMPORTED_ARTICLES = 88
+const EXPECTED_REDIRECTS = 25
 const BASE_STATIC_PATHS = [
   '/',
   '/en/',
@@ -45,6 +44,26 @@ const BASE_STATIC_PATHS = [
   '/articles/',
   '/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
+  '/topics/ai-agents/',
+  '/topics/claude-code/',
+  '/topics/codex/',
+  '/topics/mcp/',
+  '/topics/gstack/',
+  '/topics/gbrain/',
+  '/topics/ai-coding/',
+  '/topics/ai-transformation/',
+  '/topics/refactoring/',
+  '/topics/ai-tools/',
+  '/topics/design-engineering/',
+  '/topics/html/',
+  '/topics/second-brain/',
+  '/topics/web-scraping/',
+  '/topics/frameworks/',
+  '/topics/workflow/',
+  '/topics/community/',
+  '/topics/openclaw/',
+  '/topics/ton-data/',
+  '/topics/telegram-automation/',
   '/privacy/',
 ]
 const GENERATED_BLOG_POSTS_PATH = 'content/blog-posts'
@@ -170,11 +189,11 @@ if (fs.existsSync('package.json')) {
   }
 }
 
-if (fs.existsSync('content/legacy-pages/pages.json')) {
-  const legacyPages = readJson('content/legacy-pages/pages.json')
-  const paths = new Set(legacyPages.map((page) => page.path).filter(Boolean))
-  check(legacyPages.length === EXPECTED_LEGACY_PAGES, `legacy snapshot has ${EXPECTED_LEGACY_PAGES} pages`, `legacy snapshot page count is ${legacyPages.length}, expected ${EXPECTED_LEGACY_PAGES}`)
-  check(paths.size === legacyPages.length, 'legacy snapshot paths are unique', 'legacy snapshot has duplicate paths')
+if (fs.existsSync('content/articles/imported-index.json')) {
+  const importedArticles = readJson('content/articles/imported-index.json')
+  const paths = new Set(importedArticles.map((article) => article.path).filter(Boolean))
+  check(importedArticles.length === EXPECTED_IMPORTED_ARTICLES, `imported article catalog has ${EXPECTED_IMPORTED_ARTICLES} articles`, `imported article catalog has ${importedArticles.length}, expected ${EXPECTED_IMPORTED_ARTICLES}`)
+  check(paths.size === importedArticles.length, 'imported article paths are unique', 'imported article catalog has duplicate paths')
 }
 
 if (fs.existsSync('migration/url-map.csv')) {
@@ -182,9 +201,9 @@ if (fs.existsSync('migration/url-map.csv')) {
   const preserved = rows.filter((row) => row.action === 'preserve_same_path')
   const redirects = rows.filter((row) => row.expected_status === '308')
   const staticPages = rows.filter((row) => row.action === 'new_static_page')
-  const expectedRows = EXPECTED_LEGACY_PAGES + EXPECTED_REDIRECTS + REQUIRED_STATIC_PATHS.length
+  const expectedRows = EXPECTED_IMPORTED_ARTICLES + EXPECTED_REDIRECTS + REQUIRED_STATIC_PATHS.length
   check(rows.length === expectedRows, `migration URL map has ${expectedRows} rows`, `migration URL map has ${rows.length} rows, expected ${expectedRows}`)
-  check(preserved.length === EXPECTED_LEGACY_PAGES, `migration URL map preserves ${EXPECTED_LEGACY_PAGES} legacy pages`, `migration URL map preserves ${preserved.length} legacy pages, expected ${EXPECTED_LEGACY_PAGES}`)
+  check(preserved.length === EXPECTED_IMPORTED_ARTICLES, `migration URL map preserves ${EXPECTED_IMPORTED_ARTICLES} imported articles`, `migration URL map preserves ${preserved.length} imported articles, expected ${EXPECTED_IMPORTED_ARTICLES}`)
   check(redirects.length === EXPECTED_REDIRECTS, `migration URL map has ${EXPECTED_REDIRECTS} redirects`, `migration URL map has ${redirects.length} redirects, expected ${EXPECTED_REDIRECTS}`)
   check(staticPages.length === REQUIRED_STATIC_PATHS.length, `migration URL map has ${REQUIRED_STATIC_PATHS.length} new static pages`, `migration URL map has ${staticPages.length} new static pages, expected ${REQUIRED_STATIC_PATHS.length}`)
   for (const requiredPath of REQUIRED_STATIC_PATHS) {

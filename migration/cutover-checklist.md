@@ -12,8 +12,13 @@ This is the operational checklist for replacing the current Ghost/Coolify
 - Duplicate static surfaces redirect into the focused IA:
   `/work-together/` → `/about/` and `/markdown-vs-html/` →
   `/articles/markdown-vs-html/`.
-- `ai.okhlopkov.com` can stay on GitHub Pages as a preview/mini-app surface, but
-  `okhlopkov.com` is the canonical SEO domain.
+- `okhlopkov.com` is the canonical SEO domain and should become the GitHub Pages
+  custom domain for this repository.
+- `ai.okhlopkov.com` is temporary preview history. Remove it after the
+  root-domain Pages cutover.
+- `ohld.github.io` is the GitHub Pages default host. After Pages is configured
+  with `okhlopkov.com` as the custom domain, it should redirect to the root
+  domain.
 - The known broken sitemap problem was observed on the GitHub Pages deployment.
   Re-test on the future `okhlopkov.com` origin instead of assuming the same
   failure mode will repeat.
@@ -89,21 +94,35 @@ paid SEO exports to this public repository.
 ## DNS / Cloudflare Switch
 
 1. Keep the old Ghost/Coolify service running during the first switch.
-2. Point `okhlopkov.com` to the new RU-accessible static origin.
-3. Preserve HTTPS and non-`www` canonical host.
-4. Ensure `http://okhlopkov.com/` uses permanent `301` or `308` to HTTPS.
-5. Ensure `www.okhlopkov.com` either redirects permanently to non-`www` or stays
+2. For GitHub Pages cutover, set the repository Pages custom domain to
+   `okhlopkov.com`.
+3. Point `okhlopkov.com` to GitHub Pages using DNS-only records, not Cloudflare
+   orange-cloud/proxied records:
+   - `A @ 185.199.108.153`
+   - `A @ 185.199.109.153`
+   - `A @ 185.199.110.153`
+   - `A @ 185.199.111.153`
+   - optional `AAAA @ 2606:50c0:8000::153`
+   - optional `AAAA @ 2606:50c0:8001::153`
+   - optional `AAAA @ 2606:50c0:8002::153`
+   - optional `AAAA @ 2606:50c0:8003::153`
+   - optional `CNAME www ohld.github.io`
+4. Remove or stop using `ai.okhlopkov.com` after `okhlopkov.com` is live and
+   verified.
+5. Preserve HTTPS and non-`www` canonical host.
+6. Ensure `http://okhlopkov.com/` uses permanent `301` or `308` to HTTPS.
+7. Ensure `www.okhlopkov.com` either redirects permanently to non-`www` or stays
    intentionally unused and absent from sitemap/canonicals.
-6. Run the live cutover command against `https://okhlopkov.com`, including edge
+8. Run the live cutover command against `https://okhlopkov.com`, including edge
    canonicalization and browser smoke:
 
    ```bash
    npm run cutover:live
    ```
 
-7. Submit `https://okhlopkov.com/sitemap.xml` in the matching Search Console
+9. Submit `https://okhlopkov.com/sitemap.xml` in the matching Search Console
    property.
-8. In Search Console URL Inspection, live-test:
+10. In Search Console URL Inspection, live-test:
    - sitemap URL and `lastmod` entries;
    - homepage;
    - one new blog post index page;

@@ -7,12 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build && node scripts/prerender.mjs",
     "build:okhlopkov": "SITE_URL=https://okhlopkov.com VITE_SITE_URL=https://okhlopkov.com npm run build",
-    "build:pages": "SITE_URL=https://ai.okhlopkov.com VITE_SITE_URL=https://ai.okhlopkov.com npm run build",
+    "build:pages": "SITE_URL=https://okhlopkov.com VITE_SITE_URL=https://okhlopkov.com npm run build",
     "preview": "vite preview",
     "export:ghost": "node scripts/export-ghost.mjs",
     "migration:map": "node scripts/write-migration-map.mjs",
-    "snapshot:legacy": "node scripts/snapshot-legacy-pages.mjs",
-    "check:legacy-drift": "node scripts/check-legacy-drift.mjs",
     "check:public-safety": "node scripts/check-public-safety.mjs",
     "readiness:cutover": "node scripts/cutover-readiness.mjs",
     "smoke:browser": "node scripts/browser-smoke.mjs",
@@ -22,7 +20,7 @@
     "verify:live": "VERIFY_BASE_URL=https://okhlopkov.com SITE_URL=https://okhlopkov.com VERIFY_REQUIRE_STRICT_404=1 VERIFY_REQUIRE_REAL_REDIRECTS=1 VERIFY_REQUIRE_EDGE_REDIRECTS=1 VERIFY_REQUIRE_ORIGIN_HEADERS=1 npm run verify:migration",
     "cutover:live": "npm run verify:live && SMOKE_BASE_URL=https://okhlopkov.com SITE_URL=https://okhlopkov.com npm run smoke:browser",
     "preflight:okhlopkov": "npm run build:okhlopkov && npm run migration:map && npm run check:public-safety && SITE_URL=https://okhlopkov.com npm run verify:dist && SITE_URL=https://okhlopkov.com npm run smoke:dist",
-    "preflight:pages": "npm run build:pages && npm run migration:map && npm run check:public-safety && SITE_URL=https://ai.okhlopkov.com npm run verify:dist && SITE_URL=https://ai.okhlopkov.com npm run smoke:dist"
+    "preflight:pages": "npm run build:pages && npm run migration:map && npm run check:public-safety && SITE_URL=https://okhlopkov.com npm run verify:dist && SITE_URL=https://okhlopkov.com npm run smoke:dist"
   },
   "dependencies": {
     "react": "^19.2.0",
