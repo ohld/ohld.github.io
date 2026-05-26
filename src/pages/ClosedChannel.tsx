@@ -3,12 +3,13 @@ import { Footer } from '../components/Footer'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
 import { useDocumentMeta } from '../useDocumentMeta'
+import { siteUrl } from '../site'
 
 export function ClosedChannel() {
   useDocumentMeta({
     title: 'Закрытый канал — Даниил Охлопков',
     description: 'Закрытое сообщество AI / web3 / TG+TON фаундеров и билдеров. Живые мысли без AI-слопа.',
-    canonical: 'https://ai.okhlopkov.com/private-channel/',
+    canonical: siteUrl('/private-channel/'),
   })
   return (
     <div className="page">

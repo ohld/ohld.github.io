@@ -17,6 +17,7 @@ const dist = 'dist'
 const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
 const DEFAULT_SITE_URL = 'https://ai.okhlopkov.com'
 const SITE_URL = (process.env.SITE_URL || 'https://ohld.github.io').replace(/\/+$/, '')
+const SITEMAP_LASTMOD = process.env.SITEMAP_LASTMOD || '2026-05-26'
 
 function siteUrl(pathname = '/') {
   return `${SITE_URL}${pathname.startsWith('/') ? pathname : `/${pathname}`}`
@@ -412,6 +413,11 @@ const bundleParts = BUNDLE_SLUGS.map(slug => {
 })
 fs.writeFileSync(path.join(dist, 'llms-full.txt'), bundleHeader + bundleParts.join('\n\n---\n\n'))
 
+const llmsPath = path.join(dist, 'llms.txt')
+if (fs.existsSync(llmsPath)) {
+  fs.writeFileSync(llmsPath, applySiteUrl(fs.readFileSync(llmsPath, 'utf8')))
+}
+
 // ---- Minimal XML sitemap for Google Search Console ----
 const SITEMAP_URLS = [
   siteUrl('/'),
@@ -421,16 +427,20 @@ const SITEMAP_URLS = [
   siteUrl('/private-channel/'),
   siteUrl('/work-together/'),
   siteUrl('/markdown-vs-html/'),
-]
+].map((loc) => ({ loc, lastmod: SITEMAP_LASTMOD }))
 
 function xmlText(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${SITEMAP_URLS.map(loc => `  <url>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+${SITEMAP_URLS.map(({ loc, lastmod }) => `  <url>
     <loc>${xmlText(loc)}</loc>
+    <lastmod>${xmlText(lastmod)}</lastmod>
   </url>`).join('\n')}
 </urlset>
 `

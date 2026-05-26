@@ -5,6 +5,7 @@ import { ArrowRightIcon, ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
 import { trackShare } from '../analytics'
 import { useDocumentMeta } from '../useDocumentMeta'
+import { siteUrl } from '../site'
 
 const SHARE_URL = 'https://t.me/ohldbot/ooo'
 const SHARE_TEXT = 'Бесплатный курс по AI-агентам от @danokhlopkov'
@@ -165,7 +166,7 @@ export function AICourse() {
   useDocumentMeta({
     title: 'AI Agents курс — Даниил Охлопков',
     description: 'Бесплатный курс по AI-агентам на основе моих публикаций. Claude Code, MCP, vibe-coding, реальные кейсы.',
-    canonical: 'https://ai.okhlopkov.com/ai-course/',
+    canonical: siteUrl('/ai-course/'),
   })
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })

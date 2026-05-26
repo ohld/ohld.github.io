@@ -5,6 +5,7 @@ import { ArrowRightIcon, ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
 import { trackNav } from '../analytics'
 import { useDocumentMeta } from '../useDocumentMeta'
+import { siteUrl } from '../site'
 
 const navItems = [
   { path: '/about', title: 'Знакомство', subtitle: 'Обо мне подробнее' },
@@ -33,7 +34,7 @@ export function Home() {
   useDocumentMeta({
     title: 'Даниил Охлопков — AI-агенты, данные, TON и Telegram',
     description: 'Head of Analytics @ TON Foundation. AI-агенты, on-chain аналитика, Telegram/TON, лучшие посты и консалтинг.',
-    canonical: 'https://ai.okhlopkov.com/',
+    canonical: siteUrl('/'),
   })
 
   return (

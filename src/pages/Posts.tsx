@@ -3,6 +3,7 @@ import { BackButton } from '../components/BackButton'
 import { PostCard } from '../components/PostCard'
 import { Footer } from '../components/Footer'
 import { useDocumentMeta } from '../useDocumentMeta'
+import { siteUrl } from '../site'
 
 interface Post {
   id: number
@@ -35,7 +36,7 @@ export function Posts() {
   useDocumentMeta({
     title: 'Топ посты — Даниил Охлопков',
     description: 'Лучшие посты @danokhlopkov: AI-агенты, крипта, TON, стартапы, данные.',
-    canonical: 'https://ai.okhlopkov.com/posts/',
+    canonical: siteUrl('/posts/'),
   })
   const [activeFilter, setActiveFilter] = useState<string>(TOP)
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE)

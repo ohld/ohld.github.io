@@ -3,12 +3,13 @@ import { Footer } from '../components/Footer'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
 import { useDocumentMeta } from '../useDocumentMeta'
+import { siteUrl } from '../site'
 
 export function WorkTogether() {
   useDocumentMeta({
     title: 'Го поработаем — Даниил Охлопков',
     description: 'Консалтинг по AI-агентам, web3 и TON, реклама в @danokhlopkov, коллабы.',
-    canonical: 'https://ai.okhlopkov.com/work-together/',
+    canonical: siteUrl('/work-together/'),
   })
   return (
     <div className="page">

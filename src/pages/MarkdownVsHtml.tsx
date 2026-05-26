@@ -1,5 +1,6 @@
 import { BackButton } from '../components/BackButton'
 import { useDocumentMeta } from '../useDocumentMeta'
+import { siteUrl } from '../site'
 
 const ARTICLE_HTML = `
 <div class="mvh-meta">
@@ -362,7 +363,7 @@ export function MarkdownVsHtml() {
   useDocumentMeta({
     title: 'Markdown мёртв — да здравствует HTML | Даниил Охлопков',
     description: 'Почему HTML побеждает markdown как формат вывода для AI-агентов. Плотность инфы, читаемость, шеринг, интерактив. С примерами промптов и реальными кейсами.',
-    canonical: 'https://ai.okhlopkov.com/markdown-vs-html/',
+    canonical: siteUrl('/markdown-vs-html/'),
   })
 
   return (
