@@ -142,12 +142,12 @@
   {
     "path": "/telegram-mcp-server-guide/",
     "slug": "telegram-mcp-server-guide",
-    "title": "Build a Telegram MCP Server for Claude Code: Complete Guide",
-    "description": "Build a Telegram MCP server with Telethon and Python. Read messages, send replies, manage chats — all from Claude Code.",
+    "title": "Telegram MCP Server for Claude Code: Telethon, MTProto and Real Workflows",
+    "description": "How to build a Telegram MCP server for Claude Code with Telethon: tools, auth, session strings, async traps, security boundaries and production workflows.",
     "lang": "en",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-25",
-    "readingTime": "5 min",
+    "updatedAt": "2026-05-26",
+    "readingTime": "8 min",
     "tags": [
       "Telegram"
     ],
@@ -478,12 +478,12 @@
   {
     "path": "/web-scraping-ai-agents-2026/",
     "slug": "web-scraping-ai-agents-2026",
-    "title": "Web Scraping Is Dead: What AI Agents Replaced It With",
-    "description": "I wrote a scraping guide in 2021. In 2026, AI agents extract data while I describe what I need. Here's my actual workflow shift.",
+    "title": "Web Scraping with AI Agents: What Replaced Manual Parsers in 2026",
+    "description": "How AI agents changed web scraping: when to use browser agents, when to write parsers, and how I split one-off extraction from production data pipelines.",
     "lang": "en",
     "publishedAt": "2026-02-11",
-    "updatedAt": "2026-05-25",
-    "readingTime": "9 min",
+    "updatedAt": "2026-05-26",
+    "readingTime": "10 min",
     "tags": [
       "Web Scraping"
     ],
@@ -590,12 +590,12 @@
   {
     "path": "/second-brain-obsidian-claude-code/",
     "slug": "second-brain-obsidian-claude-code",
-    "title": "Second brain: Obsidian + Claude Code setup guide",
-    "description": "How I built a personal AI assistant with Obsidian and Claude Code. Voice notes, project docs, and CLAUDE.md instructions.",
+    "title": "Obsidian Second Brain with Claude Code: My Agent-Readable Vault Setup",
+    "description": "How I use Obsidian, Claude Code, CLAUDE.md and voice notes as an agent-readable second brain: folder structure, rules, workflows and failure modes.",
     "lang": "en",
     "publishedAt": "2026-02-03",
-    "updatedAt": "2026-05-25",
-    "readingTime": "11 min",
+    "updatedAt": "2026-05-26",
+    "readingTime": "13 min",
     "tags": [
       "AI"
     ],
@@ -1114,12 +1114,12 @@
   {
     "path": "/how-to-parse-any-website/",
     "slug": "how-to-parse-any-website",
-    "title": "How to parse any website",
-    "description": "",
+    "title": "How to Parse Any Website: API, XHR, HTML and AI Agents",
+    "description": "A practical hierarchy for parsing any website: official APIs, XHR requests, embedded JSON, headless browsers, HTML parsing, and when AI agents are enough.",
     "lang": "en",
     "publishedAt": "2021-09-13",
-    "updatedAt": "2026-05-25",
-    "readingTime": "4 min",
+    "updatedAt": "2026-05-26",
+    "readingTime": "7 min",
     "tags": [
       "Parsing"
     ],
