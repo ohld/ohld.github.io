@@ -23,8 +23,8 @@ export function BlogCard({
     <article className={cardClassName}>
       <a className="blog-card-hitarea" href={article.path} aria-label={article.title} />
       {article.thumbnail && (
-        <div className="blog-card-media" aria-hidden="true">
-          <img className="blog-card-thumb" src={article.thumbnail} alt="" loading="lazy" />
+        <div className="blog-card-media">
+          <img className="blog-card-thumb" src={article.thumbnail} alt={article.title} loading="lazy" />
         </div>
       )}
       <div className="blog-card-body">

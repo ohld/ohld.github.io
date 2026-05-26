@@ -313,6 +313,14 @@ function normalizeText(s = '') {
   return decodeHtml(s).replace(/\s+/g, ' ').trim()
 }
 
+function stripHtmlText(html = '') {
+  return normalizeText(html
+    .replace(/<script\b[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style\b[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<svg\b[\s\S]*?<\/svg>/gi, ' ')
+    .replace(/<[^>]+>/g, ' '))
+}
+
 async function fetchManual(path) {
   return fetch(absolute(path), {
     redirect: 'manual',
@@ -399,6 +407,17 @@ function verifyAnalyticsSnippet(html, path) {
   assert(html.includes(`https://mc.yandex.ru/watch/${yandexMetrikaId}`), `${path}: missing Yandex Metrika noscript pixel`)
 }
 
+function verifyImageAltText(html, path) {
+  const missing = []
+  for (const match of html.matchAll(/<img\b([^>]*)>/gi)) {
+    const attrs = parseAttrs(match[1])
+    const src = attrs.src || '<inline image>'
+    if (src.includes('mc.yandex.ru/watch/')) continue
+    if (!attrs.alt?.trim()) missing.push(src)
+  }
+  assert(missing.length === 0, `${path}: images missing descriptive alt text: ${[...new Set(missing)].slice(0, 8).join(', ')}`)
+}
+
 async function verifyAnalyticsEventBundle() {
   const res = await fetchManual('/')
   assert(res.status === 200, `/: expected 200 for analytics bundle check, got ${res.status}`)
@@ -435,6 +454,29 @@ async function verifyAnalyticsEventBundle() {
   console.log('✓ analytics event bundle')
 }
 
+async function verifySeoAuditBasics() {
+  const res = await fetchManual('/')
+  assert(res.status === 200, `/: expected 200 for SEO audit basics, got ${res.status}`)
+  const html = await res.text()
+  assert(/<meta\s+name=["']viewport["'][^>]+width=device-width[^>]+initial-scale=1/i.test(html), '/: missing responsive viewport')
+  verifyImageAltText(html, '/')
+
+  const words = stripHtmlText(html).split(/\s+/).filter((word) => word.length > 1).length
+  assert(words >= 500, `/: homepage crawlable text should be at least 500 words, got ${words}`)
+
+  const cssPaths = [...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["']/g)]
+    .map((match) => new URL(match[1], siteUrl).pathname)
+  assert(cssPaths.length > 0, '/: missing stylesheet asset for mobile SEO check')
+  const css = (await Promise.all(cssPaths.map(async (cssPath) => {
+    const cssRes = await fetchManual(cssPath)
+    assert(cssRes.status === 200, `${cssPath}: expected 200 for mobile SEO CSS check, got ${cssRes.status}`)
+    return cssRes.text()
+  }))).join('\n')
+  assert(css.includes('min-height:44px'), 'mobile SEO CSS: missing 44px tap target rule')
+  assert(css.includes('home-seo-section'), 'mobile SEO CSS: missing homepage content section styling')
+  console.log(`✓ SEO audit basics (${words} homepage words)`)
+}
+
 function verifyArticleContentAnalyticsMarkup(html, path) {
   assert(readMeta(html, 'og:type') === 'article', `${path}: og:type should be article`)
   assert(readMeta(html, 'article:author') === 'Даниил Охлопков', `${path}: missing article author meta`)
@@ -443,6 +485,7 @@ function verifyArticleContentAnalyticsMarkup(html, path) {
   assert(html.includes(`"url": "${canonicalUrl(path)}#article-content"`), `${path}: missing article JSON-LD content URL`)
   assert(html.includes('"text":'), `${path}: missing article JSON-LD text`)
   assert(html.includes('id="article-content"'), `${path}: missing article content anchor`)
+  verifyImageAltText(html, path)
 }
 
 function assertNoMalformedExternalLinks(html, path) {
@@ -534,6 +577,7 @@ async function verifyStaticPage({ path, title, lang = 'ru', ogLocale = 'ru_RU', 
   assert(readMeta(html, 'og:locale') === ogLocale, `${path}: og:locale mismatch`)
   assert(readMeta(html, 'canonical') === canonicalUrl(path), `${path}: canonical mismatch`)
   assert(readMeta(html, 'robots') === 'index, follow', `${path}: robots mismatch`)
+  verifyImageAltText(html, path)
   const actualHreflangs = readHreflangs(html)
   for (const hreflang of hreflangs) {
     assert(actualHreflangs.has(hreflang), `${path}: missing hreflang ${hreflang}`)
@@ -867,6 +911,7 @@ async function main() {
   await verifySitemap(migrationRows)
   await verifyCrawlerFiles()
   await verifyRootVerificationMeta()
+  await verifySeoAuditBasics()
   await verifyAnalyticsEventBundle()
   await verifyOriginHeaders()
   await verifyMissingUrl()
