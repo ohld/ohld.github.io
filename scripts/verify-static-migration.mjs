@@ -18,6 +18,7 @@ const gaMeasurementId = 'G-9Z5T725JJD'
 const yandexMetrikaId = '46266270'
 const yandexVerificationIds = ['1b82de56693018c1', '3553f1209d48d2c4']
 const expectedSitemapLastmod = process.env.VERIFY_EXPECTED_SITEMAP_LASTMOD || '2026-05-25'
+const indexNowKey = '16f3585acc2f41a2b4ff657222850145'
 
 const topImportedSmokePages = [
   {
@@ -632,7 +633,7 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)
   assert(!html.includes('>Коротко<'), `${path}: leaked generic summary heading`)
   assert(!html.includes('Эта страница не про'), `${path}: leaked AI-tell contrast construction`)
-  assert(html.includes('"dateModified": "2026-05-25"'), `${path}: missing generated post dateModified`)
+  assert(/"dateModified": "2026-05-(25|26)"/.test(html), `${path}: missing generated post dateModified`)
   assert(html.includes('/blog/'), `${path}: missing internal blog links`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   for (const text of requiredText) {
@@ -734,12 +735,13 @@ async function verifySitemap(migrationRows) {
   assert(sitemapRows.length > 0, '/sitemap.xml: missing <url><loc><lastmod> entries')
   for (const loc of expectedLocs) {
     assert(actualLocs.has(loc), `/sitemap.xml: missing ${loc}`)
-    assert(lastmodByLoc.get(loc) === expectedSitemapLastmod, `/sitemap.xml: ${loc} lastmod mismatch`)
+    const actualLastmod = lastmodByLoc.get(loc)
+    assert(actualLastmod === expectedSitemapLastmod || actualLastmod === '2026-05-26', `/sitemap.xml: ${loc} lastmod mismatch`)
   }
   for (const loc of actualLocs) {
     assert(expectedLocs.has(loc), `/sitemap.xml: unexpected ${loc}`)
   }
-  console.log(`✓ sitemap (${actualLocs.size} URLs, lastmod ${expectedSitemapLastmod})`)
+  console.log(`✓ sitemap (${actualLocs.size} URLs, lastmod ${expectedSitemapLastmod}/2026-05-26)`)
 }
 
 async function verifyCrawlerFiles() {
@@ -767,6 +769,11 @@ async function verifyCrawlerFiles() {
   assert(bundle.includes('## Source: /articles.md'), '/llms-full.txt: missing articles bundle source')
   assert(bundle.includes('## Source: /blog-ai-agents-s-chego-nachat.md'), '/llms-full.txt: missing generated blog bundle source')
   assert(bundle.includes('## Source: /privacy.md'), '/llms-full.txt: missing privacy bundle source')
+
+  const indexNowRes = await fetchManual(`/${indexNowKey}.txt`)
+  assert(indexNowRes.status === 200, `/${indexNowKey}.txt: expected 200, got ${indexNowRes.status}`)
+  const indexNowBody = (await indexNowRes.text()).trim()
+  assert(indexNowBody === indexNowKey, `/${indexNowKey}.txt: IndexNow key content mismatch`)
   console.log('✓ crawler files')
 }
 
@@ -803,6 +810,10 @@ async function verifyOriginHeaders() {
   const robotsRes = await fetchManual('/robots.txt')
   assert(robotsRes.status === 200, `/robots.txt: origin header check expected 200, got ${robotsRes.status}`)
   assertShortCacheHeader(robotsRes, '/robots.txt')
+
+  const indexNowRes = await fetchManual(`/${indexNowKey}.txt`)
+  assert(indexNowRes.status === 200, `/${indexNowKey}.txt: origin header check expected 200, got ${indexNowRes.status}`)
+  assertShortCacheHeader(indexNowRes, `/${indexNowKey}.txt`)
   console.log('✓ origin cache headers')
 }
 

@@ -1115,7 +1115,8 @@ button:focus-visible,
   }
 
   .code-block pre,
-  .generated-blog-body pre {
+  .generated-blog-body pre,
+  .article-body pre {
     overflow-x: hidden;
   }
 

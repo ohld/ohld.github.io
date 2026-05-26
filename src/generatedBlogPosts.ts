@@ -3,6 +3,9 @@ import claudeVsCodexFromTelegram from '../content/blog-posts/claude-code-vs-code
 import gstackGoalFromTelegram from '../content/blog-posts/gstack-goal-office-hours-ai-workflow.md?raw'
 import companyContextFromTelegram from '../content/blog-posts/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain.md?raw'
 import improveArchitectureFromTelegram from '../content/blog-posts/improve-codebase-architecture-prompt.md?raw'
+import aiSetupFromTelegram from '../content/blog-posts/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty.md?raw'
+import tmaVibecodingFromTelegram from '../content/blog-posts/vibecoding-telegram-mini-app-claude-code.md?raw'
+import vacationAgentsFromTelegram from '../content/blog-posts/business-on-ai-agent-claude-code-paperclip-gstack.md?raw'
 
 interface BlogListItem {
   path: string
@@ -40,6 +43,9 @@ const sources = [
   gstackGoalFromTelegram,
   companyContextFromTelegram,
   improveArchitectureFromTelegram,
+  aiSetupFromTelegram,
+  tmaVibecodingFromTelegram,
+  vacationAgentsFromTelegram,
 ]
 
 function parseFrontmatter(raw: string): GeneratedBlogPost {

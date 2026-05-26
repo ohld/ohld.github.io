@@ -12,6 +12,8 @@
     "export:ghost": "node scripts/export-ghost.mjs",
     "migration:map": "node scripts/write-migration-map.mjs",
     "check:public-safety": "node scripts/check-public-safety.mjs",
+    "indexnow:dry-run": "INDEXNOW_DRY_RUN=1 node scripts/submit-indexnow.mjs",
+    "indexnow:submit": "node scripts/submit-indexnow.mjs",
     "readiness:cutover": "node scripts/cutover-readiness.mjs",
     "smoke:browser": "node scripts/browser-smoke.mjs",
     "smoke:dist": "node scripts/serve-dist-and-smoke.mjs",
