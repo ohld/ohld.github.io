@@ -15,6 +15,16 @@ import path from 'node:path'
 
 const dist = 'dist'
 const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
+const DEFAULT_SITE_URL = 'https://ai.okhlopkov.com'
+const SITE_URL = (process.env.SITE_URL || 'https://ohld.github.io').replace(/\/+$/, '')
+
+function siteUrl(pathname = '/') {
+  return `${SITE_URL}${pathname.startsWith('/') ? pathname : `/${pathname}`}`
+}
+
+function applySiteUrl(html) {
+  return html.replaceAll(DEFAULT_SITE_URL, SITE_URL)
+}
 
 const NAV_LINKS = [
   ['/', 'Главная'],
@@ -181,9 +191,9 @@ const SCHEMA_BY_SLUG = {
     description: r.description,
     datePublished: '2026-05-09',
     dateModified: '2026-05-10',
-    author: { '@type': 'Person', name: 'Даниил Охлопков', url: 'https://ai.okhlopkov.com/' },
+    author: { '@type': 'Person', name: 'Даниил Охлопков', url: siteUrl('/') },
     image: 'https://github.com/ohld.png',
-    mainEntityOfPage: 'https://ai.okhlopkov.com/markdown-vs-html/',
+    mainEntityOfPage: siteUrl('/markdown-vs-html/'),
     inLanguage: 'ru',
   }),
   'ai-course': (r) => ({
@@ -191,37 +201,37 @@ const SCHEMA_BY_SLUG = {
     '@type': 'Course',
     name: 'AI Agents курс',
     description: r.description,
-    provider: { '@type': 'Person', name: 'Даниил Охлопков', url: 'https://ai.okhlopkov.com/' },
+    provider: { '@type': 'Person', name: 'Даниил Охлопков', url: siteUrl('/') },
     inLanguage: 'ru',
     isAccessibleForFree: true,
-    url: 'https://ai.okhlopkov.com/ai-course/',
+    url: siteUrl('/ai-course/'),
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online', courseWorkload: 'PT5H' },
   }),
   about: () => ({
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
-    mainEntity: { '@id': 'https://ai.okhlopkov.com/#person' },
-    url: 'https://ai.okhlopkov.com/about/',
+    mainEntity: { '@id': siteUrl('/#person') },
+    url: siteUrl('/about/'),
   }),
   posts: (r) => ({
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Топ посты — Даниил Охлопков',
     description: r.description,
-    url: 'https://ai.okhlopkov.com/posts/',
-    isPartOf: { '@id': 'https://ai.okhlopkov.com/#website' },
+    url: siteUrl('/posts/'),
+    isPartOf: { '@id': siteUrl('/#website') },
     inLanguage: 'ru',
   }),
 }
 
 const BREADCRUMBS_BY_SLUG = {
-  'about': [['Главная', 'https://ai.okhlopkov.com/'], ['Обо мне', 'https://ai.okhlopkov.com/about/']],
-  'posts': [['Главная', 'https://ai.okhlopkov.com/'], ['Топ посты', 'https://ai.okhlopkov.com/posts/']],
-  'ai-course': [['Главная', 'https://ai.okhlopkov.com/'], ['AI Agents курс', 'https://ai.okhlopkov.com/ai-course/']],
-  'private-channel': [['Главная', 'https://ai.okhlopkov.com/'], ['Закрытый канал', 'https://ai.okhlopkov.com/private-channel/']],
-  'work-together': [['Главная', 'https://ai.okhlopkov.com/'], ['Го поработаем', 'https://ai.okhlopkov.com/work-together/']],
-  'markdown-vs-html': [['Главная', 'https://ai.okhlopkov.com/'], ['AI Agents курс', 'https://ai.okhlopkov.com/ai-course/'], ['Markdown мёртв', 'https://ai.okhlopkov.com/markdown-vs-html/']],
+  'about': [['Главная', siteUrl('/')], ['Обо мне', siteUrl('/about/')]],
+  'posts': [['Главная', siteUrl('/')], ['Топ посты', siteUrl('/posts/')]],
+  'ai-course': [['Главная', siteUrl('/')], ['AI Agents курс', siteUrl('/ai-course/')]],
+  'private-channel': [['Главная', siteUrl('/')], ['Закрытый канал', siteUrl('/private-channel/')]],
+  'work-together': [['Главная', siteUrl('/')], ['Го поработаем', siteUrl('/work-together/')]],
+  'markdown-vs-html': [['Главная', siteUrl('/')], ['AI Agents курс', siteUrl('/ai-course/')], ['Markdown мёртв', siteUrl('/markdown-vs-html/')]],
 }
 
 function buildBreadcrumb(slug) {
@@ -240,11 +250,11 @@ function rewrite(html, route) {
   const { path: routePath, slug, title, description } = route
   // Trailing slash = canonical form on GitHub Pages (served as 200 directly;
   // non-slash variant 301-redirects). Must match sitemap.xml.
-  const url = `https://ai.okhlopkov.com${routePath}/`
+  const url = siteUrl(`${routePath}/`)
   const mdHref = `/${slug}.md`
   const mdBody = getRouteMd(route)
   const fallback = mdBody ? buildFallback(title, mdBody) : buildFallback(title, '')
-  let out = html
+  let out = applySiteUrl(html)
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(title)}</title>`)
     .replace(/(<meta name="description" content=")[^"]*(")/, `$1${escape(description)}$2`)
     .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${escape(title)}$2`)
@@ -285,7 +295,7 @@ function rewrite(html, route) {
 let htmlCount = 0
 // Home: rewrite #root fallback in dist/index.html (vite build wrote it, we patch in place).
 const homeFallback = buildFallback('Даниил Охлопков', HOME_FALLBACK_MD.replace(/^#\s+[^\n]*\n+/, ''))
-const homeOut = indexHtml.replace('<!-- body-fallback -->', homeFallback)
+const homeOut = applySiteUrl(indexHtml).replace('<!-- body-fallback -->', homeFallback)
 fs.writeFileSync(path.join(dist, 'index.html'), homeOut)
 
 for (const route of ROUTES) {
@@ -363,7 +373,7 @@ const REDIRECTS = [
 ]
 let redirectCount = 0
 for (const r of REDIRECTS) {
-  const targetUrl = `https://ai.okhlopkov.com${r.to}`
+  const targetUrl = siteUrl(r.to)
   const stub = `<!doctype html>
 <html lang="ru">
 <head>
@@ -393,7 +403,7 @@ for (const r of REDIRECTS) {
 const BUNDLE_SLUGS = ['about', 'ai-course', 'posts', 'private-channel', 'work-together', 'markdown-vs-html']
 const bundleHeader = `# Daniil Okhlopkov — Full Content Bundle
 
-> Combined Markdown of all pages on ai.okhlopkov.com. For AI crawlers that prefer one-shot fetch.
+> Combined Markdown of all pages on ${SITE_URL}. For AI crawlers that prefer one-shot fetch.
 
 `
 const bundleParts = BUNDLE_SLUGS.map(slug => {
@@ -404,13 +414,13 @@ fs.writeFileSync(path.join(dist, 'llms-full.txt'), bundleHeader + bundleParts.jo
 
 // ---- Minimal XML sitemap for Google Search Console ----
 const SITEMAP_URLS = [
-  'https://ai.okhlopkov.com/',
-  'https://ai.okhlopkov.com/about/',
-  'https://ai.okhlopkov.com/posts/',
-  'https://ai.okhlopkov.com/ai-course/',
-  'https://ai.okhlopkov.com/private-channel/',
-  'https://ai.okhlopkov.com/work-together/',
-  'https://ai.okhlopkov.com/markdown-vs-html/',
+  siteUrl('/'),
+  siteUrl('/about/'),
+  siteUrl('/posts/'),
+  siteUrl('/ai-course/'),
+  siteUrl('/private-channel/'),
+  siteUrl('/work-together/'),
+  siteUrl('/markdown-vs-html/'),
 ]
 
 function xmlText(s) {
@@ -425,6 +435,11 @@ ${SITEMAP_URLS.map(loc => `  <url>
 </urlset>
 `
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap)
+fs.writeFileSync(path.join(dist, 'robots.txt'), `User-agent: *
+Allow: /
+
+Sitemap: ${siteUrl('/sitemap.xml')}
+`)
 console.log(`✓ Sitemap: generated ${SITEMAP_URLS.length} canonical URLs`)
 
 console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects + llms-full.txt`)
