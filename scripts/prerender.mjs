@@ -62,6 +62,37 @@ function normalizeImportedArticleHtml(html = '') {
     )
 }
 
+function textFromHtml(value = '') {
+  return value
+    .replace(/<script\b[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style\b[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function ensureImageAlt(imgTag, fallbackAlt) {
+  const alt = (fallbackAlt || 'Daniil Okhlopkov article image').trim().slice(0, 160)
+  const altMatch = imgTag.match(/\s+alt(?:=(["'])(.*?)\1|=([^\s"'=<>`]+))?/i)
+  const currentAlt = altMatch?.[2] || altMatch?.[3] || ''
+  if (altMatch && currentAlt.trim()) return imgTag
+  if (altMatch) return imgTag.replace(altMatch[0], ` alt="${escape(alt)}"`)
+  return imgTag.replace(/\s*\/?>$/, (suffix) => ` alt="${escape(alt)}"${suffix.includes('/') ? ' />' : '>'}`)
+}
+
+function addMissingImageAlts(html = '', fallbackAlt = '') {
+  return html
+    .replace(/<figure\b[\s\S]*?<\/figure>/gi, (figure) => {
+      const caption = textFromHtml(figure.match(/<figcaption\b[^>]*>([\s\S]*?)<\/figcaption>/i)?.[1] || '')
+      return figure.replace(/<img\b[^>]*>/gi, (img) => ensureImageAlt(img, caption || fallbackAlt))
+    })
+    .replace(/<img\b[^>]*>/gi, (img) => ensureImageAlt(img, fallbackAlt))
+}
+
 function importedArticleAlternates(pathname, lang) {
   const current = canonicalPathname(pathname)
   const group = LOCALIZED_GROUPS.find((item) => ARTICLE_LANGS.some((articleLang) => item[articleLang] === current))
@@ -95,6 +126,148 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
   - [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/articles/ai-tools-for-designers-design-engineering-agents/)
   - [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/)
 - [Обо мне](/about/) — бэкграунд, опыт и ссылки.
+
+## Если вы настраиваете AI-агентов
+
+Начните с [моего Claude Code setup](/claude-code-nastrojka-mcp-hooks-skills-2026/):
+там собраны MCP-серверы, hooks, skills, subagents и правила, которые пережили
+несколько месяцев ежедневной работы. Если агент начинает забывать контекст,
+откройте разбор [Claude Code compaction](/claude-code-compaction-kak-rabotaet/).
+Если нужно понять, когда брать Codex, а когда Claude Code, смотрите
+[переход на Codex](/blog/claude-code-vs-codex-perehod/).
+
+Рабочая схема простая: \`AGENTS.md\` или \`CLAUDE.md\` держит постоянные правила
+проекта, skills хранят повторяемые процедуры, MCP подключает живые данные и
+внешние инструменты, hooks ловят опасные действия, subagents выносят ресёрч и
+ревью в отдельный контекст. Всё остальное обычно превращается в длинный промпт,
+который агент всё равно забудет.
+
+## Практические входы
+
+- [Web scraping AI agents](/web-scraping-ai-agents-2026/) — когда браузерный агент лучше старого парсера.
+- [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — как хранить сырьё, решения и память проекта.
+- [Skills и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/) — что ставить, а что не усложнять.
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering без generic UI-slop.
+- [GStack, goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/) — как вести длинную agent-задачу до результата.
+
+## Карта терминов без маркетинга
+
+- **Project rules** — инварианты репозитория: стиль, запреты, команды проверки, где лежат данные.
+- **Skills** — короткие воспроизводимые процедуры: audit, ship, review, scrape, deploy.
+- **MCP** — доступ к живым системам: браузер, GBrain, GitHub, аналитика, документы, внешние API.
+- **Hooks** — автоматические стопперы перед опасными командами, секретами и случайным деплоем.
+- **Subagents** — отдельный контекст для ресёрча, QA и независимого ревью, чтобы не засорять основную задачу.
+
+## Когда брать какой инструмент
+
+Codex удобен, когда нужно спокойно пройти по репозиторию, внести правки,
+проверить diff и довести задачу до деплоя. Claude Code чаще беру для быстрых
+исследовательских сессий, работы с длинным контекстом и экспериментов с MCP.
+GStack полезен как рабочая обвязка: browser smoke, goal, QA, review, deploy и
+память между длинными задачами.
+
+## Где агенты реально помогают
+
+- Ревью больших diff: найти риск, проверить границы изменений и попросить второй взгляд.
+- Миграции: пройти старые URL, sitemap, redirects, canonical и smoke-тесты без ручного чеклиста.
+- Исследование инструментов: собрать источники, сравнить ограничения и оставить воспроизводимый вывод.
+- Работа с данными: быстро собрать запрос, проверить странные строки и превратить вывод в решение.
+- Личные системы: Obsidian, GBrain и проектные notes, где агент помнит решения лучше человека.
+
+## Минимальный стек
+
+- Один понятный instruction file в репозитории: правила, команды проверки и границы задачи.
+- Браузерный smoke-тест для важных экранов, особенно после правок навигации и статических страниц.
+- Память в GBrain или Obsidian: решения, грабли, ссылки на исходники и следующий шаг.
+- Отдельное ревью перед merge: свежий контекст часто ловит то, что пропустил основной агент.
+
+## Мой чеклист перед тем, как доверять агенту
+
+- Дать агенту реальные файлы проекта, а не пересказ архитектуры.
+- Разделить задачу: ресёрч отдельно, правки отдельно, ревью отдельно.
+- Запустить build, typecheck, smoke-тест и mobile viewport до деплоя.
+- Проверить, что агент не трогал чужие изменения и не унёс секреты.
+- Сохранить выводы в GBrain/Obsidian, если это повторится в будущем.
+
+Здесь собраны рабочие паттерны для разработки, аналитики, Telegram-автоматизации,
+design engineering и on-chain данных. Главный критерий один: можно ли повторить
+подход на реальном проекте без магии и лишней веры в модель.
+`
+
+const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
+
+> Practical notes on AI agents, Codex, Claude Code, MCP, TON analytics and Telegram automation.
+
+## Sections
+
+- [Blog](/en/blog/) — notes and working ideas.
+- [Articles](/en/articles/) — tutorials, comparisons and explainers.
+- [About](/en/about/) — background, work and links.
+
+## If you are setting up AI agents
+
+Start with [my Claude Code setup](/claude-code-setup-mcp-hooks-skills-2026/):
+MCP servers, hooks, skills, subagents and project rules that survived months of
+daily work. If the agent starts losing context, read the
+[Claude Code compaction notes](/claude-code-compaction-kak-rabotaet/). If you
+need to choose between Codex and Claude Code, use the
+[Codex migration write-up](/blog/claude-code-vs-codex-perehod/).
+
+The working split is simple: \`AGENTS.md\` or \`CLAUDE.md\` stores project
+invariants, skills store repeatable procedures, MCP connects live data and
+tools, hooks catch risky actions, and subagents isolate research or review from
+the main editing context.
+
+## Practical entry points
+
+- [Web scraping AI agents](/web-scraping-ai-agents-2026/) — when a browser agent beats an old parser.
+- [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — how to store raw notes, decisions and project memory.
+- [Claude Code skills and MCP](/luchshie-skills-mcp-claude-code-agent-browser/) — what to install, and what not to over-engineer.
+- [AI tools for designers](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering without generic UI-slop.
+- [GStack, goal and office hours](/blog/gstack-goal-office-hours-ai-workflow/) — how to keep a long agent task moving until it ships.
+
+## Agent terms without marketing
+
+- **Project rules** — repository invariants: style, safety limits, validation commands and data locations.
+- **Skills** — repeatable procedures such as audit, ship, review, scrape and deploy.
+- **MCP** — live tool access: browser, GBrain, GitHub, analytics, documents and external APIs.
+- **Hooks** — automatic checks before risky commands, leaked secrets or accidental deploys.
+- **Subagents** — isolated context for research, QA and independent review.
+
+## When I use each tool
+
+Codex is useful when I need to move through a repository, make scoped edits,
+inspect the diff and ship the change. Claude Code is still strong for quick
+research sessions, long context and MCP experiments. GStack is the operational
+layer around the work: browser smoke, goal, QA, review, deploy and memory across
+long tasks.
+
+## Where agents actually help
+
+- Reviewing large diffs: finding risk, checking boundaries and getting a second pass.
+- Migrations: old URLs, sitemaps, redirects, canonicals and smoke tests without a manual checklist.
+- Tool research: gather sources, compare limits and leave a reproducible conclusion.
+- Data work: draft a query, inspect strange rows and turn the output into a decision.
+- Personal systems: Obsidian, GBrain and project notes where the agent remembers decisions.
+
+## Minimal stack
+
+- One clear instruction file in the repository: rules, validation commands and task boundaries.
+- Browser smoke tests for important screens, especially after navigation and static page changes.
+- Memory in GBrain or Obsidian: decisions, mistakes, source links and the next step.
+- A separate review before merge: fresh context often catches what the main agent missed.
+
+## My checklist before trusting an agent
+
+- Give the agent real project files, not a hand-written architecture summary.
+- Separate the task: research first, edits second, review after the diff exists.
+- Run build, typecheck, smoke tests and mobile viewport checks before deploy.
+- Check that the agent did not touch unrelated changes or expose credentials.
+- Save durable lessons to GBrain or Obsidian when the pattern will repeat.
+
+These are working patterns for engineering, analytics, Telegram automation,
+design engineering and on-chain data. The useful test is simple: can the same
+approach survive a real project without magic or blind trust in the model?
 `
 
 function parseFrontmatter(raw, filename = 'markdown file') {
@@ -139,7 +312,7 @@ function loadImportedArticleRows() {
   const bodyByPath = new Map(content.map((article) => [article.path, normalizeImportedArticleHtml(article.bodyHtml || '')]))
   return index.map((article) => ({
     ...article,
-    bodyHtml: bodyByPath.get(article.path) || '',
+    bodyHtml: addMissingImageAlts(bodyByPath.get(article.path) || '', article.title || article.description || 'Daniil Okhlopkov article image'),
   }))
 }
 
@@ -198,6 +371,7 @@ const ROUTES = [
       en: `${SITE_URL}/en/`,
       'x-default': `${SITE_URL}/`,
     },
+    markdown: EN_HOME_FALLBACK_MD,
   },
   {
     path: '/en/about',
@@ -610,6 +784,7 @@ function buildGeneratedBlogFallback(route) {
 }
 
 function getRouteMd(route) {
+  if (route.markdown) return route.markdown
   if (route.kind === 'generated-blog-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
     return route.markdown || ''
   }

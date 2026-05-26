@@ -54,15 +54,11 @@ function usePreloadChunks() {
       englishBlogIndexImport()
       articlesIndexImport()
       englishArticlesIndexImport()
-      articlePageImport()
-      generatedBlogPostImport()
       topicPageImport()
       closedImport()
       aboutImport()
       englishAboutImport()
-      mvhImport()
       privacyImport()
-      importedArticleImport()
     }
     // requestIdleCallback not available in Telegram WebView (iOS)
     const id = typeof requestIdleCallback !== 'undefined'

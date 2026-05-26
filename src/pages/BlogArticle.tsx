@@ -48,7 +48,7 @@ export function BlogArticle() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={article.youtube.thumbnail} alt="" fetchPriority="high" />
+            <img src={article.youtube.thumbnail} alt={article.youtube.title} fetchPriority="high" />
             <div>
               <strong>{article.youtube.title}</strong>
               <span>Открыть на YouTube <ArrowRightUpIcon size={14} /></span>
