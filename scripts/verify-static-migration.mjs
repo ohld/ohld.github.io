@@ -454,27 +454,41 @@ async function verifyAnalyticsEventBundle() {
   console.log('✓ analytics event bundle')
 }
 
-async function verifySeoAuditBasics() {
+async function verifyHomepageBasics() {
   const res = await fetchManual('/')
-  assert(res.status === 200, `/: expected 200 for SEO audit basics, got ${res.status}`)
+  assert(res.status === 200, `/: expected 200 for homepage basics, got ${res.status}`)
   const html = await res.text()
   assert(/<meta\s+name=["']viewport["'][^>]+width=device-width[^>]+initial-scale=1/i.test(html), '/: missing responsive viewport')
   verifyImageAltText(html, '/')
 
   const words = stripHtmlText(html).split(/\s+/).filter((word) => word.length > 1).length
   assert(words >= 500, `/: homepage crawlable text should be at least 500 words, got ${words}`)
+  const publicText = stripHtmlText(html)
+  for (const banned of [
+    'SEO',
+    'Semrush',
+    'SEO-аудит',
+    'статья зашла',
+    'Как я понимаю, что статья зашла',
+    'How I decide whether an article worked',
+    'search impressions',
+    'how site content',
+  ]) {
+    assert(!publicText.includes(banned), `/: leaked internal homepage copy "${banned}"`)
+  }
+  assert(!html.includes('home-seo'), '/: leaked internal SEO class name in public HTML')
 
   const cssPaths = [...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["']/g)]
     .map((match) => new URL(match[1], siteUrl).pathname)
-  assert(cssPaths.length > 0, '/: missing stylesheet asset for mobile SEO check')
+  assert(cssPaths.length > 0, '/: missing stylesheet asset for mobile check')
   const css = (await Promise.all(cssPaths.map(async (cssPath) => {
     const cssRes = await fetchManual(cssPath)
-    assert(cssRes.status === 200, `${cssPath}: expected 200 for mobile SEO CSS check, got ${cssRes.status}`)
+    assert(cssRes.status === 200, `${cssPath}: expected 200 for mobile CSS check, got ${cssRes.status}`)
     return cssRes.text()
   }))).join('\n')
-  assert(css.includes('min-height:44px'), 'mobile SEO CSS: missing 44px tap target rule')
-  assert(css.includes('home-seo-section'), 'mobile SEO CSS: missing homepage content section styling')
-  console.log(`✓ SEO audit basics (${words} homepage words)`)
+  assert(css.includes('min-height:44px'), 'mobile CSS: missing 44px tap target rule')
+  assert(css.includes('home-detail-section'), 'mobile CSS: missing homepage detail section styling')
+  console.log(`✓ homepage basics (${words} homepage words)`)
 }
 
 function verifyArticleContentAnalyticsMarkup(html, path) {
@@ -911,7 +925,7 @@ async function main() {
   await verifySitemap(migrationRows)
   await verifyCrawlerFiles()
   await verifyRootVerificationMeta()
-  await verifySeoAuditBasics()
+  await verifyHomepageBasics()
   await verifyAnalyticsEventBundle()
   await verifyOriginHeaders()
   await verifyMissingUrl()

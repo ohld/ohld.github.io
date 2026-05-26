@@ -158,26 +158,28 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 - **Hooks** — автоматические стопперы перед опасными командами, секретами и случайным деплоем.
 - **Subagents** — отдельный контекст для ресёрча, QA и независимого ревью, чтобы не засорять основную задачу.
 
-## Как я понимаю, что статья зашла
+## Когда брать какой инструмент
 
-Один просмотр почти ничего не значит. Нормальный сигнал появляется, когда
-поисковый запрос, поведение на странице и следующее действие складываются в одну
-картину. Поэтому для статей я смотрю не только трафик, но и глубину чтения,
-клики по внутренним ссылкам, копирование кода, переходы к инструментам и
-возвраты к связанным материалам.
+Codex удобен, когда нужно спокойно пройти по репозиторию, внести правки,
+проверить diff и довести задачу до деплоя. Claude Code чаще беру для быстрых
+исследовательских сессий, работы с длинным контекстом и экспериментов с MCP.
+GStack полезен как рабочая обвязка: browser smoke, goal, QA, review, deploy и
+память между длинными задачами.
 
-- Есть показы, но слабый CTR — переписать title, description и первый экран.
-- Есть клики, но нет глубины чтения — убрать длинный заход и поднять примеры выше.
-- Читают до конца, но не переходят дальше — добавить cluster links и понятный следующий шаг.
-- Копируют код или открывают внешние инструменты — тему стоит расширять отдельной статьёй.
+## Где агенты реально помогают
 
-## Мини-план после SEO-аудита
+- Ревью больших diff: найти риск, проверить границы изменений и попросить второй взгляд.
+- Миграции: пройти старые URL, sitemap, redirects, canonical и smoke-тесты без ручного чеклиста.
+- Исследование инструментов: собрать источники, сравнить ограничения и оставить воспроизводимый вывод.
+- Работа с данными: быстро собрать запрос, проверить странные строки и превратить вывод в решение.
+- Личные системы: Obsidian, GBrain и проектные notes, где агент помнит решения лучше человека.
 
-- Alt у картинок должен описывать изображение или брать смысл из подписи, а не набивать ключи.
-- Mobile-first — это одинаковый контент, читаемый шрифт и tap targets около 44px.
-- INP лечится не магией, а меньшим JavaScript на старте и отложенной загрузкой тяжёлых страниц.
-- 500+ слов имеют смысл только если это чеклист, примеры, ссылки и ответы на реальные запросы.
-- Off-page флаги не чинятся HTML-ом: нужны dofollow mentions, профили, партнёрства и нормальные кейсы.
+## Минимальный стек
+
+- Один понятный instruction file в репозитории: правила, команды проверки и границы задачи.
+- Браузерный smoke-тест для важных экранов, особенно после правок навигации и статических страниц.
+- Память в GBrain или Obsidian: решения, грабли, ссылки на исходники и следующий шаг.
+- Отдельное ревью перед merge: свежий контекст часто ловит то, что пропустил основной агент.
 
 ## Мой чеклист перед тем, как доверять агенту
 
@@ -187,9 +189,9 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 - Проверить, что агент не трогал чужие изменения и не унёс секреты.
 - Сохранить выводы в GBrain/Obsidian, если это повторится в будущем.
 
-На этом сайте я собираю именно такие рабочие паттерны: не “AI сделает всё”, а
-где агент реально ускоряет разработку, аналитику, SEO, Telegram-автоматизацию и
-работу с on-chain данными.
+Здесь собраны рабочие паттерны для разработки, аналитики, Telegram-автоматизации,
+design engineering и on-chain данных. Главный критерий один: можно ли повторить
+подход на реальном проекте без магии и лишней веры в модель.
 `
 
 const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
@@ -232,25 +234,28 @@ the main editing context.
 - **Hooks** — automatic checks before risky commands, leaked secrets or accidental deploys.
 - **Subagents** — isolated context for research, QA and independent review.
 
-## How I decide whether an article worked
+## When I use each tool
 
-A pageview is too weak as a signal. A useful article usually has a matching
-search query, visible reading depth and a clear next action. For articles I look
-at search impressions, CTR, scroll depth, internal clicks, copied code, outbound
-tool links and returns to related pages.
+Codex is useful when I need to move through a repository, make scoped edits,
+inspect the diff and ship the change. Claude Code is still strong for quick
+research sessions, long context and MCP experiments. GStack is the operational
+layer around the work: browser smoke, goal, QA, review, deploy and memory across
+long tasks.
 
-- Impressions with weak CTR — rewrite title, description and the first screen.
-- Clicks without reading depth — shorten the intro and move examples higher.
-- Full reads without internal clicks — add cluster links and a clearer next step.
-- Copied code or tool clicks — the topic probably deserves a follow-up article.
+## Where agents actually help
 
-## Mini-plan after an SEO audit
+- Reviewing large diffs: finding risk, checking boundaries and getting a second pass.
+- Migrations: old URLs, sitemaps, redirects, canonicals and smoke tests without a manual checklist.
+- Tool research: gather sources, compare limits and leave a reproducible conclusion.
+- Data work: draft a query, inspect strange rows and turn the output into a decision.
+- Personal systems: Obsidian, GBrain and project notes where the agent remembers decisions.
 
-- Image alt text should describe the image or reuse the caption, not stuff keywords.
-- Mobile-first means equivalent content, readable type and tap targets around 44px.
-- INP improves when less JavaScript runs at startup and heavy pages load later.
-- 500+ words only help when they are checklists, examples, links and real answers.
-- Off-page flags need dofollow mentions, profiles, partnerships and useful case studies.
+## Minimal stack
+
+- One clear instruction file in the repository: rules, validation commands and task boundaries.
+- Browser smoke tests for important screens, especially after navigation and static page changes.
+- Memory in GBrain or Obsidian: decisions, mistakes, source links and the next step.
+- A separate review before merge: fresh context often catches what the main agent missed.
 
 ## My checklist before trusting an agent
 
@@ -260,9 +265,9 @@ tool links and returns to related pages.
 - Check that the agent did not touch unrelated changes or expose credentials.
 - Save durable lessons to GBrain or Obsidian when the pattern will repeat.
 
-This site is where I collect those patterns: not “AI will do everything”, but
-where agents actually speed up engineering, analytics, SEO, Telegram automation
-and on-chain data work.
+These are working patterns for engineering, analytics, Telegram automation,
+design engineering and on-chain data. The useful test is simple: can the same
+approach survive a real project without magic or blind trust in the model?
 `
 
 function parseFrontmatter(raw, filename = 'markdown file') {

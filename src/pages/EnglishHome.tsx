@@ -65,7 +65,7 @@ export function EnglishHome() {
         ))}
       </main>
 
-      <section className="home-section home-seo-section" aria-labelledby="home-start">
+      <section className="home-section home-detail-section" aria-labelledby="home-start">
         <h2 id="home-start">If you are setting up AI agents</h2>
         <p>
           Start with <a href="/claude-code-setup-mcp-hooks-skills-2026/">my Claude Code setup</a>:
@@ -83,9 +83,9 @@ export function EnglishHome() {
         </p>
       </section>
 
-      <section className="home-section home-seo-section" aria-labelledby="home-practical">
+      <section className="home-section home-detail-section" aria-labelledby="home-practical">
         <h2 id="home-practical">Practical entry points</h2>
-        <ul className="home-seo-list">
+        <ul className="home-detail-list">
           <li><a href="/web-scraping-ai-agents-2026/">Web scraping AI agents</a> — when a browser agent beats an old parser.</li>
           <li><a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">Second brain + Obsidian</a> — how to store raw notes, decisions and project memory.</li>
           <li><a href="/luchshie-skills-mcp-claude-code-agent-browser/">Claude Code skills and MCP</a> — what to install, and what not to over-engineer.</li>
@@ -94,9 +94,9 @@ export function EnglishHome() {
         </ul>
       </section>
 
-      <section className="home-section home-seo-section" aria-labelledby="home-map">
+      <section className="home-section home-detail-section" aria-labelledby="home-map">
         <h2 id="home-map">Agent terms without marketing</h2>
-        <ul className="home-seo-list">
+        <ul className="home-detail-list">
           <li><strong>Project rules</strong> — repository invariants: style, safety limits, validation commands and data locations.</li>
           <li><strong>Skills</strong> — repeatable procedures such as audit, ship, review, scrape and deploy.</li>
           <li><strong>MCP</strong> — live tool access: browser, GBrain, GitHub, analytics, documents and external APIs.</li>
@@ -105,36 +105,41 @@ export function EnglishHome() {
         </ul>
       </section>
 
-      <section className="home-section home-seo-section" aria-labelledby="home-metrics">
-        <h2 id="home-metrics">How I decide whether an article worked</h2>
+      <section className="home-section home-detail-section" aria-labelledby="home-tool-choice">
+        <h2 id="home-tool-choice">When I use each tool</h2>
         <p>
-          A pageview is too weak as a signal. A useful article usually has a
-          matching search query, visible reading depth and a clear next action.
-          For articles I look at search impressions, CTR, scroll depth, internal
-          clicks, copied code, outbound tool links and returns to related pages.
+          Codex is useful when I need to move through a repository, make scoped
+          edits, inspect the diff and ship the change. Claude Code is still
+          strong for quick research sessions, long context and MCP experiments.
+          GStack is the operational layer around the work: browser smoke, goal,
+          QA, review, deploy and memory across long tasks.
         </p>
-        <ul className="home-seo-list">
-          <li>Impressions with weak CTR — rewrite title, description and the first screen.</li>
-          <li>Clicks without reading depth — shorten the intro and move examples higher.</li>
-          <li>Full reads without internal clicks — add cluster links and a clearer next step.</li>
-          <li>Copied code or tool clicks — the topic probably deserves a follow-up article.</li>
+      </section>
+
+      <section className="home-section home-detail-section" aria-labelledby="home-use-cases">
+        <h2 id="home-use-cases">Where agents actually help</h2>
+        <ul className="home-detail-list">
+          <li>Reviewing large diffs: finding risk, checking boundaries and getting a second pass.</li>
+          <li>Migrations: old URLs, sitemaps, redirects, canonicals and smoke tests without a manual checklist.</li>
+          <li>Tool research: gather sources, compare limits and leave a reproducible conclusion.</li>
+          <li>Data work: draft a query, inspect strange rows and turn the output into a decision.</li>
+          <li>Personal systems: Obsidian, GBrain and project notes where the agent remembers decisions.</li>
         </ul>
       </section>
 
-      <section className="home-section home-seo-section" aria-labelledby="home-seo-audit">
-        <h2 id="home-seo-audit">Mini-plan after an SEO audit</h2>
-        <ul className="home-seo-list">
-          <li>Image alt text should describe the image or reuse the caption, not stuff keywords.</li>
-          <li>Mobile-first means equivalent content, readable type and tap targets around 44px.</li>
-          <li>INP improves when less JavaScript runs at startup and heavy pages load later.</li>
-          <li>500+ words only help when they are checklists, examples, links and real answers.</li>
-          <li>Off-page flags need dofollow mentions, profiles, partnerships and useful case studies.</li>
+      <section className="home-section home-detail-section" aria-labelledby="home-stack">
+        <h2 id="home-stack">Minimal stack</h2>
+        <ul className="home-detail-list">
+          <li>One clear instruction file in the repository: rules, validation commands and task boundaries.</li>
+          <li>Browser smoke tests for important screens, especially after navigation and static page changes.</li>
+          <li>Memory in GBrain or Obsidian: decisions, mistakes, source links and the next step.</li>
+          <li>A separate review before merge: fresh context often catches what the main agent missed.</li>
         </ul>
       </section>
 
-      <section className="home-section home-seo-section" aria-labelledby="home-checklist">
+      <section className="home-section home-detail-section" aria-labelledby="home-checklist">
         <h2 id="home-checklist">My checklist before trusting an agent</h2>
-        <ul className="home-seo-list">
+        <ul className="home-detail-list">
           <li>Give the agent real project files, not a hand-written architecture summary.</li>
           <li>Separate the task: research first, edits second, review after the diff exists.</li>
           <li>Run build, typecheck, smoke tests and mobile viewport checks before deploy.</li>
@@ -142,9 +147,10 @@ export function EnglishHome() {
           <li>Save durable lessons to GBrain or Obsidian when the pattern will repeat.</li>
         </ul>
         <p>
-          This site is where I collect those patterns: not “AI will do
-          everything”, but where agents actually speed up engineering, analytics,
-          SEO, Telegram automation and on-chain data work.
+          These are working patterns for engineering, analytics, Telegram
+          automation, design engineering and on-chain data. The useful test is
+          simple: can the same approach survive a real project without magic or
+          blind trust in the model?
         </p>
       </section>
 

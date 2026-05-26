@@ -326,12 +326,12 @@ button:focus-visible,
   font-weight: 560;
 }
 
-.home-seo-section {
+.home-detail-section {
   border-top: 1px solid var(--border-light);
   padding-top: 24px;
 }
 
-.home-seo-list {
+.home-detail-list {
   display: grid;
   gap: 8px;
   margin: 14px 0 0;
@@ -339,7 +339,7 @@ button:focus-visible,
   list-style: none;
 }
 
-.home-seo-list li {
+.home-detail-list li {
   position: relative;
   min-height: 44px;
   padding-left: 18px;
@@ -348,7 +348,7 @@ button:focus-visible,
   color: rgba(26, 26, 26, 0.78);
 }
 
-.home-seo-list li::before {
+.home-detail-list li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -359,7 +359,7 @@ button:focus-visible,
   background: var(--accent);
 }
 
-.home-seo-list a {
+.home-detail-list a {
   color: var(--link);
   text-decoration: underline;
   text-decoration-thickness: 1px;
