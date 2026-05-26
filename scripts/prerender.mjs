@@ -446,11 +446,13 @@ ${SITEMAP_URLS.map(({ loc, lastmod }) => `  <url>
 `
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap)
 fs.writeFileSync(path.join(dist, 'sitemap-gsc.xml'), sitemap)
+fs.writeFileSync(path.join(dist, 'sitemap.txt'), `${SITEMAP_URLS.map(({ loc }) => loc).join('\n')}\n`)
 fs.writeFileSync(path.join(dist, 'robots.txt'), `User-agent: *
 Allow: /
 
 Sitemap: ${siteUrl('/sitemap.xml')}
 Sitemap: ${siteUrl('/sitemap-gsc.xml')}
+Sitemap: ${siteUrl('/sitemap.txt')}
 `)
 console.log(`✓ Sitemap: generated ${SITEMAP_URLS.length} canonical URLs`)
 

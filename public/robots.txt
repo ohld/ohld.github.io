@@ -3,3 +3,4 @@ Allow: /
 
 Sitemap: https://ohld.github.io/sitemap.xml
 Sitemap: https://ohld.github.io/sitemap-gsc.xml
+Sitemap: https://ohld.github.io/sitemap.txt
