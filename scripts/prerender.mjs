@@ -70,6 +70,18 @@ function canonicalPathname(pathname) {
   return pathname.endsWith('/') ? pathname : `${pathname}/`
 }
 
+function normalizeImportedArticleHtml(html = '') {
+  return html
+    .replace(
+      /<a\b[^>]*\bhref=(["'])\/cdn-cgi\/l\/email-protection(?:#[^"']*)?\1[^>]*>[\s\S]*?<\/a>/gi,
+      'DOKKU_LETSENCRYPT_EMAIL=you@example.com',
+    )
+    .replace(
+      /\bhref=(["'])(?![a-z][a-z0-9+.-]*:|[/?#]|mailto:|tel:)([^"'\s>]+?\.[a-z]{2,}(?:[/?#][^"']*)?)\1/gi,
+      (_match, quote, href) => `href=${quote}https://${href}${quote}`,
+    )
+}
+
 function importedArticleAlternates(pathname, lang) {
   const current = canonicalPathname(pathname)
   const pair = LOCALIZED_PAIRS.find(([ru, en]) => ru === current || en === current)
@@ -141,7 +153,7 @@ function loadImportedArticleRows() {
   if (!fs.existsSync(IMPORTED_ARTICLES_INDEX) || !fs.existsSync(IMPORTED_ARTICLES_CONTENT)) return []
   const index = JSON.parse(fs.readFileSync(IMPORTED_ARTICLES_INDEX, 'utf8'))
   const content = JSON.parse(fs.readFileSync(IMPORTED_ARTICLES_CONTENT, 'utf8'))
-  const bodyByPath = new Map(content.map((article) => [article.path, article.bodyHtml || '']))
+  const bodyByPath = new Map(content.map((article) => [article.path, normalizeImportedArticleHtml(article.bodyHtml || '')]))
   return index.map((article) => ({
     ...article,
     bodyHtml: bodyByPath.get(article.path) || '',

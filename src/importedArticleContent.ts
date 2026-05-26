@@ -7,6 +7,18 @@ interface ImportedArticleContent {
 
 const importedBodies = importedContent as ImportedArticleContent[]
 
+function normalizeImportedArticleHtml(html: string) {
+  return html
+    .replace(
+      /<a\b[^>]*\bhref=(["'])\/cdn-cgi\/l\/email-protection(?:#[^"']*)?\1[^>]*>[\s\S]*?<\/a>/gi,
+      'DOKKU_LETSENCRYPT_EMAIL=you@example.com',
+    )
+    .replace(
+      /\bhref=(["'])(?![a-z][a-z0-9+.-]*:|[/?#]|mailto:|tel:)([^"'\s>]+?\.[a-z]{2,}(?:[/?#][^"']*)?)\1/gi,
+      (_match, quote: string, href: string) => `href=${quote}https://${href}${quote}`,
+    )
+}
+
 function canonicalPath(pathname: string) {
   const pathOnly = pathname.split('?')[0].split('#')[0] || '/'
   if (pathOnly === '/') return '/'
@@ -15,5 +27,5 @@ function canonicalPath(pathname: string) {
 
 export function getImportedArticleBody(pathname: string) {
   const current = canonicalPath(pathname)
-  return importedBodies.find((article) => article.path === current)?.bodyHtml || ''
+  return normalizeImportedArticleHtml(importedBodies.find((article) => article.path === current)?.bodyHtml || '')
 }

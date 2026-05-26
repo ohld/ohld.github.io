@@ -406,6 +406,17 @@ function verifyArticleContentAnalyticsMarkup(html, path) {
   assert(html.includes('id="article-content"'), `${path}: missing article content anchor`)
 }
 
+function assertNoMalformedExternalLinks(html, path) {
+  const malformed = []
+  for (const match of html.matchAll(/href=["']([^"']+)["']/g)) {
+    const href = decodeHtml(match[1])
+    if (/^(?:[a-z][a-z0-9+.-]*:|[/?#]|mailto:|tel:)/i.test(href)) continue
+    if (/^[^/\s]+\.[a-z]{2,}(?:[/?#]|$)/i.test(href)) malformed.push(href)
+  }
+  assert(malformed.length === 0, `${path}: malformed relative external links: ${[...new Set(malformed)].join(', ')}`)
+  assert(!html.includes('/cdn-cgi/l/email-protection'), `${path}: leaked Cloudflare email-protection link`)
+}
+
 async function verifyRootVerificationMeta() {
   const res = await fetchManual('/')
   assert(res.status === 200, `/: expected 200 for verification meta check, got ${res.status}`)
@@ -426,6 +437,7 @@ async function verifyImportedArticle({ path, title }) {
   assert(readMeta(html, 'robots') === 'index, follow', `${path}: robots mismatch`)
   assert(html.includes('data-article-engine="article"'), `${path}: missing common article engine marker`)
   verifyArticleContentAnalyticsMarkup(html, path)
+  assertNoMalformedExternalLinks(html, path)
   assert(!html.includes('legacy-'), `${path}: page leaked old renderer class/name`)
   assert(!html.includes('Static migration update:'), `${path}: public page leaked migration update note`)
   assert(!html.includes('Original Ghost modified date'), `${path}: public page leaked Ghost modified note`)
