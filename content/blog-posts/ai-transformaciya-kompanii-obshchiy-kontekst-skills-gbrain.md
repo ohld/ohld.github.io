@@ -3,7 +3,7 @@ slug: ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain
 title: AI-трансформация в компании: общий контекст, skills и GBrain вместо хаоса на ноутбуках
 description: Почему корпоративной AI-трансформации нужны общий контекст, обновляемые skills, GBrain/OpenBrain и роль библиотекаря контекста.
 publishedAt: 2026-05-24
-updatedAt: 2026-05-25
+updatedAt: 2026-05-26
 readingTime: 7 мин
 tags: AI Transformation, GBrain, Skills
 sourceTelegramId: 1685

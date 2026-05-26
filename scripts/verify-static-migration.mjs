@@ -17,7 +17,7 @@ const missingPath = '/__missing-static-migration-check-404/'
 const gaMeasurementId = 'G-9Z5T725JJD'
 const yandexMetrikaId = '46266270'
 const yandexVerificationIds = ['1b82de56693018c1', '3553f1209d48d2c4']
-const expectedSitemapLastmod = process.env.VERIFY_EXPECTED_SITEMAP_LASTMOD || '2026-05-25'
+const expectedSitemapLastmod = process.env.VERIFY_EXPECTED_SITEMAP_LASTMOD || '2026-05-26'
 const indexNowKey = '16f3585acc2f41a2b4ff657222850145'
 
 const topImportedSmokePages = [
@@ -322,6 +322,25 @@ function stripHtmlText(html = '') {
     .replace(/<[^>]+>/g, ' '))
 }
 
+function verifyPublicCopyBoundaries(textOrHtml, path, { html = true } = {}) {
+  const text = html ? stripHtmlText(textOrHtml) : normalizeText(textOrHtml)
+  const banned = [
+    ['SEO', /\bSEO\b|SEO-аудит|seo agency/iu],
+    ['Semrush', /Semrush/iu],
+    ['Wordstat', /Wordstat|Вордстат/iu],
+    ['GSC/Search Console', /GSC data|Search Console|gets impressions|search impressions/iu],
+    ['content strategy', /content strategy|контент-стратег/iu],
+    ['content briefing', /content briefing|source packs for articles|safe public\/private boundaries/iu],
+    ['internal project slug', /personal-brand-seo|pseo-implementation-plan|home-seo/iu],
+    ['article performance process', /статья зашла|article worked|Как я понимаю, что статья зашла/iu],
+    ['editorial mechanics', /editorial mechanics|translation-demand|preserved notes/iu],
+  ]
+  for (const [label, pattern] of banned) {
+    const match = text.match(pattern)
+    assert(!match, `${path}: leaked internal public-copy note (${label}): "${match?.[0]}"`)
+  }
+}
+
 async function fetchManual(path) {
   return fetch(absolute(path), {
     redirect: 'manual',
@@ -464,20 +483,7 @@ async function verifyHomepageBasics() {
 
   const words = stripHtmlText(html).split(/\s+/).filter((word) => word.length > 1).length
   assert(words >= 500, `/: homepage crawlable text should be at least 500 words, got ${words}`)
-  const publicText = stripHtmlText(html)
-  for (const banned of [
-    'SEO',
-    'Semrush',
-    'SEO-аудит',
-    'статья зашла',
-    'Как я понимаю, что статья зашла',
-    'How I decide whether an article worked',
-    'search impressions',
-    'how site content',
-  ]) {
-    assert(!publicText.includes(banned), `/: leaked internal homepage copy "${banned}"`)
-  }
-  assert(!html.includes('home-seo'), '/: leaked internal SEO class name in public HTML')
+  verifyPublicCopyBoundaries(html, '/')
 
   const cssPaths = [...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["']/g)]
     .map((match) => new URL(match[1], siteUrl).pathname)
@@ -501,6 +507,7 @@ function verifyArticleContentAnalyticsMarkup(html, path) {
   assert(html.includes('"text":'), `${path}: missing article JSON-LD text`)
   assert(html.includes('id="article-content"'), `${path}: missing article content anchor`)
   verifyImageAltText(html, path)
+  verifyPublicCopyBoundaries(html, path)
 }
 
 function assertNoMalformedExternalLinks(html, path) {
@@ -598,6 +605,7 @@ async function verifyStaticPage({ path, title, lang = 'ru', ogLocale = 'ru_RU', 
     assert(actualHreflangs.has(hreflang), `${path}: missing hreflang ${hreflang}`)
   }
   assert(!html.includes('Static migration update:'), `${path}: static page should not include legacy migration note`)
+  verifyPublicCopyBoundaries(html, path)
   console.log(`✓ static ${path}`)
 }
 
@@ -608,7 +616,7 @@ async function verifyBlogArticle({ path, thumbnail, youtubeUrl, requiredText }) 
   assert(html.includes('"@type": "BlogPosting"'), `${path}: missing BlogPosting JSON-LD`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assert(html.includes('"@type": "VideoObject"'), `${path}: missing VideoObject JSON-LD`)
-  assert(html.includes('"dateModified": "2026-05-25"'), `${path}: missing article dateModified`)
+  assert(html.includes('"dateModified": "2026-05-26"'), `${path}: missing article dateModified`)
   assert(html.includes(thumbnail), `${path}: missing YouTube thumbnail`)
   assert(html.includes(youtubeUrl), `${path}: missing YouTube watch URL`)
   assert(html.includes('<table>') || html.includes('<table class="article-table"'), `${path}: missing table markup`)
@@ -736,12 +744,12 @@ async function verifySitemap(migrationRows) {
   for (const loc of expectedLocs) {
     assert(actualLocs.has(loc), `/sitemap.xml: missing ${loc}`)
     const actualLastmod = lastmodByLoc.get(loc)
-    assert(actualLastmod === expectedSitemapLastmod || actualLastmod === '2026-05-26', `/sitemap.xml: ${loc} lastmod mismatch`)
+    assert(actualLastmod === expectedSitemapLastmod, `/sitemap.xml: ${loc} lastmod mismatch`)
   }
   for (const loc of actualLocs) {
     assert(expectedLocs.has(loc), `/sitemap.xml: unexpected ${loc}`)
   }
-  console.log(`✓ sitemap (${actualLocs.size} URLs, lastmod ${expectedSitemapLastmod}/2026-05-26)`)
+  console.log(`✓ sitemap (${actualLocs.size} URLs, lastmod ${expectedSitemapLastmod})`)
 }
 
 async function verifyCrawlerFiles() {
@@ -769,6 +777,7 @@ async function verifyCrawlerFiles() {
   assert(bundle.includes('## Source: /articles.md'), '/llms-full.txt: missing articles bundle source')
   assert(bundle.includes('## Source: /blog-ai-agents-s-chego-nachat.md'), '/llms-full.txt: missing generated blog bundle source')
   assert(bundle.includes('## Source: /privacy.md'), '/llms-full.txt: missing privacy bundle source')
+  verifyPublicCopyBoundaries(bundle, '/llms-full.txt', { html: false })
 
   const indexNowRes = await fetchManual(`/${indexNowKey}.txt`)
   assert(indexNowRes.status === 200, `/${indexNowKey}.txt: expected 200, got ${indexNowRes.status}`)

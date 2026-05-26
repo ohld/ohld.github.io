@@ -3,7 +3,7 @@ slug: claude-code-vs-codex-perehod
 title: Claude Code vs Codex: почему я на две недели перешёл на Codex
 description: Личный snapshot про переход с Claude Code на Codex: контекст, субагенты, desktop app, риски банов и что поменялось в рабочем флоу.
 publishedAt: 2026-05-14
-updatedAt: 2026-05-25
+updatedAt: 2026-05-26
 readingTime: 7 мин
 tags: Claude Code, Codex, AI Coding
 coverImage: /assets/blog/claude-code-vs-codex-perehod/telegram-cover.webp

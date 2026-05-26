@@ -3,7 +3,7 @@ slug: improve-codebase-architecture-prompt
 title: Что попросить AI-агента сделать, когда задачи закончились: improve-codebase-architecture и рефакторинг без магии
 description: Промпт и подход для ситуации, когда проект вроде готов: как попросить AI-агента найти архитектурные улучшения вместо косметического cleanup.
 publishedAt: 2026-05-01
-updatedAt: 2026-05-25
+updatedAt: 2026-05-26
 readingTime: 5 мин
 tags: AI Agents, Refactoring, Skills
 sourceTelegramId: 1664

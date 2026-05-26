@@ -3,7 +3,7 @@ slug: ai-agents-s-chego-nachat
 title: AI-агенты: с чего начать в 2026 — карта материалов, Claude Code, Codex и живые кейсы
 description: Маршрут по материалам Дана Охлопкова про AI-агентов: Claude Code, Codex, промпты, Obsidian, Paperclip, реальные стримы и что читать первым.
 publishedAt: 2026-05-05
-updatedAt: 2026-05-25
+updatedAt: 2026-05-26
 readingTime: 9 мин
 tags: AI Agents, Claude Code, Codex
 sourceTelegramId: 1671

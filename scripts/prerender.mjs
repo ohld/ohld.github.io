@@ -17,7 +17,7 @@ const dist = 'dist'
 const DEFAULT_SITE_URL = 'https://okhlopkov.com'
 const SITE_URL = (process.env.SITE_URL || DEFAULT_SITE_URL).replace(/\/+$/, '')
 const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
-const STATIC_UPDATED_DATE = '2026-05-25'
+const STATIC_UPDATED_DATE = '2026-05-26'
 const STATIC_UPDATED_AT = `${STATIC_UPDATED_DATE}T00:00:00+03:00`
 const BLOG_POSTS_DIR = path.join('content', 'blog-posts')
 const IMPORTED_ARTICLES_INDEX = path.join('content', 'articles', 'imported-index.json')
@@ -448,7 +448,7 @@ const ROUTES = [
     title: 'AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code',
     description: 'Разбор стрима про design engineering: как дизайнерам работать с AI-агентами, почему появляется AI-slop, зачем нужны design tokens, Paper, Mobbin MCP и хороший контекст для Codex/Claude Code.',
     publishedAt: '2026-05-25',
-    updatedAt: '2026-05-25',
+    updatedAt: '2026-05-26',
     tags: ['AI Agents', 'Design Engineering', 'Frontend'],
     section: 'Статьи',
     image: 'https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg',

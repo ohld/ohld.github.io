@@ -3,7 +3,7 @@ slug: gstack-goal-office-hours-ai-workflow
 title: GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста
 description: Как связать office-hours, improve-codebase-architecture, Codex /goal и HTML-progress в нормальный цикл работы с AI-агентом.
 publishedAt: 2026-05-21
-updatedAt: 2026-05-25
+updatedAt: 2026-05-26
 readingTime: 6 мин
 tags: GStack, Codex, Claude Code
 coverImage: /assets/blog/gstack-goal-office-hours-ai-workflow/telegram-cover.webp

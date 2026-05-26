@@ -34,7 +34,7 @@
     "description": "2026年3月实测5个AI工具：paperclip任务追踪、gstack YC创始人提示词、conductor.build IDE、x402加密支付、agent-browser。真实体验分享。",
     "lang": "zh",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-25",
+    "updatedAt": "2026-05-26",
     "readingTime": "2 min",
     "tags": [
       "Telegram"
@@ -90,7 +90,7 @@
     "description": "Hands-on review of 5 AI tools from March 2026: paperclip task tracker, gstack YC prompts, conductor.build IDE, x402 crypto payments, and agent-browser setup.",
     "lang": "en",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-25",
+    "updatedAt": "2026-05-26",
     "readingTime": "2 min",
     "tags": [
       "Telegram"
@@ -118,7 +118,7 @@
     "description": "Обзор AI-инструментов марта 2026: paperclip, gstack от фаундера YC, conductor.build, x402 от Coinbase и agent-browser. Что зашло, а что нет.",
     "lang": "ru",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-25",
+    "updatedAt": "2026-05-26",
     "readingTime": "2 мин",
     "tags": [
       "Telegram"
@@ -608,7 +608,7 @@
     "description": "How to find profitable SaaS ideas: parse acquire.com listings, reverse-engineer competitor marketing, validate with AI. Step-by-step checklist from idea to MVP.",
     "lang": "en",
     "publishedAt": "2026-02-02",
-    "updatedAt": "2026-05-25",
+    "updatedAt": "2026-05-26",
     "readingTime": "1 min",
     "tags": [
       "Telegram"
@@ -622,7 +622,7 @@
     "description": "Как найти прибыльную SaaS идею: парсим acquire.com, реверсим маркетинг конкурентов, валидируем с AI. Пошаговый чеклист от идеи до MVP.",
     "lang": "ru",
     "publishedAt": "2026-02-02",
-    "updatedAt": "2026-05-25",
+    "updatedAt": "2026-05-26",
     "readingTime": "1 мин",
     "tags": [
       "Telegram"
@@ -636,7 +636,7 @@
     "description": "My workflow with Claude Code: plan mode, spec-driven development, and why AI agents replaced autocomplete. Real examples and costs.",
     "lang": "en",
     "publishedAt": "2026-02-01",
-    "updatedAt": "2026-05-25",
+    "updatedAt": "2026-05-26",
     "readingTime": "9 min",
     "tags": [
       "AI"
