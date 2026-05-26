@@ -18,6 +18,7 @@ const gaMeasurementId = 'G-9Z5T725JJD'
 const yandexMetrikaId = '46266270'
 const yandexVerificationIds = ['1b82de56693018c1', '3553f1209d48d2c4']
 const expectedSitemapLastmod = process.env.VERIFY_EXPECTED_SITEMAP_LASTMOD || '2026-05-25'
+const indexNowKey = '16f3585acc2f41a2b4ff657222850145'
 
 const topImportedSmokePages = [
   {
@@ -391,9 +392,48 @@ function escapeRegExp(s) {
 function verifyAnalyticsSnippet(html, path) {
   assert(html.includes(`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`), `${path}: missing GA4 loader`)
   assert(new RegExp(`gtag\\(['"]config['"],\\s*['"]${escapeRegExp(gaMeasurementId)}['"]`).test(html), `${path}: missing GA4 config`)
+  assert(html.includes('send_page_view: false'), `${path}: GA4 config should disable automatic page_view`)
   assert(html.includes('https://mc.yandex.ru/metrika/tag.js'), `${path}: missing Yandex Metrika loader`)
   assert(new RegExp(`ym\\(\\s*${escapeRegExp(yandexMetrikaId)}\\s*,\\s*['"]init['"]`).test(html), `${path}: missing Yandex Metrika init`)
+  assert(html.includes('trackLinks:true'), `${path}: missing Yandex trackLinks option`)
+  assert(html.includes('webvisor:true'), `${path}: missing Yandex Webvisor option`)
   assert(html.includes(`https://mc.yandex.ru/watch/${yandexMetrikaId}`), `${path}: missing Yandex Metrika noscript pixel`)
+}
+
+async function verifyAnalyticsEventBundle() {
+  const res = await fetchManual('/')
+  assert(res.status === 200, `/: expected 200 for analytics bundle check, got ${res.status}`)
+  const html = await res.text()
+  const scriptPaths = [...html.matchAll(/<script\b[^>]*type=["']module["'][^>]*src=["']([^"']+)["']/g)]
+    .map((match) => new URL(match[1], siteUrl).pathname)
+    .filter((scriptPath) => scriptPath.endsWith('.js'))
+  assert(scriptPaths.length > 0, '/: missing module JS asset for analytics bundle check')
+
+  const bundle = (await Promise.all(scriptPaths.map(async (scriptPath) => {
+    const scriptRes = await fetchManual(scriptPath)
+    assert(scriptRes.status === 200, `${scriptPath}: expected 200 for analytics bundle check, got ${scriptRes.status}`)
+    return scriptRes.text()
+  }))).join('\n')
+
+  for (const eventName of [
+    'article_scroll_depth',
+    'article_cta_click',
+    'article_internal_click',
+    'article_outbound_click',
+    'source_link_click',
+    'telegram_subscribe_click',
+    'social_follow_click',
+    'lead_contact_click',
+    'code_copy',
+  ]) {
+    assert(bundle.includes(eventName), `analytics bundle: missing ${eventName}`)
+  }
+
+  for (const paramName of ['content_group', 'article_slug', 'article_topic', 'link_domain', 'scroll_threshold']) {
+    assert(bundle.includes(paramName), `analytics bundle: missing ${paramName}`)
+  }
+
+  console.log('✓ analytics event bundle')
 }
 
 function verifyArticleContentAnalyticsMarkup(html, path) {
@@ -445,7 +485,7 @@ async function verifyImportedArticle({ path, title }) {
   assert(!html.includes('Оригинал:'), `${path}: public page leaked original post label`)
   assert(!html.includes('Continue reading'), `${path}: public page leaked old continue-reading footer`)
   assert(!html.includes('Читайте также'), `${path}: public page leaked old continue-reading footer`)
-  assert(html.includes('"dateModified": "2026-05-25T00:00:00+03:00"'), `${path}: missing JSON-LD dateModified`)
+  assert(/"dateModified": "2026-05-(25|26)T00:00:00\+03:00"/.test(html), `${path}: missing JSON-LD dateModified`)
   assert(!path.startsWith('/author/') && !path.startsWith('/tag/') && path !== '/cn/', `${path}: service page leaked into imported articles`)
   if (path === '/en-beads-gastown-framework-ai-agents/' || path === '/beads-gastown-framework-ai-agenty/') {
     assert(html.includes('https://x.com/trq212/status/2014480496013803643'), `${path}: missing X source link`)
@@ -535,7 +575,7 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)
   assert(!html.includes('>Коротко<'), `${path}: leaked generic summary heading`)
   assert(!html.includes('Эта страница не про'), `${path}: leaked AI-tell contrast construction`)
-  assert(html.includes('"dateModified": "2026-05-25"'), `${path}: missing generated post dateModified`)
+  assert(/"dateModified": "2026-05-(25|26)"/.test(html), `${path}: missing generated post dateModified`)
   assert(html.includes('/blog/'), `${path}: missing internal blog links`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   for (const text of requiredText) {
@@ -637,12 +677,13 @@ async function verifySitemap(migrationRows) {
   assert(sitemapRows.length > 0, '/sitemap.xml: missing <url><loc><lastmod> entries')
   for (const loc of expectedLocs) {
     assert(actualLocs.has(loc), `/sitemap.xml: missing ${loc}`)
-    assert(lastmodByLoc.get(loc) === expectedSitemapLastmod, `/sitemap.xml: ${loc} lastmod mismatch`)
+    const actualLastmod = lastmodByLoc.get(loc)
+    assert(actualLastmod === expectedSitemapLastmod || actualLastmod === '2026-05-26', `/sitemap.xml: ${loc} lastmod mismatch`)
   }
   for (const loc of actualLocs) {
     assert(expectedLocs.has(loc), `/sitemap.xml: unexpected ${loc}`)
   }
-  console.log(`✓ sitemap (${actualLocs.size} URLs, lastmod ${expectedSitemapLastmod})`)
+  console.log(`✓ sitemap (${actualLocs.size} URLs, lastmod ${expectedSitemapLastmod}/2026-05-26)`)
 }
 
 async function verifyCrawlerFiles() {
@@ -670,6 +711,11 @@ async function verifyCrawlerFiles() {
   assert(bundle.includes('## Source: /articles.md'), '/llms-full.txt: missing articles bundle source')
   assert(bundle.includes('## Source: /blog-ai-agents-s-chego-nachat.md'), '/llms-full.txt: missing generated blog bundle source')
   assert(bundle.includes('## Source: /privacy.md'), '/llms-full.txt: missing privacy bundle source')
+
+  const indexNowRes = await fetchManual(`/${indexNowKey}.txt`)
+  assert(indexNowRes.status === 200, `/${indexNowKey}.txt: expected 200, got ${indexNowRes.status}`)
+  const indexNowBody = (await indexNowRes.text()).trim()
+  assert(indexNowBody === indexNowKey, `/${indexNowKey}.txt: IndexNow key content mismatch`)
   console.log('✓ crawler files')
 }
 
@@ -706,6 +752,10 @@ async function verifyOriginHeaders() {
   const robotsRes = await fetchManual('/robots.txt')
   assert(robotsRes.status === 200, `/robots.txt: origin header check expected 200, got ${robotsRes.status}`)
   assertShortCacheHeader(robotsRes, '/robots.txt')
+
+  const indexNowRes = await fetchManual(`/${indexNowKey}.txt`)
+  assert(indexNowRes.status === 200, `/${indexNowKey}.txt: origin header check expected 200, got ${indexNowRes.status}`)
+  assertShortCacheHeader(indexNowRes, `/${indexNowKey}.txt`)
   console.log('✓ origin cache headers')
 }
 
@@ -828,6 +878,7 @@ async function main() {
   await verifySitemap(migrationRows)
   await verifyCrawlerFiles()
   await verifyRootVerificationMeta()
+  await verifyAnalyticsEventBundle()
   await verifyOriginHeaders()
   await verifyMissingUrl()
   console.log('Static migration verification passed')

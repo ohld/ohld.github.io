@@ -1,3 +1,5 @@
+import { trackCodeCopy } from './analytics'
+
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, '&amp;')
@@ -137,6 +139,7 @@ export function enhanceCodeBlocks(root: ParentNode = document) {
     button.addEventListener('click', async () => {
       try {
         await copyToClipboard(rawCode)
+        trackCodeCopy(language)
         button.textContent = labels.copied
         window.setTimeout(() => { button.textContent = labels.copy }, 1400)
       } catch {

@@ -145,3 +145,6 @@ jobs:
             exit "$verify_rc"
           fi
           exit "$smoke_rc"
+      - name: Notify IndexNow
+        continue-on-error: true
+        run: node scripts/submit-indexnow.mjs

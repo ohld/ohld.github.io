@@ -1,5 +1,11 @@
 import importedIndex from '../content/articles/imported-index.json'
+import localizedGroups from '../content/articles/localized-groups.json'
 import type { BlogListItem } from './blog'
+
+type ArticleLang = 'ru' | 'en' | 'zh'
+type LocalizedArticleGroup = Partial<Record<ArticleLang, string>> & {
+  xDefault?: ArticleLang
+}
 
 export interface ImportedArticle {
   path: string
@@ -15,30 +21,8 @@ export interface ImportedArticle {
 }
 
 const importedArticles = importedIndex as ImportedArticle[]
-
-const localizedPairs = [
-  ['/', '/en/'],
-  ['/blog/', '/en/blog/'],
-  ['/articles/', '/en/articles/'],
-  ['/about/', '/en/about/'],
-  ['/claude-code-nastrojka-mcp-hooks-skills-2026/', '/claude-code-setup-mcp-hooks-skills-2026/'],
-  ['/vtoroj-mozg-ai-assistent-obsidian-claude-code/', '/en-second-brain-obsidian-claude-code-assistant/'],
-  ['/claude-code-compaction-kak-rabotaet/', '/claude-code-compaction-explained/'],
-  ['/luchshie-skills-mcp-claude-code-agent-browser/', '/en-best-skills-mcp-claude-code-agent-browser/'],
-  ['/beads-gastown-framework-ai-agenty/', '/en-beads-gastown-framework-ai-agents/'],
-  ['/show-me-ai-setup-ghostty-ownyourchat-descript/', '/en-show-me-ai-setup-ghostty-ownyourchat-descript/'],
-  ['/claude-codex-dual-review/', '/en-claude-codex-dual-review/'],
-  ['/ai-agenty-habr-claude-code-golosovye-komandy/', '/en-ai-agents-practice-claude-code-voice-commands/'],
-  ['/telegram-mini-app-llms-txt-claude-code-stream/', '/en-telegram-mini-app-llms-txt-claude-code-stream/'],
-  ['/kak-pravilno-pisat-skilly-claude-code-7-oshibok/', '/en-write-claude-code-skills-7-mistakes/'],
-  ['/gde-najti-ideyu-saas-acquire-com-ai/', '/en-find-saas-ideas-acquire-com-ai-validation/'],
-  ['/sovety-sozdatel-claude-code-git-worktrees/', '/en-claude-code-creator-tips-git-worktrees/'],
-  ['/ai-agent-forum-telegram-chat-agenty/', '/en-ai-agent-forum-telegram-chat/'],
-  ['/ton-analyst-ai-skill-ton-blockchain-dune/', '/en-ton-analyst-open-source-ai-skill-dune/'],
-  ['/singularity-uzhe-sluchilas-analiz-5-metrik-ai/', '/en-singularity-already-happened-5-ai-metrics/'],
-  ['/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/', '/en-5-prompts-improved-ai-agent-workflow-claude-code/'],
-  ['/21-question-ai-agent/', '/21-questions-ai-agent-knowledge-gaps/'],
-]
+const localizedArticleGroups = localizedGroups as LocalizedArticleGroup[]
+const articleLangs: ArticleLang[] = ['ru', 'en', 'zh']
 
 function canonicalPath(pathname: string) {
   const pathOnly = pathname.split('?')[0].split('#')[0] || '/'
@@ -75,11 +59,15 @@ export function importedArticleListItems(paths: string[]) {
 
 export function importedArticleAlternates(pathname: string) {
   const current = canonicalPath(pathname)
-  const pair = localizedPairs.find(([ru, en]) => ru === current || en === current)
-  if (!pair) return null
-  return {
-    ru: pair[0],
-    en: pair[1],
-    'x-default': current,
+  const group = localizedArticleGroups.find((item) => articleLangs.some((lang) => item[lang] === current))
+  if (!group) return null
+
+  const alternates: Record<string, string> = {}
+  for (const lang of articleLangs) {
+    const href = group[lang]
+    if (href) alternates[lang] = href
   }
+  const fallbackLang = group.xDefault || articleLangs.find((lang) => group[lang])
+  if (fallbackLang && group[fallbackLang]) alternates['x-default'] = group[fallbackLang]
+  return alternates
 }
