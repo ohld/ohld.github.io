@@ -391,9 +391,48 @@ function escapeRegExp(s) {
 function verifyAnalyticsSnippet(html, path) {
   assert(html.includes(`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`), `${path}: missing GA4 loader`)
   assert(new RegExp(`gtag\\(['"]config['"],\\s*['"]${escapeRegExp(gaMeasurementId)}['"]`).test(html), `${path}: missing GA4 config`)
+  assert(html.includes('send_page_view: false'), `${path}: GA4 config should disable automatic page_view`)
   assert(html.includes('https://mc.yandex.ru/metrika/tag.js'), `${path}: missing Yandex Metrika loader`)
   assert(new RegExp(`ym\\(\\s*${escapeRegExp(yandexMetrikaId)}\\s*,\\s*['"]init['"]`).test(html), `${path}: missing Yandex Metrika init`)
+  assert(html.includes('trackLinks:true'), `${path}: missing Yandex trackLinks option`)
+  assert(html.includes('webvisor:true'), `${path}: missing Yandex Webvisor option`)
   assert(html.includes(`https://mc.yandex.ru/watch/${yandexMetrikaId}`), `${path}: missing Yandex Metrika noscript pixel`)
+}
+
+async function verifyAnalyticsEventBundle() {
+  const res = await fetchManual('/')
+  assert(res.status === 200, `/: expected 200 for analytics bundle check, got ${res.status}`)
+  const html = await res.text()
+  const scriptPaths = [...html.matchAll(/<script\b[^>]*type=["']module["'][^>]*src=["']([^"']+)["']/g)]
+    .map((match) => new URL(match[1], siteUrl).pathname)
+    .filter((scriptPath) => scriptPath.endsWith('.js'))
+  assert(scriptPaths.length > 0, '/: missing module JS asset for analytics bundle check')
+
+  const bundle = (await Promise.all(scriptPaths.map(async (scriptPath) => {
+    const scriptRes = await fetchManual(scriptPath)
+    assert(scriptRes.status === 200, `${scriptPath}: expected 200 for analytics bundle check, got ${scriptRes.status}`)
+    return scriptRes.text()
+  }))).join('\n')
+
+  for (const eventName of [
+    'article_scroll_depth',
+    'article_cta_click',
+    'article_internal_click',
+    'article_outbound_click',
+    'source_link_click',
+    'telegram_subscribe_click',
+    'social_follow_click',
+    'lead_contact_click',
+    'code_copy',
+  ]) {
+    assert(bundle.includes(eventName), `analytics bundle: missing ${eventName}`)
+  }
+
+  for (const paramName of ['content_group', 'article_slug', 'article_topic', 'link_domain', 'scroll_threshold']) {
+    assert(bundle.includes(paramName), `analytics bundle: missing ${paramName}`)
+  }
+
+  console.log('✓ analytics event bundle')
 }
 
 function verifyArticleContentAnalyticsMarkup(html, path) {
@@ -828,6 +867,7 @@ async function main() {
   await verifySitemap(migrationRows)
   await verifyCrawlerFiles()
   await verifyRootVerificationMeta()
+  await verifyAnalyticsEventBundle()
   await verifyOriginHeaders()
   await verifyMissingUrl()
   console.log('Static migration verification passed')

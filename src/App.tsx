@@ -1,9 +1,9 @@
-import { lazy, Suspense, useEffect, useMemo, useRef } from 'react'
+import { lazy, Suspense, useEffect, useMemo } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { EnglishHome } from './pages/EnglishHome'
 import { SiteHeader } from './components/SiteHeader'
-import { trackPageView, useScrollDepth } from './analytics'
+import { trackDocumentLinkClick, trackPageView, useScrollDepth } from './analytics'
 import { enhanceCodeBlocks } from './codeBlocks'
 
 // Routes the bot can deep-link into via t.me/ohldbot/ooo?startapp=<slug>.
@@ -79,16 +79,11 @@ function usePreloadChunks() {
 function usePageTracking() {
   const location = useLocation()
   const getScrollDepth = useMemo(() => useScrollDepth(), [location.pathname])
-  const didSeeInitialRoute = useRef(false)
 
   useEffect(() => {
-    const isInitialRoute = !didSeeInitialRoute.current
-    didSeeInitialRoute.current = true
     let pageViewFrame: number | null = null
 
-    if (!isInitialRoute) {
-      pageViewFrame = window.requestAnimationFrame(() => trackPageView(location.pathname))
-    }
+    pageViewFrame = window.requestAnimationFrame(() => trackPageView(location.pathname))
 
     const trackBotPageView = () => {
       const initData = window.Telegram?.WebApp?.initData
@@ -111,6 +106,27 @@ function usePageTracking() {
       window.removeEventListener('telegram-webapp-ready', onTelegramReady)
     }
   }, [location.pathname, getScrollDepth])
+}
+
+function useDocumentLinkTracking() {
+  useEffect(() => {
+    const onClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented
+        || event.button !== 0
+        || event.metaKey
+        || event.ctrlKey
+        || event.shiftKey
+        || event.altKey
+      ) return
+
+      const target = event.target instanceof Element ? event.target : null
+      const link = target?.closest<HTMLAnchorElement>('a[href]')
+      if (link) trackDocumentLinkClick(link)
+    }
+    document.addEventListener('click', onClick)
+    return () => document.removeEventListener('click', onClick)
+  }, [])
 }
 
 function useCodeBlockEnhancement() {
@@ -141,6 +157,7 @@ function useStartParamNavigation() {
 function App() {
   usePreloadChunks()
   usePageTracking()
+  useDocumentLinkTracking()
   useCodeBlockEnhancement()
   useStartParamNavigation()
 
