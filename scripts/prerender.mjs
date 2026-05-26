@@ -22,6 +22,7 @@ const STATIC_UPDATED_AT = `${STATIC_UPDATED_DATE}T00:00:00+03:00`
 const BLOG_POSTS_DIR = path.join('content', 'blog-posts')
 const IMPORTED_ARTICLES_INDEX = path.join('content', 'articles', 'imported-index.json')
 const IMPORTED_ARTICLES_CONTENT = path.join('content', 'articles', 'imported-content.json')
+const LOCALIZED_GROUPS_PATH = path.join('content', 'articles', 'localized-groups.json')
 
 const NAV_LINKS = [
   ['/', 'Главная'],
@@ -41,29 +42,8 @@ const SOCIAL_LINKS = [
   ['https://github.com/ohld', 'GitHub'],
 ]
 
-const LOCALIZED_PAIRS = [
-  ['/', '/en/'],
-  ['/blog/', '/en/blog/'],
-  ['/articles/', '/en/articles/'],
-  ['/about/', '/en/about/'],
-  ['/claude-code-nastrojka-mcp-hooks-skills-2026/', '/claude-code-setup-mcp-hooks-skills-2026/'],
-  ['/vtoroj-mozg-ai-assistent-obsidian-claude-code/', '/en-second-brain-obsidian-claude-code-assistant/'],
-  ['/claude-code-compaction-kak-rabotaet/', '/claude-code-compaction-explained/'],
-  ['/luchshie-skills-mcp-claude-code-agent-browser/', '/en-best-skills-mcp-claude-code-agent-browser/'],
-  ['/beads-gastown-framework-ai-agenty/', '/en-beads-gastown-framework-ai-agents/'],
-  ['/show-me-ai-setup-ghostty-ownyourchat-descript/', '/en-show-me-ai-setup-ghostty-ownyourchat-descript/'],
-  ['/claude-codex-dual-review/', '/en-claude-codex-dual-review/'],
-  ['/ai-agenty-habr-claude-code-golosovye-komandy/', '/en-ai-agents-practice-claude-code-voice-commands/'],
-  ['/telegram-mini-app-llms-txt-claude-code-stream/', '/en-telegram-mini-app-llms-txt-claude-code-stream/'],
-  ['/kak-pravilno-pisat-skilly-claude-code-7-oshibok/', '/en-write-claude-code-skills-7-mistakes/'],
-  ['/gde-najti-ideyu-saas-acquire-com-ai/', '/en-find-saas-ideas-acquire-com-ai-validation/'],
-  ['/sovety-sozdatel-claude-code-git-worktrees/', '/en-claude-code-creator-tips-git-worktrees/'],
-  ['/ai-agent-forum-telegram-chat-agenty/', '/en-ai-agent-forum-telegram-chat/'],
-  ['/ton-analyst-ai-skill-ton-blockchain-dune/', '/en-ton-analyst-open-source-ai-skill-dune/'],
-  ['/singularity-uzhe-sluchilas-analiz-5-metrik-ai/', '/en-singularity-already-happened-5-ai-metrics/'],
-  ['/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/', '/en-5-prompts-improved-ai-agent-workflow-claude-code/'],
-  ['/21-question-ai-agent/', '/21-questions-ai-agent-knowledge-gaps/'],
-]
+const ARTICLE_LANGS = ['ru', 'en', 'zh']
+const LOCALIZED_GROUPS = JSON.parse(fs.readFileSync(LOCALIZED_GROUPS_PATH, 'utf8'))
 
 function canonicalPathname(pathname) {
   if (!pathname || pathname === '/') return '/'
@@ -84,18 +64,21 @@ function normalizeImportedArticleHtml(html = '') {
 
 function importedArticleAlternates(pathname, lang) {
   const current = canonicalPathname(pathname)
-  const pair = LOCALIZED_PAIRS.find(([ru, en]) => ru === current || en === current)
-  if (!pair) {
+  const group = LOCALIZED_GROUPS.find((item) => ARTICLE_LANGS.some((articleLang) => item[articleLang] === current))
+  if (!group) {
     return {
       [lang]: `${SITE_URL}${current}`,
       'x-default': `${SITE_URL}${current}`,
     }
   }
-  return {
-    ru: `${SITE_URL}${pair[0]}`,
-    en: `${SITE_URL}${pair[1]}`,
-    'x-default': `${SITE_URL}${current}`,
+
+  const alternates = {}
+  for (const articleLang of ARTICLE_LANGS) {
+    if (group[articleLang]) alternates[articleLang] = `${SITE_URL}${group[articleLang]}`
   }
+  const fallbackLang = group.xDefault || ARTICLE_LANGS.find((articleLang) => group[articleLang])
+  alternates['x-default'] = `${SITE_URL}${group[fallbackLang]}`
+  return alternates
 }
 
 const HOME_FALLBACK_MD = `# Даниил Охлопков

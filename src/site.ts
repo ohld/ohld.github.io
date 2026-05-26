@@ -1,3 +1,5 @@
+import localizedGroups from '../content/articles/localized-groups.json'
+
 const DEFAULT_SITE_URL = 'https://okhlopkov.com'
 
 export const SITE_URL = (import.meta.env.VITE_SITE_URL || DEFAULT_SITE_URL).replace(/\/+$/, '')
@@ -26,29 +28,18 @@ export function isEnglishPath(pathname: string) {
   return pathname === '/en' || pathname.startsWith('/en/')
 }
 
-const localizedPairs: Array<{ ru: string; en: string }> = [
+type LocalizedArticleGroup = Partial<Record<'ru' | 'en' | 'zh', string>>
+
+const staticLocalizedPairs: Array<{ ru: string; en: string }> = [
   { ru: '/', en: '/en/' },
   { ru: '/blog/', en: '/en/blog/' },
   { ru: '/articles/', en: '/en/articles/' },
   { ru: '/about/', en: '/en/about/' },
-  { ru: '/claude-code-nastrojka-mcp-hooks-skills-2026/', en: '/claude-code-setup-mcp-hooks-skills-2026/' },
-  { ru: '/vtoroj-mozg-ai-assistent-obsidian-claude-code/', en: '/en-second-brain-obsidian-claude-code-assistant/' },
-  { ru: '/claude-code-compaction-kak-rabotaet/', en: '/claude-code-compaction-explained/' },
-  { ru: '/luchshie-skills-mcp-claude-code-agent-browser/', en: '/en-best-skills-mcp-claude-code-agent-browser/' },
-  { ru: '/beads-gastown-framework-ai-agenty/', en: '/en-beads-gastown-framework-ai-agents/' },
-  { ru: '/show-me-ai-setup-ghostty-ownyourchat-descript/', en: '/en-show-me-ai-setup-ghostty-ownyourchat-descript/' },
-  { ru: '/claude-codex-dual-review/', en: '/en-claude-codex-dual-review/' },
-  { ru: '/ai-agenty-habr-claude-code-golosovye-komandy/', en: '/en-ai-agents-practice-claude-code-voice-commands/' },
-  { ru: '/telegram-mini-app-llms-txt-claude-code-stream/', en: '/en-telegram-mini-app-llms-txt-claude-code-stream/' },
-  { ru: '/kak-pravilno-pisat-skilly-claude-code-7-oshibok/', en: '/en-write-claude-code-skills-7-mistakes/' },
-  { ru: '/gde-najti-ideyu-saas-acquire-com-ai/', en: '/en-find-saas-ideas-acquire-com-ai-validation/' },
-  { ru: '/sovety-sozdatel-claude-code-git-worktrees/', en: '/en-claude-code-creator-tips-git-worktrees/' },
-  { ru: '/ai-agent-forum-telegram-chat-agenty/', en: '/en-ai-agent-forum-telegram-chat/' },
-  { ru: '/ton-analyst-ai-skill-ton-blockchain-dune/', en: '/en-ton-analyst-open-source-ai-skill-dune/' },
-  { ru: '/singularity-uzhe-sluchilas-analiz-5-metrik-ai/', en: '/en-singularity-already-happened-5-ai-metrics/' },
-  { ru: '/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/', en: '/en-5-prompts-improved-ai-agent-workflow-claude-code/' },
-  { ru: '/21-question-ai-agent/', en: '/21-questions-ai-agent-knowledge-gaps/' },
 ]
+const articleLocalizedPairs = (localizedGroups as LocalizedArticleGroup[])
+  .filter((group): group is LocalizedArticleGroup & { ru: string; en: string } => Boolean(group.ru && group.en))
+  .map((group) => ({ ru: group.ru, en: group.en }))
+const localizedPairs = [...staticLocalizedPairs, ...articleLocalizedPairs]
 
 function canonicalPath(pathname: string) {
   const pathOnly = pathname.split('?')[0].split('#')[0] || '/'
