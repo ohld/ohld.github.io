@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dokku + Github Actions: automatically deploy app with push to repository</title>
+    <meta name="description" content="" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/dokku-github-actions-deploy-app-with-push-to-repo/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/dokku-github-actions-deploy-app-with-push-to-repo/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/dokku-github-actions-deploy-app-with-push-to-repo/" />
+    <link rel="alternate" type="text/markdown" href="/article-dokku-github-actions-deploy-app-with-push-to-repo.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Dokku + Github Actions: automatically deploy app with push to repository" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/dokku-github-actions-deploy-app-with-push-to-repo/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Dokku + Github Actions: automatically deploy app with push to repository" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/dokku-github-actions-deploy-app-with-push-to-repo/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/dokku-github-actions-deploy-app-with-push-to-repo/#article-content",
+  "headline": "Dokku + Github Actions: automatically deploy app with push to repository",
+  "datePublished": "2022-01-22",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/dokku-github-actions-deploy-app-with-push-to-repo/"
+  },
+  "url": "https://okhlopkov.com/dokku-github-actions-deploy-app-with-push-to-repo/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "I love Heroku Github integration because it can automatically deploy my Python or Node.js app after a commit or PR is merged to master/main branch. But Dokku doesn't have this integration. In this article, I'll show you how to integrate Github CI to deploy your app instantly after a commit. I'm using it for a production deployment of my pet projects. I hope you know what Dokku is, why is it cool and how to create a Dokku app using CLI on your server. How does it work? The integration flow is simple: You push to main branch Github Actions server connects to your server via ssh Updates internal Dokku app code repo and triggers rebuild script So you need to specify the proper Github Actions workflow and set up ssh private key to allow GH actions server to connect to your server where your app is deployed. Dokku + Github actions workflow Take a look at this snippet from my Django-Telegram-bot integration: it deploys a demo telegram bot to a production server. I'm using Dokku integration made by a Github user idoberko2 . name: CI on: push: branches: - main jobs: build: runs-on: ubuntu-latest steps: - uses: actions/checkout@v2 with: fetch-depth: 0 - id: deploy name: Deploy to dokku uses: idoberko2/dokku-deploy-github-action@v1 with: ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} dokku-host: 'YOUR SERVER IP OR URL' app-name: 'NAME OF YOUR DOKKU APP' git-push-flags: '--force' The only thing you need to change is the dokku-host (IP address or DNS name of your server) and app-name (the name of your Dokku app you created using Dokku CLI). Set private SSH key in Github repo secrets. Go to your Github repo page, click Settings and Secrets section. Then \"New repository secret\". Create SSH_PRIVATE_KEY variable with the value of your ssh private key which is allowed to connect to your production or staging server. You can basically copy-paste the output from cat ~/.ssh/id_rsa here. As result, you will have your secret variable like this: 💥 Boom, It's done Now try to push something to your Main branch and see the magic. I hope this small article is useful somehow. Follow me on Twitter for more Dokku guides for future CTOs. -",
+  "articleBody": "I love Heroku Github integration because it can automatically deploy my Python or Node.js app after a commit or PR is merged to master/main branch. But Dokku doesn't have this integration. In this article, I'll show you how to integrate Github CI to deploy your app instantly after a commit. I'm using it for a production deployment of my pet projects. I hope you know what Dokku is, why is it cool and how to create a Dokku app using CLI on your server. How does it work? The integration flow is simple: You push to main branch Github Actions server connects to your server via ssh Updates internal Dokku app code repo and triggers rebuild script So you need to specify the proper Github Actions workflow and set up ssh private key to allow GH actions server to connect to your server where your app is deployed. Dokku + Github actions workflow Take a look at this snippet from my Django-Telegram-bot integration: it deploys a demo telegram bot to a production server. I'm using Dokku integration made by a Github user idoberko2 . name: CI on: push: branches: - main jobs: build: runs-on: ubuntu-latest steps: - uses: actions/checkout@v2 with: fetch-depth: 0 - id: deploy name: Deploy to dokku uses: idoberko2/dokku-deploy-github-action@v1 with: ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} dokku-host: 'YOUR SERVER IP OR URL' app-name: 'NAME OF YOUR DOKKU APP' git-push-flags: '--force' The only thing you need to change is the dokku-host (IP address or DNS name of your server) and app-name (the name of your Dokku app you created using Dokku CLI). Set private SSH key in Github repo secrets. Go to your Github repo page, click Settings and Secrets section. Then \"New repository secret\". Create SSH_PRIVATE_KEY variable with the value of your ssh private key which is allowed to connect to your production or staging server. You can basically copy-paste the output from cat ~/.ssh/id_rsa here. As result, you will have your secret variable like this: 💥 Boom, It's done Now try to push something to your Main branch and see the magic. I hope this small article is useful somehow. Follow me on Twitter for more Dokku guides for future CTOs. -"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Dokku + Github Actions: automatically deploy app with push to repository",
+      "item": "https://okhlopkov.com/dokku-github-actions-deploy-app-with-push-to-repo/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2022-01-22T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Dokku + Github Actions: automatically deploy app with push to repository</h1>
+      
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" alt="Dokku + Github Actions: automatically deploy app with push to repository" /></figure>
+    <section><p>I love Heroku Github integration because it can automatically deploy my Python or Node.js app after a commit or PR is merged to master/main branch. But Dokku doesn't have this integration. In this article, I'll show you how to integrate Github CI to deploy your app instantly after a commit. I'm using it for a <strong>production deployment</strong> of my pet projects.</p><p>I hope you know what Dokku is, why is it cool and how to create a Dokku app using CLI on your server.</p><h2 id="how-does-it-work">How does it work?</h2><p>The integration flow is simple:</p><ol><li>You push to <code>main</code> branch</li><li>Github Actions server connects to your server via ssh</li><li>Updates internal Dokku app code repo and triggers rebuild script</li></ol><p>So you need to specify the proper Github Actions workflow and set up <code>ssh private key</code> to allow GH actions server to connect to your server where your app is deployed.</p><h2 id="dokku-github-actions-workflow">Dokku + Github actions workflow</h2><p>Take a look at this snippet from my <a href="https://github.com/ohld/django-telegram-bot/blob/main/.github/workflows/dokku.yml?ref=okhlopkov.com">Django-Telegram-bot</a> integration: it deploys a demo telegram bot to a production server. I'm using Dokku integration made by a Github user <a href="https://github.com/idoberko2/dokku-deploy-github-action?ref=okhlopkov.com">idoberko2</a>.</p><pre><code class="language-yml">name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+          fetch-depth: 0
+
+    - id: deploy
+      name: Deploy to dokku
+      uses: idoberko2/dokku-deploy-github-action@v1
+      with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          dokku-host: 'YOUR SERVER IP OR URL'
+          app-name: 'NAME OF YOUR DOKKU APP'
+          git-push-flags: '--force'</code></pre><p>The only thing you need to change is the <code>dokku-host</code> (IP address or DNS name of your server) and <code>app-name</code> (the name of your Dokku app you created using Dokku CLI).</p><h2 id="set-private-ssh-key-in-github-repo-secrets">Set private SSH key in Github repo secrets.</h2><p>Go to your Github repo page, click Settings and Secrets section. Then "New repository secret". Create <code>SSH_PRIVATE_KEY</code> variable with the value of your ssh private key which is allowed to connect to your production or staging server. You can basically copy-paste the output from <code>cat ~/.ssh/id_rsa</code> here.</p><p>As result, you will have your secret variable like this:</p><figure class="kg-card kg-image-card"><img src="/content/images/2022/01/image.png" class="kg-image" alt loading="lazy" width="876" height="280" srcset="https://okhlopkov.com/content/images/size/w600/2022/01/image.png 600w, https://okhlopkov.com/content/images/2022/01/image.png 876w" sizes="(min-width: 720px) 720px"></figure><h1 id="%F0%9F%92%A5-boom-its-done">💥 Boom, It's done</h1><p>Now try to push something to your Main branch and see the magic.</p><hr><p>I hope this small article is useful somehow. Follow me on <a href="https://twitter.com/danokhlopkov?ref=okhlopkov.com">Twitter</a> for more Dokku guides for future CTOs.</p><figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://github.com/fluidicon.png" class="kg-image" alt loading="lazy"><figcaption>-</figcaption></figure></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

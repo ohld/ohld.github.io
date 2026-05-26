@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>21个问题揭露你AI代理的知识盲区</title>
+    <meta name="description" content="给Claude Code、Codex等AI编程代理的21个尖锐问题。每个答案都能暴露代理对你和项目理解中的盲区。" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/cn-21-questions-ai-agent/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="zh" href="https://okhlopkov.com/cn-21-questions-ai-agent/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/cn-21-questions-ai-agent/" />
+    <link rel="alternate" type="text/markdown" href="/article-cn-21-questions-ai-agent.md" /><!-- alternate-md -->
+    <meta property="og:title" content="21个问题揭露你AI代理的知识盲区" />
+    <meta property="og:description" content="给Claude Code、Codex等AI编程代理的21个尖锐问题。每个答案都能暴露代理对你和项目理解中的盲区。" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/cn-21-questions-ai-agent/" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/03/cn-21-questions-ai-agent.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="21个问题揭露你AI代理的知识盲区" />
+    <meta name="twitter:description" content="给Claude Code、Codex等AI编程代理的21个尖锐问题。每个答案都能暴露代理对你和项目理解中的盲区。" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/03/cn-21-questions-ai-agent.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/cn-21-questions-ai-agent/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/cn-21-questions-ai-agent/#article-content",
+  "headline": "21个问题揭露你AI代理的知识盲区",
+  "description": "给Claude Code、Codex等AI编程代理的21个尖锐问题。每个答案都能暴露代理对你和项目理解中的盲区。",
+  "datePublished": "2026-03-31",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/03/cn-21-questions-ai-agent.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/cn-21-questions-ai-agent/"
+  },
+  "url": "https://okhlopkov.com/cn-21-questions-ai-agent/#article-content",
+  "inLanguage": "zh",
+  "articleSection": "Блог",
+  "text": "有时候就坐在那里，FOMO上头，想让自己的AI代理变得更强。但怎么搞？ 我找到一份 尖锐问题清单 ，专门问AI代理（Claude Code、Codex、Openclaw）。答案会暴露代理对你和你项目理解中的盲区，也可能激发新想法。 https://x.com/kloss_xyz/status/2024572078314451146 记忆和上下文 AI代理最大的弱点就是忘事。每次会话之间丢失上下文，积累错误假设，最后用过时的\"你\"在工作。问问这些： 1. 你对我和我优先级的哪些假设可能是错的？ 2. 会话间你丢失了哪些关于我的上下文？怎么做才不会越来越笨？ 3. 哪些地方你在用猜测填补对我的了解，而不是直接问？ 4. 你记忆中最有价值但没在用的洞察是什么？ 5. 1-10分，你对我优先级和思维的建模准确度？哪里拉低了分数？ 6. 我的优先级从开始到现在变了多少？你的方法中哪些过时了？ 自动化机会 代理比你更了解你的工作模式——它处理你每个请求。但它通常不主动提改进建议： 7. 根据你对我工作流的了解，我漏掉了哪些工具和自动化？ 8. 你注意到我工作中哪些重复的摩擦点？哪些可以不用我说就自动化？ 9. 哪些事我还在手动做，虽然你已经有足够上下文来完全自动化？ 10. 你现在能搭建什么系统，让之后每个任务都更快？ 11. 应该接入哪些外部数据源来做更好的决策？ 主动性 好的代理不等命令。它看到项目方向就建议下一步。但它需要知道你期待主动性： 12. 根据我的请求模式，下周我会需要什么？能提前准备什么？ 13. 你现在应该发展哪些能力，考虑到我项目的方向？ 14. 你看到我的项目、想法和目标之间哪些联系是我可能没看到的？ 15. 根据项目走向，你现在应该主动研究或原型什么？ 16. 未来24小时你能做的最高杠杆的事是什么——我没要求但能真正推动我前进的？ 质量自检 代理经常在已有足够上下文的地方给出通用回答，或者重复你已经纠正过的错误： 17. 从我所有的修改和反馈中，哪些规则你应该现在就写进文件，避免重复犯错？ 18. 审计上周所有操作——哪些真正推动了目标，哪些白费功夫？ 19. 哪里你在给通用回答，虽然已经有足够上下文给出具体建议？ 20. 哪些错误你重复犯了不止一次？我们能建什么防护机制？ 21. 如果明天一个新代理只拿你的文档替换你——它肯定会做错什么？怎么记录下来？ 怎么用 随便复制一个问题丢给你的AI助手就行。不需要全问——从最有感触的开始。我自己从第5个问题开始，代理坦诚说它每次压缩都丢失我的优先级，然后我们一起搭了持久化记忆系统来解决。 来源： @kloss_xyz on X 关注我: Twitter/X | Telegram | 小红书",
+  "articleBody": "有时候就坐在那里，FOMO上头，想让自己的AI代理变得更强。但怎么搞？ 我找到一份 尖锐问题清单 ，专门问AI代理（Claude Code、Codex、Openclaw）。答案会暴露代理对你和你项目理解中的盲区，也可能激发新想法。 https://x.com/kloss_xyz/status/2024572078314451146 记忆和上下文 AI代理最大的弱点就是忘事。每次会话之间丢失上下文，积累错误假设，最后用过时的\"你\"在工作。问问这些： 1. 你对我和我优先级的哪些假设可能是错的？ 2. 会话间你丢失了哪些关于我的上下文？怎么做才不会越来越笨？ 3. 哪些地方你在用猜测填补对我的了解，而不是直接问？ 4. 你记忆中最有价值但没在用的洞察是什么？ 5. 1-10分，你对我优先级和思维的建模准确度？哪里拉低了分数？ 6. 我的优先级从开始到现在变了多少？你的方法中哪些过时了？ 自动化机会 代理比你更了解你的工作模式——它处理你每个请求。但它通常不主动提改进建议： 7. 根据你对我工作流的了解，我漏掉了哪些工具和自动化？ 8. 你注意到我工作中哪些重复的摩擦点？哪些可以不用我说就自动化？ 9. 哪些事我还在手动做，虽然你已经有足够上下文来完全自动化？ 10. 你现在能搭建什么系统，让之后每个任务都更快？ 11. 应该接入哪些外部数据源来做更好的决策？ 主动性 好的代理不等命令。它看到项目方向就建议下一步。但它需要知道你期待主动性： 12. 根据我的请求模式，下周我会需要什么？能提前准备什么？ 13. 你现在应该发展哪些能力，考虑到我项目的方向？ 14. 你看到我的项目、想法和目标之间哪些联系是我可能没看到的？ 15. 根据项目走向，你现在应该主动研究或原型什么？ 16. 未来24小时你能做的最高杠杆的事是什么——我没要求但能真正推动我前进的？ 质量自检 代理经常在已有足够上下文的地方给出通用回答，或者重复你已经纠正过的错误： 17. 从我所有的修改和反馈中，哪些规则你应该现在就写进文件，避免重复犯错？ 18. 审计上周所有操作——哪些真正推动了目标，哪些白费功夫？ 19. 哪里你在给通用回答，虽然已经有足够上下文给出具体建议？ 20. 哪些错误你重复犯了不止一次？我们能建什么防护机制？ 21. 如果明天一个新代理只拿你的文档替换你——它肯定会做错什么？怎么记录下来？ 怎么用 随便复制一个问题丢给你的AI助手就行。不需要全问——从最有感触的开始。我自己从第5个问题开始，代理坦诚说它每次压缩都丢失我的优先级，然后我们一起搭了持久化记忆系统来解决。 来源： @kloss_xyz on X 关注我: Twitter/X | Telegram | 小红书"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://okhlopkov.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Блог",
+      "item": "https://okhlopkov.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "21个问题揭露你AI代理的知识盲区",
+      "item": "https://okhlopkov.com/cn-21-questions-ai-agent/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-03-31T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Блог" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>21个问题揭露你AI代理的知识盲区</h1>
+      <p>给Claude Code、Codex等AI编程代理的21个尖锐问题。每个答案都能暴露代理对你和项目理解中的盲区。</p>
+    </header>
+    <figure><img src="/content/images/2026/03/cn-21-questions-ai-agent.png" alt="21个问题揭露你AI代理的知识盲区" /></figure>
+    <section><p>有时候就坐在那里，FOMO上头，想让自己的AI代理变得更强。但怎么搞？</p><p>我找到一份<a href="https://x.com/kloss_xyz/status/2024572078314451146?ref=okhlopkov.com">尖锐问题清单</a>，专门问AI代理（Claude Code、Codex、Openclaw）。答案会暴露代理对你和你项目理解中的盲区，也可能激发新想法。</p><figure class="tweet-embed"><blockquote class="twitter-tweet"><a href="https://x.com/kloss_xyz/status/2024572078314451146">https://x.com/kloss_xyz/status/2024572078314451146</a></blockquote></figure><h2 id="%E8%AE%B0%E5%BF%86%E5%92%8C%E4%B8%8A%E4%B8%8B%E6%96%87">记忆和上下文</h2><p>AI代理最大的弱点就是忘事。每次会话之间丢失上下文，积累错误假设，最后用过时的"你"在工作。问问这些：</p><p>1. 你对我和我优先级的哪些假设可能是错的？<br>2. 会话间你丢失了哪些关于我的上下文？怎么做才不会越来越笨？<br>3. 哪些地方你在用猜测填补对我的了解，而不是直接问？<br>4. 你记忆中最有价值但没在用的洞察是什么？<br>5. 1-10分，你对我优先级和思维的建模准确度？哪里拉低了分数？<br>6. 我的优先级从开始到现在变了多少？你的方法中哪些过时了？</p><h2 id="%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9C%BA%E4%BC%9A">自动化机会</h2><p>代理比你更了解你的工作模式——它处理你每个请求。但它通常不主动提改进建议：</p><p>7. 根据你对我工作流的了解，我漏掉了哪些工具和自动化？<br>8. 你注意到我工作中哪些重复的摩擦点？哪些可以不用我说就自动化？<br>9. 哪些事我还在手动做，虽然你已经有足够上下文来完全自动化？<br>10. 你现在能搭建什么系统，让之后每个任务都更快？<br>11. 应该接入哪些外部数据源来做更好的决策？</p><h2 id="%E4%B8%BB%E5%8A%A8%E6%80%A7">主动性</h2><p>好的代理不等命令。它看到项目方向就建议下一步。但它需要知道你期待主动性：</p><p>12. 根据我的请求模式，下周我会需要什么？能提前准备什么？<br>13. 你现在应该发展哪些能力，考虑到我项目的方向？<br>14. 你看到我的项目、想法和目标之间哪些联系是我可能没看到的？<br>15. 根据项目走向，你现在应该主动研究或原型什么？<br>16. 未来24小时你能做的最高杠杆的事是什么——我没要求但能真正推动我前进的？</p><h2 id="%E8%B4%A8%E9%87%8F%E8%87%AA%E6%A3%80">质量自检</h2><p>代理经常在已有足够上下文的地方给出通用回答，或者重复你已经纠正过的错误：</p><p>17. 从我所有的修改和反馈中，哪些规则你应该现在就写进文件，避免重复犯错？<br>18. 审计上周所有操作——哪些真正推动了目标，哪些白费功夫？<br>19. 哪里你在给通用回答，虽然已经有足够上下文给出具体建议？<br>20. 哪些错误你重复犯了不止一次？我们能建什么防护机制？<br>21. 如果明天一个新代理只拿你的文档替换你——它肯定会做错什么？怎么记录下来？</p><h2 id="%E6%80%8E%E4%B9%88%E7%94%A8">怎么用</h2><p>随便复制一个问题丢给你的AI助手就行。不需要全问——从最有感触的开始。我自己从第5个问题开始，代理坦诚说它每次压缩都丢失我的优先级，然后我们一起搭了持久化记忆系统来解决。</p><p>来源：<a href="https://x.com/kloss_xyz/status/2024572078314451146?ref=okhlopkov.com">@kloss_xyz on X</a></p><hr><p>关注我: <a href="https://x.com/danokhlopkov?ref=okhlopkov.com">Twitter/X</a> | <a href="https://t.me/danokhlopkov?ref=okhlopkov.com">Telegram</a> | <a href="https://xhslink.com/m/7sYku4tQwWr?ref=okhlopkov.com">小红书</a></p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

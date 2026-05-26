@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Claude Code Setup After 4 Months of Daily Use (2026)</title>
+    <meta name="description" content="My daily Claude Code config: MCP servers, custom hooks, skills, and real costs. Practitioner setup, not rewritten docs." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/claude-code-nastrojka-mcp-hooks-skills-2026/" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/" />
+    <link rel="alternate" type="text/markdown" href="/article-claude-code-setup-mcp-hooks-skills-2026.md" /><!-- alternate-md -->
+    <meta property="og:title" content="My Claude Code Setup After 4 Months of Daily Use (2026)" />
+    <meta property="og:description" content="My daily Claude Code config: MCP servers, custom hooks, skills, and real costs. Practitioner setup, not rewritten docs." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/02/claude-code-setup-mcp-hooks-skills-2026.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="My Claude Code Setup After 4 Months of Daily Use (2026)" />
+    <meta name="twitter:description" content="My daily Claude Code config: MCP servers, custom hooks, skills, and real costs. Practitioner setup, not rewritten docs." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/02/claude-code-setup-mcp-hooks-skills-2026.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/#article-content",
+  "headline": "My Claude Code Setup After 4 Months of Daily Use (2026)",
+  "description": "My daily Claude Code config: MCP servers, custom hooks, skills, and real costs. Practitioner setup, not rewritten docs.",
+  "datePublished": "2026-02-23",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/02/claude-code-setup-mcp-hooks-skills-2026.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/"
+  },
+  "url": "https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "Claude Code is Anthropic's AI agent that runs in your terminal. It reads your files, runs shell commands, browses the web, and calls APIs. You type what you want, it figures out the how. I've been using it daily for 4 months, and this is my actual setup — not a tutorial rewritten from docs, but how I work. What Claude Code Actually Is (and Isn't) Claude Code is not a chatbot. It's not autocomplete. It's basically a while True loop in your terminal — the agent gets a task, picks a tool, runs it, looks at what happened, figures out the next move. Keeps going until done or until it gets stuck and asks you. The tools are real: file access, bash , web search, MCP servers. No IDE in between. You cd into your project, type claude , and that's it — you're talking to something that can see your entire codebase and actually do things with it. Pricing: $20/month gets you the Pro plan with limited usage. $100/month (Max) is unlimited — that's what I use. There's no free tier for Claude Code specifically. You need a Claude subscription, then install it via npm install -g @anthropic-ai/claude-code . How I Use Claude Code Daily My daily workflow looks nothing like traditional coding. I record a voice note in Telegram describing what I need. My server agent (Claude Code running 24/7 on a Hetzner VPS) picks it up, reads the voice transcription, and starts working. For analytics work, I describe the research question and agent just goes. Writes SQL for Dune Analytics, pulls the data, makes charts, puts together a report. What used to be 3-4 hours of me writing SQL and formatting stuff is now 20 minutes of talking and reviewing. For code — same thing. I describe what I need, it reads the files, writes the code, runs tests, commits. I look at the diff. Usually accept. Sometimes push back on something in plain English. Before Claude Code, I'd have 15 browser tabs open: docs, Stack Overflow, GitHub issues, API references. Now I have one terminal window. The agent reads the docs for me. My CLAUDE.md — The File That Makes It Work Every Claude Code project has a CLAUDE.md file in the root. When the agent starts, it reads this file first. Think of it as an operating system for your agent, not a prompt. Here's part of mine (106 lines total): # Personal Obsidian Vault ## Architecture - **Keep files short** (&lt;150 lines). Use [[links]] for navigation. - **AI never edits raw content.** Voice notes stay pristine. ## Voice Messages When receiving a voice note: - If about a specific project → save to: projects/X/ai-docs/ - If personal → save to: personal/diary/ Then: 1. Add tags and project links below raw text 2. Extract TODOs → project-specific tasks.md 3. Facts about projects → projects/X/overview.md This file routes everything. Voice notes, tasks, credentials, project structure — the agent figures out where stuff goes based on these rules. I update it maybe once a week when something in my workflow changes. The key insight: CLAUDE.md is not about telling the agent what it is . It's about telling the agent how your world works . Project structure, naming conventions, where things live, what to never touch. I wrote more about this pattern in Building a Second Brain with Obsidian and Claude Code . MCP Servers I Use Daily MCP (Model Context Protocol) lets Claude Code talk to external services. You define servers in .mcp.json , and the agent gets new tools — basically giving it extra capabilities beyond just reading files and running bash. Here's my actual .mcp.json : { \"mcpServers\": { \"coolify\": { \"command\": \"npx\", \"args\": [\"-y\", \"@masonator/coolify-mcp\"], \"env\": { \"COOLIFY_ACCESS_TOKEN\": \"${COOLIFY_ACCESS_TOKEN}\", \"COOLIFY_BASE_URL\": \"${COOLIFY_BASE_URL}\" } }, \"telegram\": { \"command\": \"python\", \"args\": [\"telegram_mcp_proxy.py\"], \"env\": {} } } } Coolify MCP — my deployment server. The agent can deploy apps, restart services, check logs, manage databases. When I update the agent's own config, it redeploys itself. An AI agent that deploys itself to production. Telegram MCP — full Telegram access. Read messages, send replies, manage channels. My server agent uses this to answer questions in my Telegram channel discussion while I sleep. I also use Codex MCP for dual-model review. Claude writes a plan, sends it to OpenAI's Codex for an independent review, then incorporates the feedback. Two AI agents cross-checking each other. I wrote about this setup in Claude Code + Codex Dual Review . Skills — Markdown That Gives Your Agent Superpowers A skill is a .md file in ~/.claude/skills/ . No SDK, no API, no build step. You write instructions in markdown, and Claude Code follows them when relevant. Skills I've built: ton-analyst — writes Dune SQL queries for TON blockchain analysis. Knows the schema, the gotchas (like filtering direction = 'in' to avoid double-counting messages), and how to poll the Dune API for results. ton-profiler — investigates TON wallet connections. Calls our internal API, builds graph data, identifies clusters of related addresses. crosspost — publishes content across Telegram, Ghost blog, Twitter/X in three languages (RU, EN, CN). The skill file for ton-analyst is about 200 lines of markdown. It includes SQL templates, API endpoints, common mistakes to avoid, and example queries. No code — just instructions that the agent interprets and executes. I made a lot of mistakes building these. If you're starting, read 7 Common Mistakes When Writing Claude Code Skills first. Hooks — Code That Runs on Every Action Hooks are shell commands that fire automatically on specific events inside Claude Code. Before a commit, after a tool call, when the agent tries to edit certain files — you can intercept pretty much anything. Example from my setup — a pre-commit hook that prevents the agent from committing sensitive files: # .claude/hooks/pre-commit.sh # Block commits that include credential files if git diff --cached --name-only | grep -qE '\\.(env|key|pem)$|creds\\.md'; then echo \"BLOCKED: Attempting to commit sensitive files\" exit 1 fi This is what makes it possible to run Claude Code unattended. My server agent works 24/7 and I don't worry about it leaking credentials or pushing to the wrong branch — because hooks won't let it. Subagents and Teams Claude Code can spawn sub-agents — think of it as a lead who delegates. The main agent splits the work, launches a few workers, and they all run in parallel with their own context windows. I use this for blockchain research. The lead agent gets a question like \"analyze this wallet's activity over the last 30 days.\" It spawns: A data agent that writes and runs SQL queries on Dune A profiling agent that checks our internal wallet database A report agent that takes both outputs and builds the final analysis Three agents working in parallel, each with their own context. The lead coordinates. What would take me half a day finishes in 15 minutes. Teams take this further — multiple named agents with persistent task lists, working on a shared project. I've used teams for large research reports where one agent gathers data, another writes sections, and a third does quality review. Claude Code vs Cursor — When I Use Each I still have Cursor installed. Here's when I use what: Cursor wins for: Quick inline edits — you see the code, highlight a block, ask for a change. Visual and fast. Exploring unfamiliar codebases — Cursor's UI lets you click through files while the AI explains things. When you know exactly what you want changed and where — pointing is faster than describing. Claude Code wins for: Anything that needs more than just editing code — if the task involves bash, API calls, file reads, and edits all together, Cursor can't really do that. Autonomous workflows — background agents, server deployments, scheduled tasks. Cursor needs you sitting in front of it. Large-scale changes — refactoring across 20 files, running tests after each change, fixing what breaks. The terminal is faster than the GUI for this. Integration with external systems — MCP servers let the agent talk to Telegram, deploy to production, query databases. Cursor's tool integration is more limited. My ratio: 90% Claude Code, 10% Cursor. But that's because most of my work is data analysis and agent orchestration, not UI development. If I was building React components all day, Cursor would probably win. Costs — Is $100/Month Worth It? Claude Pro ($20/month) gives you limited Claude Code access. Good for trying it out, learning the workflow, running simple tasks. You'll hit rate limits on heavy days. Claude Max ($100/month) removes the limits. I switched after 2 weeks on Pro because I was hitting the ceiling daily. At $100, I never think about usage — I just use it. Is it worth it? My time at work costs way more than $50/hour. If the tool saves me even 2 hours a month it's already paid for. And honestly it saves me closer to 2 hours per day . SQL queries alone used to eat hours. Now the agent handles data formatting, charts, report writing — all of it. Real numbers from February 2026: I ran the agent for a blockchain research project that produced a 30-page report with 15 charts and 40+ SQL queries. Doing this manually would have taken me a full work week. The agent did it in one evening while I reviewed the output. The Second Brain Pattern Everything above connects through one idea: the agent lives inside my Obsidian vault. My notes, project files, tasks, voice transcripts — they're all in one directory. Claude Code reads them and knows what I'm working on, what's pending, and how my projects are structured. I call it a \"second brain\" because that's literally what it is. I dump thoughts into voice notes, the agent organizes them. I have ideas at 2am, the agent picks them up in the morning. My project context is never lost — it's in markdown files that both the agent and I can read. The deeper version of this — packaging your entire professional identity into a format AI can work with — is what I wrote about in dania.zip: Packaging Yourself for AI Agents . What This Actually Changed Four months in, the biggest shift isn't productivity. It's that I stopped context-switching. I used to juggle between SQL editor, terminal, browser, Slack, Notion, and my code editor. Now I sit in one terminal and describe what I need. The agent handles the rest. I'm not writing less code — I'm writing no code for most tasks. Agent writes, I review. The job became less about typing and more about knowing what needs to exist and wether it's correct. If you want the full deep dive into my workflow, start with my workflow post . For the Obsidian integration, see the second brain post . And if you want to build skills, start here . Daniil Okhlopkov — Head of Analytics at TON Foundation. Building AI agent workflows, blockchain analytics tools, and writing about it. Telegram · Twitter/X · YouTube · Instagram",
+  "articleBody": "Claude Code is Anthropic's AI agent that runs in your terminal. It reads your files, runs shell commands, browses the web, and calls APIs. You type what you want, it figures out the how. I've been using it daily for 4 months, and this is my actual setup — not a tutorial rewritten from docs, but how I work. What Claude Code Actually Is (and Isn't) Claude Code is not a chatbot. It's not autocomplete. It's basically a while True loop in your terminal — the agent gets a task, picks a tool, runs it, looks at what happened, figures out the next move. Keeps going until done or until it gets stuck and asks you. The tools are real: file access, bash , web search, MCP servers. No IDE in between. You cd into your project, type claude , and that's it — you're talking to something that can see your entire codebase and actually do things with it. Pricing: $20/month gets you the Pro plan with limited usage. $100/month (Max) is unlimited — that's what I use. There's no free tier for Claude Code specifically. You need a Claude subscription, then install it via npm install -g @anthropic-ai/claude-code . How I Use Claude Code Daily My daily workflow looks nothing like traditional coding. I record a voice note in Telegram describing what I need. My server agent (Claude Code running 24/7 on a Hetzner VPS) picks it up, reads the voice transcription, and starts working. For analytics work, I describe the research question and agent just goes. Writes SQL for Dune Analytics, pulls the data, makes charts, puts together a report. What used to be 3-4 hours of me writing SQL and formatting stuff is now 20 minutes of talking and reviewing. For code — same thing. I describe what I need, it reads the files, writes the code, runs tests, commits. I look at the diff. Usually accept. Sometimes push back on something in plain English. Before Claude Code, I'd have 15 browser tabs open: docs, Stack Overflow, GitHub issues, API references. Now I have one terminal window. The agent reads the docs for me. My CLAUDE.md — The File That Makes It Work Every Claude Code project has a CLAUDE.md file in the root. When the agent starts, it reads this file first. Think of it as an operating system for your agent, not a prompt. Here's part of mine (106 lines total): # Personal Obsidian Vault ## Architecture - **Keep files short** (&lt;150 lines). Use [[links]] for navigation. - **AI never edits raw content.** Voice notes stay pristine. ## Voice Messages When receiving a voice note: - If about a specific project → save to: projects/X/ai-docs/ - If personal → save to: personal/diary/ Then: 1. Add tags and project links below raw text 2. Extract TODOs → project-specific tasks.md 3. Facts about projects → projects/X/overview.md This file routes everything. Voice notes, tasks, credentials, project structure — the agent figures out where stuff goes based on these rules. I update it maybe once a week when something in my workflow changes. The key insight: CLAUDE.md is not about telling the agent what it is . It's about telling the agent how your world works . Project structure, naming conventions, where things live, what to never touch. I wrote more about this pattern in Building a Second Brain with Obsidian and Claude Code . MCP Servers I Use Daily MCP (Model Context Protocol) lets Claude Code talk to external services. You define servers in .mcp.json , and the agent gets new tools — basically giving it extra capabilities beyond just reading files and running bash. Here's my actual .mcp.json : { \"mcpServers\": { \"coolify\": { \"command\": \"npx\", \"args\": [\"-y\", \"@masonator/coolify-mcp\"], \"env\": { \"COOLIFY_ACCESS_TOKEN\": \"${COOLIFY_ACCESS_TOKEN}\", \"COOLIFY_BASE_URL\": \"${COOLIFY_BASE_URL}\" } }, \"telegram\": { \"command\": \"python\", \"args\": [\"telegram_mcp_proxy.py\"], \"env\": {} } } } Coolify MCP — my deployment server. The agent can deploy apps, restart services, check logs, manage databases. When I update the agent's own config, it redeploys itself. An AI agent that deploys itself to production. Telegram MCP — full Telegram access. Read messages, send replies, manage channels. My server agent uses this to answer questions in my Telegram channel discussion while I sleep. I also use Codex MCP for dual-model review. Claude writes a plan, sends it to OpenAI's Codex for an independent review, then incorporates the feedback. Two AI agents cross-checking each other. I wrote about this setup in Claude Code + Codex Dual Review . Skills — Markdown That Gives Your Agent Superpowers A skill is a .md file in ~/.claude/skills/ . No SDK, no API, no build step. You write instructions in markdown, and Claude Code follows them when relevant. Skills I've built: ton-analyst — writes Dune SQL queries for TON blockchain analysis. Knows the schema, the gotchas (like filtering direction = 'in' to avoid double-counting messages), and how to poll the Dune API for results. ton-profiler — investigates TON wallet connections. Calls our internal API, builds graph data, identifies clusters of related addresses. crosspost — publishes content across Telegram, Ghost blog, Twitter/X in three languages (RU, EN, CN). The skill file for ton-analyst is about 200 lines of markdown. It includes SQL templates, API endpoints, common mistakes to avoid, and example queries. No code — just instructions that the agent interprets and executes. I made a lot of mistakes building these. If you're starting, read 7 Common Mistakes When Writing Claude Code Skills first. Hooks — Code That Runs on Every Action Hooks are shell commands that fire automatically on specific events inside Claude Code. Before a commit, after a tool call, when the agent tries to edit certain files — you can intercept pretty much anything. Example from my setup — a pre-commit hook that prevents the agent from committing sensitive files: # .claude/hooks/pre-commit.sh # Block commits that include credential files if git diff --cached --name-only | grep -qE '\\.(env|key|pem)$|creds\\.md'; then echo \"BLOCKED: Attempting to commit sensitive files\" exit 1 fi This is what makes it possible to run Claude Code unattended. My server agent works 24/7 and I don't worry about it leaking credentials or pushing to the wrong branch — because hooks won't let it. Subagents and Teams Claude Code can spawn sub-agents — think of it as a lead who delegates. The main agent splits the work, launches a few workers, and they all run in parallel with their own context windows. I use this for blockchain research. The lead agent gets a question like \"analyze this wallet's activity over the last 30 days.\" It spawns: A data agent that writes and runs SQL queries on Dune A profiling agent that checks our internal wallet database A report agent that takes both outputs and builds the final analysis Three agents working in parallel, each with their own context. The lead coordinates. What would take me half a day finishes in 15 minutes. Teams take this further — multiple named agents with persistent task lists, working on a shared project. I've used teams for large research reports where one agent gathers data, another writes sections, and a third does quality review. Claude Code vs Cursor — When I Use Each I still have Cursor installed. Here's when I use what: Cursor wins for: Quick inline edits — you see the code, highlight a block, ask for a change. Visual and fast. Exploring unfamiliar codebases — Cursor's UI lets you click through files while the AI explains things. When you know exactly what you want changed and where — pointing is faster than describing. Claude Code wins for: Anything that needs more than just editing code — if the task involves bash, API calls, file reads, and edits all together, Cursor can't really do that. Autonomous workflows — background agents, server deployments, scheduled tasks. Cursor needs you sitting in front of it. Large-scale changes — refactoring across 20 files, running tests after each change, fixing what breaks. The terminal is faster than the GUI for this. Integration with external systems — MCP servers let the agent talk to Telegram, deploy to production, query databases. Cursor's tool integration is more limited. My ratio: 90% Claude Code, 10% Cursor. But that's because most of my work is data analysis and agent orchestration, not UI development. If I was building React components all day, Cursor would probably win. Costs — Is $100/Month Worth It? Claude Pro ($20/month) gives you limited Claude Code access. Good for trying it out, learning the workflow, running simple tasks. You'll hit rate limits on heavy days. Claude Max ($100/month) removes the limits. I switched after 2 weeks on Pro because I was hitting the ceiling daily. At $100, I never think about usage — I just use it. Is it worth it? My time at work costs way more than $50/hour. If the tool saves me even 2 hours a month it's already paid for. And honestly it saves me closer to 2 hours per day . SQL queries alone used to eat hours. Now the agent handles data formatting, charts, report writing — all of it. Real numbers from February 2026: I ran the agent for a blockchain research project that produced a 30-page report with 15 charts and 40+ SQL queries. Doing this manually would have taken me a full work week. The agent did it in one evening while I reviewed the output. The Second Brain Pattern Everything above connects through one idea: the agent lives inside my Obsidian vault. My notes, project files, tasks, voice transcripts — they're all in one directory. Claude Code reads them and knows what I'm working on, what's pending, and how my projects are structured. I call it a \"second brain\" because that's literally what it is. I dump thoughts into voice notes, the agent organizes them. I have ideas at 2am, the agent picks them up in the morning. My project context is never lost — it's in markdown files that both the agent and I can read. The deeper version of this — packaging your entire professional identity into a format AI can work with — is what I wrote about in dania.zip: Packaging Yourself for AI Agents . What This Actually Changed Four months in, the biggest shift isn't productivity. It's that I stopped context-switching. I used to juggle between SQL editor, terminal, browser, Slack, Notion, and my code editor. Now I sit in one terminal and describe what I need. The agent handles the rest. I'm not writing less code — I'm writing no code for most tasks. Agent writes, I review. The job became less about typing and more about knowing what needs to exist and wether it's correct. If you want the full deep dive into my workflow, start with my workflow post . For the Obsidian integration, see the second brain post . And if you want to build skills, start here . Daniil Okhlopkov — Head of Analytics at TON Foundation. Building AI agent workflows, blockchain analytics tools, and writing about it. Telegram · Twitter/X · YouTube · Instagram"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "My Claude Code Setup After 4 Months of Daily Use (2026)",
+      "item": "https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-02-23T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>My Claude Code Setup After 4 Months of Daily Use (2026)</h1>
+      <p>My daily Claude Code config: MCP servers, custom hooks, skills, and real costs. Practitioner setup, not rewritten docs.</p>
+    </header>
+    <figure><img src="/content/images/2026/02/claude-code-setup-mcp-hooks-skills-2026.png" alt="My Claude Code Setup After 4 Months of Daily Use (2026)" /></figure>
+    <section><p>Claude Code is Anthropic's AI agent that runs in your terminal. It reads your files, runs shell commands, browses the web, and calls APIs. You type what you want, it figures out the how. I've been using it daily for 4 months, and this is my actual setup — not a tutorial rewritten from docs, but how I work.</p><h2 id="what-claude-code-actually-is-and-isnt">What Claude Code Actually Is (and Isn't)</h2><p>Claude Code is not a chatbot. It's not autocomplete. It's basically a <code>while True</code> loop in your terminal — the agent gets a task, picks a tool, runs it, looks at what happened, figures out the next move. Keeps going until done or until it gets stuck and asks you.</p><p>The tools are real: file access, <code>bash</code>, web search, MCP servers. No IDE in between. You <code>cd</code> into your project, type <code>claude</code>, and that's it — you're talking to something that can see your entire codebase and actually do things with it.</p><p>Pricing: $20/month gets you the Pro plan with limited usage. $100/month (Max) is unlimited — that's what I use. There's no free tier for Claude Code specifically. You need a Claude subscription, then install it via <code>npm install -g @anthropic-ai/claude-code</code>.</p><h2 id="how-i-use-claude-code-daily">How I Use Claude Code Daily</h2><p>My daily workflow looks nothing like traditional coding. I record a voice note in Telegram describing what I need. My server agent (Claude Code running 24/7 on a Hetzner VPS) picks it up, reads the voice transcription, and starts working.</p><p>For analytics work, I describe the research question and agent just goes. Writes SQL for Dune Analytics, pulls the data, makes charts, puts together a report. What used to be 3-4 hours of me writing SQL and formatting stuff is now 20 minutes of talking and reviewing.</p><p>For code — same thing. I describe what I need, it reads the files, writes the code, runs tests, commits. I look at the diff. Usually accept. Sometimes push back on something in plain English.</p><p>Before Claude Code, I'd have 15 browser tabs open: docs, Stack Overflow, GitHub issues, API references. Now I have one terminal window. The agent reads the docs for me.</p><h2 id="my-claudemd-%E2%80%94-the-file-that-makes-it-work">My CLAUDE.md — The File That Makes It Work</h2><p>Every Claude Code project has a <code>CLAUDE.md</code> file in the root. When the agent starts, it reads this file first. Think of it as an operating system for your agent, not a prompt.</p><p>Here's part of mine (106 lines total):</p><pre><code># Personal Obsidian Vault
+
+## Architecture
+- **Keep files short** (&lt;150 lines). Use [[links]] for navigation.
+- **AI never edits raw content.** Voice notes stay pristine.
+
+## Voice Messages
+When receiving a voice note:
+- If about a specific project → save to: projects/X/ai-docs/
+- If personal → save to: personal/diary/
+
+Then:
+1. Add tags and project links below raw text
+2. Extract TODOs → project-specific tasks.md
+3. Facts about projects → projects/X/overview.md</code></pre><p>This file routes everything. Voice notes, tasks, credentials, project structure — the agent figures out where stuff goes based on these rules. I update it maybe once a week when something in my workflow changes.</p><p>The key insight: <code>CLAUDE.md</code> is not about telling the agent what it <em>is</em>. It's about telling the agent how your world <em>works</em>. Project structure, naming conventions, where things live, what to never touch. I wrote more about this pattern in <a href="/second-brain-obsidian-claude-code/">Building a Second Brain with Obsidian and Claude Code</a>.</p><h2 id="mcp-servers-i-use-daily">MCP Servers I Use Daily</h2><p>MCP (Model Context Protocol) lets Claude Code talk to external services. You define servers in <code>.mcp.json</code>, and the agent gets new tools — basically giving it extra capabilities beyond just reading files and running bash.</p><p>Here's my actual <code>.mcp.json</code>:</p><pre><code>{
+  "mcpServers": {
+    "coolify": {
+      "command": "npx",
+      "args": ["-y", "@masonator/coolify-mcp"],
+      "env": {
+        "COOLIFY_ACCESS_TOKEN": "${COOLIFY_ACCESS_TOKEN}",
+        "COOLIFY_BASE_URL": "${COOLIFY_BASE_URL}"
+      }
+    },
+    "telegram": {
+      "command": "python",
+      "args": ["telegram_mcp_proxy.py"],
+      "env": {}
+    }
+  }
+}</code></pre><p><strong>Coolify MCP</strong> — my deployment server. The agent can deploy apps, restart services, check logs, manage databases. When I update the agent's own config, it redeploys itself. An AI agent that deploys itself to production.</p><p><strong>Telegram MCP</strong> — full Telegram access. Read messages, send replies, manage channels. My server agent uses this to answer questions in my Telegram channel discussion while I sleep.</p><p>I also use <strong>Codex MCP</strong> for dual-model review. Claude writes a plan, sends it to OpenAI's Codex for an independent review, then incorporates the feedback. Two AI agents cross-checking each other. I wrote about this setup in <a href="/en-claude-codex-dual-review/">Claude Code + Codex Dual Review</a>.</p><h2 id="skills-%E2%80%94-markdown-that-gives-your-agent-superpowers">Skills — Markdown That Gives Your Agent Superpowers</h2><p>A skill is a <code>.md</code> file in <code>~/.claude/skills/</code>. No SDK, no API, no build step. You write instructions in markdown, and Claude Code follows them when relevant.</p><p>Skills I've built:</p><ul><li><strong>ton-analyst</strong> — writes Dune SQL queries for TON blockchain analysis. Knows the schema, the gotchas (like filtering <code>direction = 'in'</code> to avoid double-counting messages), and how to poll the Dune API for results.</li><li><strong>ton-profiler</strong> — investigates TON wallet connections. Calls our internal API, builds graph data, identifies clusters of related addresses.</li><li><strong>crosspost</strong> — publishes content across Telegram, Ghost blog, Twitter/X in three languages (RU, EN, CN).</li></ul><p>The skill file for ton-analyst is about 200 lines of markdown. It includes SQL templates, API endpoints, common mistakes to avoid, and example queries. No code — just instructions that the agent interprets and executes.</p><p>I made a lot of mistakes building these. If you're starting, read <a href="/en-write-claude-code-skills-7-mistakes/">7 Common Mistakes When Writing Claude Code Skills</a> first.</p><h2 id="hooks-%E2%80%94-code-that-runs-on-every-action">Hooks — Code That Runs on Every Action</h2><p>Hooks are shell commands that fire automatically on specific events inside Claude Code. Before a commit, after a tool call, when the agent tries to edit certain files — you can intercept pretty much anything.</p><p>Example from my setup — a pre-commit hook that prevents the agent from committing sensitive files:</p><pre><code># .claude/hooks/pre-commit.sh
+# Block commits that include credential files
+if git diff --cached --name-only | grep -qE '\.(env|key|pem)$|creds\.md'; then
+  echo "BLOCKED: Attempting to commit sensitive files"
+  exit 1
+fi</code></pre><p>This is what makes it possible to run Claude Code unattended. My server agent works 24/7 and I don't worry about it leaking credentials or pushing to the wrong branch — because hooks won't let it.</p><h2 id="subagents-and-teams">Subagents and Teams</h2><p>Claude Code can spawn sub-agents — think of it as a lead who delegates. The main agent splits the work, launches a few workers, and they all run in parallel with their own context windows.</p><p>I use this for blockchain research. The lead agent gets a question like "analyze this wallet's activity over the last 30 days." It spawns:</p><ul><li>A data agent that writes and runs SQL queries on Dune</li><li>A profiling agent that checks our internal wallet database</li><li>A report agent that takes both outputs and builds the final analysis</li></ul><p>Three agents working in parallel, each with their own context. The lead coordinates. What would take me half a day finishes in 15 minutes.</p><p>Teams take this further — multiple named agents with persistent task lists, working on a shared project. I've used teams for large research reports where one agent gathers data, another writes sections, and a third does quality review.</p><h2 id="claude-code-vs-cursor-%E2%80%94-when-i-use-each">Claude Code vs Cursor — When I Use Each</h2><p>I still have Cursor installed. Here's when I use what:</p><p><strong>Cursor wins for:</strong></p><ul><li>Quick inline edits — you see the code, highlight a block, ask for a change. Visual and fast.</li><li>Exploring unfamiliar codebases — Cursor's UI lets you click through files while the AI explains things.</li><li>When you know exactly what you want changed and where — pointing is faster than describing.</li></ul><p><strong>Claude Code wins for:</strong></p><ul><li>Anything that needs more than just editing code — if the task involves bash, API calls, file reads, and edits all together, Cursor can't really do that.</li><li>Autonomous workflows — background agents, server deployments, scheduled tasks. Cursor needs you sitting in front of it.</li><li>Large-scale changes — refactoring across 20 files, running tests after each change, fixing what breaks. The terminal is faster than the GUI for this.</li><li>Integration with external systems — MCP servers let the agent talk to Telegram, deploy to production, query databases. Cursor's tool integration is more limited.</li></ul><p>My ratio: 90% Claude Code, 10% Cursor. But that's because most of my work is data analysis and agent orchestration, not UI development. If I was building React components all day, Cursor would probably win.</p><h2 id="costs-%E2%80%94-is-100month-worth-it">Costs — Is $100/Month Worth It?</h2><p>Claude Pro ($20/month) gives you limited Claude Code access. Good for trying it out, learning the workflow, running simple tasks. You'll hit rate limits on heavy days.</p><p>Claude Max ($100/month) removes the limits. I switched after 2 weeks on Pro because I was hitting the ceiling daily. At $100, I never think about usage — I just use it.</p><p>Is it worth it? My time at work costs way more than $50/hour. If the tool saves me even 2 hours a month it's already paid for. And honestly it saves me closer to 2 hours per <em>day</em>. SQL queries alone used to eat hours. Now the agent handles data formatting, charts, report writing — all of it.</p><p>Real numbers from February 2026: I ran the agent for a blockchain research project that produced a 30-page report with 15 charts and 40+ SQL queries. Doing this manually would have taken me a full work week. The agent did it in one evening while I reviewed the output.</p><h2 id="the-second-brain-pattern">The Second Brain Pattern</h2><p>Everything above connects through one idea: the agent lives inside my Obsidian vault. My notes, project files, tasks, voice transcripts — they're all in one directory. Claude Code reads them and <em>knows</em> what I'm working on, what's pending, and how my projects are structured.</p><p>I call it a "second brain" because that's literally what it is. I dump thoughts into voice notes, the agent organizes them. I have ideas at 2am, the agent picks them up in the morning. My project context is never lost — it's in markdown files that both the agent and I can read.</p><p>The deeper version of this — packaging your entire professional identity into a format AI can work with — is what I wrote about in <a href="/dania-zip-packaging-yourself-for-ai/">dania.zip: Packaging Yourself for AI Agents</a>.</p><h2 id="what-this-actually-changed">What This Actually Changed</h2><p>Four months in, the biggest shift isn't productivity. It's that I stopped context-switching. I used to juggle between SQL editor, terminal, browser, Slack, Notion, and my code editor. Now I sit in one terminal and describe what I need. The agent handles the rest.</p><p>I'm not writing less code — I'm writing <em>no</em> code for most tasks. Agent writes, I review. The job became less about typing and more about knowing what needs to exist and wether it's correct.</p><p>If you want the full deep dive into my workflow, start with <a href="/claude-code-workflow-2026/">my workflow post</a>. For the Obsidian integration, see <a href="/second-brain-obsidian-claude-code/">the second brain post</a>. And if you want to build skills, <a href="/en-write-claude-code-skills-7-mistakes/">start here</a>.</p><hr><p><em>Daniil Okhlopkov — Head of Analytics at TON Foundation. Building AI agent workflows, blockchain analytics tools, and writing about it.</em></p><p><a href="https://t.me/danokhlopkov?ref=okhlopkov.com">Telegram</a> · <a href="https://x.com/danokhlopkov?ref=okhlopkov.com">Twitter/X</a> · <a href="https://youtube.com/@danokhlopkov?ref=okhlopkov.com">YouTube</a> · <a href="https://instagram.com/d7733o?ref=okhlopkov.com">Instagram</a></p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

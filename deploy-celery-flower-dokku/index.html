@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deploy Celery Flower to production with Dokku</title>
+    <meta name="description" content="" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/deploy-celery-flower-dokku/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/deploy-celery-flower-dokku/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/deploy-celery-flower-dokku/" />
+    <link rel="alternate" type="text/markdown" href="/article-deploy-celery-flower-dokku.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Deploy Celery Flower to production with Dokku" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/deploy-celery-flower-dokku/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Deploy Celery Flower to production with Dokku" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/deploy-celery-flower-dokku/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/deploy-celery-flower-dokku/#article-content",
+  "headline": "Deploy Celery Flower to production with Dokku",
+  "datePublished": "2024-01-08",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/deploy-celery-flower-dokku/"
+  },
+  "url": "https://okhlopkov.com/deploy-celery-flower-dokku/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "Imagine that you already have a Celery cluster deployed in production. Now you want to monitor it. What's the best way to do it? Despite Celery being one of the most popular way to distribute work load across multiple processes and servers in Python, its ecosystem lacks monitoring tools. Flower is all we have. Well, let's deploy it! Why Dokku? Dokku is my favourite way to deploy my apps to production. It is an open-source PaaS which acts like a Heroku (but without a nice GUI). I personally use Dokku for all my Python projects. You can check one of my setups here: https://github.com/ffmemes/ff-backend Make sure your have Dokku installed on your server. Create Dokku app with envs Just read the snippet below - it should be crystal clear what is happening: dokku apps:create flower dokku domains:set flower flower.yourdomain.com dokku config:set flower FLOWER_BASIC_AUTH=admin:danokhlopkov If you set a domain for your flower, make sure that you also set the proper DNS record in your DNS provider: create A-record with the subdomain you want pointing to the IP address of your server. Flower also supports different kinds of authentication methods. You can check all available options here: https://flower.readthedocs.io/en/latest/auth.html . Set Broker URL Unfortunately, Flower doesn't respect the RABBITMQ_URL / REDIS_URL / BROKER_URL environment variables, so we need to modify the Flower's Dockerfile CMD arguments and copy-paste there your REDIS_URL . Dokku allows to do that by setting up the env variable called DOKKU_DOCKERFILE_START_CMD : dokku config:set flower DOKKU_DOCKERFILE_START_CMD='celery --broker=&lt;COPY_PASTE_YOUR_REDIS_OR_RABBITMQ_URL&gt; flower' Make sure this broker url is accessible from the machine where you want to deploy your flower. If you deployed Redis / RabbitMQ with Dokku, don't forget to use dokku redis:expose command to expose a port of a db and make it accessable outside of your local Docker network. Expose proper ports Unfortunately (again), Flower doesn't respect $PORT env and its Dockerfile always exposes 5555 port. Let's tell Dokku and its Nginx to proxy it to 80 (we don't want to have ports in our URL, it's disgusting): dokku ports:set flower http:80:5555 Deploy Flower from docker image dokku git:from-image flower mher/flower:latest And now your Flower should be deployed! Click on a link from concole output to visit your new &amp; almost useless Celery monitoring tool. You can also add https if you want: just use dokku letsencrypt plugin : dokku letsencrypt:enable flower Useful links Flower environment variables: https://flower.readthedocs.io/en/latest/config.html#environment-variables If you miss the old Flower's realtime dashboard (its tab was called \"monitor\"), you can integrate Flower data to your Prometheus: https://github.com/mher/flower/blob/master/docs/prometheus-integration.rst My Linkedin: Dan Okhlopkov - Via Protocol - Web3 Mastercard | LinkedIn Curious Tech Founder. Passioned about Data applications, automatic insights extraction… | Learn more about Dan Okhlopkov’s work experience, education, connections &amp; more by visiting their profile on LinkedIn LinkedIn Dan Okhlopkov fake moustache",
+  "articleBody": "Imagine that you already have a Celery cluster deployed in production. Now you want to monitor it. What's the best way to do it? Despite Celery being one of the most popular way to distribute work load across multiple processes and servers in Python, its ecosystem lacks monitoring tools. Flower is all we have. Well, let's deploy it! Why Dokku? Dokku is my favourite way to deploy my apps to production. It is an open-source PaaS which acts like a Heroku (but without a nice GUI). I personally use Dokku for all my Python projects. You can check one of my setups here: https://github.com/ffmemes/ff-backend Make sure your have Dokku installed on your server. Create Dokku app with envs Just read the snippet below - it should be crystal clear what is happening: dokku apps:create flower dokku domains:set flower flower.yourdomain.com dokku config:set flower FLOWER_BASIC_AUTH=admin:danokhlopkov If you set a domain for your flower, make sure that you also set the proper DNS record in your DNS provider: create A-record with the subdomain you want pointing to the IP address of your server. Flower also supports different kinds of authentication methods. You can check all available options here: https://flower.readthedocs.io/en/latest/auth.html . Set Broker URL Unfortunately, Flower doesn't respect the RABBITMQ_URL / REDIS_URL / BROKER_URL environment variables, so we need to modify the Flower's Dockerfile CMD arguments and copy-paste there your REDIS_URL . Dokku allows to do that by setting up the env variable called DOKKU_DOCKERFILE_START_CMD : dokku config:set flower DOKKU_DOCKERFILE_START_CMD='celery --broker=&lt;COPY_PASTE_YOUR_REDIS_OR_RABBITMQ_URL&gt; flower' Make sure this broker url is accessible from the machine where you want to deploy your flower. If you deployed Redis / RabbitMQ with Dokku, don't forget to use dokku redis:expose command to expose a port of a db and make it accessable outside of your local Docker network. Expose proper ports Unfortunately (again), Flower doesn't respect $PORT env and its Dockerfile always exposes 5555 port. Let's tell Dokku and its Nginx to proxy it to 80 (we don't want to have ports in our URL, it's disgusting): dokku ports:set flower http:80:5555 Deploy Flower from docker image dokku git:from-image flower mher/flower:latest And now your Flower should be deployed! Click on a link from concole output to visit your new &amp; almost useless Celery monitoring tool. You can also add https if you want: just use dokku letsencrypt plugin : dokku letsencrypt:enable flower Useful links Flower environment variables: https://flower.readthedocs.io/en/latest/config.html#environment-variables If you miss the old Flower's realtime dashboard (its tab was called \"monitor\"), you can integrate Flower data to your Prometheus: https://github.com/mher/flower/blob/master/docs/prometheus-integration.rst My Linkedin: Dan Okhlopkov - Via Protocol - Web3 Mastercard | LinkedIn Curious Tech Founder. Passioned about Data applications, automatic insights extraction… | Learn more about Dan Okhlopkov’s work experience, education, connections &amp; more by visiting their profile on LinkedIn LinkedIn Dan Okhlopkov fake moustache"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Deploy Celery Flower to production with Dokku",
+      "item": "https://okhlopkov.com/deploy-celery-flower-dokku/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2024-01-08T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Deploy Celery Flower to production with Dokku</h1>
+      
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" alt="Deploy Celery Flower to production with Dokku" /></figure>
+    <section><p>Imagine that you already have a Celery cluster deployed in production. Now you want to monitor it. What's the best way to do it?</p><p>Despite Celery being one of the most popular way to distribute work load across multiple processes and servers in Python, its ecosystem lacks monitoring tools. <a href="https://flower.readthedocs.io/?ref=okhlopkov.com">Flower</a> is all we have. Well, let's deploy it!</p><hr><h2 id="why-dokku">Why Dokku?</h2><p><a href="https://dokku.com/?ref=okhlopkov.com">Dokku</a> is my favourite way to deploy my apps to production. It is an open-source PaaS which acts like a Heroku (but without a nice GUI).</p><p>I personally use Dokku for all my Python projects. You can check one of my setups here: <a href="https://github.com/ffmemes/ff-backend?ref=okhlopkov.com">https://github.com/ffmemes/ff-backend</a></p><p>Make sure your have <a href="https://dokku.com/docs/getting-started/installation/?ref=okhlopkov.com">Dokku installed</a> on your server.</p><h2 id="create-dokku-app-with-envs">Create Dokku app with envs</h2><p>Just read the snippet below - it should be crystal clear what is happening:</p><pre><code class="language-bash">dokku apps:create flower
+
+dokku domains:set flower flower.yourdomain.com
+
+dokku config:set flower FLOWER_BASIC_AUTH=admin:danokhlopkov</code></pre><p>If you set a domain for your flower, make sure that you also set the proper DNS record in your DNS provider: create A-record with the subdomain you want pointing to the IP address of your server.</p><p>Flower also supports different kinds of authentication methods. You can check all available options here: <a href="https://flower.readthedocs.io/en/latest/auth.html?ref=okhlopkov.com">https://flower.readthedocs.io/en/latest/auth.html</a>.</p><h2 id="set-broker-url">Set Broker URL</h2><p>Unfortunately, Flower doesn't respect the <code>RABBITMQ_URL</code> / <code>REDIS_URL</code> / <code>BROKER_URL</code> environment variables, so we need to modify the Flower's <a href="https://github.com/mher/flower/blob/master/Dockerfile?ref=okhlopkov.com">Dockerfile</a> CMD arguments and copy-paste there your <code>REDIS_URL</code>. <a href="https://dokku.com/docs/deployment/builders/dockerfiles/?ref=okhlopkov.com">Dokku allows to do that</a> by setting up the env variable called <code>DOKKU_DOCKERFILE_START_CMD</code>:</p><pre><code>dokku config:set flower DOKKU_DOCKERFILE_START_CMD='celery --broker=&lt;COPY_PASTE_YOUR_REDIS_OR_RABBITMQ_URL&gt; flower'</code></pre><p>Make sure this broker url is accessible from the machine where you want to deploy your flower. If you deployed Redis / RabbitMQ with Dokku, don't forget to use <code>dokku redis:expose</code> command to expose a port of a db and make it accessable outside of your local Docker network.</p><h2 id="expose-proper-ports">Expose proper ports</h2><p>Unfortunately (again), Flower doesn't respect <code>$PORT</code> env and its Dockerfile always exposes 5555 port. Let's tell Dokku and its Nginx to proxy it to <code>80</code> (we don't want to have ports in our URL, it's disgusting):</p><pre><code>dokku ports:set flower http:80:5555</code></pre><h2 id="deploy-flower-from-docker-image">Deploy Flower from docker image</h2><pre><code>dokku git:from-image flower mher/flower:latest</code></pre><p>And now your Flower should be deployed! Click on a link from concole output to visit your new &amp; almost useless Celery monitoring tool.</p><p>You can also add https if you want: just use <a href="https://github.com/dokku/dokku-letsencrypt?ref=okhlopkov.com">dokku letsencrypt plugin</a>:</p><pre><code>dokku letsencrypt:enable flower</code></pre><hr><h2 id="useful-links">Useful links</h2><p>Flower environment variables: <a href="https://flower.readthedocs.io/en/latest/config.html?ref=okhlopkov.com#environment-variables">https://flower.readthedocs.io/en/latest/config.html#environment-variables</a></p><p>If you miss the old Flower's realtime dashboard (its tab was called "monitor"), you can integrate Flower data to your Prometheus: <a href="https://github.com/mher/flower/blob/master/docs/prometheus-integration.rst?ref=okhlopkov.com">https://github.com/mher/flower/blob/master/docs/prometheus-integration.rst</a></p><p>My Linkedin:</p><figure class="kg-card kg-bookmark-card kg-card-hascaption"><a class="kg-bookmark-container" href="https://linkedin.com/in/danokhlopkov?ref=okhlopkov.com"><div class="kg-bookmark-content"><div class="kg-bookmark-title">Dan Okhlopkov - Via Protocol - Web3 Mastercard | LinkedIn</div><div class="kg-bookmark-description">Curious Tech Founder. Passioned about Data applications, automatic insights extraction… | Learn more about Dan Okhlopkov’s work experience, education, connections &amp; more by visiting their profile on LinkedIn</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="https://static.licdn.com/aero-v1/sc/h/al2o9zrvru7aqj8e1x2rzsrca" alt=""><span class="kg-bookmark-author">LinkedIn</span><span class="kg-bookmark-publisher">Dan Okhlopkov</span></div></div><div class="kg-bookmark-thumbnail"><img src="https://media.licdn.com/dms/image/D4E03AQG6EJuFTHzH4w/profile-displayphoto-shrink_200_200/0/1700476214920?e=2147483647&amp;v=beta&amp;t=cTs4mB5hKfZBc-9-vbKmGhC4VuOoBh616MPamvnyuPQ" alt="" onerror="this.style.display = 'none'"></div></a><figcaption>fake moustache</figcaption></figure></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

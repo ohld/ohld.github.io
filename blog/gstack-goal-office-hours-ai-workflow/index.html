@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста</title>
+    <meta name="description" content="Как связать office-hours, improve-codebase-architecture, Codex /goal и HTML-progress в нормальный цикл работы с AI-агентом." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/blog/gstack-goal-office-hours-ai-workflow/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/blog/gstack-goal-office-hours-ai-workflow/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/blog/gstack-goal-office-hours-ai-workflow/" />
+    <link rel="alternate" type="text/markdown" href="/blog-gstack-goal-office-hours-ai-workflow.md" /><!-- alternate-md -->
+    <meta property="og:title" content="GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста" />
+    <meta property="og:description" content="Как связать office-hours, improve-codebase-architecture, Codex /goal и HTML-progress в нормальный цикл работы с AI-агентом." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/blog/gstack-goal-office-hours-ai-workflow/" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:image" content="https://okhlopkov.com/assets/blog/gstack-goal-office-hours-ai-workflow/telegram-cover.webp" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста" />
+    <meta name="twitter:description" content="Как связать office-hours, improve-codebase-architecture, Codex /goal и HTML-progress в нормальный цикл работы с AI-агентом." />
+    <meta name="twitter:image" content="https://okhlopkov.com/assets/blog/gstack-goal-office-hours-ai-workflow/telegram-cover.webp" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/blog/gstack-goal-office-hours-ai-workflow/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/blog/gstack-goal-office-hours-ai-workflow/#article-content",
+  "headline": "GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста",
+  "description": "Как связать office-hours, improve-codebase-architecture, Codex /goal и HTML-progress в нормальный цикл работы с AI-агентом.",
+  "datePublished": "2026-05-21",
+  "dateModified": "2026-05-25",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/assets/blog/gstack-goal-office-hours-ai-workflow/telegram-cover.webp"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/blog/gstack-goal-office-hours-ai-workflow/"
+  },
+  "url": "https://okhlopkov.com/blog/gstack-goal-office-hours-ai-workflow/#article-content",
+  "inLanguage": "ru",
+  "keywords": [
+    "claude code agents and skills",
+    "gstack",
+    "codex cli",
+    "claude code skills",
+    "ai agents"
+  ],
+  "articleSection": "Блог",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "GStack"
+    },
+    {
+      "@type": "Thing",
+      "name": "Codex"
+    },
+    {
+      "@type": "Thing",
+      "name": "Claude Code"
+    }
+  ],
+  "text": "Одна из главных ошибок в работе с AI-агентами: просить “сделай проект” и потом читать километровую простыню. Нормальный флоу выглядит как цикл: прожарить идею, зафиксировать цель, дать агенту автономный ран, заставить его показывать прогресс в удобной форме и отдельно ревьюить архитектуру. Я использую GStack как guardrail для этого цикла: агент меньше соглашается с мутной идеей и чаще показывает, где принял решение сам. Мой текущий loop окей, ладно, это имба: /office-hours скилл GStack прожарка любой идеи; вопросы “нафига” и “зачем” до того, как агент начнет писать код. /improve-codebase-architecture повышает шанс, что вайбкод проживет дольше одного вечера; заставляет смотреть на границы, дублирование и будущую стоимость изменений. /goal в Codex или /loop в Claude Code длинный ран после брейншторма; агент работает автономно, но с понятным критерием готовности. HTML-progress вместо простыни какие решения принял там, где спека мутная; где отошел от плана и почему; какие трейдоффы выбрал; что еще не чекнул; какая визуализация лучше подходит задаче. Мой следующий шаг - понять, как неслопно задизайнить что угодно. Разбирал это отдельно в статье про design engineering и AI-агентов . Рабочий цикл Вот как это можно собрать без магии: Шаг Что делает /office-hours Заставляет сформулировать “зачем”, аудиторию, риск и первый эксперимент /improve-codebase-architecture Ищет неочевидные архитектурные долги после того, как “вроде все работает” /goal или /loop Дает агенту длинный автономный ран с понятной целью и критерием готовности HTML progress Превращает ход работы в читаемый артефакт: решения, трейдоффы, unchecked areas Главный смысл в том, чтобы не смешивать мышление, исполнение и отчетность в один чат. Сначала агент помогает сузить идею. Потом работает. Потом показывает, где именно принимал решения. Потом отдельный агент или тот же агент в свежем контексте ревьюит результат. Что добавилось из обсуждений В community много раз всплывала одна и та же боль: агент может работать долго, но человек теряет ощущение контроля. В итоге ты либо прерываешь его слишком рано, либо читаешь гигантский лог и уже не понимаешь, где важное. HTML-progress возвращает контроль. Нормальный progress artifact должен отвечать на вопросы: какие решения агент уже принял; где спека была мутной; какие допущения он сделал сам; где отошел от первоначального плана; что не проверил; какие файлы или страницы стоит посмотреть человеку. Это особенно важно для okhlopkov.com : агент может генерировать статьи, но редактору нужен короткий обзор, почему страница создана, какие источники использованы, где текст требует ручной вычитки и какие внутренние ссылки надо поставить. Почему это важно для сайта Такие workflow-посты хорошо ложатся именно в blog : личный опыт и твой стиль остаются внутри, а вокруг можно строить нормальную структуру: заголовок отвечает на практический запрос; живой текст остается ядром статьи; обсуждения добавляют мясо; внутренние ссылки ведут в статьи, где тема раскрывается глубже; короткие прикладные ответы лучше добавлять прямо в текст, если они не ломают тон. Читать ещё AI-агенты: с чего начать в 2026 Что попросить AI-агента сделать, когда задачи закончились AI-инструменты для дизайнеров: design engineering и агенты Markdown мёртв — да здравствует HTML",
+  "articleBody": "Одна из главных ошибок в работе с AI-агентами: просить “сделай проект” и потом читать километровую простыню. Нормальный флоу выглядит как цикл: прожарить идею, зафиксировать цель, дать агенту автономный ран, заставить его показывать прогресс в удобной форме и отдельно ревьюить архитектуру. Я использую GStack как guardrail для этого цикла: агент меньше соглашается с мутной идеей и чаще показывает, где принял решение сам. Мой текущий loop окей, ладно, это имба: /office-hours скилл GStack прожарка любой идеи; вопросы “нафига” и “зачем” до того, как агент начнет писать код. /improve-codebase-architecture повышает шанс, что вайбкод проживет дольше одного вечера; заставляет смотреть на границы, дублирование и будущую стоимость изменений. /goal в Codex или /loop в Claude Code длинный ран после брейншторма; агент работает автономно, но с понятным критерием готовности. HTML-progress вместо простыни какие решения принял там, где спека мутная; где отошел от плана и почему; какие трейдоффы выбрал; что еще не чекнул; какая визуализация лучше подходит задаче. Мой следующий шаг - понять, как неслопно задизайнить что угодно. Разбирал это отдельно в статье про design engineering и AI-агентов . Рабочий цикл Вот как это можно собрать без магии: Шаг Что делает /office-hours Заставляет сформулировать “зачем”, аудиторию, риск и первый эксперимент /improve-codebase-architecture Ищет неочевидные архитектурные долги после того, как “вроде все работает” /goal или /loop Дает агенту длинный автономный ран с понятной целью и критерием готовности HTML progress Превращает ход работы в читаемый артефакт: решения, трейдоффы, unchecked areas Главный смысл в том, чтобы не смешивать мышление, исполнение и отчетность в один чат. Сначала агент помогает сузить идею. Потом работает. Потом показывает, где именно принимал решения. Потом отдельный агент или тот же агент в свежем контексте ревьюит результат. Что добавилось из обсуждений В community много раз всплывала одна и та же боль: агент может работать долго, но человек теряет ощущение контроля. В итоге ты либо прерываешь его слишком рано, либо читаешь гигантский лог и уже не понимаешь, где важное. HTML-progress возвращает контроль. Нормальный progress artifact должен отвечать на вопросы: какие решения агент уже принял; где спека была мутной; какие допущения он сделал сам; где отошел от первоначального плана; что не проверил; какие файлы или страницы стоит посмотреть человеку. Это особенно важно для okhlopkov.com : агент может генерировать статьи, но редактору нужен короткий обзор, почему страница создана, какие источники использованы, где текст требует ручной вычитки и какие внутренние ссылки надо поставить. Почему это важно для сайта Такие workflow-посты хорошо ложатся именно в blog : личный опыт и твой стиль остаются внутри, а вокруг можно строить нормальную структуру: заголовок отвечает на практический запрос; живой текст остается ядром статьи; обсуждения добавляют мясо; внутренние ссылки ведут в статьи, где тема раскрывается глубже; короткие прикладные ответы лучше добавлять прямо в текст, если они не ломают тон. Читать ещё AI-агенты: с чего начать в 2026 Что попросить AI-агента сделать, когда задачи закончились AI-инструменты для дизайнеров: design engineering и агенты Markdown мёртв — да здравствует HTML"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://okhlopkov.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Блог",
+      "item": "https://okhlopkov.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста",
+      "item": "https://okhlopkov.com/blog/gstack-goal-office-hours-ai-workflow/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-05-21T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Блог" />
+  <meta property="article:tag" content="GStack" />
+  <meta property="article:tag" content="Codex" />
+  <meta property="article:tag" content="Claude Code" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста</h1>
+      <p>Как связать office-hours, improve-codebase-architecture, Codex /goal и HTML-progress в нормальный цикл работы с AI-агентом.</p>
+    </header>
+    <figure><img src="/assets/blog/gstack-goal-office-hours-ai-workflow/telegram-cover.webp" alt="GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста" /></figure>
+    <section><p>Одна из главных ошибок в работе с AI-агентами: просить “сделай проект” и потом читать километровую простыню. Нормальный флоу выглядит как цикл: прожарить идею, зафиксировать цель, дать агенту автономный ран, заставить его показывать прогресс в удобной форме и отдельно ревьюить архитектуру.</p>
+<p>Я использую GStack как guardrail для этого цикла: агент меньше соглашается с мутной идеей и чаще показывает, где принял решение сам.</p>
+<h2>Мой текущий loop</h2>
+<p>окей, ладно, это имба:</p>
+<ul>
+<li><strong>/office-hours скилл GStack</strong>
+<ul>
+<li>прожарка любой идеи;
+</li>
+<li>вопросы “нафига” и “зачем” до того, как агент начнет писать код.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong><a href="/blog/improve-codebase-architecture-prompt/">/improve-codebase-architecture</a></strong>
+<ul>
+<li>повышает шанс, что вайбкод проживет дольше одного вечера;
+</li>
+<li>заставляет смотреть на границы, дублирование и будущую стоимость изменений.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>/goal в Codex или /loop в Claude Code</strong>
+<ul>
+<li>длинный ран после брейншторма;
+</li>
+<li>агент работает автономно, но с понятным критерием готовности.
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>HTML-progress вместо простыни</strong>
+<ul>
+<li>какие решения принял там, где спека мутная;
+</li>
+<li>где отошел от плана и почему;
+</li>
+<li>какие трейдоффы выбрал;
+</li>
+<li>что еще не чекнул;
+</li>
+<li>какая визуализация лучше подходит задаче.
+</li>
+</ul>
+</li>
+</ul>
+<p>Мой следующий шаг - понять, как неслопно задизайнить что угодно. <a href="/articles/ai-tools-for-designers-design-engineering-agents/">Разбирал это отдельно в статье про design engineering и AI-агентов</a>.</p>
+<h2>Рабочий цикл</h2>
+<p>Вот как это можно собрать без магии:</p>
+<table><thead><tr><th>Шаг</th><th>Что делает</th></tr></thead><tbody><tr><td><code>/office-hours</code></td><td>Заставляет сформулировать “зачем”, аудиторию, риск и первый эксперимент</td></tr><tr><td><code>/improve-codebase-architecture</code></td><td>Ищет неочевидные архитектурные долги после того, как “вроде все работает”</td></tr><tr><td><code>/goal</code> или <code>/loop</code></td><td>Дает агенту длинный автономный ран с понятной целью и критерием готовности</td></tr><tr><td>HTML progress</td><td>Превращает ход работы в читаемый артефакт: решения, трейдоффы, unchecked areas</td></tr></tbody></table>
+<p>Главный смысл в том, чтобы не смешивать мышление, исполнение и отчетность в один чат. Сначала агент помогает сузить идею. Потом работает. Потом показывает, где именно принимал решения. Потом отдельный агент или тот же агент в свежем контексте ревьюит результат.</p>
+<h2>Что добавилось из обсуждений</h2>
+<p>В community много раз всплывала одна и та же боль: агент может работать долго, но человек теряет ощущение контроля. В итоге ты либо прерываешь его слишком рано, либо читаешь гигантский лог и уже не понимаешь, где важное.</p>
+<p>HTML-progress возвращает контроль. Нормальный progress artifact должен отвечать на вопросы:</p>
+<ul>
+<li>какие решения агент уже принял;
+</li>
+<li>где спека была мутной;
+</li>
+<li>какие допущения он сделал сам;
+</li>
+<li>где отошел от первоначального плана;
+</li>
+<li>что не проверил;
+</li>
+<li>какие файлы или страницы стоит посмотреть человеку.
+</li>
+</ul>
+<p>Это особенно важно для <code>okhlopkov.com</code>: агент может генерировать статьи, но редактору нужен короткий обзор, почему страница создана, какие источники использованы, где текст требует ручной вычитки и какие внутренние ссылки надо поставить.</p>
+<h2>Почему это важно для сайта</h2>
+<p>Такие workflow-посты хорошо ложатся именно в <code>blog</code>: личный опыт и твой стиль остаются внутри, а вокруг можно строить нормальную структуру:</p>
+<ul>
+<li>заголовок отвечает на практический запрос;
+</li>
+<li>живой текст остается ядром статьи;
+</li>
+<li>обсуждения добавляют мясо;
+</li>
+<li>внутренние ссылки ведут в статьи, где тема раскрывается глубже;
+</li>
+<li>короткие прикладные ответы лучше добавлять прямо в текст, если они не ломают тон.
+</li>
+</ul>
+<h2>Читать ещё</h2>
+<ul>
+<li><a href="/blog/ai-agents-s-chego-nachat/">AI-агенты: с чего начать в 2026</a>
+</li>
+<li><a href="/blog/improve-codebase-architecture-prompt/">Что попросить AI-агента сделать, когда задачи закончились</a>
+</li>
+<li><a href="/articles/ai-tools-for-designers-design-engineering-agents/">AI-инструменты для дизайнеров: design engineering и агенты</a>
+</li>
+<li><a href="/articles/markdown-vs-html/">Markdown мёртв — да здравствует HTML</a>
+</li>
+</ul></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

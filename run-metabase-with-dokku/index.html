@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Run Metabase with Dokku</title>
+    <meta name="description" content="How to deploy Metabase (open-source BI tool) to production using Dokku PaaS (open-source Heroku alternative)." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/run-metabase-with-dokku/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/run-metabase-with-dokku/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/run-metabase-with-dokku/" />
+    <link rel="alternate" type="text/markdown" href="/article-run-metabase-with-dokku.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Run Metabase with Dokku" />
+    <meta property="og:description" content="How to deploy Metabase (open-source BI tool) to production using Dokku PaaS (open-source Heroku alternative)." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/run-metabase-with-dokku/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/08/Screenshot-2021-08-16-at-19.32.00.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Run Metabase with Dokku" />
+    <meta name="twitter:description" content="How to deploy Metabase (open-source BI tool) to production using Dokku PaaS (open-source Heroku alternative)." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/08/Screenshot-2021-08-16-at-19.32.00.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/run-metabase-with-dokku/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/run-metabase-with-dokku/#article-content",
+  "headline": "Run Metabase with Dokku",
+  "description": "How to deploy Metabase (open-source BI tool) to production using Dokku PaaS (open-source Heroku alternative).",
+  "datePublished": "2021-08-16",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/08/Screenshot-2021-08-16-at-19.32.00.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/run-metabase-with-dokku/"
+  },
+  "url": "https://okhlopkov.com/run-metabase-with-dokku/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "How to deploy Metabase (open-source BI tool) to production using Dokku PaaS (open-source Heroku alternative). Step-by-step guide Install Dokku Imagine that you have already rent a server for your project. I use Digital Ocean droplets (this is my referral link with a $100 deposit for new users). Id' suggest having at least 2CPU and 2Gb RAM on your server. The latest Dokku installation one-liner can be found on their official website but I'd suggest reading my blog post where I cover more details. Install Metabase All cool open-source projects must have a prebuilt docker image and environment variables support. This will drastically improve the onboarding of new users. — Dan Okhlopkov 🍪 (@danokhlopkov) August 16, 2021 Since Metabase has its Docker image with the latest version which supports environment variables, all we need is to create a Dokku app from Docker image with all proper configs: https://twitter.com/danokhlopkov/status/1427222749626486785 dokku apps:create metabase For production deployment, you need to switch from the default database to Postgres. Create &amp; link Postgres DB to the Dokku app: dokku postgres:create metabase dokku postgres:link metabase metabase Now let's link Postgres the way Metabase will understand. Take POSTGRES_URL from the output above and insert it to the command below: dokku config:set metabase MB_DB_TYPE=postgres MB_DB_CONNECTION_URI=&lt;your postgres url&gt; Metabase uses 3000 port as default. Let's tell Dokku to use it for its internal Nginx routing: dokku proxy:set metabase http:80:3000 And finally, deploy Metabase from the official docker image: dokku git:from-image metabase metabase/metabase:latest If you want to attach a domain and use HTTPS from letsencrypt : dokku domains:set metabase YOURDOMAIN.com dokku letsencrypt:enable metabase Now just open YOURDOMAIN.COM in the browser and finish Metabase setup 🥳 Thanks for reading! You may ask me why I do all these tutorials? Well, since I was banned from Instagram I need someplace to publish my selfies. And of course: I create these tutorials for myself in the future. Because I just don’t want to remember all the CLI stuff - I just want to copy-paste from trusted source. https://t.co/cpGeN1EQiR — Dan Okhlopkov 🍪 (@danokhlopkov) July 31, 2021",
+  "articleBody": "How to deploy Metabase (open-source BI tool) to production using Dokku PaaS (open-source Heroku alternative). Step-by-step guide Install Dokku Imagine that you have already rent a server for your project. I use Digital Ocean droplets (this is my referral link with a $100 deposit for new users). Id' suggest having at least 2CPU and 2Gb RAM on your server. The latest Dokku installation one-liner can be found on their official website but I'd suggest reading my blog post where I cover more details. Install Metabase All cool open-source projects must have a prebuilt docker image and environment variables support. This will drastically improve the onboarding of new users. — Dan Okhlopkov 🍪 (@danokhlopkov) August 16, 2021 Since Metabase has its Docker image with the latest version which supports environment variables, all we need is to create a Dokku app from Docker image with all proper configs: https://twitter.com/danokhlopkov/status/1427222749626486785 dokku apps:create metabase For production deployment, you need to switch from the default database to Postgres. Create &amp; link Postgres DB to the Dokku app: dokku postgres:create metabase dokku postgres:link metabase metabase Now let's link Postgres the way Metabase will understand. Take POSTGRES_URL from the output above and insert it to the command below: dokku config:set metabase MB_DB_TYPE=postgres MB_DB_CONNECTION_URI=&lt;your postgres url&gt; Metabase uses 3000 port as default. Let's tell Dokku to use it for its internal Nginx routing: dokku proxy:set metabase http:80:3000 And finally, deploy Metabase from the official docker image: dokku git:from-image metabase metabase/metabase:latest If you want to attach a domain and use HTTPS from letsencrypt : dokku domains:set metabase YOURDOMAIN.com dokku letsencrypt:enable metabase Now just open YOURDOMAIN.COM in the browser and finish Metabase setup 🥳 Thanks for reading! You may ask me why I do all these tutorials? Well, since I was banned from Instagram I need someplace to publish my selfies. And of course: I create these tutorials for myself in the future. Because I just don’t want to remember all the CLI stuff - I just want to copy-paste from trusted source. https://t.co/cpGeN1EQiR — Dan Okhlopkov 🍪 (@danokhlopkov) July 31, 2021"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Run Metabase with Dokku",
+      "item": "https://okhlopkov.com/run-metabase-with-dokku/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2021-08-16T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Run Metabase with Dokku</h1>
+      <p>How to deploy Metabase (open-source BI tool) to production using Dokku PaaS (open-source Heroku alternative).</p>
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/08/Screenshot-2021-08-16-at-19.32.00.png" alt="Run Metabase with Dokku" /></figure>
+    <section><p>How to deploy <a href="https://metabase.com/?ref=okhlopkov.com">Metabase</a> (open-source BI tool) to production using <a href="https://dokku.com/?ref=okhlopkov.com">Dokku</a> PaaS (open-source Heroku alternative).</p><h1 id="step-by-step-guide">Step-by-step guide</h1><h2 id="install-dokku">Install Dokku</h2><p>Imagine that you have already rent a server for your project. I use Digital Ocean droplets (this is <a href="https://m.do.co/c/260555f64021?ref=okhlopkov.com">my referral link</a> with a $100 deposit for new users). Id' suggest having at least 2CPU and 2Gb RAM on your server.</p><p>The latest Dokku installation one-liner can be found on <a href="https://dokku.com/?ref=okhlopkov.com">their official website</a> but I'd suggest reading <a href="/deploy-ghost-blog-with-dokku/">my blog post</a> where I cover more details.</p><h2 id="install-metabase">Install Metabase</h2><figure class="kg-card kg-embed-card"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">All cool open-source projects must have a prebuilt docker image and environment variables support. This will drastically improve the onboarding of new users.</p>— Dan Okhlopkov 🍪 (@danokhlopkov) <a href="https://twitter.com/danokhlopkov/status/1427222749626486785?ref_src=twsrc%5Etfw&ref=okhlopkov.com">August 16, 2021</a></blockquote>
+
+</figure><p>Since Metabase has its Docker image with the latest version which supports environment variables, all we need is to create a Dokku app from Docker image with all proper configs:</p><figure class="tweet-embed"><blockquote class="twitter-tweet"><a href="https://twitter.com/danokhlopkov/status/1427222749626486785">https://twitter.com/danokhlopkov/status/1427222749626486785</a></blockquote></figure><pre><code class="language-bash">dokku apps:create metabase</code></pre><p>For production deployment, you need to switch from the default database to Postgres. Create &amp; link Postgres DB to the Dokku app:</p><pre><code>dokku postgres:create metabase
+dokku postgres:link metabase metabase</code></pre><p>Now let's link Postgres the way Metabase will understand. Take <code>POSTGRES_URL</code> from the output above and insert it to the command below:</p><pre><code>dokku config:set metabase MB_DB_TYPE=postgres MB_DB_CONNECTION_URI=&lt;your postgres url&gt;</code></pre><p>Metabase uses 3000 port as default. Let's tell Dokku to use it for its internal Nginx routing:</p><pre><code>dokku proxy:set metabase http:80:3000</code></pre><p>And finally, deploy Metabase from the official docker image:</p><pre><code>dokku git:from-image metabase metabase/metabase:latest</code></pre><p>If you want to attach a domain and use HTTPS from <a href="https://github.com/dokku/dokku-letsencrypt?ref=okhlopkov.com#installation">letsencrypt</a>:</p><pre><code>dokku domains:set metabase YOURDOMAIN.com
+dokku letsencrypt:enable metabase</code></pre><p>Now just open YOURDOMAIN.COM in the browser and finish Metabase setup 🥳</p><hr><p>Thanks for reading!</p><p>You may ask me why I do all these tutorials? Well, since I was banned from Instagram I need someplace to publish my selfies. And of course:</p><figure class="kg-card kg-embed-card"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">I create these tutorials for myself in the future. Because I just don’t want to remember all the CLI stuff - I just want to copy-paste from trusted source. <a href="https://t.co/cpGeN1EQiR?ref=okhlopkov.com">https://t.co/cpGeN1EQiR</a></p>— Dan Okhlopkov 🍪 (@danokhlopkov) <a href="https://twitter.com/danokhlopkov/status/1421543540123967488?ref_src=twsrc%5Etfw&ref=okhlopkov.com">July 31, 2021</a></blockquote>
+
+</figure></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

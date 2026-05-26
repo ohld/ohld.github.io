@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deploy MeiliSearch with Dokku for production</title>
+    <meta name="description" content="Run open-source, fast and typo-tolerant search-engine with modern open-source PaaS" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/deploy-meilisearch-with-dokku-for-production/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/deploy-meilisearch-with-dokku-for-production/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/deploy-meilisearch-with-dokku-for-production/" />
+    <link rel="alternate" type="text/markdown" href="/article-deploy-meilisearch-with-dokku-for-production.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Deploy MeiliSearch with Dokku for production" />
+    <meta property="og:description" content="Run open-source, fast and typo-tolerant search-engine with modern open-source PaaS" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/deploy-meilisearch-with-dokku-for-production/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/Screenshot-2021-07-30-at-13.36.57.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Deploy MeiliSearch with Dokku for production" />
+    <meta name="twitter:description" content="Run open-source, fast and typo-tolerant search-engine with modern open-source PaaS" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/Screenshot-2021-07-30-at-13.36.57.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/deploy-meilisearch-with-dokku-for-production/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/deploy-meilisearch-with-dokku-for-production/#article-content",
+  "headline": "Deploy MeiliSearch with Dokku for production",
+  "description": "Run open-source, fast and typo-tolerant search-engine with modern open-source PaaS",
+  "datePublished": "2021-08-03",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/07/Screenshot-2021-07-30-at-13.36.57.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/deploy-meilisearch-with-dokku-for-production/"
+  },
+  "url": "https://okhlopkov.com/deploy-meilisearch-with-dokku-for-production/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "I'll show you how to create and setup Dokku app for MeiliSearch deploying and how I use it with Python. Dokku is a free open-source self-hosted Heroku alternative which I use in all my production environments. I use MeiliSearch in one of my Telegram bots, where I expect a search query from a user (with typos of course). Since I deploy everything (including Telegram bots ) with Dokku , I found a way how can I deploy MeiliSearch as well. Step-by-step deployment with Dokku I assume you already have Dokku installed. Otherwise, check this tutorial . Create Dokku app and attach domain you'll use in production: dokku apps:create ms dokku domains:set ms ms.okhlopkov.com MeiliSearch requires some environment variables to run in production. MEILI_MASTER_KEY is the token (password) you'll use to access your service. I use these values: dokku config:set ms \\ MEILI_ENV=production \\ MEILI_MASTER_KEY=followmeontwitter \\ MEILI_NO_ANALYTICS=true \\ MEILI_NO_SENTRY=true MeiliSearch stores all the data it needs in data.ms file so we need to save it outside of the docker image for persistence. dokku storage:mount ms /root/data.ms:/data.ms Now everything is set up, we can start to deploy the MeiliSearch from the official Docker image and proxy its 7700 port to 80: dokku git:from-image ms getmeili/meilisearch dokku proxy:ports-set ms http:80:7700 Then you can add Letsencrypt if you like: dokku letsencrypt:enable ms Or add Cloudflare certificates if you prefer (read the instruction here) : dokku certs:add ms &lt; certs/okhlopkov.com.tar dokku proxy:build-config ms If you want to update MeiliSearch, just deploy from image again: dokku git:from-image ms getmeili/meilisearch How to use MeiliSearch I'll show you how to add data and send search queries using Python . This is how I do it inside my Telegram bot: MS_URL = \"https://ms.okhlopkov.com/\" MS_SECRET = \"followmeontwitter\" import meilisearch client = meilisearch.Client(MS_URL, apiKey=MS_SECRET) index = client.index('crunchbase_orgs') Imagine that you prepared the list of objects dictionaries that you'd like to index. Now you need to upload your data to MeiliSearch. I'd suggest to batch upload your data: check out the snippet: from tqdm.notebook import tqdm def chunks(lst, n): \"\"\"Yield successive n-sized chunks from lst.\"\"\" for i in range(0, len(lst), n): yield lst[i:i + n] DATA_TO_UPLOAD = [{ your data here }, { and here }, ....] chunk = 1000 for i, rch in tqdm( enumerate(chunks(res, chunk)), total=int(len(DATA_TO_UPLOAD) / chunk), ): upd = index.add_documents(rch) ⚠️ Important : if you have 100k-1M data rows, it will require ~4-8 hours to index them all. Yes, MeiliSearch has a fast search but a slow insert. And it's ok. After you insert data to the index, you can observe its stats: After all indexing is done, you can start to query your data: Got questions? Please ask them on Twitter .",
+  "articleBody": "I'll show you how to create and setup Dokku app for MeiliSearch deploying and how I use it with Python. Dokku is a free open-source self-hosted Heroku alternative which I use in all my production environments. I use MeiliSearch in one of my Telegram bots, where I expect a search query from a user (with typos of course). Since I deploy everything (including Telegram bots ) with Dokku , I found a way how can I deploy MeiliSearch as well. Step-by-step deployment with Dokku I assume you already have Dokku installed. Otherwise, check this tutorial . Create Dokku app and attach domain you'll use in production: dokku apps:create ms dokku domains:set ms ms.okhlopkov.com MeiliSearch requires some environment variables to run in production. MEILI_MASTER_KEY is the token (password) you'll use to access your service. I use these values: dokku config:set ms \\ MEILI_ENV=production \\ MEILI_MASTER_KEY=followmeontwitter \\ MEILI_NO_ANALYTICS=true \\ MEILI_NO_SENTRY=true MeiliSearch stores all the data it needs in data.ms file so we need to save it outside of the docker image for persistence. dokku storage:mount ms /root/data.ms:/data.ms Now everything is set up, we can start to deploy the MeiliSearch from the official Docker image and proxy its 7700 port to 80: dokku git:from-image ms getmeili/meilisearch dokku proxy:ports-set ms http:80:7700 Then you can add Letsencrypt if you like: dokku letsencrypt:enable ms Or add Cloudflare certificates if you prefer (read the instruction here) : dokku certs:add ms &lt; certs/okhlopkov.com.tar dokku proxy:build-config ms If you want to update MeiliSearch, just deploy from image again: dokku git:from-image ms getmeili/meilisearch How to use MeiliSearch I'll show you how to add data and send search queries using Python . This is how I do it inside my Telegram bot: MS_URL = \"https://ms.okhlopkov.com/\" MS_SECRET = \"followmeontwitter\" import meilisearch client = meilisearch.Client(MS_URL, apiKey=MS_SECRET) index = client.index('crunchbase_orgs') Imagine that you prepared the list of objects dictionaries that you'd like to index. Now you need to upload your data to MeiliSearch. I'd suggest to batch upload your data: check out the snippet: from tqdm.notebook import tqdm def chunks(lst, n): \"\"\"Yield successive n-sized chunks from lst.\"\"\" for i in range(0, len(lst), n): yield lst[i:i + n] DATA_TO_UPLOAD = [{ your data here }, { and here }, ....] chunk = 1000 for i, rch in tqdm( enumerate(chunks(res, chunk)), total=int(len(DATA_TO_UPLOAD) / chunk), ): upd = index.add_documents(rch) ⚠️ Important : if you have 100k-1M data rows, it will require ~4-8 hours to index them all. Yes, MeiliSearch has a fast search but a slow insert. And it's ok. After you insert data to the index, you can observe its stats: After all indexing is done, you can start to query your data: Got questions? Please ask them on Twitter ."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Deploy MeiliSearch with Dokku for production",
+      "item": "https://okhlopkov.com/deploy-meilisearch-with-dokku-for-production/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2021-08-03T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Deploy MeiliSearch with Dokku for production</h1>
+      <p>Run open-source, fast and typo-tolerant search-engine with modern open-source PaaS</p>
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/07/Screenshot-2021-07-30-at-13.36.57.png" alt="Deploy MeiliSearch with Dokku for production" /></figure>
+    <section><p>I'll show you how to create and setup Dokku app for MeiliSearch deploying and how I use it with Python.</p><p>Dokku is a free open-source self-hosted Heroku alternative which I use in all my production environments.</p><p>I use <a href="https://www.meilisearch.com/?ref=okhlopkov.com">MeiliSearch</a> in one of my Telegram bots, where I expect a search query from a user (with typos of course). Since I deploy everything (including <a href="https://github.com/ohld/django-telegram-bot/?ref=okhlopkov.com">Telegram bots</a>) with <a href="https://dokku.com/?ref=okhlopkov.com">Dokku</a>, I found a way how can I deploy MeiliSearch as well.</p><h1 id="step-by-step-deployment-with-dokku">Step-by-step deployment with Dokku</h1><p>I assume you already have Dokku installed. Otherwise, check <a href="/deploy-ghost-blog-with-dokku/">this tutorial</a>.</p><p>Create Dokku app and attach domain you'll use in production:</p><pre><code>dokku apps:create ms
+dokku domains:set ms ms.okhlopkov.com</code></pre><p>MeiliSearch requires some environment variables to run in production. <code>MEILI_MASTER_KEY</code> is the token (password) you'll use to access your service. I use these values:</p><pre><code>dokku config:set ms \
+	MEILI_ENV=production \
+	MEILI_MASTER_KEY=followmeontwitter \
+	MEILI_NO_ANALYTICS=true \
+	MEILI_NO_SENTRY=true</code></pre><p>MeiliSearch stores all the data it needs in <code>data.ms</code> file so we need to save it outside of the docker image for persistence.</p><pre><code>dokku storage:mount ms /root/data.ms:/data.ms</code></pre><p>Now everything is set up, we can start to deploy the MeiliSearch from the official Docker image and proxy its 7700 port to 80:</p><pre><code>dokku git:from-image ms getmeili/meilisearch
+dokku proxy:ports-set ms http:80:7700</code></pre><p>Then you can add <a href="https://github.com/dokku/dokku-letsencrypt?ref=okhlopkov.com#installation">Letsencrypt</a> if you like:</p><pre><code>dokku letsencrypt:enable ms</code></pre><p>Or add Cloudflare certificates if you prefer (read the <a href="/cloudflare-certificates-dokku/">instruction here)</a>:</p><pre><code>dokku certs:add ms &lt; certs/okhlopkov.com.tar
+dokku proxy:build-config ms</code></pre><p>If you want to update MeiliSearch, just deploy from image again:</p><pre><code class="language-bash">dokku git:from-image ms getmeili/meilisearch</code></pre><h1 id="how-to-use-meilisearch">How to use MeiliSearch</h1><p>I'll show you how to add data and send search queries using <a href="https://github.com/meilisearch/meilisearch-python?ref=okhlopkov.com">Python</a>. This is how I do it inside my Telegram bot:</p><pre><code class="language-python">MS_URL = "https://ms.okhlopkov.com/"
+MS_SECRET = "followmeontwitter"
+
+import meilisearch
+client = meilisearch.Client(MS_URL, apiKey=MS_SECRET)
+index = client.index('crunchbase_orgs')</code></pre><p>Imagine that you prepared the list of objects dictionaries that you'd like to index. Now you need to upload your data to MeiliSearch. I'd suggest to batch upload your data: check out the snippet:</p><pre><code class="language-python">from tqdm.notebook import tqdm
+
+def chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
+DATA_TO_UPLOAD = [{ your data here }, { and here }, ....]
+
+chunk = 1000
+for i, rch in tqdm(
+    enumerate(chunks(res, chunk)),
+    total=int(len(DATA_TO_UPLOAD) / chunk),
+):
+    upd = index.add_documents(rch)</code></pre><p>⚠️ <strong>Important</strong>: if you have 100k-1M data rows, it will require ~4-8 hours to index them all. Yes, MeiliSearch has a fast search but a slow insert. And it's ok.</p><p>After you insert data to the index, you can observe its stats:</p><figure class="kg-card kg-image-card"><img src="/content/images/2021/07/image-12.png" class="kg-image" alt loading="lazy" width="962" height="394" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-12.png 600w, https://okhlopkov.com/content/images/2021/07/image-12.png 962w" sizes="(min-width: 720px) 720px"></figure><p>After all indexing is done, you can start to query your data:</p><figure class="kg-card kg-image-card"><img src="/content/images/2021/07/image-13.png" class="kg-image" alt loading="lazy" width="2000" height="1033" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-13.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/07/image-13.png 1000w, https://okhlopkov.com/content/images/size/w1600/2021/07/image-13.png 1600w, https://okhlopkov.com/content/images/2021/07/image-13.png 2000w" sizes="(min-width: 720px) 720px"></figure><hr><p>Got questions? Please ask them on <a href="https://twitter.com/danokhlopkov?ref=okhlopkov.com">Twitter</a>.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

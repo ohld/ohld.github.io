@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Что попросить AI-агента сделать, когда задачи закончились: improve-codebase-architecture и рефакторинг без магии</title>
+    <meta name="description" content="Промпт и подход для ситуации, когда проект вроде готов: как попросить AI-агента найти архитектурные улучшения вместо косметического cleanup." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/blog/improve-codebase-architecture-prompt/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/blog/improve-codebase-architecture-prompt/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/blog/improve-codebase-architecture-prompt/" />
+    <link rel="alternate" type="text/markdown" href="/blog-improve-codebase-architecture-prompt.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Что попросить AI-агента сделать, когда задачи закончились: improve-codebase-architecture и рефакторинг без магии" />
+    <meta property="og:description" content="Промпт и подход для ситуации, когда проект вроде готов: как попросить AI-агента найти архитектурные улучшения вместо косметического cleanup." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/blog/improve-codebase-architecture-prompt/" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:image" content="https://github.com/ohld.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Что попросить AI-агента сделать, когда задачи закончились: improve-codebase-architecture и рефакторинг без магии" />
+    <meta name="twitter:description" content="Промпт и подход для ситуации, когда проект вроде готов: как попросить AI-агента найти архитектурные улучшения вместо косметического cleanup." />
+    <meta name="twitter:image" content="https://github.com/ohld.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/blog/improve-codebase-architecture-prompt/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/blog/improve-codebase-architecture-prompt/#article-content",
+  "headline": "Что попросить AI-агента сделать, когда задачи закончились: improve-codebase-architecture и рефакторинг без магии",
+  "description": "Промпт и подход для ситуации, когда проект вроде готов: как попросить AI-агента найти архитектурные улучшения вместо косметического cleanup.",
+  "datePublished": "2026-05-01",
+  "dateModified": "2026-05-25",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://github.com/ohld.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/blog/improve-codebase-architecture-prompt/"
+  },
+  "url": "https://okhlopkov.com/blog/improve-codebase-architecture-prompt/#article-content",
+  "inLanguage": "ru",
+  "keywords": [
+    "claude code skills",
+    "ai агент",
+    "refactoring",
+    "codex"
+  ],
+  "articleSection": "Блог",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "AI Agents"
+    },
+    {
+      "@type": "Thing",
+      "name": "Refactoring"
+    },
+    {
+      "@type": "Thing",
+      "name": "Skills"
+    }
+  ],
+  "text": "Есть момент, который узнают все, кто активно вайбкодит: проект вроде работает, очевидные таски закрыты, но хочется сказать агенту “сделай лучше”. Обычно это плохой промпт. Агент начнет полировать не то, трогать случайные файлы и делать косметический refactor без понимания архитектуры. Более рабочий вариант: дать агенту конкретную роль и skill, который заставляет его ревьюить кодовую базу по архитектурным принципам, искать реальные deepening opportunities и объяснять tradeoffs. Когда хочется сказать “сделай лучше” Опытные вайбкодеры поймут. У вас проект. Вроде как все желанные таски сделали. Иногда хочется закинуть туда промпт а-ля Почисти код там туда-сюда. Улучши что-нибудь. Сделай то, что я подсознательно хочу, но явно не говорю. Make no mistakes Недавно в приватке нашли такой промпт: ревьюит, что напрогано, и предлагает рефакторинг архитектуры по учебникам уважаемых дядек. Я кидаю ссылку, говорю “изучи и предложи улучшения”. Отрабатывает годно. https://github.com/mattpocock/skills/tree/main/skills/engineering/improve-codebase-architecture А у вас есть такие промты формата “сделай лучше”? Почему “сделай лучше” плохо работает Потому что “сделай лучше” звучит как настроение без задачи. Человек примерно понимает, что в проекте накопилась грязь, но не формулирует, где именно: структура файлов; дублирование; плохие boundaries; слабая типизация; мертвый код; слишком умные компоненты; отсутствие тестов вокруг рискованных мест; UI, который выглядит собранным из случайных кусков. AI-агент без рамки обычно выбирает самое доступное: переименовать переменные, вынести функции, добавить пару комментариев. Иногда это полезно. Часто это просто шум в diff. Более сильный промпт Можно дать агенту такую задачу: Изучи этот репозиторий как инженер, который отвечает за долгую жизнь продукта. Не начинай с правок. Сначала найди 5-10 архитектурных deepening opportunities: - где модель данных или границы модулей уже начинают мешать; - где есть дублирование, которое реально повышает стоимость изменений; - где UI/доменные сущности перемешаны; - где тесты не покрывают опасные переходы; - где текущая структура мешает будущим content workflows. Для каждого пункта дай: 1. почему это проблема; 2. какой blast radius; 3. что поменять минимально; 4. какие тесты/проверки нужны; 5. что лучше не трогать сейчас. После этого предложи один самый безопасный первый шаг. Такой промпт не заменяет хороший skill, но уже меняет режим: агент перестает “полировать” и начинает объяснять технические ставки. Что добавилось из обсуждений В чате похожий запрос повторяется в разных формах: “что дать агенту, когда он уже сделал очевидное?”. Самый полезный ответ: дать агенту задачу на понимание системы. Очередная просьба написать больше кода обычно не помогает. Для этого хорошо работают: архитектурный review; security review; dead code review; UI/design review; crawlability review; “что я не заметил?” review; сравнение текущего решения с domain model из docs. Для okhlopkov.com этот подход особенно важен. Если агент просто начнет генерировать много страниц, сайт быстро станет мусоркой. Поэтому перед масштабированием нужны ревью-циклы: где blog , где articles , где canonical URL, где internal links, где sitemap, где noindex. Как применять без вреда Запускайте такой review в отдельной сессии, чтобы агент не был заложником контекста предыдущих правок. Просите сначала список предложений до diff. Отбирайте один маленький change. После правки прогоняйте тесты и смотрите diff глазами. Не принимайте “большой cleanup” без понятной причины. Читать ещё AI-агенты: с чего начать в 2026 GStack, /goal и office hours: рабочий цикл для AI-агента Claude Code + Codex: двойное ревью AI-агентов Мой сетап Claude Code после 4 месяцев ежедневной работы",
+  "articleBody": "Есть момент, который узнают все, кто активно вайбкодит: проект вроде работает, очевидные таски закрыты, но хочется сказать агенту “сделай лучше”. Обычно это плохой промпт. Агент начнет полировать не то, трогать случайные файлы и делать косметический refactor без понимания архитектуры. Более рабочий вариант: дать агенту конкретную роль и skill, который заставляет его ревьюить кодовую базу по архитектурным принципам, искать реальные deepening opportunities и объяснять tradeoffs. Когда хочется сказать “сделай лучше” Опытные вайбкодеры поймут. У вас проект. Вроде как все желанные таски сделали. Иногда хочется закинуть туда промпт а-ля Почисти код там туда-сюда. Улучши что-нибудь. Сделай то, что я подсознательно хочу, но явно не говорю. Make no mistakes Недавно в приватке нашли такой промпт: ревьюит, что напрогано, и предлагает рефакторинг архитектуры по учебникам уважаемых дядек. Я кидаю ссылку, говорю “изучи и предложи улучшения”. Отрабатывает годно. https://github.com/mattpocock/skills/tree/main/skills/engineering/improve-codebase-architecture А у вас есть такие промты формата “сделай лучше”? Почему “сделай лучше” плохо работает Потому что “сделай лучше” звучит как настроение без задачи. Человек примерно понимает, что в проекте накопилась грязь, но не формулирует, где именно: структура файлов; дублирование; плохие boundaries; слабая типизация; мертвый код; слишком умные компоненты; отсутствие тестов вокруг рискованных мест; UI, который выглядит собранным из случайных кусков. AI-агент без рамки обычно выбирает самое доступное: переименовать переменные, вынести функции, добавить пару комментариев. Иногда это полезно. Часто это просто шум в diff. Более сильный промпт Можно дать агенту такую задачу: Изучи этот репозиторий как инженер, который отвечает за долгую жизнь продукта. Не начинай с правок. Сначала найди 5-10 архитектурных deepening opportunities: - где модель данных или границы модулей уже начинают мешать; - где есть дублирование, которое реально повышает стоимость изменений; - где UI/доменные сущности перемешаны; - где тесты не покрывают опасные переходы; - где текущая структура мешает будущим content workflows. Для каждого пункта дай: 1. почему это проблема; 2. какой blast radius; 3. что поменять минимально; 4. какие тесты/проверки нужны; 5. что лучше не трогать сейчас. После этого предложи один самый безопасный первый шаг. Такой промпт не заменяет хороший skill, но уже меняет режим: агент перестает “полировать” и начинает объяснять технические ставки. Что добавилось из обсуждений В чате похожий запрос повторяется в разных формах: “что дать агенту, когда он уже сделал очевидное?”. Самый полезный ответ: дать агенту задачу на понимание системы. Очередная просьба написать больше кода обычно не помогает. Для этого хорошо работают: архитектурный review; security review; dead code review; UI/design review; crawlability review; “что я не заметил?” review; сравнение текущего решения с domain model из docs. Для okhlopkov.com этот подход особенно важен. Если агент просто начнет генерировать много страниц, сайт быстро станет мусоркой. Поэтому перед масштабированием нужны ревью-циклы: где blog , где articles , где canonical URL, где internal links, где sitemap, где noindex. Как применять без вреда Запускайте такой review в отдельной сессии, чтобы агент не был заложником контекста предыдущих правок. Просите сначала список предложений до diff. Отбирайте один маленький change. После правки прогоняйте тесты и смотрите diff глазами. Не принимайте “большой cleanup” без понятной причины. Читать ещё AI-агенты: с чего начать в 2026 GStack, /goal и office hours: рабочий цикл для AI-агента Claude Code + Codex: двойное ревью AI-агентов Мой сетап Claude Code после 4 месяцев ежедневной работы"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://okhlopkov.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Блог",
+      "item": "https://okhlopkov.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Что попросить AI-агента сделать, когда задачи закончились: improve-codebase-architecture и рефакторинг без магии",
+      "item": "https://okhlopkov.com/blog/improve-codebase-architecture-prompt/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-05-01T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Блог" />
+  <meta property="article:tag" content="AI Agents" />
+  <meta property="article:tag" content="Refactoring" />
+  <meta property="article:tag" content="Skills" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Что попросить AI-агента сделать, когда задачи закончились: improve-codebase-architecture и рефакторинг без магии</h1>
+      <p>Промпт и подход для ситуации, когда проект вроде готов: как попросить AI-агента найти архитектурные улучшения вместо косметического cleanup.</p>
+    </header>
+    
+    <section><p>Есть момент, который узнают все, кто активно вайбкодит: проект вроде работает, очевидные таски закрыты, но хочется сказать агенту “сделай лучше”. Обычно это плохой промпт. Агент начнет полировать не то, трогать случайные файлы и делать косметический refactor без понимания архитектуры.</p>
+<p>Более рабочий вариант: дать агенту конкретную роль и skill, который заставляет его ревьюить кодовую базу по архитектурным принципам, искать реальные deepening opportunities и объяснять tradeoffs.</p>
+<h2>Когда хочется сказать “сделай лучше”</h2>
+<p>Опытные вайбкодеры поймут.</p>
+<p>У вас проект. Вроде как все желанные таски сделали.</p>
+<p>Иногда хочется закинуть туда промпт а-ля</p>
+<p>Почисти код там туда-сюда. Улучши что-нибудь. Сделай то, что я подсознательно хочу, но явно не говорю. Make no mistakes</p>
+<p>Недавно в приватке нашли такой промпт: ревьюит, что напрогано, и предлагает рефакторинг архитектуры по учебникам уважаемых дядек. Я кидаю ссылку, говорю “изучи и предложи улучшения”. Отрабатывает годно.</p>
+<p>https://github.com/mattpocock/skills/tree/main/skills/engineering/improve-codebase-architecture</p>
+<p>А у вас есть такие промты формата “сделай лучше”?</p>
+<h2>Почему “сделай лучше” плохо работает</h2>
+<p>Потому что “сделай лучше” звучит как настроение без задачи. Человек примерно понимает, что в проекте накопилась грязь, но не формулирует, где именно:</p>
+<ul>
+<li>структура файлов;
+</li>
+<li>дублирование;
+</li>
+<li>плохие boundaries;
+</li>
+<li>слабая типизация;
+</li>
+<li>мертвый код;
+</li>
+<li>слишком умные компоненты;
+</li>
+<li>отсутствие тестов вокруг рискованных мест;
+</li>
+<li>UI, который выглядит собранным из случайных кусков.
+</li>
+</ul>
+<p>AI-агент без рамки обычно выбирает самое доступное: переименовать переменные, вынести функции, добавить пару комментариев. Иногда это полезно. Часто это просто шум в diff.</p>
+<h2>Более сильный промпт</h2>
+<p>Можно дать агенту такую задачу:</p>
+<pre><code>Изучи этот репозиторий как инженер, который отвечает за долгую жизнь продукта.
+
+Не начинай с правок. Сначала найди 5-10 архитектурных deepening opportunities:
+- где модель данных или границы модулей уже начинают мешать;
+- где есть дублирование, которое реально повышает стоимость изменений;
+- где UI/доменные сущности перемешаны;
+- где тесты не покрывают опасные переходы;
+- где текущая структура мешает будущим content workflows.
+
+Для каждого пункта дай:
+1. почему это проблема;
+2. какой blast radius;
+3. что поменять минимально;
+4. какие тесты/проверки нужны;
+5. что лучше не трогать сейчас.
+
+После этого предложи один самый безопасный первый шаг.</code></pre>
+<p>Такой промпт не заменяет хороший skill, но уже меняет режим: агент перестает “полировать” и начинает объяснять технические ставки.</p>
+<h2>Что добавилось из обсуждений</h2>
+<p>В чате похожий запрос повторяется в разных формах: “что дать агенту, когда он уже сделал очевидное?”. Самый полезный ответ: дать агенту задачу на понимание системы. Очередная просьба написать больше кода обычно не помогает.</p>
+<p>Для этого хорошо работают:</p>
+<ul>
+<li>архитектурный review;
+</li>
+<li>security review;
+</li>
+<li>dead code review;
+</li>
+<li>UI/design review;
+</li>
+<li>crawlability review;
+</li>
+<li>“что я не заметил?” review;
+</li>
+<li>сравнение текущего решения с domain model из docs.
+</li>
+</ul>
+<p>Для <code>okhlopkov.com</code> этот подход особенно важен. Если агент просто начнет генерировать много страниц, сайт быстро станет мусоркой. Поэтому перед масштабированием нужны ревью-циклы: где <code>blog</code>, где <code>articles</code>, где canonical URL, где internal links, где sitemap, где noindex.</p>
+<h2>Как применять без вреда</h2>
+<ol>
+<li>Запускайте такой review в отдельной сессии, чтобы агент не был заложником контекста предыдущих правок.
+</li>
+<li>Просите сначала список предложений до diff.
+</li>
+<li>Отбирайте один маленький change.
+</li>
+<li>После правки прогоняйте тесты и смотрите diff глазами.
+</li>
+<li>Не принимайте “большой cleanup” без понятной причины.
+</li>
+</ol>
+<h2>Читать ещё</h2>
+<ul>
+<li><a href="/blog/ai-agents-s-chego-nachat/">AI-агенты: с чего начать в 2026</a>
+</li>
+<li><a href="/blog/gstack-goal-office-hours-ai-workflow/">GStack, /goal и office hours: рабочий цикл для AI-агента</a>
+</li>
+<li><a href="/claude-codex-dual-review/">Claude Code + Codex: двойное ревью AI-агентов</a>
+</li>
+<li><a href="/claude-code-nastrojka-mcp-hooks-skills-2026/">Мой сетап Claude Code после 4 месяцев ежедневной работы</a>
+</li>
+</ul></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

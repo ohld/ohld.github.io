@@ -1,0 +1,16 @@
+# Статьи
+
+> Гайды, туториалы и сравнения AI-инструментов.
+
+Articles — это отдельный слой сайта. Сюда попадают материалы, которые мы собираем из Telegram-чатов, YouTube-транскриптов, Twitter/X статей, GBrain notes, аналитики спроса и личной проверки инструментов.
+
+## Статьи
+
+- [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/articles/ai-tools-for-designers-design-engineering-agents/) — разбор стрима про design engineering, AI-assisted frontend, Paper/Figma-to-code, design tokens, Mobbin MCP и борьбу с AI-slop.
+- [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/) — почему HTML лучше подходит для длинных AI-agent артефактов, когда файлы пишет агент, а человек читает и шарит.
+
+## Редакционный принцип
+
+Каждая статья должна иметь понятный интент, источники, таблицы или промпты, internal links, дату обновления и вывод в стиле Дана. Мы не генерим страницы только ради ключевика.
+
+[← На главную](/)

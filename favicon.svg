@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Daniil Okhlopkov">
+  <rect width="120" height="120" rx="24" fill="#111111"/>
+  <path d="M28 91V29h28c20 0 35 12 35 31s-15 31-35 31H28Zm17-15h10c12 0 20-6 20-16s-8-16-20-16H45v32Z" fill="#f7f4ef"/>
+  <circle cx="91" cy="90" r="8" fill="#12b5cb"/>
+</svg>

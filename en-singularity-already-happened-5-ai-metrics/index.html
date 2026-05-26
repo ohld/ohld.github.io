@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Singularity Already Happened — Just Not Where You Think: Analysis of 5 AI Metrics</title>
+    <meta name="description" content="Analysis of 5 AI progress metrics: only academic papers show hyperbolic growth. Everything else is linear. Singularity &amp;#x3D; attention, not capabilities." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/en-singularity-already-happened-5-ai-metrics/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/singularity-uzhe-sluchilas-analiz-5-metrik-ai/" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/en-singularity-already-happened-5-ai-metrics/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/en-singularity-already-happened-5-ai-metrics/" />
+    <link rel="alternate" type="text/markdown" href="/article-en-singularity-already-happened-5-ai-metrics.md" /><!-- alternate-md -->
+    <meta property="og:title" content="The Singularity Already Happened — Just Not Where You Think: Analysis of 5 AI Metrics" />
+    <meta property="og:description" content="Analysis of 5 AI progress metrics: only academic papers show hyperbolic growth. Everything else is linear. Singularity &amp;#x3D; attention, not capabilities." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/en-singularity-already-happened-5-ai-metrics/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/02/en-singularity-already-happened-5-ai-metrics-2.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="The Singularity Already Happened — Just Not Where You Think: Analysis of 5 AI Metrics" />
+    <meta name="twitter:description" content="Analysis of 5 AI progress metrics: only academic papers show hyperbolic growth. Everything else is linear. Singularity &amp;#x3D; attention, not capabilities." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/02/en-singularity-already-happened-5-ai-metrics-2.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/en-singularity-already-happened-5-ai-metrics/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/en-singularity-already-happened-5-ai-metrics/#article-content",
+  "headline": "The Singularity Already Happened — Just Not Where You Think: Analysis of 5 AI Metrics",
+  "description": "Analysis of 5 AI progress metrics: only academic papers show hyperbolic growth. Everything else is linear. Singularity &#x3D; attention, not capabilities.",
+  "datePublished": "2026-02-11",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/02/en-singularity-already-happened-5-ai-metrics-2.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/en-singularity-already-happened-5-ai-metrics/"
+  },
+  "url": "https://okhlopkov.com/en-singularity-already-happened-5-ai-metrics/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "The singularity already happened. Just not where you think. What is the AI Singularity? Singularity — the moment when the pace of new AI developments exceeds humanity's ability to process them. 5 AI Metrics Tested for Hyperbolic Growth A researcher took 5 AI progress metrics and tried to fit a hyperbola (since it goes to ♾️ at a finite X): AI model quality (MMLU score) Cost of tokens/$ Time between frontier model releases Academic papers on emergent AI Share of AI code (adoption) Result: Only Academic Papers Show Hyperbolic Growth Only 1 metric showed true hyperbolic growth — the number of academic papers on emergent capabilities of AI. Its flight to infinity is expected on Tuesday, July 18, 2034 at 6 AM Moscow time. What Does \"Emergent\" Mean in AI? Emergent — when a model suddenly develops skills it wasn't specifically trained for. For example, solving math despite being trained only on text. The Other 4 Metrics Are Linear The other 4 fit a regular line. No sharp takeoff to +inf. Conclusion: It's Attention, Not Capabilities It's human attention to AI that's growing hyperbolically, not the capabilities of models. The singularity narrative is needed to justify current company valuations in stagnating markets. Declining profit growth demands increasingly aggressive growth projections.",
+  "articleBody": "The singularity already happened. Just not where you think. What is the AI Singularity? Singularity — the moment when the pace of new AI developments exceeds humanity's ability to process them. 5 AI Metrics Tested for Hyperbolic Growth A researcher took 5 AI progress metrics and tried to fit a hyperbola (since it goes to ♾️ at a finite X): AI model quality (MMLU score) Cost of tokens/$ Time between frontier model releases Academic papers on emergent AI Share of AI code (adoption) Result: Only Academic Papers Show Hyperbolic Growth Only 1 metric showed true hyperbolic growth — the number of academic papers on emergent capabilities of AI. Its flight to infinity is expected on Tuesday, July 18, 2034 at 6 AM Moscow time. What Does \"Emergent\" Mean in AI? Emergent — when a model suddenly develops skills it wasn't specifically trained for. For example, solving math despite being trained only on text. The Other 4 Metrics Are Linear The other 4 fit a regular line. No sharp takeoff to +inf. Conclusion: It's Attention, Not Capabilities It's human attention to AI that's growing hyperbolically, not the capabilities of models. The singularity narrative is needed to justify current company valuations in stagnating markets. Declining profit growth demands increasingly aggressive growth projections."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "The Singularity Already Happened — Just Not Where You Think: Analysis of 5 AI Metrics",
+      "item": "https://okhlopkov.com/en-singularity-already-happened-5-ai-metrics/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-02-11T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>The Singularity Already Happened — Just Not Where You Think: Analysis of 5 AI Metrics</h1>
+      <p>Analysis of 5 AI progress metrics: only academic papers show hyperbolic growth. Everything else is linear. Singularity &amp;#x3D; attention, not capabilities.</p>
+    </header>
+    <figure><img src="/content/images/2026/02/en-singularity-already-happened-5-ai-metrics-2.png" alt="The Singularity Already Happened — Just Not Where You Think: Analysis of 5 AI Metrics" /></figure>
+    <section><p><strong>The singularity already happened. Just not where you think.</strong></p><h2 id="what-is-the-ai-singularity">What is the AI Singularity?</h2><p>Singularity — the moment when the pace of new AI developments exceeds humanity's ability to process them.</p><h2 id="5-ai-metrics-tested-for-hyperbolic-growth">5 AI Metrics Tested for Hyperbolic Growth</h2><p><a href="https://campedersen.com/singularity?ref=okhlopkov.com" rel="noopener">A researcher</a> took 5 AI progress metrics and tried to fit a hyperbola (since it goes to ♾️ at a finite X):</p><ul><li>AI model quality (MMLU score)</li><li>Cost of tokens/$</li><li>Time between frontier model releases</li><li>Academic papers on emergent AI</li><li>Share of AI code (adoption)</li></ul><h2 id="result-only-academic-papers-show-hyperbolic-growth">Result: Only Academic Papers Show Hyperbolic Growth</h2><p>Only 1 metric showed true hyperbolic growth — the number of academic papers on emergent capabilities of AI.</p><p>Its flight to infinity is expected on <strong>Tuesday, July 18, 2034</strong> at 6 AM Moscow time.</p><h2 id="what-does-emergent-mean-in-ai">What Does "Emergent" Mean in AI?</h2><p>Emergent — when a model suddenly develops skills it wasn't specifically trained for. For example, solving math despite being trained only on text.</p><h2 id="the-other-4-metrics-are-linear">The Other 4 Metrics Are Linear</h2><p>The other 4 fit a regular line. No sharp takeoff to +inf.</p><h2 id="conclusion-its-attention-not-capabilities">Conclusion: It's Attention, Not Capabilities</h2><p><strong>It's human attention to AI that's growing hyperbolically, not the capabilities of models.</strong></p><p>The singularity narrative is needed to justify current company valuations in stagnating markets. Declining profit growth demands increasingly aggressive growth projections.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

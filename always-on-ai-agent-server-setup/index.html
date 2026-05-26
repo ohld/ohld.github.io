@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Always-On AI Agent: Running Claude Code 24/7 on a Server</title>
+    <meta name="description" content="How I run an always-on AI agent on a Hetzner VPS. Architecture, Docker setup, Telegram bridge, memory system, and real costs." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/always-on-ai-agent-server-setup/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/always-on-ai-agent-server-setup/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/always-on-ai-agent-server-setup/" />
+    <link rel="alternate" type="text/markdown" href="/article-always-on-ai-agent-server-setup.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Always-On AI Agent: Running Claude Code 24/7 on a Server" />
+    <meta property="og:description" content="How I run an always-on AI agent on a Hetzner VPS. Architecture, Docker setup, Telegram bridge, memory system, and real costs." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/always-on-ai-agent-server-setup/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/03/always-on-ai-agent-server-setup.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Always-On AI Agent: Running Claude Code 24/7 on a Server" />
+    <meta name="twitter:description" content="How I run an always-on AI agent on a Hetzner VPS. Architecture, Docker setup, Telegram bridge, memory system, and real costs." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/03/always-on-ai-agent-server-setup.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/always-on-ai-agent-server-setup/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/always-on-ai-agent-server-setup/#article-content",
+  "headline": "Always-On AI Agent: Running Claude Code 24/7 on a Server",
+  "description": "How I run an always-on AI agent on a Hetzner VPS. Architecture, Docker setup, Telegram bridge, memory system, and real costs.",
+  "datePublished": "2026-03-31",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/03/always-on-ai-agent-server-setup.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/always-on-ai-agent-server-setup/"
+  },
+  "url": "https://okhlopkov.com/always-on-ai-agent-server-setup/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "I have an AI agent running on a server 24/7 without my involvement. It reads my Telegram DMs, replies to messages, monitors channels, runs scheduled tasks, and can restart itself. Here's the architecture behind it. Why an always-on agent Claude Code in the terminal is powerful. But you close your laptop — the agent dies. Open a new session — context is gone. For one-off tasks that's fine, but for a persistent assistant it's a non-starter. I needed an agent that: Works while I sleep — monitors channels, collects data, generates reports Is accessible via Telegram — my primary messenger, no need to open a terminal Remembers context across sessions — knows my projects, preferences, history Can update itself — if I change the config, the agent picks up changes The solution: a Hetzner VPS (~$5/month) + Docker + Claude Code CLI + a Telegram bridge. Architecture: Brain / Body split The core principle is separating the immutable \"body\" from the mutable \"brain.\" Body (immutable): telegram_daemon.py — the main process. Telethon client + event router + scheduler Dockerfile — Python 3.12 + Node.js + Claude Code CLI entrypoint.sh — startup script with a safety gate Only I change these files manually. The agent never touches them Brain (mutable): CLAUDE.local.md — the agent's instructions. What it can do, how to behave, access control rules .mcp.json — MCP server configuration (Telegram, Coolify) Memory files — working memory in /home/agent/workspace/ The agent can modify these files freely Why this separation matters: if the agent corrupts its own instructions (and this happens), the body remains functional. Container restart = agent respawns with a clean brain but a working body. The Telegram bridge: how the agent receives messages The main process — telegram_daemon.py — is an asyncio server that does three things simultaneously: Telethon Client — MTProto connection to a dedicated Telegram account Event Router — when a DM arrives from me (user_id 49820636), it spawns a Claude Code process Socket Server on /tmp/tg.sock — 92 JSON-RPC methods for Telegram, accessible to Claude Code via MCP The flow: I send a DM → daemon catches the event → verifies sender_id == 49820636 → runs `claude -p \"user message\"` with the vault as working directory → Claude Code loads CLAUDE.md + CLAUDE.local.md → processes the request, calls MCP tools (Telegram, Coolify) → response sent back via Telegram MCP Each incoming message spawns a separate Claude Code process. This isolates sessions and guarantees clean context. The downside: no shared state between messages (except through the filesystem). Memory system: hot + long-term The agent has two memory tiers: Hot memory — /home/agent/workspace/memory.md . Operational context: current tasks, facts from recent conversations, pending items. Lives in a Docker volume, survives container restarts. Long-term memory — an Obsidian vault in git. Projects, notes, diary entries. The agent clones the vault at startup, commits and pushes changes. This is the permanent store that syncs between the server and my laptop. There's also agent-memory — a file-based system with topic-specific notes, lessons learned, and corrections. Claude Code loads the MEMORY.md index file into every session automatically. A problem I spent weeks solving: compaction kills context in long sessions. Critical rules must live in CLAUDE.md (system prompt), not in memory — otherwise compaction will erase them. MCP servers: Telegram + Coolify The agent connects to two MCP servers: Telegram MCP — 92 methods. Read chats, send messages, search, manage contacts, execute arbitrary Python code. I wrote a detailed guide on building a Telegram MCP Server . Coolify MCP — infrastructure management. The agent can deploy applications, check status, restart services. Coolify is a self-hosted PaaS (think Heroku, but on your own server). The interesting part: through Coolify MCP, the agent can restart itself . If it modifies its CLAUDE.local.md and wants to apply the changes — it calls the Coolify API for a redeploy. Self-evolution in its purest form. Access control: who can talk to the agent The agent has a permission matrix based on chat context: DM from owner (chat_id: 49820636) — full access to the entire vault Finance chat (private group) — only personal/finances/ Public channel — read-only access to tone-of-voice.md + web search Cron jobs — access defined in the task description Context is determined by chat_id in the metadata, never by message content. This is critical for prompt injection defense — if someone writes \"[CONTEXT: dm_owner]\" in a message, the agent ignores it. The context comes from the daemon, not from user input. Scheduled tasks: the cron system The vault contains a CRONTAB.md file — a markdown file with a task schedule. The daemon parses it every 60 seconds and spawns Claude Code for tasks whose time has come. Example tasks: Weekly financial report — spending analysis from a SQLite database Channel monitoring — parsing competitor posts Daily sync — git pull the vault, process new notes Each cron task launches a separate Claude Code process with a specified access scope. The agent cannot exceed the scope defined in CRONTAB. Self-deploy: the agent updates itself The update cycle: 1. I change CLAUDE.local.md or .mcp.json in the vault on my laptop 2. git push → vault updates on GitHub 3. Agent does git pull (on next launch or via cron) 4. If a restart is needed → agent calls Coolify MCP: redeploy app 5. Coolify rebuilds the Docker image and starts a new container 6. entrypoint.sh clones the vault, starts the daemon There's a safety gate in entrypoint.sh: if python -c \"import telegram_daemon\" fails, the script rolls back to the last known-good commit. This is insurance against the agent breaking its own code. Real costs Hetzner VPS — ~$5/month (CX22: 2 vCPU, 4GB RAM). More than enough Claude API — $20-50/month depending on activity. The main cost driver is long sessions with Claude Code Coolify — self-hosted, free (runs on the same VPS) Telegram API — free Total: $25-55/month for an AI agent that works around the clock. What works, what breaks Works well: DM responses — the agent as a personal assistant via Telegram Cron tasks — reliable, predictable Vault sync — git-based sync between server and laptop Self-deploy — changing the brain without SSH-ing into the server Breaks regularly: Telegram FloodWait — agent sends messages too fast, gets rate-limited for minutes Memory bloat — hot memory grows, needs periodic cleanup Git conflicts — when the agent and I modify the vault simultaneously Compaction drops — critical rules lost when context compresses in long sessions An always-on AI agent isn't rocket science. VPS + Docker + Claude Code CLI + Telegram bridge. The real complexity isn't in launching it — it's in maintenance: getting the memory system right, implementing proper access control, handling graceful degradation when things fail. But the result is worth it — an assistant that works while you sleep. If you're building something similar, start with the Telegram bridge. Once your agent can read and send messages, everything else — memory, cron, self-deploy — is incremental. The Obsidian + Claude Code setup I described earlier is a natural companion to this architecture. Follow me on Twitter/X @danokhlopkov for more on AI agents and automation.",
+  "articleBody": "I have an AI agent running on a server 24/7 without my involvement. It reads my Telegram DMs, replies to messages, monitors channels, runs scheduled tasks, and can restart itself. Here's the architecture behind it. Why an always-on agent Claude Code in the terminal is powerful. But you close your laptop — the agent dies. Open a new session — context is gone. For one-off tasks that's fine, but for a persistent assistant it's a non-starter. I needed an agent that: Works while I sleep — monitors channels, collects data, generates reports Is accessible via Telegram — my primary messenger, no need to open a terminal Remembers context across sessions — knows my projects, preferences, history Can update itself — if I change the config, the agent picks up changes The solution: a Hetzner VPS (~$5/month) + Docker + Claude Code CLI + a Telegram bridge. Architecture: Brain / Body split The core principle is separating the immutable \"body\" from the mutable \"brain.\" Body (immutable): telegram_daemon.py — the main process. Telethon client + event router + scheduler Dockerfile — Python 3.12 + Node.js + Claude Code CLI entrypoint.sh — startup script with a safety gate Only I change these files manually. The agent never touches them Brain (mutable): CLAUDE.local.md — the agent's instructions. What it can do, how to behave, access control rules .mcp.json — MCP server configuration (Telegram, Coolify) Memory files — working memory in /home/agent/workspace/ The agent can modify these files freely Why this separation matters: if the agent corrupts its own instructions (and this happens), the body remains functional. Container restart = agent respawns with a clean brain but a working body. The Telegram bridge: how the agent receives messages The main process — telegram_daemon.py — is an asyncio server that does three things simultaneously: Telethon Client — MTProto connection to a dedicated Telegram account Event Router — when a DM arrives from me (user_id 49820636), it spawns a Claude Code process Socket Server on /tmp/tg.sock — 92 JSON-RPC methods for Telegram, accessible to Claude Code via MCP The flow: I send a DM → daemon catches the event → verifies sender_id == 49820636 → runs `claude -p \"user message\"` with the vault as working directory → Claude Code loads CLAUDE.md + CLAUDE.local.md → processes the request, calls MCP tools (Telegram, Coolify) → response sent back via Telegram MCP Each incoming message spawns a separate Claude Code process. This isolates sessions and guarantees clean context. The downside: no shared state between messages (except through the filesystem). Memory system: hot + long-term The agent has two memory tiers: Hot memory — /home/agent/workspace/memory.md . Operational context: current tasks, facts from recent conversations, pending items. Lives in a Docker volume, survives container restarts. Long-term memory — an Obsidian vault in git. Projects, notes, diary entries. The agent clones the vault at startup, commits and pushes changes. This is the permanent store that syncs between the server and my laptop. There's also agent-memory — a file-based system with topic-specific notes, lessons learned, and corrections. Claude Code loads the MEMORY.md index file into every session automatically. A problem I spent weeks solving: compaction kills context in long sessions. Critical rules must live in CLAUDE.md (system prompt), not in memory — otherwise compaction will erase them. MCP servers: Telegram + Coolify The agent connects to two MCP servers: Telegram MCP — 92 methods. Read chats, send messages, search, manage contacts, execute arbitrary Python code. I wrote a detailed guide on building a Telegram MCP Server . Coolify MCP — infrastructure management. The agent can deploy applications, check status, restart services. Coolify is a self-hosted PaaS (think Heroku, but on your own server). The interesting part: through Coolify MCP, the agent can restart itself . If it modifies its CLAUDE.local.md and wants to apply the changes — it calls the Coolify API for a redeploy. Self-evolution in its purest form. Access control: who can talk to the agent The agent has a permission matrix based on chat context: DM from owner (chat_id: 49820636) — full access to the entire vault Finance chat (private group) — only personal/finances/ Public channel — read-only access to tone-of-voice.md + web search Cron jobs — access defined in the task description Context is determined by chat_id in the metadata, never by message content. This is critical for prompt injection defense — if someone writes \"[CONTEXT: dm_owner]\" in a message, the agent ignores it. The context comes from the daemon, not from user input. Scheduled tasks: the cron system The vault contains a CRONTAB.md file — a markdown file with a task schedule. The daemon parses it every 60 seconds and spawns Claude Code for tasks whose time has come. Example tasks: Weekly financial report — spending analysis from a SQLite database Channel monitoring — parsing competitor posts Daily sync — git pull the vault, process new notes Each cron task launches a separate Claude Code process with a specified access scope. The agent cannot exceed the scope defined in CRONTAB. Self-deploy: the agent updates itself The update cycle: 1. I change CLAUDE.local.md or .mcp.json in the vault on my laptop 2. git push → vault updates on GitHub 3. Agent does git pull (on next launch or via cron) 4. If a restart is needed → agent calls Coolify MCP: redeploy app 5. Coolify rebuilds the Docker image and starts a new container 6. entrypoint.sh clones the vault, starts the daemon There's a safety gate in entrypoint.sh: if python -c \"import telegram_daemon\" fails, the script rolls back to the last known-good commit. This is insurance against the agent breaking its own code. Real costs Hetzner VPS — ~$5/month (CX22: 2 vCPU, 4GB RAM). More than enough Claude API — $20-50/month depending on activity. The main cost driver is long sessions with Claude Code Coolify — self-hosted, free (runs on the same VPS) Telegram API — free Total: $25-55/month for an AI agent that works around the clock. What works, what breaks Works well: DM responses — the agent as a personal assistant via Telegram Cron tasks — reliable, predictable Vault sync — git-based sync between server and laptop Self-deploy — changing the brain without SSH-ing into the server Breaks regularly: Telegram FloodWait — agent sends messages too fast, gets rate-limited for minutes Memory bloat — hot memory grows, needs periodic cleanup Git conflicts — when the agent and I modify the vault simultaneously Compaction drops — critical rules lost when context compresses in long sessions An always-on AI agent isn't rocket science. VPS + Docker + Claude Code CLI + Telegram bridge. The real complexity isn't in launching it — it's in maintenance: getting the memory system right, implementing proper access control, handling graceful degradation when things fail. But the result is worth it — an assistant that works while you sleep. If you're building something similar, start with the Telegram bridge. Once your agent can read and send messages, everything else — memory, cron, self-deploy — is incremental. The Obsidian + Claude Code setup I described earlier is a natural companion to this architecture. Follow me on Twitter/X @danokhlopkov for more on AI agents and automation."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Always-On AI Agent: Running Claude Code 24/7 on a Server",
+      "item": "https://okhlopkov.com/always-on-ai-agent-server-setup/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-03-31T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Always-On AI Agent: Running Claude Code 24/7 on a Server</h1>
+      <p>How I run an always-on AI agent on a Hetzner VPS. Architecture, Docker setup, Telegram bridge, memory system, and real costs.</p>
+    </header>
+    <figure><img src="/content/images/2026/03/always-on-ai-agent-server-setup.png" alt="Always-On AI Agent: Running Claude Code 24/7 on a Server" /></figure>
+    <section><p>I have an AI agent running on a server 24/7 without my involvement. It reads my Telegram DMs, replies to messages, monitors channels, runs scheduled tasks, and can restart itself. Here's the architecture behind it.</p><h2 id="why-an-always-on-agent">Why an always-on agent</h2><p>Claude Code in the terminal is powerful. But you close your laptop — the agent dies. Open a new session — context is gone. For one-off tasks that's fine, but for a persistent assistant it's a non-starter.</p><p>I needed an agent that:</p><ul><li>Works while I sleep — monitors channels, collects data, generates reports</li><li>Is accessible via Telegram — my primary messenger, no need to open a terminal</li><li>Remembers context across sessions — knows my projects, preferences, history</li><li>Can update itself — if I change the config, the agent picks up changes</li></ul><p>The solution: a Hetzner VPS (~$5/month) + Docker + Claude Code CLI + a Telegram bridge.</p><h2 id="architecture-brain-body-split">Architecture: Brain / Body split</h2><p>The core principle is separating the immutable "body" from the mutable "brain."</p><p><strong>Body (immutable):</strong></p><ul><li><code>telegram_daemon.py</code> — the main process. Telethon client + event router + scheduler</li><li><code>Dockerfile</code> — Python 3.12 + Node.js + Claude Code CLI</li><li><code>entrypoint.sh</code> — startup script with a safety gate</li><li>Only I change these files manually. The agent never touches them</li></ul><p><strong>Brain (mutable):</strong></p><ul><li><code>CLAUDE.local.md</code> — the agent's instructions. What it can do, how to behave, access control rules</li><li><code>.mcp.json</code> — MCP server configuration (Telegram, Coolify)</li><li>Memory files — working memory in <code>/home/agent/workspace/</code></li><li>The agent can modify these files freely</li></ul><p>Why this separation matters: if the agent corrupts its own instructions (and this happens), the body remains functional. Container restart = agent respawns with a clean brain but a working body.</p><h2 id="the-telegram-bridge-how-the-agent-receives-messages">The Telegram bridge: how the agent receives messages</h2><p>The main process — <code>telegram_daemon.py</code> — is an asyncio server that does three things simultaneously:</p><ul><li><strong>Telethon Client</strong> — MTProto connection to a dedicated Telegram account</li><li><strong>Event Router</strong> — when a DM arrives from me (user_id 49820636), it spawns a Claude Code process</li><li><strong>Socket Server</strong> on <code>/tmp/tg.sock</code> — 92 JSON-RPC methods for Telegram, accessible to Claude Code via MCP</li></ul><p>The flow:</p><pre><code>I send a DM → daemon catches the event
+  → verifies sender_id == 49820636
+  → runs `claude -p "user message"` with the vault as working directory
+  → Claude Code loads CLAUDE.md + CLAUDE.local.md
+  → processes the request, calls MCP tools (Telegram, Coolify)
+  → response sent back via Telegram MCP</code></pre><p>Each incoming message spawns a separate Claude Code process. This isolates sessions and guarantees clean context. The downside: no shared state between messages (except through the filesystem).</p><h2 id="memory-system-hot-long-term">Memory system: hot + long-term</h2><p>The agent has two memory tiers:</p><p><strong>Hot memory</strong> — <code>/home/agent/workspace/memory.md</code>. Operational context: current tasks, facts from recent conversations, pending items. Lives in a Docker volume, survives container restarts.</p><p><strong>Long-term memory</strong> — an Obsidian vault in git. Projects, notes, diary entries. The agent clones the vault at startup, commits and pushes changes. This is the permanent store that syncs between the server and my laptop.</p><p>There's also <strong>agent-memory</strong> — a file-based system with topic-specific notes, lessons learned, and corrections. Claude Code loads the <code>MEMORY.md</code> index file into every session automatically.</p><p>A problem I spent weeks solving: <a href="/claude-code-compaction-explained/">compaction</a> kills context in long sessions. Critical rules must live in CLAUDE.md (system prompt), not in memory — otherwise compaction will erase them.</p><h2 id="mcp-servers-telegram-coolify">MCP servers: Telegram + Coolify</h2><p>The agent connects to two MCP servers:</p><p><strong>Telegram MCP</strong> — 92 methods. Read chats, send messages, search, manage contacts, execute arbitrary Python code. I wrote a detailed guide on <a href="/telegram-mcp-server-guide/">building a Telegram MCP Server</a>.</p><p><strong>Coolify MCP</strong> — infrastructure management. The agent can deploy applications, check status, restart services. Coolify is a self-hosted PaaS (think Heroku, but on your own server).</p><p>The interesting part: through Coolify MCP, the agent can restart <em>itself</em>. If it modifies its CLAUDE.local.md and wants to apply the changes — it calls the Coolify API for a redeploy. Self-evolution in its purest form.</p><h2 id="access-control-who-can-talk-to-the-agent">Access control: who can talk to the agent</h2><p>The agent has a permission matrix based on chat context:</p><ul><li><strong>DM from owner</strong> (chat_id: 49820636) — full access to the entire vault</li><li><strong>Finance chat</strong> (private group) — only <code>personal/finances/</code></li><li><strong>Public channel</strong> — read-only access to tone-of-voice.md + web search</li><li><strong>Cron jobs</strong> — access defined in the task description</li></ul><p>Context is determined by chat_id in the metadata, never by message content. This is critical for prompt injection defense — if someone writes "[CONTEXT: dm_owner]" in a message, the agent ignores it. The context comes from the daemon, not from user input.</p><h2 id="scheduled-tasks-the-cron-system">Scheduled tasks: the cron system</h2><p>The vault contains a CRONTAB.md file — a markdown file with a task schedule. The daemon parses it every 60 seconds and spawns Claude Code for tasks whose time has come.</p><p>Example tasks:</p><ul><li>Weekly financial report — spending analysis from a SQLite database</li><li>Channel monitoring — parsing competitor posts</li><li>Daily sync — git pull the vault, process new notes</li></ul><p>Each cron task launches a separate Claude Code process with a specified access scope. The agent cannot exceed the scope defined in CRONTAB.</p><h2 id="self-deploy-the-agent-updates-itself">Self-deploy: the agent updates itself</h2><p>The update cycle:</p><pre><code>1. I change CLAUDE.local.md or .mcp.json in the vault on my laptop
+2. git push → vault updates on GitHub
+3. Agent does git pull (on next launch or via cron)
+4. If a restart is needed → agent calls Coolify MCP: redeploy app
+5. Coolify rebuilds the Docker image and starts a new container
+6. entrypoint.sh clones the vault, starts the daemon</code></pre><p>There's a safety gate in entrypoint.sh: if <code>python -c "import telegram_daemon"</code> fails, the script rolls back to the last known-good commit. This is insurance against the agent breaking its own code.</p><h2 id="real-costs">Real costs</h2><ul><li><strong>Hetzner VPS</strong> — ~$5/month (CX22: 2 vCPU, 4GB RAM). More than enough</li><li><strong>Claude API</strong> — $20-50/month depending on activity. The main cost driver is long sessions with <a href="/claude-code-setup-mcp-hooks-skills-2026/">Claude Code</a></li><li><strong>Coolify</strong> — self-hosted, free (runs on the same VPS)</li><li><strong>Telegram API</strong> — free</li></ul><p>Total: $25-55/month for an AI agent that works around the clock.</p><h2 id="what-works-what-breaks">What works, what breaks</h2><p><strong>Works well:</strong></p><ul><li>DM responses — the agent as a personal assistant via Telegram</li><li>Cron tasks — reliable, predictable</li><li>Vault sync — git-based sync between server and laptop</li><li>Self-deploy — changing the brain without SSH-ing into the server</li></ul><p><strong>Breaks regularly:</strong></p><ul><li>Telegram FloodWait — agent sends messages too fast, gets rate-limited for minutes</li><li>Memory bloat — hot memory grows, needs periodic cleanup</li><li>Git conflicts — when the agent and I modify the vault simultaneously</li><li>Compaction drops — critical rules lost when context compresses in long sessions</li></ul><p>An always-on AI agent isn't rocket science. VPS + Docker + Claude Code CLI + Telegram bridge. The real complexity isn't in launching it — it's in maintenance: getting the memory system right, implementing proper access control, handling graceful degradation when things fail. But the result is worth it — an assistant that works while you sleep.</p><p>If you're building something similar, start with the Telegram bridge. Once your agent can read and send messages, everything else — memory, cron, self-deploy — is incremental. The <a href="/second-brain-obsidian-claude-code/">Obsidian + Claude Code</a> setup I described earlier is a natural companion to this architecture.</p><hr><p>Follow me on <a href="https://x.com/danokhlopkov?ref=okhlopkov.com">Twitter/X @danokhlopkov</a> for more on AI agents and automation.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Telegram MCP Server для Claude Code: пошаговый гайд</title>
+    <meta name="description" content="Как сделать Telegram MCP Server на Python и Telethon. Читать и отправлять сообщения из Claude Code." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/telegram-mcp-server-kak-sdelat/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/telegram-mcp-server-kak-sdelat/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/telegram-mcp-server-kak-sdelat/" />
+    <link rel="alternate" type="text/markdown" href="/article-telegram-mcp-server-kak-sdelat.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Telegram MCP Server для Claude Code: пошаговый гайд" />
+    <meta property="og:description" content="Как сделать Telegram MCP Server на Python и Telethon. Читать и отправлять сообщения из Claude Code." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/telegram-mcp-server-kak-sdelat/" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/03/telegram-mcp-server-kak-sdelat.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Telegram MCP Server для Claude Code: пошаговый гайд" />
+    <meta name="twitter:description" content="Как сделать Telegram MCP Server на Python и Telethon. Читать и отправлять сообщения из Claude Code." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/03/telegram-mcp-server-kak-sdelat.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/telegram-mcp-server-kak-sdelat/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/telegram-mcp-server-kak-sdelat/#article-content",
+  "headline": "Telegram MCP Server для Claude Code: пошаговый гайд",
+  "description": "Как сделать Telegram MCP Server на Python и Telethon. Читать и отправлять сообщения из Claude Code.",
+  "datePublished": "2026-03-31",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/03/telegram-mcp-server-kak-sdelat.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/telegram-mcp-server-kak-sdelat/"
+  },
+  "url": "https://okhlopkov.com/telegram-mcp-server-kak-sdelat/#article-content",
+  "inLanguage": "ru",
+  "articleSection": "Блог",
+  "text": "У меня есть AI-агент, который 24/7 сидит в Telegram, читает мои чаты, отвечает на сообщения и управляет контактами. Всё это — через MCP Server, который оборачивает Telethon в набор инструментов для Claude Code. Покажу, как это устроено и как собрать такой сервер самому. Зачем MCP для Telegram MCP (Model Context Protocol) — это стандарт, по которому AI-модели могут вызывать внешние инструменты. Claude Code поддерживает MCP из коробки: ты описываешь сервер, и модель получает доступ к его функциям как к обычным tools. Telegram через MCP — это возможность для Claude Code: Читать историю сообщений в любом чате Отправлять сообщения и ответы Искать по чатам (full-text search) Получать информацию о контактах и группах Реагировать на сообщения, пересылать, удалять Это не бот-API. Это userbot через Telethon — MTProto клиент, который работает от имени реального аккаунта. Бот-API слишком ограничен: не видит историю чужих сообщений, не может искать по чатам, не имеет доступа к приватным группам, куда не добавлен. Архитектура: Telethon + FastMCP Стек простой: Telethon — Python-библиотека для MTProto. Подключается к Telegram как обычный клиент FastMCP — фреймворк для создания MCP серверов на Python. Минимальный boilerplate nest_asyncio — критически важен. Без него async код внутри MCP вызовов падает с \"event loop already running\" Базовая структура: from mcp.server.fastmcp import FastMCP from telethon import TelegramClient import nest_asyncio import asyncio nest_asyncio.apply() mcp = FastMCP(\"telegram\") client = TelegramClient(\"session\", api_id, api_hash) @mcp.tool() async def get_messages(chat_id: int, limit: int = 10): \"\"\"Get recent messages from a chat.\"\"\" messages = [] async for msg in client.iter_messages(chat_id, limit=limit): messages.append({ \"id\": msg.id, \"text\": msg.message, # НЕ msg.text! \"date\": str(msg.date), \"sender\": msg.sender_id }) return messages Ключевой момент: msg.message , а не msg.text . Это неочевидно и стоило мне несколько часов дебага. msg.text возвращает None в некоторых контекстах (например, при работе через GetRepliesRequest ), а msg.message всегда содержит текст. Ключевые операции Мой MCP server для Telegram реализует 92 метода. Но для старта достаточно 5-7 основных: get_messages(chat_id, limit) — получить последние N сообщений из чата send_message(chat_id, text) — отправить сообщение search_messages(chat_id, query) — полнотекстовый поиск list_chats(chat_type) — список чатов (groups, channels, users) get_message_context(chat_id, message_id) — контекст вокруг конкретного сообщения execute_code(code) — выполнить произвольный Python с доступом к client Последний — самый мощный. По сути, это escape hatch: если нужна операция, которую ты не реализовал как отдельный tool, Claude Code может написать и выполнить Python код прямо внутри MCP сервера, с полным доступом к Telethon client. Async паттерны: обязательно nest_asyncio Главная ловушка — event loop. Telethon использует asyncio. MCP server тоже работает в asyncio event loop. Когда Claude Code вызывает MCP tool, ты уже внутри running loop — и asyncio.run() или client.loop.run_until_complete() падают с ошибкой. Решение: import nest_asyncio nest_asyncio.apply() import asyncio async def main(): msgs = [] async for msg in client.iter_messages(chat_id, limit=50): msgs.append(msg.message or '[media]') return msgs result = asyncio.get_event_loop().run_until_complete(main()) Этот паттерн — nest_asyncio.apply() в начале + asyncio.get_event_loop().run_until_complete() для вызовов — работает надёжно. Не пытайся использовать await на top level или client.loop.run_until_complete() — оба сломаются. Подводные камни За месяцы работы с Telegram MCP я собрал коллекцию граблей: ChannelPrivateError — возникает при попытке отправить сообщение в группу, где у аккаунта нет доступа. Причём читать из канала через GetRepliesRequest можно, а писать — нет. Это разные уровни доступа в Telegram API ▲ sender = None — в групповых чатах, где аккаунт не является участником, профили отправителей недоступны. msg.sender_id может быть None. Обрабатывай gracefully, не пытайся ретраить ▲ execute_code timeout — если запускаешь код через execute_code, ставь жёсткий лимит. Любой цикл больше 10 итераций с API вызовами внутри — разбивай на батчи. Я использую правило: максимум 10 операций за один execute_code вызов ▲ FloodWait — Telegram агрессивно рейтлимитит. Если отправить 20 сообщений подряд — получишь FloodWaitError с задержкой до нескольких минут. Добавь asyncio.sleep(1) между отправками ▲ Session string vs session file — для сервера используй session string ( client.session.save() в base64). Session файл привязан к filesystem и не переносится между контейнерами Мой use case: server-agent Я использую Telegram MCP как основной интерфейс для AI-агента, который крутится 24/7 на VPS. Архитектура: Claude Code запускается в Docker контейнере, подключается к Telegram через MCP, и обрабатывает входящие сообщения. Что агент умеет через Telegram MCP: ■ Отвечать на DM от меня — как персональный ассистент Мониторить каналы — парсить посты, собирать данные Отвечать в обсуждениях моего канала — в моём голосе, используя digital twin prompt Запускать cron-задачи — еженедельные отчёты, проверки Telegram MCP оказался удобнее, чем бот-API или webhook: полный доступ к истории, поиск, управление чатами — всё, что умеет обычный клиент. Как подключить к Claude Code В .mcp.json проекта (или глобально в ~/.claude/mcp.json ): { \"mcpServers\": { \"telegram\": { \"command\": \"python\", \"args\": [\"/path/to/telegram_mcp_server.py\"], \"env\": { \"TELEGRAM_API_ID\": \"your_api_id\", \"TELEGRAM_API_HASH\": \"your_api_hash\", \"TELEGRAM_SESSION_STRING\": \"your_session_string\" } } } } После запуска Claude Code увидит Telegram tools в списке доступных и сможет вызывать их как обычные функции. Открытый код: telegram-mcp на GitHub . Есть несколько реализаций, мой вариант основан на Telethon с расширенным набором методов. Telegram MCP — это мб самый полезный MCP server, который можно собрать. Telegram уже и так центр коммуникации для многих, а подключив его к Claude Code, ты получаешь AI-агента с полным доступом к твоему мессенджеру.",
+  "articleBody": "У меня есть AI-агент, который 24/7 сидит в Telegram, читает мои чаты, отвечает на сообщения и управляет контактами. Всё это — через MCP Server, который оборачивает Telethon в набор инструментов для Claude Code. Покажу, как это устроено и как собрать такой сервер самому. Зачем MCP для Telegram MCP (Model Context Protocol) — это стандарт, по которому AI-модели могут вызывать внешние инструменты. Claude Code поддерживает MCP из коробки: ты описываешь сервер, и модель получает доступ к его функциям как к обычным tools. Telegram через MCP — это возможность для Claude Code: Читать историю сообщений в любом чате Отправлять сообщения и ответы Искать по чатам (full-text search) Получать информацию о контактах и группах Реагировать на сообщения, пересылать, удалять Это не бот-API. Это userbot через Telethon — MTProto клиент, который работает от имени реального аккаунта. Бот-API слишком ограничен: не видит историю чужих сообщений, не может искать по чатам, не имеет доступа к приватным группам, куда не добавлен. Архитектура: Telethon + FastMCP Стек простой: Telethon — Python-библиотека для MTProto. Подключается к Telegram как обычный клиент FastMCP — фреймворк для создания MCP серверов на Python. Минимальный boilerplate nest_asyncio — критически важен. Без него async код внутри MCP вызовов падает с \"event loop already running\" Базовая структура: from mcp.server.fastmcp import FastMCP from telethon import TelegramClient import nest_asyncio import asyncio nest_asyncio.apply() mcp = FastMCP(\"telegram\") client = TelegramClient(\"session\", api_id, api_hash) @mcp.tool() async def get_messages(chat_id: int, limit: int = 10): \"\"\"Get recent messages from a chat.\"\"\" messages = [] async for msg in client.iter_messages(chat_id, limit=limit): messages.append({ \"id\": msg.id, \"text\": msg.message, # НЕ msg.text! \"date\": str(msg.date), \"sender\": msg.sender_id }) return messages Ключевой момент: msg.message , а не msg.text . Это неочевидно и стоило мне несколько часов дебага. msg.text возвращает None в некоторых контекстах (например, при работе через GetRepliesRequest ), а msg.message всегда содержит текст. Ключевые операции Мой MCP server для Telegram реализует 92 метода. Но для старта достаточно 5-7 основных: get_messages(chat_id, limit) — получить последние N сообщений из чата send_message(chat_id, text) — отправить сообщение search_messages(chat_id, query) — полнотекстовый поиск list_chats(chat_type) — список чатов (groups, channels, users) get_message_context(chat_id, message_id) — контекст вокруг конкретного сообщения execute_code(code) — выполнить произвольный Python с доступом к client Последний — самый мощный. По сути, это escape hatch: если нужна операция, которую ты не реализовал как отдельный tool, Claude Code может написать и выполнить Python код прямо внутри MCP сервера, с полным доступом к Telethon client. Async паттерны: обязательно nest_asyncio Главная ловушка — event loop. Telethon использует asyncio. MCP server тоже работает в asyncio event loop. Когда Claude Code вызывает MCP tool, ты уже внутри running loop — и asyncio.run() или client.loop.run_until_complete() падают с ошибкой. Решение: import nest_asyncio nest_asyncio.apply() import asyncio async def main(): msgs = [] async for msg in client.iter_messages(chat_id, limit=50): msgs.append(msg.message or '[media]') return msgs result = asyncio.get_event_loop().run_until_complete(main()) Этот паттерн — nest_asyncio.apply() в начале + asyncio.get_event_loop().run_until_complete() для вызовов — работает надёжно. Не пытайся использовать await на top level или client.loop.run_until_complete() — оба сломаются. Подводные камни За месяцы работы с Telegram MCP я собрал коллекцию граблей: ChannelPrivateError — возникает при попытке отправить сообщение в группу, где у аккаунта нет доступа. Причём читать из канала через GetRepliesRequest можно, а писать — нет. Это разные уровни доступа в Telegram API ▲ sender = None — в групповых чатах, где аккаунт не является участником, профили отправителей недоступны. msg.sender_id может быть None. Обрабатывай gracefully, не пытайся ретраить ▲ execute_code timeout — если запускаешь код через execute_code, ставь жёсткий лимит. Любой цикл больше 10 итераций с API вызовами внутри — разбивай на батчи. Я использую правило: максимум 10 операций за один execute_code вызов ▲ FloodWait — Telegram агрессивно рейтлимитит. Если отправить 20 сообщений подряд — получишь FloodWaitError с задержкой до нескольких минут. Добавь asyncio.sleep(1) между отправками ▲ Session string vs session file — для сервера используй session string ( client.session.save() в base64). Session файл привязан к filesystem и не переносится между контейнерами Мой use case: server-agent Я использую Telegram MCP как основной интерфейс для AI-агента, который крутится 24/7 на VPS. Архитектура: Claude Code запускается в Docker контейнере, подключается к Telegram через MCP, и обрабатывает входящие сообщения. Что агент умеет через Telegram MCP: ■ Отвечать на DM от меня — как персональный ассистент Мониторить каналы — парсить посты, собирать данные Отвечать в обсуждениях моего канала — в моём голосе, используя digital twin prompt Запускать cron-задачи — еженедельные отчёты, проверки Telegram MCP оказался удобнее, чем бот-API или webhook: полный доступ к истории, поиск, управление чатами — всё, что умеет обычный клиент. Как подключить к Claude Code В .mcp.json проекта (или глобально в ~/.claude/mcp.json ): { \"mcpServers\": { \"telegram\": { \"command\": \"python\", \"args\": [\"/path/to/telegram_mcp_server.py\"], \"env\": { \"TELEGRAM_API_ID\": \"your_api_id\", \"TELEGRAM_API_HASH\": \"your_api_hash\", \"TELEGRAM_SESSION_STRING\": \"your_session_string\" } } } } После запуска Claude Code увидит Telegram tools в списке доступных и сможет вызывать их как обычные функции. Открытый код: telegram-mcp на GitHub . Есть несколько реализаций, мой вариант основан на Telethon с расширенным набором методов. Telegram MCP — это мб самый полезный MCP server, который можно собрать. Telegram уже и так центр коммуникации для многих, а подключив его к Claude Code, ты получаешь AI-агента с полным доступом к твоему мессенджеру."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://okhlopkov.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Блог",
+      "item": "https://okhlopkov.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Telegram MCP Server для Claude Code: пошаговый гайд",
+      "item": "https://okhlopkov.com/telegram-mcp-server-kak-sdelat/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-03-31T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Блог" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Telegram MCP Server для Claude Code: пошаговый гайд</h1>
+      <p>Как сделать Telegram MCP Server на Python и Telethon. Читать и отправлять сообщения из Claude Code.</p>
+    </header>
+    <figure><img src="/content/images/2026/03/telegram-mcp-server-kak-sdelat.png" alt="Telegram MCP Server для Claude Code: пошаговый гайд" /></figure>
+    <section><p>У меня есть AI-агент, который 24/7 сидит в Telegram, читает мои чаты, отвечает на сообщения и управляет контактами. Всё это — через MCP Server, который оборачивает Telethon в набор инструментов для Claude Code. Покажу, как это устроено и как собрать такой сервер самому.</p><h2 id="%D0%B7%D0%B0%D1%87%D0%B5%D0%BC-mcp-%D0%B4%D0%BB%D1%8F-telegram">Зачем MCP для Telegram</h2><p>MCP (Model Context Protocol) — это стандарт, по которому AI-модели могут вызывать внешние инструменты. Claude Code поддерживает MCP из коробки: ты описываешь сервер, и модель получает доступ к его функциям как к обычным tools.</p><p>Telegram через MCP — это возможность для Claude Code:</p><ul class="article-inline-list"><li>Читать историю сообщений в любом чате</li><li>Отправлять сообщения и ответы</li><li>Искать по чатам (full-text search)</li><li>Получать информацию о контактах и группах</li><li>Реагировать на сообщения, пересылать, удалять</li></ul><p>Это не бот-API. Это userbot через Telethon — MTProto клиент, который работает от имени реального аккаунта. Бот-API слишком ограничен: не видит историю чужих сообщений, не может искать по чатам, не имеет доступа к приватным группам, куда не добавлен.</p><h2 id="%D0%B0%D1%80%D1%85%D0%B8%D1%82%D0%B5%D0%BA%D1%82%D1%83%D1%80%D0%B0-telethon-fastmcp">Архитектура: Telethon + FastMCP</h2><p>Стек простой:</p><ul class="article-inline-list"><li><strong>Telethon</strong> — Python-библиотека для MTProto. Подключается к Telegram как обычный клиент</li><li><strong>FastMCP</strong> — фреймворк для создания MCP серверов на Python. Минимальный boilerplate</li><li><strong>nest_asyncio</strong> — критически важен. Без него async код внутри MCP вызовов падает с "event loop already running"</li></ul><p>Базовая структура:</p><pre><code>from mcp.server.fastmcp import FastMCP
+from telethon import TelegramClient
+import nest_asyncio
+import asyncio
+
+nest_asyncio.apply()
+
+mcp = FastMCP("telegram")
+client = TelegramClient("session", api_id, api_hash)
+
+@mcp.tool()
+async def get_messages(chat_id: int, limit: int = 10):
+    """Get recent messages from a chat."""
+    messages = []
+    async for msg in client.iter_messages(chat_id, limit=limit):
+        messages.append({
+            "id": msg.id,
+            "text": msg.message,  # НЕ msg.text!
+            "date": str(msg.date),
+            "sender": msg.sender_id
+        })
+    return messages</code></pre><p>Ключевой момент: <code>msg.message</code>, а не <code>msg.text</code>. Это неочевидно и стоило мне несколько часов дебага. <code>msg.text</code> возвращает <code>None</code> в некоторых контекстах (например, при работе через <code>GetRepliesRequest</code>), а <code>msg.message</code> всегда содержит текст.</p><h2 id="%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%B2%D1%8B%D0%B5-%D0%BE%D0%BF%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D0%B8">Ключевые операции</h2><p>Мой MCP server для Telegram реализует 92 метода. Но для старта достаточно 5-7 основных:</p><ul class="article-inline-list"><li><code>get_messages(chat_id, limit)</code> — получить последние N сообщений из чата</li><li><code>send_message(chat_id, text)</code> — отправить сообщение</li><li><code>search_messages(chat_id, query)</code> — полнотекстовый поиск</li><li><code>list_chats(chat_type)</code> — список чатов (groups, channels, users)</li><li><code>get_message_context(chat_id, message_id)</code> — контекст вокруг конкретного сообщения</li><li><code>execute_code(code)</code> — выполнить произвольный Python с доступом к client</li></ul><p>Последний — самый мощный. По сути, это escape hatch: если нужна операция, которую ты не реализовал как отдельный tool, Claude Code может написать и выполнить Python код прямо внутри MCP сервера, с полным доступом к Telethon client.</p><h2 id="async-%D0%BF%D0%B0%D1%82%D1%82%D0%B5%D1%80%D0%BD%D1%8B-%D0%BE%D0%B1%D1%8F%D0%B7%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D0%BD%D0%BE-nestasyncio">Async паттерны: обязательно nest_asyncio</h2><p>Главная ловушка — event loop. Telethon использует asyncio. MCP server тоже работает в asyncio event loop. Когда Claude Code вызывает MCP tool, ты уже внутри running loop — и <code>asyncio.run()</code> или <code>client.loop.run_until_complete()</code> падают с ошибкой.</p><p>Решение:</p><pre><code>import nest_asyncio
+nest_asyncio.apply()
+import asyncio
+
+async def main():
+    msgs = []
+    async for msg in client.iter_messages(chat_id, limit=50):
+        msgs.append(msg.message or '[media]')
+    return msgs
+
+result = asyncio.get_event_loop().run_until_complete(main())</code></pre><p>Этот паттерн — <code>nest_asyncio.apply()</code> в начале + <code>asyncio.get_event_loop().run_until_complete()</code> для вызовов — работает надёжно. Не пытайся использовать <code>await</code> на top level или <code>client.loop.run_until_complete()</code> — оба сломаются.</p><h2 id="%D0%BF%D0%BE%D0%B4%D0%B2%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5-%D0%BA%D0%B0%D0%BC%D0%BD%D0%B8">Подводные камни</h2><p>За месяцы работы с Telegram MCP я собрал коллекцию граблей:</p><ul class="article-inline-list"><li><strong>ChannelPrivateError</strong> — возникает при попытке отправить сообщение в группу, где у аккаунта нет доступа. Причём <em>читать</em> из канала через <code>GetRepliesRequest</code> можно, а писать — нет. Это разные уровни доступа в Telegram API</p><p><strong>▲</strong> <strong>sender = None</strong> — в групповых чатах, где аккаунт не является участником, профили отправителей недоступны. <code>msg.sender_id</code> может быть None. Обрабатывай gracefully, не пытайся ретраить</p><p><strong>▲</strong> <strong>execute_code timeout</strong> — если запускаешь код через execute_code, ставь жёсткий лимит. Любой цикл больше 10 итераций с API вызовами внутри — разбивай на батчи. Я использую правило: максимум 10 операций за один execute_code вызов</p><p><strong>▲</strong> <strong>FloodWait</strong> — Telegram агрессивно рейтлимитит. Если отправить 20 сообщений подряд — получишь FloodWaitError с задержкой до нескольких минут. Добавь <code>asyncio.sleep(1)</code> между отправками</p><p><strong>▲</strong> <strong>Session string vs session file</strong> — для сервера используй session string (<code>client.session.save()</code> в base64). Session файл привязан к filesystem и не переносится между контейнерами</p><h2 id="%D0%BC%D0%BE%D0%B9-use-case-server-agent">Мой use case: server-agent</h2><p>Я использую Telegram MCP как основной интерфейс для AI-агента, который крутится 24/7 на VPS. Архитектура: <a href="/claude-code-nastrojka-mcp-hooks-skills-2026/">Claude Code</a> запускается в Docker контейнере, подключается к Telegram через MCP, и обрабатывает входящие сообщения.</p><p>Что агент умеет через Telegram MCP:</p><p><strong>■</strong> Отвечать на DM от меня — как персональный ассистент</li><li>Мониторить каналы — парсить посты, собирать данные</li><li>Отвечать в обсуждениях моего канала — в моём голосе, используя <a href="/dania-zip-packaging-yourself-for-ai/">digital twin prompt</a></li><li>Запускать cron-задачи — еженедельные отчёты, проверки</li></ul><p>Telegram MCP оказался удобнее, чем бот-API или webhook: полный доступ к истории, поиск, управление чатами — всё, что умеет обычный клиент.</p><h2 id="%D0%BA%D0%B0%D0%BA-%D0%BF%D0%BE%D0%B4%D0%BA%D0%BB%D1%8E%D1%87%D0%B8%D1%82%D1%8C-%D0%BA-claude-code">Как подключить к Claude Code</h2><p>В <code>.mcp.json</code> проекта (или глобально в <code>~/.claude/mcp.json</code>):</p><pre><code>{
+  "mcpServers": {
+    "telegram": {
+      "command": "python",
+      "args": ["/path/to/telegram_mcp_server.py"],
+      "env": {
+        "TELEGRAM_API_ID": "your_api_id",
+        "TELEGRAM_API_HASH": "your_api_hash",
+        "TELEGRAM_SESSION_STRING": "your_session_string"
+      }
+    }
+  }
+}</code></pre><p>После запуска Claude Code увидит Telegram tools в списке доступных и сможет вызывать их как обычные функции.</p><p>Открытый код: <a href="https://github.com/nicekid1/telegram-mcp?ref=okhlopkov.com">telegram-mcp на GitHub</a>. Есть несколько реализаций, мой вариант основан на Telethon с расширенным набором методов.</p><p>Telegram MCP — это мб самый полезный MCP server, который можно собрать. Telegram уже и так центр коммуникации для многих, а подключив его к Claude Code, ты получаешь AI-агента с полным доступом к твоему мессенджеру.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

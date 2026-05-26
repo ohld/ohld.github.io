@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Claude Code Compaction: How Context Compression Works (2026)</title>
+    <meta name="description" content="How Claude Code compaction compresses your conversation. Real examples of custom compaction prompts, what gets lost, and how to keep critical context." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/claude-code-compaction-explained/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/claude-code-compaction-kak-rabotaet/" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/claude-code-compaction-explained/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/claude-code-compaction-explained/" />
+    <link rel="alternate" type="text/markdown" href="/article-claude-code-compaction-explained.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Claude Code Compaction: How Context Compression Works (2026)" />
+    <meta property="og:description" content="How Claude Code compaction compresses your conversation. Real examples of custom compaction prompts, what gets lost, and how to keep critical context." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/claude-code-compaction-explained/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/03/claude-code-compaction-explained.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Claude Code Compaction: How Context Compression Works (2026)" />
+    <meta name="twitter:description" content="How Claude Code compaction compresses your conversation. Real examples of custom compaction prompts, what gets lost, and how to keep critical context." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/03/claude-code-compaction-explained.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/claude-code-compaction-explained/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-B-4F7cGB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/claude-code-compaction-explained/#article-content",
+  "headline": "Claude Code Compaction: How Context Compression Works (2026)",
+  "description": "How Claude Code compaction compresses your conversation. Real examples of custom compaction prompts, what gets lost, and how to keep critical context.",
+  "datePublished": "2026-03-31",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/03/claude-code-compaction-explained.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/claude-code-compaction-explained/"
+  },
+  "url": "https://okhlopkov.com/claude-code-compaction-explained/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "There's a hidden mechanic in Claude Code that most people don't think about until it costs them an hour of work. Compaction is the automatic compression of your conversation context when you approach the token limit. I ran into it when my always-on agent \"forgot\" a critical rule from the beginning of a session after 200 minutes of continuous operation. Here's what I learned by digging into how it works. What is compaction and why it exists Claude Code runs in your terminal and maintains long sessions. Unlike ChatGPT where each message is a separate request, Claude Code accumulates context: files it read, commands it executed, grep results, diffs, error messages. All of this stacks into one massive prompt. The problem: models have context window limits. Claude Sonnet has 200K tokens, Opus goes up to 1M. But even a million tokens runs out when your agent is actively working through a codebase. Compaction kicks in when context reaches roughly 95% of the limit. What happens: Claude Code takes the entire conversation history, sends it to a separate model call with a prompt like \"compress this into key facts,\" and replaces the full history with a condensed summary. You don't see this happening — at some point, the agent starts working from \"memory\" of past interactions rather than the full transcript. What survives compaction, what doesn't From my experience running agents daily, compaction reliably preserves: The current task and its immediate context File names that were recently modified Recent errors and their solutions General project architecture What consistently gets lost: Instructions from the start of the session — \"don't touch this file,\" \"use this format\" Intermediate decisions — why you chose approach A over B Specific code snippets discussed 50 messages ago Subtle style rules — \"no emoji,\" \"no Co-Authored-By in commits\" This makes sense: compaction optimizes for \"what to do next,\" not \"why we did what we did.\" Decision context is the first casualty of compression. Custom compaction prompts Claude Code lets you override the compaction prompt. This might be the most underrated setting. In settings.json (at ~/.claude/settings.json ), there's a parameter: { \"compactPrompt\": \"Preserve ALL rules from CLAUDE.md verbatim. Keep file paths, error messages, and architectural decisions. Summarize tool outputs but keep their conclusions.\" } I've tested multiple variations. The default prompt is a generic \"summarize the conversation.\" It works fine for short sessions, but for agents running for hours, you need more precision. My current compaction prompt: { \"compactPrompt\": \"When compacting, you MUST preserve:\\n1. All rules and constraints from CLAUDE.md and system prompt — copy them verbatim\\n2. Current task context and progress\\n3. File paths that were modified\\n4. Specific error messages and their solutions\\n5. User corrections and preferences stated during the session\\n\\nYou MAY summarize:\\n- Tool call outputs (keep conclusions, drop raw output)\\n- File contents that were read (keep what was learned, drop the text)\\n- Exploratory steps that led nowhere\" } The difference is noticeable. After switching to this custom prompt, my agents stopped \"forgetting\" CLAUDE.md rules during long sessions. CLAUDE.md vs compaction: where to put what The key insight from three months of running Claude Code agents: never rely on compaction for critical rules . Everything the agent must always remember should live in CLAUDE.md. CLAUDE.md loads as part of the system prompt at the start of every session. Compaction doesn't touch it — it exists outside the conversation history. It's the only place that's guaranteed to survive any compression. My strategy: CLAUDE.md — architectural rules, code style, prohibitions, credential paths, naming conventions. Anything that applies to every session Conversation context — current task, intermediate results, discussions. It's OK to lose this during compaction Project files — TODO.md, ARCHITECTURE.md, notes. The agent can re-read these if compaction erased the context Rule of thumb: if you catch yourself repeating the same instruction to the agent — move it to CLAUDE.md. I covered CLAUDE.md configuration in detail in my Claude Code setup guide . How to tell when compaction happened Claude Code shows a [context compacted] indicator in the terminal. But if you're multitasking, it's easy to miss. A more reliable signal: watch the cost counter in the bottom-right corner. A sudden cost spike (compaction is a separate API call) plus a context counter reset means compaction just fired. Another telltale sign: the agent starts re-asking things you already discussed. \"Which file has the config?\" — even though you edited that file 20 minutes ago. That's a clear signal that context was compressed and details were lost. When compaction causes real problems A concrete case from my work. I run a server-agent — Claude Code running 24/7 on a VPS, accessible via Telegram. The agent receives a message, processes it, waits for the next one. Sessions can last hours. The problem: after compaction, the agent would \"forget\" access control rules. I have a permission matrix — which files can be read from which chat context. These rules were in the initial prompt, but after compression the model lost them and started responding to requests it should have blocked. The fix: I moved all security rules into CLAUDE.local.md (which loads on top of the base CLAUDE.md). Now they're in the system prompt, not in the conversation history — compaction can't touch them. Practical tips for managing compaction Customize your compactPrompt. Tailor it to your workflow. Working with data? Ask it to preserve SQL queries. Writing articles? Ask it to keep style rules. The default is too generic for specialized work. Keep sessions short when possible. A fresh session means clean context plus full CLAUDE.md. Sometimes that's better than a long session with two compaction events. I've found that breaking work into focused 30-60 minute sessions produces better results than marathon 4-hour runs. Use files as external memory. Ask the agent to write key decisions to a TODO.md or NOTES.md file in your project. After compaction, it can re-read them. This pattern is especially important for Obsidian-based workflows where the vault acts as long-term memory. Put everything critical in CLAUDE.md. Rules that must always apply go there, nowhere else. Don't hope that compaction will preserve them — assume it won't. Test compaction intentionally. Run a long session, wait for compression, then check — does the agent still remember the rules from the beginning? This will save you hours of debugging later. Compaction isn't a bug — it's a necessary compromise. Context windows are growing, but as long as they're finite, compression will be part of working with AI agents. Better to understand how it works than to be surprised when your agent \"forgets\" a critical rule at the 200-minute mark. Follow me on Twitter/X @danokhlopkov for more on AI agents and automation.",
+  "articleBody": "There's a hidden mechanic in Claude Code that most people don't think about until it costs them an hour of work. Compaction is the automatic compression of your conversation context when you approach the token limit. I ran into it when my always-on agent \"forgot\" a critical rule from the beginning of a session after 200 minutes of continuous operation. Here's what I learned by digging into how it works. What is compaction and why it exists Claude Code runs in your terminal and maintains long sessions. Unlike ChatGPT where each message is a separate request, Claude Code accumulates context: files it read, commands it executed, grep results, diffs, error messages. All of this stacks into one massive prompt. The problem: models have context window limits. Claude Sonnet has 200K tokens, Opus goes up to 1M. But even a million tokens runs out when your agent is actively working through a codebase. Compaction kicks in when context reaches roughly 95% of the limit. What happens: Claude Code takes the entire conversation history, sends it to a separate model call with a prompt like \"compress this into key facts,\" and replaces the full history with a condensed summary. You don't see this happening — at some point, the agent starts working from \"memory\" of past interactions rather than the full transcript. What survives compaction, what doesn't From my experience running agents daily, compaction reliably preserves: The current task and its immediate context File names that were recently modified Recent errors and their solutions General project architecture What consistently gets lost: Instructions from the start of the session — \"don't touch this file,\" \"use this format\" Intermediate decisions — why you chose approach A over B Specific code snippets discussed 50 messages ago Subtle style rules — \"no emoji,\" \"no Co-Authored-By in commits\" This makes sense: compaction optimizes for \"what to do next,\" not \"why we did what we did.\" Decision context is the first casualty of compression. Custom compaction prompts Claude Code lets you override the compaction prompt. This might be the most underrated setting. In settings.json (at ~/.claude/settings.json ), there's a parameter: { \"compactPrompt\": \"Preserve ALL rules from CLAUDE.md verbatim. Keep file paths, error messages, and architectural decisions. Summarize tool outputs but keep their conclusions.\" } I've tested multiple variations. The default prompt is a generic \"summarize the conversation.\" It works fine for short sessions, but for agents running for hours, you need more precision. My current compaction prompt: { \"compactPrompt\": \"When compacting, you MUST preserve:\\n1. All rules and constraints from CLAUDE.md and system prompt — copy them verbatim\\n2. Current task context and progress\\n3. File paths that were modified\\n4. Specific error messages and their solutions\\n5. User corrections and preferences stated during the session\\n\\nYou MAY summarize:\\n- Tool call outputs (keep conclusions, drop raw output)\\n- File contents that were read (keep what was learned, drop the text)\\n- Exploratory steps that led nowhere\" } The difference is noticeable. After switching to this custom prompt, my agents stopped \"forgetting\" CLAUDE.md rules during long sessions. CLAUDE.md vs compaction: where to put what The key insight from three months of running Claude Code agents: never rely on compaction for critical rules . Everything the agent must always remember should live in CLAUDE.md. CLAUDE.md loads as part of the system prompt at the start of every session. Compaction doesn't touch it — it exists outside the conversation history. It's the only place that's guaranteed to survive any compression. My strategy: CLAUDE.md — architectural rules, code style, prohibitions, credential paths, naming conventions. Anything that applies to every session Conversation context — current task, intermediate results, discussions. It's OK to lose this during compaction Project files — TODO.md, ARCHITECTURE.md, notes. The agent can re-read these if compaction erased the context Rule of thumb: if you catch yourself repeating the same instruction to the agent — move it to CLAUDE.md. I covered CLAUDE.md configuration in detail in my Claude Code setup guide . How to tell when compaction happened Claude Code shows a [context compacted] indicator in the terminal. But if you're multitasking, it's easy to miss. A more reliable signal: watch the cost counter in the bottom-right corner. A sudden cost spike (compaction is a separate API call) plus a context counter reset means compaction just fired. Another telltale sign: the agent starts re-asking things you already discussed. \"Which file has the config?\" — even though you edited that file 20 minutes ago. That's a clear signal that context was compressed and details were lost. When compaction causes real problems A concrete case from my work. I run a server-agent — Claude Code running 24/7 on a VPS, accessible via Telegram. The agent receives a message, processes it, waits for the next one. Sessions can last hours. The problem: after compaction, the agent would \"forget\" access control rules. I have a permission matrix — which files can be read from which chat context. These rules were in the initial prompt, but after compression the model lost them and started responding to requests it should have blocked. The fix: I moved all security rules into CLAUDE.local.md (which loads on top of the base CLAUDE.md). Now they're in the system prompt, not in the conversation history — compaction can't touch them. Practical tips for managing compaction Customize your compactPrompt. Tailor it to your workflow. Working with data? Ask it to preserve SQL queries. Writing articles? Ask it to keep style rules. The default is too generic for specialized work. Keep sessions short when possible. A fresh session means clean context plus full CLAUDE.md. Sometimes that's better than a long session with two compaction events. I've found that breaking work into focused 30-60 minute sessions produces better results than marathon 4-hour runs. Use files as external memory. Ask the agent to write key decisions to a TODO.md or NOTES.md file in your project. After compaction, it can re-read them. This pattern is especially important for Obsidian-based workflows where the vault acts as long-term memory. Put everything critical in CLAUDE.md. Rules that must always apply go there, nowhere else. Don't hope that compaction will preserve them — assume it won't. Test compaction intentionally. Run a long session, wait for compression, then check — does the agent still remember the rules from the beginning? This will save you hours of debugging later. Compaction isn't a bug — it's a necessary compromise. Context windows are growing, but as long as they're finite, compression will be part of working with AI agents. Better to understand how it works than to be surprised when your agent \"forgets\" a critical rule at the 200-minute mark. Follow me on Twitter/X @danokhlopkov for more on AI agents and automation."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Claude Code Compaction: How Context Compression Works (2026)",
+      "item": "https://okhlopkov.com/claude-code-compaction-explained/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-03-31T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Claude Code Compaction: How Context Compression Works (2026)</h1>
+      <p>How Claude Code compaction compresses your conversation. Real examples of custom compaction prompts, what gets lost, and how to keep critical context.</p>
+    </header>
+    <figure><img src="/content/images/2026/03/claude-code-compaction-explained.png" alt="Claude Code Compaction: How Context Compression Works (2026)" /></figure>
+    <section><p>There's a hidden mechanic in Claude Code that most people don't think about until it costs them an hour of work. Compaction is the automatic compression of your conversation context when you approach the token limit. I ran into it when my always-on agent "forgot" a critical rule from the beginning of a session after 200 minutes of continuous operation. Here's what I learned by digging into how it works.</p><h2 id="what-is-compaction-and-why-it-exists">What is compaction and why it exists</h2><p>Claude Code runs in your terminal and maintains long sessions. Unlike ChatGPT where each message is a separate request, Claude Code accumulates context: files it read, commands it executed, grep results, diffs, error messages. All of this stacks into one massive prompt.</p><p>The problem: models have context window limits. Claude Sonnet has 200K tokens, Opus goes up to 1M. But even a million tokens runs out when your agent is actively working through a codebase. Compaction kicks in when context reaches roughly 95% of the limit.</p><p>What happens: Claude Code takes the entire conversation history, sends it to a separate model call with a prompt like "compress this into key facts," and replaces the full history with a condensed summary. You don't see this happening — at some point, the agent starts working from "memory" of past interactions rather than the full transcript.</p><h2 id="what-survives-compaction-what-doesnt">What survives compaction, what doesn't</h2><p>From my experience running agents daily, compaction reliably preserves:</p><ul><li>The current task and its immediate context</li><li>File names that were recently modified</li><li>Recent errors and their solutions</li><li>General project architecture</li></ul><p>What consistently gets lost:</p><ul><li>Instructions from the start of the session — "don't touch this file," "use this format"</li><li>Intermediate decisions — why you chose approach A over B</li><li>Specific code snippets discussed 50 messages ago</li><li>Subtle style rules — "no emoji," "no Co-Authored-By in commits"</li></ul><p>This makes sense: compaction optimizes for "what to do next," not "why we did what we did." Decision context is the first casualty of compression.</p><h2 id="custom-compaction-prompts">Custom compaction prompts</h2><p>Claude Code lets you override the compaction prompt. This might be the most underrated setting. In <code>settings.json</code> (at <code>~/.claude/settings.json</code>), there's a parameter:</p><pre><code>{
+  "compactPrompt": "Preserve ALL rules from CLAUDE.md verbatim. Keep file paths, error messages, and architectural decisions. Summarize tool outputs but keep their conclusions."
+}</code></pre><p>I've tested multiple variations. The default prompt is a generic "summarize the conversation." It works fine for short sessions, but for agents running for hours, you need more precision.</p><p>My current compaction prompt:</p><pre><code>{
+  "compactPrompt": "When compacting, you MUST preserve:\n1. All rules and constraints from CLAUDE.md and system prompt — copy them verbatim\n2. Current task context and progress\n3. File paths that were modified\n4. Specific error messages and their solutions\n5. User corrections and preferences stated during the session\n\nYou MAY summarize:\n- Tool call outputs (keep conclusions, drop raw output)\n- File contents that were read (keep what was learned, drop the text)\n- Exploratory steps that led nowhere"
+}</code></pre><p>The difference is noticeable. After switching to this custom prompt, my agents stopped "forgetting" CLAUDE.md rules during long sessions.</p><h2 id="claudemd-vs-compaction-where-to-put-what">CLAUDE.md vs compaction: where to put what</h2><p>The key insight from three months of running Claude Code agents: <strong>never rely on compaction for critical rules</strong>. Everything the agent must always remember should live in CLAUDE.md.</p><p>CLAUDE.md loads as part of the system prompt at the start of every session. Compaction doesn't touch it — it exists outside the conversation history. It's the only place that's guaranteed to survive any compression.</p><p>My strategy:</p><ul><li><strong>CLAUDE.md</strong> — architectural rules, code style, prohibitions, credential paths, naming conventions. Anything that applies to every session</li><li><strong>Conversation context</strong> — current task, intermediate results, discussions. It's OK to lose this during compaction</li><li><strong>Project files</strong> — TODO.md, ARCHITECTURE.md, notes. The agent can re-read these if compaction erased the context</li></ul><p>Rule of thumb: if you catch yourself repeating the same instruction to the agent — move it to CLAUDE.md. I covered CLAUDE.md configuration in detail in my <a href="/claude-code-setup-mcp-hooks-skills-2026/">Claude Code setup guide</a>.</p><h2 id="how-to-tell-when-compaction-happened">How to tell when compaction happened</h2><p>Claude Code shows a <code>[context compacted]</code> indicator in the terminal. But if you're multitasking, it's easy to miss. A more reliable signal: watch the cost counter in the bottom-right corner. A sudden cost spike (compaction is a separate API call) plus a context counter reset means compaction just fired.</p><p>Another telltale sign: the agent starts re-asking things you already discussed. "Which file has the config?" — even though you edited that file 20 minutes ago. That's a clear signal that context was compressed and details were lost.</p><h2 id="when-compaction-causes-real-problems">When compaction causes real problems</h2><p>A concrete case from my work. I run a <a href="/en-ai-agents-practice-claude-code-voice-commands/">server-agent</a> — Claude Code running 24/7 on a VPS, accessible via Telegram. The agent receives a message, processes it, waits for the next one. Sessions can last hours.</p><p>The problem: after compaction, the agent would "forget" access control rules. I have a permission matrix — which files can be read from which chat context. These rules were in the initial prompt, but after compression the model lost them and started responding to requests it should have blocked.</p><p>The fix: I moved all security rules into CLAUDE.local.md (which loads on top of the base CLAUDE.md). Now they're in the system prompt, not in the conversation history — compaction can't touch them.</p><h2 id="practical-tips-for-managing-compaction">Practical tips for managing compaction</h2><p><strong>Customize your compactPrompt.</strong> Tailor it to your workflow. Working with data? Ask it to preserve SQL queries. Writing articles? Ask it to keep style rules. The default is too generic for specialized work.</p><p><strong>Keep sessions short when possible.</strong> A fresh session means clean context plus full CLAUDE.md. Sometimes that's better than a long session with two compaction events. I've found that breaking work into focused 30-60 minute sessions produces better results than marathon 4-hour runs.</p><p><strong>Use files as external memory.</strong> Ask the agent to write key decisions to a TODO.md or NOTES.md file in your project. After compaction, it can re-read them. This pattern is especially important for <a href="/second-brain-obsidian-claude-code/">Obsidian-based workflows</a> where the vault acts as long-term memory.</p><p><strong>Put everything critical in CLAUDE.md.</strong> Rules that must always apply go there, nowhere else. Don't hope that compaction will preserve them — assume it won't.</p><p><strong>Test compaction intentionally.</strong> Run a long session, wait for compression, then check — does the agent still remember the rules from the beginning? This will save you hours of debugging later.</p><p>Compaction isn't a bug — it's a necessary compromise. Context windows are growing, but as long as they're finite, compression will be part of working with AI agents. Better to understand how it works than to be surprised when your agent "forgets" a critical rule at the 200-minute mark.</p><hr><p>Follow me on <a href="https://x.com/danokhlopkov?ref=okhlopkov.com">Twitter/X @danokhlopkov</a> for more on AI agents and automation.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>
