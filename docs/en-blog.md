@@ -1,10 +1,7 @@
 # Blog
 
-English-only blog posts and preserved notes by Daniil Okhlopkov about AI agents,
-Claude Code, Codex, MCP, data and Telegram.
-
-Most new material is Russian-first. This page only links to content that already
-has an English version or was originally written in English.
+English blog notes by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP,
+data and Telegram.
 
 ## English blog posts
 

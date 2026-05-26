@@ -1,9 +1,6 @@
 # Articles
 
-English tutorials, comparisons and preserved explainers by Daniil Okhlopkov.
-
-New Russian-first experiments are translated when the page already exists in
-English or has clear global demand.
+English tutorials and evergreen explainers about AI agents, automation, data workflows and Telegram tools.
 
 ## English articles
 

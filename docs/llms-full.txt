@@ -12,7 +12,7 @@
 
 I lead analytics at TON Foundation: on-chain data, research, ecosystem metrics and tools that help people understand the blockchain faster.
 
-This site is a map of my evergreen work: practical AI-agent workflows, Telegram-derived blog posts, articles and consulting context. Most new material is Russian-first, but the strongest pieces will also get English versions.
+This site is a map of my evergreen work: practical AI-agent workflows, blog notes, articles and consulting context.
 
 ## Focus
 
@@ -30,7 +30,7 @@ Bots, Mini Apps, channels, Ads and TG+TON distribution. Telegram is one of the m
 
 ## Start here
 
-If you came for AI agents, start with Articles for tutorials/comparisons and Blog for preserved posts about Codex, Claude Code, MCP, worktrees and second-brain workflows. The current material is Russian-first, but the concepts are practical and tool-first.
+If you came for AI agents, start with Articles for tutorials/comparisons and Blog for notes about Codex, Claude Code, MCP, worktrees and second-brain workflows.
 
 If you need context about my work, open About. If you want the fastest read on how I think, the post archive is still the best entry point.
 
@@ -172,11 +172,8 @@ TechCrunch: https://techcrunch.com/2021/10/20/study-finds-most-big-open-source-s
 
 # Blog
 
-English-only blog posts and preserved notes by Daniil Okhlopkov about AI agents,
-Claude Code, Codex, MCP, data and Telegram.
-
-Most new material is Russian-first. This page only links to content that already
-has an English version or was originally written in English.
+English blog notes by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP,
+data and Telegram.
 
 ## English blog posts
 
@@ -214,10 +211,7 @@ Articles — это отдельный слой сайта. Сюда попад�
 
 # Articles
 
-English tutorials, comparisons and preserved explainers by Daniil Okhlopkov.
-
-New Russian-first experiments are translated when the page already exists in
-English or has clear global demand.
+English tutorials and evergreen explainers about AI agents, automation, data workflows and Telegram tools.
 
 ## English articles
 
