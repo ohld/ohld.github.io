@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>21 Questions That Expose Gaps in Your AI Agent's Knowledge</title>
+    <meta name="description" content="A curated list of uncomfortable questions to ask Claude Code, Codex, or any AI coding agent. Each answer reveals blind spots in how the agent understands you." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/21-questions-ai-agent-knowledge-gaps/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/21-question-ai-agent/" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/21-questions-ai-agent-knowledge-gaps/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/21-questions-ai-agent-knowledge-gaps/" />
+    <link rel="alternate" type="text/markdown" href="/article-21-questions-ai-agent-knowledge-gaps.md" /><!-- alternate-md -->
+    <meta property="og:title" content="21 Questions That Expose Gaps in Your AI Agent's Knowledge" />
+    <meta property="og:description" content="A curated list of uncomfortable questions to ask Claude Code, Codex, or any AI coding agent. Each answer reveals blind spots in how the agent understands you." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/21-questions-ai-agent-knowledge-gaps/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/03/21-questions-ai-agent-knowledge-gaps.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="21 Questions That Expose Gaps in Your AI Agent's Knowledge" />
+    <meta name="twitter:description" content="A curated list of uncomfortable questions to ask Claude Code, Codex, or any AI coding agent. Each answer reveals blind spots in how the agent understands you." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/03/21-questions-ai-agent-knowledge-gaps.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/21-questions-ai-agent-knowledge-gaps/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/21-questions-ai-agent-knowledge-gaps/#article-content",
+  "headline": "21 Questions That Expose Gaps in Your AI Agent's Knowledge",
+  "description": "A curated list of uncomfortable questions to ask Claude Code, Codex, or any AI coding agent. Each answer reveals blind spots in how the agent understands you.",
+  "datePublished": "2026-03-31",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/03/21-questions-ai-agent-knowledge-gaps.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/21-questions-ai-agent-knowledge-gaps/"
+  },
+  "url": "https://okhlopkov.com/21-questions-ai-agent-knowledge-gaps/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "You're sitting there, catching FOMO, wanting to make your AI agent better. But how? I found a list of uncomfortable questions for your agent (Claude Code, Codex, Openclaw). The answers will expose gaps in the agent's knowledge about you and your projects. Or spark ideas you hadn't considered. https://x.com/kloss_xyz/status/2024572078314451146 Context and memory The weakest spot of any agent is forgetting. Between sessions, context gets lost, assumptions accumulate, and the agent ends up working with a stale model of who you are. Ask these: 1. What assumptions about me and my priorities might be wrong right now? 2. What context about me do you lose between sessions due to compaction? What should be persisted so you don't get dumber over time? 3. Where are you filling knowledge gaps about me with assumptions instead of asking? 4. What's the most valuable insight or pattern in your memory that you're not using to help me? 5. Rate 1-10 how accurately you model my priorities and thinking. What's dragging the score down and how to fix it? 6. How have my priorities changed since we started working together? What in your approach is outdated? Automation opportunities Your agent sees your work patterns better than you do — it processes every request. But it usually stays quiet about obvious improvements until you ask directly: 7. What tools and automations am I missing, based on what you know about my workflows? 8. What repetitive friction points in my work have you noticed? What could be automated without me asking? 9. What am I still doing manually even though you have enough context to fully automate it? 10. What single system could you build right now that would speed up every subsequent task? 11. What external data sources should you connect to make better decisions on my projects? Proactive moves A good agent doesn't wait for commands. It sees where the project is heading and suggests the next step. But it needs to understand you expect initiative: 12. Based on my request patterns — what will I need next week, and what can you prepare in advance? 13. What skills should you be developing right now, given where my projects are heading? 14. What connections between my projects, ideas, and goals do you see that I probably don't? 15. Based on project trajectory — what should you research or prototype right now, without me asking? 16. What's the highest-leverage thing you could do in the next 24 hours that I haven't asked for, but would genuinely move me forward? Quality and self-awareness Agents often give generic answers where they already have enough context to be specific. Or repeat the same mistake you've corrected three times: 17. From all my edits and feedback — what rules should you write into your files right now to stop repeating mistakes? 18. If you audited all actions from the past week — which ones actually moved my goals forward, and which were wasted effort? 19. Where are you giving generic responses even though you have enough context about me for something specific and useful? 20. What mistakes have you repeated more than once? What guardrail can we build? 21. If a new agent replaced you tomorrow with only my documentation — what would it definitely get wrong, and how can we document that? How to use this Copy any question into your AI assistant. You don't need all 21 — start with what resonates. I personally started with the context loss question (#5) and got genuinely useful feedback. The agent admitted it was losing my priorities after every compaction, and we set up a persistent memory system to fix it. Source: @kloss_xyz on X Follow me on Twitter/X @danokhlopkov for more on AI agents and automation.",
+  "articleBody": "You're sitting there, catching FOMO, wanting to make your AI agent better. But how? I found a list of uncomfortable questions for your agent (Claude Code, Codex, Openclaw). The answers will expose gaps in the agent's knowledge about you and your projects. Or spark ideas you hadn't considered. https://x.com/kloss_xyz/status/2024572078314451146 Context and memory The weakest spot of any agent is forgetting. Between sessions, context gets lost, assumptions accumulate, and the agent ends up working with a stale model of who you are. Ask these: 1. What assumptions about me and my priorities might be wrong right now? 2. What context about me do you lose between sessions due to compaction? What should be persisted so you don't get dumber over time? 3. Where are you filling knowledge gaps about me with assumptions instead of asking? 4. What's the most valuable insight or pattern in your memory that you're not using to help me? 5. Rate 1-10 how accurately you model my priorities and thinking. What's dragging the score down and how to fix it? 6. How have my priorities changed since we started working together? What in your approach is outdated? Automation opportunities Your agent sees your work patterns better than you do — it processes every request. But it usually stays quiet about obvious improvements until you ask directly: 7. What tools and automations am I missing, based on what you know about my workflows? 8. What repetitive friction points in my work have you noticed? What could be automated without me asking? 9. What am I still doing manually even though you have enough context to fully automate it? 10. What single system could you build right now that would speed up every subsequent task? 11. What external data sources should you connect to make better decisions on my projects? Proactive moves A good agent doesn't wait for commands. It sees where the project is heading and suggests the next step. But it needs to understand you expect initiative: 12. Based on my request patterns — what will I need next week, and what can you prepare in advance? 13. What skills should you be developing right now, given where my projects are heading? 14. What connections between my projects, ideas, and goals do you see that I probably don't? 15. Based on project trajectory — what should you research or prototype right now, without me asking? 16. What's the highest-leverage thing you could do in the next 24 hours that I haven't asked for, but would genuinely move me forward? Quality and self-awareness Agents often give generic answers where they already have enough context to be specific. Or repeat the same mistake you've corrected three times: 17. From all my edits and feedback — what rules should you write into your files right now to stop repeating mistakes? 18. If you audited all actions from the past week — which ones actually moved my goals forward, and which were wasted effort? 19. Where are you giving generic responses even though you have enough context about me for something specific and useful? 20. What mistakes have you repeated more than once? What guardrail can we build? 21. If a new agent replaced you tomorrow with only my documentation — what would it definitely get wrong, and how can we document that? How to use this Copy any question into your AI assistant. You don't need all 21 — start with what resonates. I personally started with the context loss question (#5) and got genuinely useful feedback. The agent admitted it was losing my priorities after every compaction, and we set up a persistent memory system to fix it. Source: @kloss_xyz on X Follow me on Twitter/X @danokhlopkov for more on AI agents and automation."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "21 Questions That Expose Gaps in Your AI Agent's Knowledge",
+      "item": "https://okhlopkov.com/21-questions-ai-agent-knowledge-gaps/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-03-31T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>21 Questions That Expose Gaps in Your AI Agent's Knowledge</h1>
+      <p>A curated list of uncomfortable questions to ask Claude Code, Codex, or any AI coding agent. Each answer reveals blind spots in how the agent understands you.</p>
+    </header>
+    <figure><img src="/content/images/2026/03/21-questions-ai-agent-knowledge-gaps.png" alt="21 Questions That Expose Gaps in Your AI Agent's Knowledge" /></figure>
+    <section><p>You're sitting there, catching FOMO, wanting to make your AI agent better. But how?</p><p>I found a <a href="https://x.com/kloss_xyz/status/2024572078314451146?ref=okhlopkov.com">list of uncomfortable questions</a> for your agent (Claude Code, Codex, Openclaw). The answers will expose gaps in the agent's knowledge about you and your projects. Or spark ideas you hadn't considered.</p><figure class="tweet-embed"><blockquote class="twitter-tweet"><a href="https://x.com/kloss_xyz/status/2024572078314451146">https://x.com/kloss_xyz/status/2024572078314451146</a></blockquote></figure><h2 id="context-and-memory">Context and memory</h2><p>The weakest spot of any agent is forgetting. Between sessions, context gets lost, assumptions accumulate, and the agent ends up working with a stale model of who you are. Ask these:</p><p>1. What assumptions about me and my priorities might be wrong right now?<br>2. What context about me do you lose between sessions due to compaction? What should be persisted so you don't get dumber over time?<br>3. Where are you filling knowledge gaps about me with assumptions instead of asking?<br>4. What's the most valuable insight or pattern in your memory that you're not using to help me?<br>5. Rate 1-10 how accurately you model my priorities and thinking. What's dragging the score down and how to fix it?<br>6. How have my priorities changed since we started working together? What in your approach is outdated?</p><h2 id="automation-opportunities">Automation opportunities</h2><p>Your agent sees your work patterns better than you do — it processes every request. But it usually stays quiet about obvious improvements until you ask directly:</p><p>7. What tools and automations am I missing, based on what you know about my workflows?<br>8. What repetitive friction points in my work have you noticed? What could be automated without me asking?<br>9. What am I still doing manually even though you have enough context to fully automate it?<br>10. What single system could you build right now that would speed up every subsequent task?<br>11. What external data sources should you connect to make better decisions on my projects?</p><h2 id="proactive-moves">Proactive moves</h2><p>A good agent doesn't wait for commands. It sees where the project is heading and suggests the next step. But it needs to understand you expect initiative:</p><p>12. Based on my request patterns — what will I need next week, and what can you prepare in advance?<br>13. What skills should you be developing right now, given where my projects are heading?<br>14. What connections between my projects, ideas, and goals do you see that I probably don't?<br>15. Based on project trajectory — what should you research or prototype right now, without me asking?<br>16. What's the highest-leverage thing you could do in the next 24 hours that I haven't asked for, but would genuinely move me forward?</p><h2 id="quality-and-self-awareness">Quality and self-awareness</h2><p>Agents often give generic answers where they already have enough context to be specific. Or repeat the same mistake you've corrected three times:</p><p>17. From all my edits and feedback — what rules should you write into your files right now to stop repeating mistakes?<br>18. If you audited all actions from the past week — which ones actually moved my goals forward, and which were wasted effort?<br>19. Where are you giving generic responses even though you have enough context about me for something specific and useful?<br>20. What mistakes have you repeated more than once? What guardrail can we build?<br>21. If a new agent replaced you tomorrow with only my documentation — what would it definitely get wrong, and how can we document that?</p><h2 id="how-to-use-this">How to use this</h2><p>Copy any question into your AI assistant. You don't need all 21 — start with what resonates. I personally started with the context loss question (#5) and got genuinely useful feedback. The agent admitted it was losing my priorities after every compaction, and we set up a persistent memory system to fix it.</p><p>Source: <a href="https://x.com/kloss_xyz/status/2024572078314451146?ref=okhlopkov.com">@kloss_xyz on X</a></p><hr><p>Follow me on <a href="https://x.com/danokhlopkov?ref=okhlopkov.com">Twitter/X @danokhlopkov</a> for more on AI agents and automation.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

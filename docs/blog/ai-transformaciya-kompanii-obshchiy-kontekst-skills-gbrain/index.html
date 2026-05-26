@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI-трансформация в компании: общий контекст, skills и GBrain вместо хаоса на ноутбуках</title>
+    <meta name="description" content="Почему корпоративной AI-трансформации нужны общий контекст, обновляемые skills, GBrain/OpenBrain и роль библиотекаря контекста." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/" />
+    <link rel="alternate" type="text/markdown" href="/blog-ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain.md" /><!-- alternate-md -->
+    <meta property="og:title" content="AI-трансформация в компании: общий контекст, skills и GBrain вместо хаоса на ноутбуках" />
+    <meta property="og:description" content="Почему корпоративной AI-трансформации нужны общий контекст, обновляемые skills, GBrain/OpenBrain и роль библиотекаря контекста." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:image" content="https://github.com/ohld.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="AI-трансформация в компании: общий контекст, skills и GBrain вместо хаоса на ноутбуках" />
+    <meta name="twitter:description" content="Почему корпоративной AI-трансформации нужны общий контекст, обновляемые skills, GBrain/OpenBrain и роль библиотекаря контекста." />
+    <meta name="twitter:image" content="https://github.com/ohld.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/#article-content",
+  "headline": "AI-трансформация в компании: общий контекст, skills и GBrain вместо хаоса на ноутбуках",
+  "description": "Почему корпоративной AI-трансформации нужны общий контекст, обновляемые skills, GBrain/OpenBrain и роль библиотекаря контекста.",
+  "datePublished": "2026-05-24",
+  "dateModified": "2026-05-25",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://github.com/ohld.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/"
+  },
+  "url": "https://okhlopkov.com/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/#article-content",
+  "inLanguage": "ru",
+  "keywords": [
+    "ai агенты",
+    "claude code skills",
+    "gbrain",
+    "mcp сервер что это"
+  ],
+  "articleSection": "Блог",
+  "about": [
+    {
+      "@type": "Thing",
+      "name": "AI Transformation"
+    },
+    {
+      "@type": "Thing",
+      "name": "GBrain"
+    },
+    {
+      "@type": "Thing",
+      "name": "Skills"
+    }
+  ],
+  "text": "В корпоративной AI-трансформации быстро выясняется странная вещь: подписки на Claude, Codex или Cursor купить проще, чем объяснить агентам, чем занимается компания. Лучшие сотрудники уже оцифровывают себя в skills, но контекст лежит локально, повторяется в чатах и не становится общим активом. Мой текущий ответ: общий GitHub-репозиторий с маленькими markdown-файлами, wiki-ссылками, регулярным ревью и постепенно более умной памятью через GBrain/OpenBrain. Это скучнее, чем “внедрить AI”, зато работает ближе к реальности. Что я вижу в компаниях Как приехал в Москву, стал нетворкать с несколькими большими IT компаниями о том, как там проходит « AI трансформация ». Сотрудникам рефандят траты на клод (!) . Лучшие сотрудники оцифровывают себя в скилы, но весь их контекст находятся локально на компах. И каждому приходится Баден-Баден объяснять одно и то же. Чей-то перформанс вырос, чей-то нет. Опытные вайбкодеры уже понимают, что если AI нагенерил не то — проблема в тебе. Арендовать всем самолет круто, но нужна карта. И желательно всего мира, потому что область быстро заканчивается. Самый простой способ - завести гитхаб репо для общего контекста: с маленькими md файлами , связанными wiki -ссылками. Собрать из этого обновляющийся скилл . Агенты сотрудников будут кидать PR с апдейтами, а библиотекарь контекста будет ревьюить и мерджить. Что имеет смысл документировать? Да всё: бизнес-модель, продукты, ца, рисерчи, гипотезы. Но тех спеку прогеров лучше хранить рядом с кодом. Как перестанет хватать одной Мега-Википедии - посмотрите на openbrain, gbrain. Они сильно развиваются, много экспериментов, но скоро устаканятся: весь всё, что у нас остаётся по факту — это контекст. 🅰️ Где ломается AI-трансформация Большие компании часто начинают с доступа к инструментам: оплатить Claude, дать Cursor, разрешить Codex, провести воркшоп. Это полезно, но это не система. Система появляется, когда знания компании становятся доступными агентам: что продаем; кому продаем; как устроен продукт; какие есть ограничения; какие гипотезы уже проверяли; какие решения принимали и почему; какие слова нельзя использовать в коммуникации; какие customer cases важнее всего. Без этого каждый сотрудник заново объясняет агенту одну и ту же “карту мира”. Поэтому AI-трансформация превращается в набор локальных магических практик: у одного человека агент работает отлично, у другого почти не помогает, третий говорит, что “все это игрушка”. Практическая архитектура контекста Минимальная версия не требует сложной платформы: Создать приватный GitHub-репозиторий company-context . Разбить знания на короткие markdown-файлы: бизнес-модель, продукты, ICP, glossary, competitors, research, sales objections. Связать файлы wiki-ссылками. Добавить AGENTS.md или skill entrypoint, который объясняет агенту, как читать контекст. Дать сотрудникам возможность отправлять PR с обновлениями. Назначить библиотекаря контекста, который ревьюит изменения. Такой репозиторий работает как operational memory для агентов. Очередная корпоративная база знаний ради галочки тут не поможет. Если контекст плохой, агент будет уверенно генерировать не то. Что добавилось из обсуждений В нашем тг чатике вокруг GBrain/OpenBrain уже был важный мотив: markdown-вики быстро становится полезной, но у нее есть потолок. Она хороша, когда файлов немного и связи очевидны. Когда контекста становится больше, нужен retrieval layer: поиск, связи, краткие briefing packs, дедупликация и правила, что можно показывать агенту. Отсюда логичная эволюция: Стадия Что использовать Первый пилот Markdown + wiki-ссылки + AGENTS.md Командный rollout GitHub PR workflow + библиотекарь контекста + changelog Много команд GBrain/OpenBrain как retrieval и briefing layer Публикация знаний Выжимки превращаются в блог/статьи после редакторского ревью Читать ещё AI-агенты: с чего начать в 2026 Claude Code vs Codex: почему я перешёл на Codex GStack, /goal и office hours Второй мозг: Obsidian и Claude Code",
+  "articleBody": "В корпоративной AI-трансформации быстро выясняется странная вещь: подписки на Claude, Codex или Cursor купить проще, чем объяснить агентам, чем занимается компания. Лучшие сотрудники уже оцифровывают себя в skills, но контекст лежит локально, повторяется в чатах и не становится общим активом. Мой текущий ответ: общий GitHub-репозиторий с маленькими markdown-файлами, wiki-ссылками, регулярным ревью и постепенно более умной памятью через GBrain/OpenBrain. Это скучнее, чем “внедрить AI”, зато работает ближе к реальности. Что я вижу в компаниях Как приехал в Москву, стал нетворкать с несколькими большими IT компаниями о том, как там проходит « AI трансформация ». Сотрудникам рефандят траты на клод (!) . Лучшие сотрудники оцифровывают себя в скилы, но весь их контекст находятся локально на компах. И каждому приходится Баден-Баден объяснять одно и то же. Чей-то перформанс вырос, чей-то нет. Опытные вайбкодеры уже понимают, что если AI нагенерил не то — проблема в тебе. Арендовать всем самолет круто, но нужна карта. И желательно всего мира, потому что область быстро заканчивается. Самый простой способ - завести гитхаб репо для общего контекста: с маленькими md файлами , связанными wiki -ссылками. Собрать из этого обновляющийся скилл . Агенты сотрудников будут кидать PR с апдейтами, а библиотекарь контекста будет ревьюить и мерджить. Что имеет смысл документировать? Да всё: бизнес-модель, продукты, ца, рисерчи, гипотезы. Но тех спеку прогеров лучше хранить рядом с кодом. Как перестанет хватать одной Мега-Википедии - посмотрите на openbrain, gbrain. Они сильно развиваются, много экспериментов, но скоро устаканятся: весь всё, что у нас остаётся по факту — это контекст. 🅰️ Где ломается AI-трансформация Большие компании часто начинают с доступа к инструментам: оплатить Claude, дать Cursor, разрешить Codex, провести воркшоп. Это полезно, но это не система. Система появляется, когда знания компании становятся доступными агентам: что продаем; кому продаем; как устроен продукт; какие есть ограничения; какие гипотезы уже проверяли; какие решения принимали и почему; какие слова нельзя использовать в коммуникации; какие customer cases важнее всего. Без этого каждый сотрудник заново объясняет агенту одну и ту же “карту мира”. Поэтому AI-трансформация превращается в набор локальных магических практик: у одного человека агент работает отлично, у другого почти не помогает, третий говорит, что “все это игрушка”. Практическая архитектура контекста Минимальная версия не требует сложной платформы: Создать приватный GitHub-репозиторий company-context . Разбить знания на короткие markdown-файлы: бизнес-модель, продукты, ICP, glossary, competitors, research, sales objections. Связать файлы wiki-ссылками. Добавить AGENTS.md или skill entrypoint, который объясняет агенту, как читать контекст. Дать сотрудникам возможность отправлять PR с обновлениями. Назначить библиотекаря контекста, который ревьюит изменения. Такой репозиторий работает как operational memory для агентов. Очередная корпоративная база знаний ради галочки тут не поможет. Если контекст плохой, агент будет уверенно генерировать не то. Что добавилось из обсуждений В нашем тг чатике вокруг GBrain/OpenBrain уже был важный мотив: markdown-вики быстро становится полезной, но у нее есть потолок. Она хороша, когда файлов немного и связи очевидны. Когда контекста становится больше, нужен retrieval layer: поиск, связи, краткие briefing packs, дедупликация и правила, что можно показывать агенту. Отсюда логичная эволюция: Стадия Что использовать Первый пилот Markdown + wiki-ссылки + AGENTS.md Командный rollout GitHub PR workflow + библиотекарь контекста + changelog Много команд GBrain/OpenBrain как retrieval и briefing layer Публикация знаний Выжимки превращаются в блог/статьи после редакторского ревью Читать ещё AI-агенты: с чего начать в 2026 Claude Code vs Codex: почему я перешёл на Codex GStack, /goal и office hours Второй мозг: Obsidian и Claude Code"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://okhlopkov.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Блог",
+      "item": "https://okhlopkov.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AI-трансформация в компании: общий контекст, skills и GBrain вместо хаоса на ноутбуках",
+      "item": "https://okhlopkov.com/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-05-24T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Блог" />
+  <meta property="article:tag" content="AI Transformation" />
+  <meta property="article:tag" content="GBrain" />
+  <meta property="article:tag" content="Skills" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>AI-трансформация в компании: общий контекст, skills и GBrain вместо хаоса на ноутбуках</h1>
+      <p>Почему корпоративной AI-трансформации нужны общий контекст, обновляемые skills, GBrain/OpenBrain и роль библиотекаря контекста.</p>
+    </header>
+    
+    <section><p>В корпоративной AI-трансформации быстро выясняется странная вещь: подписки на Claude, Codex или Cursor купить проще, чем объяснить агентам, чем занимается компания. Лучшие сотрудники уже оцифровывают себя в skills, но контекст лежит локально, повторяется в чатах и не становится общим активом.</p>
+<p>Мой текущий ответ: общий GitHub-репозиторий с маленькими markdown-файлами, wiki-ссылками, регулярным ревью и постепенно более умной памятью через GBrain/OpenBrain. Это скучнее, чем “внедрить AI”, зато работает ближе к реальности.</p>
+<h2>Что я вижу в компаниях</h2>
+<p>Как приехал в Москву, стал нетворкать с несколькими большими IT компаниями о том, как там проходит «<a href="/blog/ai-agents-s-chego-nachat/">AI трансформация</a>».</p>
+<p>Сотрудникам рефандят траты на клод <a href="/blog/claude-code-vs-codex-perehod/">(!)</a>. Лучшие сотрудники оцифровывают себя в скилы, но весь их контекст находятся локально на компах. И каждому приходится Баден-Баден объяснять одно и то же.</p>
+<p>Чей-то перформанс вырос, чей-то нет. Опытные вайбкодеры уже понимают, что если AI нагенерил не то — проблема в тебе.</p>
+<p>Арендовать всем самолет круто, но нужна карта. И желательно всего мира, потому что область быстро заканчивается.</p>
+<p>Самый простой способ - завести <strong>гитхаб репо</strong> для общего контекста: с маленькими <strong>md файлами</strong>, связанными <strong>wiki</strong>-ссылками. Собрать из этого <strong>обновляющийся скилл</strong>. Агенты сотрудников будут кидать PR с апдейтами, а <strong>библиотекарь контекста</strong> будет ревьюить и мерджить.</p>
+<p>Что имеет смысл документировать? Да всё: бизнес-модель, продукты, ца, рисерчи, гипотезы. Но тех спеку прогеров лучше хранить рядом с кодом.</p>
+<p>Как перестанет хватать одной Мега-Википедии - посмотрите на openbrain, gbrain. Они сильно развиваются, много экспериментов, но скоро устаканятся: весь всё, что у нас остаётся по факту — это контекст. 🅰️</p>
+<h2>Где ломается AI-трансформация</h2>
+<p>Большие компании часто начинают с доступа к инструментам: оплатить Claude, дать Cursor, разрешить Codex, провести воркшоп. Это полезно, но это не система.</p>
+<p>Система появляется, когда знания компании становятся доступными агентам:</p>
+<ul>
+<li>что продаем;
+</li>
+<li>кому продаем;
+</li>
+<li>как устроен продукт;
+</li>
+<li>какие есть ограничения;
+</li>
+<li>какие гипотезы уже проверяли;
+</li>
+<li>какие решения принимали и почему;
+</li>
+<li>какие слова нельзя использовать в коммуникации;
+</li>
+<li>какие customer cases важнее всего.
+</li>
+</ul>
+<p>Без этого каждый сотрудник заново объясняет агенту одну и ту же “карту мира”. Поэтому AI-трансформация превращается в набор локальных магических практик: у одного человека агент работает отлично, у другого почти не помогает, третий говорит, что “все это игрушка”.</p>
+<h2>Практическая архитектура контекста</h2>
+<p>Минимальная версия не требует сложной платформы:</p>
+<ol>
+<li>Создать приватный GitHub-репозиторий <code>company-context</code>.
+</li>
+<li>Разбить знания на короткие markdown-файлы: бизнес-модель, продукты, ICP, glossary, competitors, research, sales objections.
+</li>
+<li>Связать файлы wiki-ссылками.
+</li>
+<li>Добавить <code>AGENTS.md</code> или skill entrypoint, который объясняет агенту, как читать контекст.
+</li>
+<li>Дать сотрудникам возможность отправлять PR с обновлениями.
+</li>
+<li>Назначить библиотекаря контекста, который ревьюит изменения.
+</li>
+</ol>
+<p>Такой репозиторий работает как operational memory для агентов. Очередная корпоративная база знаний ради галочки тут не поможет. Если контекст плохой, агент будет уверенно генерировать не то.</p>
+<h2>Что добавилось из обсуждений</h2>
+<p>В <a href="https://t.me/ohld_chat">нашем тг чатике</a> вокруг GBrain/OpenBrain уже был важный мотив: markdown-вики быстро становится полезной, но у нее есть потолок. Она хороша, когда файлов немного и связи очевидны. Когда контекста становится больше, нужен retrieval layer: поиск, связи, краткие briefing packs, дедупликация и правила, что можно показывать агенту.</p>
+<p>Отсюда логичная эволюция:</p>
+<table><thead><tr><th>Стадия</th><th>Что использовать</th></tr></thead><tbody><tr><td>Первый пилот</td><td>Markdown + wiki-ссылки + AGENTS.md</td></tr><tr><td>Командный rollout</td><td>GitHub PR workflow + библиотекарь контекста + changelog</td></tr><tr><td>Много команд</td><td>GBrain/OpenBrain как retrieval и briefing layer</td></tr><tr><td>Публикация знаний</td><td>Выжимки превращаются в блог/статьи после редакторского ревью</td></tr></tbody></table>
+<h2>Читать ещё</h2>
+<ul>
+<li><a href="/blog/ai-agents-s-chego-nachat/">AI-агенты: с чего начать в 2026</a>
+</li>
+<li><a href="/blog/claude-code-vs-codex-perehod/">Claude Code vs Codex: почему я перешёл на Codex</a>
+</li>
+<li><a href="/blog/gstack-goal-office-hours-ai-workflow/">GStack, /goal и office hours</a>
+</li>
+<li><a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">Второй мозг: Obsidian и Claude Code</a>
+</li>
+</ul></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

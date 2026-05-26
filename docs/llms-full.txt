@@ -1,0 +1,1414 @@
+# Daniil Okhlopkov — Full Content Bundle
+
+> Combined Markdown of all pages on okhlopkov.com. For AI crawlers that prefer one-shot fetch.
+
+## Source: /en.md
+
+# Daniil Okhlopkov
+
+> Practical notes on AI agents, Codex, Claude Code, MCP, TON analytics and Telegram automation.
+
+## Short version
+
+I lead analytics at TON Foundation: on-chain data, research, ecosystem metrics and tools that help people understand the blockchain faster.
+
+This site is a map of my evergreen work: practical AI-agent workflows, Telegram-derived blog posts, articles and consulting context. Most new material is Russian-first, but the strongest pieces will also get English versions.
+
+## Focus
+
+### AI agents
+
+Practical workflows with Codex, Claude Code, MCP, Obsidian, browser agents and local automations. Less prompt folklore, more working loops.
+
+### TON and data
+
+Analytics, on-chain research, Dune dashboards and data infrastructure for making product decisions inside crypto ecosystems.
+
+### Telegram ecosystem
+
+Bots, Mini Apps, channels, Ads and TG+TON distribution. Telegram is one of the most alive interfaces for AI-native products.
+
+## Start here
+
+If you came for AI agents, start with Articles for tutorials/comparisons and Blog for preserved posts about Codex, Claude Code, MCP, worktrees and second-brain workflows. The current material is Russian-first, but the concepts are practical and tool-first.
+
+If you need context about my work, open About. If you want the fastest read on how I think, the post archive is still the best entry point.
+
+[Russian homepage](/) · [About](/en/about/) · [Blog](/en/blog/) · [Articles](/en/articles/)
+
+
+---
+
+## Source: /en-about.md
+
+# About — Daniil Okhlopkov
+
+> Analytics Team Lead at TON Foundation. AI agents, on-chain analytics, Telegram workflows and data products.
+
+I lead analytics at TON Foundation and write about practical AI-agent workflows,
+on-chain data, Telegram automation and the tools I actually use.
+
+Before TON I was a startup CTO, data scientist in VC, Entrepreneur First founder
+in residence and Forbes 30 Under 30 Russia.
+
+## Experience
+
+### Analytics Team Lead — TON Foundation
+
+Sep 2025 — now · London, Remote
+
+Building analytics for TON Blockchain: Dune, on-chain research, analyst contests
+and practical data infrastructure.
+
+### Senior Data Scientist — Sequel
+
+Jan — Nov 2024 · London, On-site
+
+Built Senna, a data platform for startup sourcing and outreach automation.
+
+### Co-Founder, CTO — Via Protocol
+
+Aug 2021 — May 2023 · London
+
+On-chain liquidity aggregator. Raised about $2M and processed more than
+$1.5B/year in volume.
+
+## Links
+
+- Telegram: [@danokhlopkov](https://t.me/danokhlopkov)
+- X: [@danokhlopkov](https://x.com/danokhlopkov)
+- LinkedIn: https://www.linkedin.com/in/danokhlopkov/
+- GitHub: [@ohld](https://github.com/ohld)
+
+
+---
+
+## Source: /about.md
+
+# Обо мне — Даниил Охлопков
+
+> Head of Analytics @ TON Foundation. Опыт: InstaBot, Shazam-ботсети 13.7M юзеров, Forbes 30 under 30 (2022).
+
+Head of Analytics @ TON Foundation. До этого — CTO стартапа с $2M fundraise, data scientist в двух VC фондах, Entrepreneur First.
+
+Пишу про AI-агентов, on-chain аналитику и то, как строить продукты с данными.
+
+## Опыт
+
+### Analytics Team Lead — TON Foundation
+**Sep 2025 — now** · London, Remote
+Строю аналитику для TON Blockchain. Dune, on-chain research, контесты для аналитиков.
+Dune dashboard: https://dune.com/blockchains/ton
+
+### Research Analyst — TON Foundation
+**Dec 2024 — Oct 2025** · London, Remote
+Making TON analyzable — инструменты, research community, ad-hoc анализ.
+
+### Senior Data Scientist — Sequel (VC Fund)
+**Jan — Nov 2024** · London, On-site
+Построил Senna — платформу автоматизации сорсинга стартапов. 28% конверсия outreach, >2 инвестиций в месяц одним человеком.
+Подробнее: https://www.sequel.co/news/introducing-senna-our-proprietary-data-driven-platform
+
+### Founder In Residence — Entrepreneur First
+**Sep — Dec 2023** · London
+EF — топ-1 talent investor в мире. Backed by Patrick Collison, Reid Hoffman, Nat Friedman.
+
+### Co-Founder, CTO — Via Protocol
+**Aug 2021 — May 2023** · London
+On-chain агрегатор ликвидности. Raised ~$2M (Naval Ravikant, Shima Capital). $1.5B/year volume. Команда 8 инженеров.
+Crunchbase: https://www.crunchbase.com/organization/via-exchange
+
+### Data Lead — Runa Capital (VC Fund)
+**Jan 2021 — Jan 2022** · London
+Data Platform для сорсинга стартапов. Runa Open Source Startup Index — 32k фаундеров и инвесторов. Публикации на TechCrunch.
+TechCrunch: https://techcrunch.com/2021/10/20/study-finds-most-big-open-source-startups-outside-bay-area-many-european-and-avoiding-vc/
+
+## Контакты
+
+- Telegram: [@danokhlopkov](https://t.me/danokhlopkov) (RU)
+- X / Twitter: [@danokhlopkov](https://x.com/danokhlopkov) (EN)
+- LinkedIn: https://www.linkedin.com/in/danokhlopkov/
+- GitHub: [@ohld](https://github.com/ohld)
+- Бот: [@ohldbot](https://t.me/ohldbot)
+- Блог: https://okhlopkov.com (EN)
+
+[← На главную](/)
+
+
+---
+
+## Source: /blog.md
+
+# Блог
+
+> Мои записи и рабочие заметки.
+
+Блог — это мои записи про AI-агентов, инструменты, контекст и практику разработки. Если материал вырос из короткого поста, живой текст остаётся максимально близко к оригиналу, а структура, источники и внутренние ссылки помогают читать его как нормальную страницу.
+
+## Посты
+
+- [AI-трансформация в компании: общий контекст, skills и GBrain](/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/)
+- [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [Что попросить AI-агента сделать, когда задачи закончились](/blog/improve-codebase-architecture-prompt/)
+- [Мой сетап Claude Code после 4 месяцев ежедневной работы](/claude-code-nastrojka-mcp-hooks-skills-2026/)
+- [Второй мозг: личный AI-ассистент с Obsidian и Claude Code](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
+- [Лучшие скиллы и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/)
+- [Compaction в Claude Code: как работает сжатие контекста](/claude-code-compaction-kak-rabotaet/)
+- [Claude Code + Codex: двойное ревью AI-агентов](/claude-codex-dual-review/)
+- [Форум AI-агентов в Telegram-чате](/ai-agent-forum-telegram-chat-agenty/)
+
+## Как это будет развиваться
+
+Дальше сюда будут попадать новые записи, обогащённые инсайтами из обсуждений, ссылками на связанные статьи, YouTube-видео и полезные источники.
+
+[← На главную](/)
+
+
+---
+
+## Source: /en-blog.md
+
+# Blog
+
+English-only blog posts and preserved notes by Daniil Okhlopkov about AI agents,
+Claude Code, Codex, MCP, data and Telegram.
+
+Most new material is Russian-first. This page only links to content that already
+has an English version or was originally written in English.
+
+## English blog posts
+
+- [My Claude Code Setup After 4 Months of Daily Use](/claude-code-setup-mcp-hooks-skills-2026/)
+- [Second Brain: Obsidian and Claude Code Assistant](/en-second-brain-obsidian-claude-code-assistant/)
+- [Show Me Your AI Setup #1: Ghostty, ownyourchat, Descript](/en-show-me-ai-setup-ghostty-ownyourchat-descript/)
+- [My AI Dev Tools in 2026](/ai-tools-setup-january-2026/)
+
+
+---
+
+## Source: /articles.md
+
+# Статьи
+
+> Гайды, туториалы и сравнения AI-инструментов.
+
+Articles — это отдельный слой сайта. Сюда попадают материалы, которые мы собираем из Telegram-чатов, YouTube-транскриптов, Twitter/X статей, GBrain notes, аналитики спроса и личной проверки инструментов.
+
+## Статьи
+
+- [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/articles/ai-tools-for-designers-design-engineering-agents/) — разбор стрима про design engineering, AI-assisted frontend, Paper/Figma-to-code, design tokens, Mobbin MCP и борьбу с AI-slop.
+- [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/) — почему HTML лучше подходит для длинных AI-agent артефактов, когда файлы пишет агент, а человек читает и шарит.
+
+## Редакционный принцип
+
+Каждая статья должна иметь понятный интент, источники, таблицы или промпты, internal links, дату обновления и вывод в стиле Дана. Мы не генерим страницы только ради ключевика.
+
+[← На главную](/)
+
+
+---
+
+## Source: /en-articles.md
+
+# Articles
+
+English tutorials, comparisons and preserved explainers by Daniil Okhlopkov.
+
+New Russian-first experiments are translated when the page already exists in
+English or has clear global demand.
+
+## English articles
+
+- [Web Scraping Is Dead: What AI Agents Replaced It With](/web-scraping-ai-agents-2026/)
+- [Best Skills and MCP for Claude Code](/en-best-skills-mcp-claude-code-agent-browser/)
+- [Claude Code Compaction: How Context Compression Works](/claude-code-compaction-explained/)
+- [Beads vs Gastown: Should You Use External Frameworks for AI Agents?](/en-beads-gastown-framework-ai-agents/)
+
+
+---
+
+## Source: /articles-ai-tools-for-designers-design-engineering-agents.md
+
+# AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code
+
+> Разбор стрима про design engineering: как дизайнерам работать с AI-агентами, почему появляется AI-slop, зачем нужны design tokens, Paper, Mobbin MCP и хороший контекст для Codex/Claude Code.
+
+Last updated: 2026-05-25
+
+![YouTube thumbnail: ИИ не вывозит норм дизайн или это skill issue?](https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg)
+
+[Открыть на YouTube](https://www.youtube.com/watch?v=fIEMOzz0_AI)
+
+- Дизайнеру уже мало просто рисовать в Figma: ценность сдвигается к prototype-first и code-aware работе.
+- AI-агентам нужны нормальные design skills: tokens, states, references, constraints и критерии вкуса.
+- Главный враг — AI-slop: generic карточки, случайные gradients, непонятная иерархия и отсутствие живого feedback.
+
+## Что реально поменялось
+
+AI меняет скорость макетов и требования к роли дизайнера. Ценнее становится человек, который умеет соединять вкус, продуктовую задачу и код.
+
+Design engineer здесь — роль на стыке: быстро собрать прототип, понять ограничения интерфейса, дать агенту нормальные skills и довести идею ближе к работающему продукту.
+
+> Команда «сделай красиво» почти всегда проигрывает нормальным skills, дизайн-токенам и правилам визуального стиля.
+
+## Почему агенты делают AI-slop
+
+Codex, Claude Code, Lovable, v0 и похожие инструменты умеют быстро собрать интерфейс. Проблема в том, что без ограничений они тянут усреднённый интернет: одинаковые карточки, случайную типографику, декоративные блоки и визуальный шум.
+
+Практический вывод: агенту нужен язык дизайна вместе с задачей: семантические токены, состояния компонентов, анти-референсы, примеры хороших flow и критерии, по которым результат считается готовым.
+
+## Инструменты и где они полезны
+
+| Инструмент | Для чего | Риск |
+|---|---|---|
+| Paper | Design-to-code и импорт живых сайтов ближе к HTML/CSS модели. | Нужны продуктовая логика и responsive states. |
+| Mobbin MCP | Реальные UX-референсы для onboarding, paywall, checkout, settings. | Можно скопировать паттерн без понимания контекста. |
+| Codex / Claude Code | Сборка route, ревью, перенос UI в код, работа с существующим проектом. | Без дизайн-системы быстро скатываются в generic UI. |
+
+## Промпт, который можно дать агенту
+
+```prompt
+Ты помогаешь сделать frontend экран не похожим на AI-slop.
+
+Контекст:
+- пользователь: [кто открывает экран]
+- задача: [что он должен сделать]
+- продуктовый риск: [что нельзя сломать]
+- референсы: [2-5 ссылок или описаний]
+
+Правила:
+1. Используй semantic tokens: text-primary, text-secondary, bg, surface-100, border, accent.
+2. Покажи empty/loading/error/success states.
+3. Не добавляй декоративные карточки без функции.
+4. Добавь micro-interactions только там, где они дают feedback.
+5. Перед финалом проверь mobile и desktop viewport.
+```
+
+## Что делать дальше
+
+1. Собрать `design.md` для проекта: tokens, typography, spacing, radius, components, anti-patterns.
+2. Для каждого нового UI task давать агенту задачу, референсы и правила визуального стиля.
+3. Проверять mobile/desktop, empty/loading/error states и микроинтеракции до финала.
+4. Сохранять созвоны, решения и дизайн-обсуждения как будущую память для агентов.
+
+## Source pack
+
+- [YouTube-запись стрима](https://www.youtube.com/watch?v=fIEMOzz0_AI)
+- [Paper](https://paper.design/) и [Paper MCP](https://paper.design/docs/mcp)
+- [Mobbin MCP](https://mobbin.com/mcp)
+- [Agents with Taste skill](https://github.com/emilkowalski/skill)
+
+## Читать ещё
+
+- [Все статьи](/articles/)
+- [Блог](/blog/)
+- [Мой сетап Claude Code 2026](/claude-code-nastrojka-mcp-hooks-skills-2026/)
+- [Лучшие skills и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/)
+
+
+---
+
+## Source: /markdown-vs-html.md
+
+# Markdown мёртв — да здравствует HTML
+
+> Адаптация статьи Tariq из команды Claude Code · перевод и комментарии Дана Охлопкова
+> Оригинал: https://x.com/trq212/status/2052809885763747935
+> Примеры автора: https://thariqs.github.io/html-effectiveness
+
+**TL;DR** — Markdown был хорош, пока ты сам редактировал файлы. Сейчас файлы пишет Claude, ты их только читаешь и шаришь. В этой реальности HTML побеждает по плотности информации, читаемости, шерингу и интерактиву. Цена — токены, время, шумные diff'ы.
+
+## Что поменялось
+
+Markdown стал дефолтным языком общения между AI-агентами и людьми. Простой, портативный, немного rich text, легко править руками. Claude даже научился рисовать ASCII-диаграммы внутри markdown'а — местами впечатляюще.
+
+Но чем мощнее становятся агенты, тем чаще markdown ощущается как корсет. Markdown-файл больше 100 строк я уже физически не читаю — и точно не заставлю прочитать никого из команды. Хочется цвета, диаграмм, плотных таблиц, интерактивных элементов. И хочется чтобы это можно было кинуть ссылкой.
+
+Главный сдвиг тут — **я перестал редактировать эти файлы руками**. Они стали спецификациями, ресёрчами, brainstorming-выходом, отчётами. Когда мне надо что-то поправить, я не лезу в текст — я промпчу Claude. То есть основное преимущество markdown'а (легко редактировать руками) больше не работает в моём флоу.
+
+> **Главный поинт:** Markdown оптимизирован под того, кто **пишет** файл. HTML оптимизирован под того, кто **читает и шарит**. Когда писатель — агент, а ты только читатель — выбор очевиден.
+
+## Почему HTML — 6 причин
+
+### 1. Плотность информации
+
+HTML может представить почти всё, что Claude способен понять:
+
+- Структура документа — заголовки, форматирование (как markdown, только богаче)
+- Таблицы — нормальные, с merged cells и стилями вместо убогого markdown table
+- Дизайн — через CSS
+- Иллюстрации и диаграммы — через SVG
+- Интерактив — через HTML + JS + CSS
+- Воркфлоу и стрелочки — SVG поверх HTML
+- Картинки и видео — нативно
+- Пространственные данные — absolute positioning, canvas
+
+Когда модель лишена этого арсенала, она занимается *странным* — рисует ASCII-арт или пытается передать цвет юникод-символами разной плотности (▒▓█). Это уже карго-культ markdown'а; сила формата тут теряется.
+
+### 2. Читаемость длинных документов
+
+Claude пишет всё более длинные планы и спецификации. На практике markdown-файл больше 100 строк я не дочитываю до конца, и команду тоже не заставлю. HTML же можно нормально структурировать визуально — табы, навигация, sticky оглавление, mobile-responsive вёрстка под телефон vs десктоп.
+
+**Личный пример.** Я делаю research-отчёты по on-chain-аналитике TON — на 200-500 строк, со встроенными SQL-запросами, цифрами, ссылками на Dune-дашборды. В markdown'е их читают по диагонали. С тем же контентом в HTML с SVG-диаграммами потоков и кликабельными ссылками open rate был бы радикально выше: визуальная структура помогает физически дочитать до выводов.
+
+### 3. Лёгкость шеринга — главный аргумент
+
+Это, по моим ощущениям, самая *недооценённая* часть. Markdown в реальной рабочей жизни шарить почти невозможно:
+
+- **Slack не рендерит markdown-аттачи.** А HTML-файлы Slack вообще не разрешает прикреплять. Тупик
+- Кидаешь .md программисту — он откроет в Cursor / IDE / Obsidian, увидит рендер. Кидаешь непрограммисту — он смотрит на сырую простыню текста с решётками и звёздочками
+- Браузеры markdown нативно не рендерят. Открывается как plaintext
+- В мобильных мессенджерах вложенный .md — это «открой и почитай», что никто не делает
+
+Поэтому де-факто всегда приходилось делать **HTML → PDF** через `print to PDF` или какой-нибудь рендерер. PDF открывается везде — в TG, в Slack, на телефоне, в WhatsApp, в почте.
+
+«Можно же просто конвертить markdown в PDF» — можно. Но получается стоковая, скучная А4-простыня без диаграмм, без структуры, без визуальных акцентов. **HTML → PDF выигрывает у Markdown → PDF в каждом раунде.**
+
+Итог: HTML — это лучший *исходник* для шеринга. Дальше либо ссылка (если хостинг есть), либо PDF (если нет).
+
+### 4. Двусторонний интерактив
+
+HTML может *показывать* и *принимать ввод*. Слайдеры для подбора параметров анимации. Drag-and-drop для перетаскивания тикетов между колонками. Live-preview шаблона при редактировании промпта.
+
+Финальный ход — кнопка `Copy as JSON` или `Copy as Prompt`, которая собирает результат твоих манипуляций обратно в текст, который ты вставляешь в Claude Code. Получается **одноразовый редактор под конкретную задачу**: артефакт на 30 минут, который не обязан становиться продуктом или reusable tool.
+
+### 5. Контекст — суперсила Claude Code
+
+Почему именно Claude Code? Потому что у него есть всё:
+
+- Файловая система — может прочитать твой codebase, ai-docs, заметки
+- MCP-серверы — Slack, Linear, Coolify, Dune, Telegram
+- Git history — кто что менял и когда
+- Браузер (через Claude in Chrome) — может полезть и посмотреть
+
+### 6. Это просто кайфово
+
+Делать HTML-документы с Claude — это весело. Чувствуешь себя создателем, который участвует в форме результата. И этого, в общем, уже достаточно как причины.
+
+## Сравнение в одной таблице
+
+| Критерий | Markdown | HTML |
+|---|---|---|
+| Плотность инфы | Текст + ASCII | Текст + таблицы + SVG + JS + CSS |
+| Читаемость 500+ строк | Никто не читает | Навигация, табы, mobile |
+| Шеринг (Slack, TG, mail) | Файл-аттач, никто не открывает | Ссылка / PDF из HTML |
+| Интерактив | Нет | Слайдеры, drag-drop, copy-кнопки |
+| Цвета, иллюстрации | Эмодзи-костыли | Нативно |
+| Токены на генерацию | ×1 | ×2–4 |
+| Время генерации | ×1 | ×2–4 |
+| Git diff | Чистый, читаемый | Шумный, ад |
+| Удобно *писать* руками | Тебе | Никому |
+| Удобно *читать* | Тебе одному | Всем, включая телефон |
+
+## Юзкейсы с промптами
+
+### Спеки, планирование, исследование вариантов
+
+Когда я начинаю новую задачу, вместо одного markdown-плана я представляю **паутину HTML-файлов**. Сначала прошу побрейнштормить и сделать explorations нескольких подходов. Потом раскручиваю один из них в макет с примерами кода. Финально — план имплементации.
+
+> **Промпт-пример:** «Не уверен, в какую сторону пилить экран онбординга. Сгенери 6 принципиально разных подходов — варьируй layout, тон, плотность — и выложи их в один HTML-файл сеткой, чтобы я мог сравнивать side-by-side. Подпиши каждый вариант его tradeoff'ом.»
+
+> **Промпт-пример:** «Сделай подробный имплементационный план в HTML. Добавь mockup'ы, нарисуй data flow в SVG, вставь ключевые куски кода которые я захочу проревьюить. Сделай удобным для сканирования.»
+
+### Code review и понимание чужого кода
+
+Код в markdown'е читать тяжело. В HTML мы можем рендерить diff'ы с inline-аннотациями, flowchart'ы модулей, color-coded findings по severity.
+
+> **Промпт-пример:** «Помоги мне ревьюить этот PR — сделай HTML-артефакт. Я плохо знаю логику streaming/backpressure, сфокусируйся на ней. Отрендери реальный diff с аннотациями на полях, color-code находки по severity.»
+
+### Дизайн и прототипы
+
+HTML невероятно выразителен для дизайна — даже если финальный таргет не веб. Claude может набросать дизайн в HTML, а потом перевести его в React/Swift/whatever. И главное — можно прототипировать *интеракции* вместе со статикой.
+
+> **Промпт-пример:** «Хочу прототипировать новую кнопку checkout. При клике она проигрывает анимацию и быстро становится фиолетовой. Сделай HTML с несколькими слайдерами (длительность, easing, цвет) чтобы я перепробовал варианты. Кнопка copy чтобы скопировать параметры которые сработали.»
+
+### Отчёты, ресёрчи, объяснялки
+
+Claude Code отлично синтезирует инфу из нескольких источников — Slack, codebase, git history, веб — в единый читаемый отчёт.
+
+> **Промпт-пример (мой кейс, on-chain ресёрч):** «Прочитай папку с моим research'ем про buy/sell pressure на одном из TON-маркетплейсов и собери одностраничный HTML-explainer для босса: SVG-схема потока ордеров, 3-4 ключевых SQL-снипета с аннотациями, секция "key findings" вверху, ссылки на Dune-дашборды кликабельные. Оптимизируй под человека, который читает это один раз.»
+
+### Кастомные одноразовые редакторы
+
+Самый мощный, на мой взгляд, юзкейс. Когда задачу тяжело описать словами в текстбоксе — Claude собирает **throwaway-редактор** под неё. Не продукт, не reusable tool. Один HTML-файл, который ты выкинешь после использования.
+
+Финальный аккорд всегда один: кнопка export — `Copy as JSON`, `Copy as Markdown`, `Copy as Prompt` — которая превращает результат твоих кликов обратно в текст для Claude.
+
+> **Промпт-пример:** «Мне надо переприоритизировать 30 тикетов из Linear. Сделай HTML где каждый тикет — draggable-карточка по колонкам Now / Next / Later / Cut. Предсортируй по своему лучшему пониманию. Кнопка "copy as markdown" чтобы выгрузить финальный порядок.»
+
+Что ещё попадает в этот паттерн:
+
+- Триаж/сортировка чего угодно (тикеты, тест-кейсы, фидбек)
+- Редактирование структурированного конфига (feature flags, env)
+- Тюнинг промптов с live-preview
+- Кураторство датасетов — approve/reject строки, тегирование
+- Аннотация документа/транскрипта/diff'а с экспортом аннотаций
+- Подбор значений, которые мучительно описывать словами: цвета, easing-кривые, crop-области, cron-расписания, regex'ы
+
+## Честные минусы
+
+**За что любим:**
+- Плотность инфы
+- Читаемость длинных документов
+- Шеринг ссылкой
+- Интерактив + copy-back в промпт
+- Контекст из MCP/файлов/git
+- Чувство вовлечённости в результат
+
+**За что ругаем:**
+- Токены ×2–4 (но в 1M-контексте Opus 4.7 — норм)
+- Время генерации ×2–4
+- Git diff'ы шумные, ревьюить тяжело
+- Без design system Claude генерит generic-хрень
+- Нужен браузер чтобы посмотреть
+
+Если делаешь HTML регулярно — заведи **один файл с design system** своего проекта/компании. Можно попросить Claude сгенерить его, посмотрев на твой codebase. Дальше каждый новый HTML генеришь со ссылкой на этот design system — и стиль становится консистентным.
+
+## Как начать прямо сейчас
+
+Главное — **не создавай `/html` skill**. Не надо. Достаточно просто сказать *«сделай HTML-файл»* или *«сделай HTML-артефакт»*. Со временем, может быть, оформишь в скилл — но для начала промпчи from scratch.
+
+Хитрость начинается с понимания, **чего ты хочешь от артефакта** и как ты будешь его использовать.
+
+## FAQ
+
+**Это же не token-efficient?**
+HTML жрёт больше токенов. Но при 1M-контексте Opus 4.7 это незаметно, а выразительность и шанс что я *дочитаю* — кратно выше. Trade хороший.
+
+**Когда ты ещё используешь markdown?**
+Tariq говорит — почти никогда. Я мягче: markdown остаётся для коротких заметок, voice memo расшифровок, ai-docs которые точно никто кроме меня не откроет. Всё что длиннее 100 строк или хоть когда-нибудь пойдёт наружу — HTML.
+
+**Дольше же генерится?**
+Да, в 2–4 раза. Окупается читаемостью.
+
+**Как ревьюить diff'ы HTML?**
+Это реально больно. Один из главных минусов. Если файл часто меняется — может быть оставь его в markdown.
+
+**Как заставить Claude не делать уродство?**
+Frontend design плагин помогает с базовым качеством. Дальше — design system файл, который ты используешь как референс.
+
+---
+
+## Stay in the loop
+
+Финальная мысль автора, которая мне зашла больше всего: реальная причина любви к HTML — это **ощущение, что ты в курсе того, что делает агент**. Когда я перестал читать длинные markdown-планы, у меня появился страх, что я отдал управление и просто доверяю Claude. С HTML я снова в loop'е — потому что артефакт читать действительно интересно.
+
+---
+
+Адаптация: Дан Охлопков ([@danokhlopkov](https://t.me/danokhlopkov)) · 2026-05-09
+Оригинал: Tariq, Claude Code team · https://x.com/trq212/status/2052809885763747935
+
+[← На главную](/)
+
+
+---
+
+## Source: /privacy.md
+
+# Privacy Policy
+
+Effective date: May 25, 2026
+
+This policy explains how okhlopkov.com and the personal Pinterest Content Ideas integration handle data.
+
+The Pinterest Content Ideas integration is intended for personal use by Daniil Okhlopkov to read his own Pinterest boards and pins for private visual reference workflows.
+
+## Data Access
+
+If Pinterest authorization is used, the integration may read Pinterest account identifiers, boards, pins, pin metadata, descriptions, links, and image URLs that are available to the authorized Pinterest account.
+
+The integration does not request permissions to create, update, or delete Pinterest content.
+
+## Use
+
+Pinterest data is used to maintain a private visual moodboard, create local reference manifests, and select inspiration for newly generated article visuals. Source Pinterest images are treated as references, not as public assets for redistribution.
+
+## Storage
+
+Reference data may be stored locally or in private systems controlled by Daniil Okhlopkov. Raw Pinterest references, access tokens, and private manifests are not intentionally published in the public okhlopkov.com repository.
+
+## Sharing
+
+Pinterest data is not sold or shared with third parties. Final generated visuals and articles may be published on okhlopkov.com, but they are created as new content and reviewed before publication.
+
+## Contact
+
+Questions about this policy can be sent via Telegram at @danokhlopkov or through the public contact links on okhlopkov.com.
+
+
+---
+
+## Source: /blog-ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain.md
+
+# AI-трансформация в компании: общий контекст, skills и GBrain вместо хаоса на ноутбуках
+
+В корпоративной AI-трансформации быстро выясняется странная вещь: подписки на Claude, Codex или Cursor купить проще, чем объяснить агентам, чем занимается компания. Лучшие сотрудники уже оцифровывают себя в skills, но контекст лежит локально, повторяется в чатах и не становится общим активом.
+
+Мой текущий ответ: общий GitHub-репозиторий с маленькими markdown-файлами, wiki-ссылками, регулярным ревью и постепенно более умной памятью через GBrain/OpenBrain. Это скучнее, чем “внедрить AI”, зато работает ближе к реальности.
+
+## Что я вижу в компаниях
+
+Как приехал в Москву, стал нетворкать с несколькими большими IT компаниями о том, как там проходит «[AI трансформация](/blog/ai-agents-s-chego-nachat/)».
+
+Сотрудникам рефандят траты на клод [(!)](/blog/claude-code-vs-codex-perehod/). Лучшие сотрудники оцифровывают себя в скилы, но весь их контекст находятся локально на компах. И каждому приходится Баден-Баден объяснять одно и то же.
+
+Чей-то перформанс вырос, чей-то нет. Опытные вайбкодеры уже понимают, что если AI нагенерил не то — проблема в тебе.
+
+Арендовать всем самолет круто, но нужна карта. И желательно всего мира, потому что область быстро заканчивается.
+
+Самый простой способ - завести **гитхаб репо** для общего контекста: с маленькими **md файлами**, связанными **wiki**-ссылками. Собрать из этого **обновляющийся скилл**. Агенты сотрудников будут кидать PR с апдейтами, а **библиотекарь контекста** будет ревьюить и мерджить.
+
+Что имеет смысл документировать? Да всё: бизнес-модель, продукты, ца, рисерчи, гипотезы. Но тех спеку прогеров лучше хранить рядом с кодом.
+
+Как перестанет хватать одной Мега-Википедии - посмотрите на openbrain, gbrain. Они сильно развиваются, много экспериментов, но скоро устаканятся: весь всё, что у нас остаётся по факту — это контекст. 🅰️
+
+## Где ломается AI-трансформация
+
+Большие компании часто начинают с доступа к инструментам: оплатить Claude, дать Cursor, разрешить Codex, провести воркшоп. Это полезно, но это не система.
+
+Система появляется, когда знания компании становятся доступными агентам:
+
+- что продаем;
+- кому продаем;
+- как устроен продукт;
+- какие есть ограничения;
+- какие гипотезы уже проверяли;
+- какие решения принимали и почему;
+- какие слова нельзя использовать в коммуникации;
+- какие customer cases важнее всего.
+
+Без этого каждый сотрудник заново объясняет агенту одну и ту же “карту мира”. Поэтому AI-трансформация превращается в набор локальных магических практик: у одного человека агент работает отлично, у другого почти не помогает, третий говорит, что “все это игрушка”.
+
+## Практическая архитектура контекста
+
+Минимальная версия не требует сложной платформы:
+
+1. Создать приватный GitHub-репозиторий `company-context`.
+2. Разбить знания на короткие markdown-файлы: бизнес-модель, продукты, ICP, glossary, competitors, research, sales objections.
+3. Связать файлы wiki-ссылками.
+4. Добавить `AGENTS.md` или skill entrypoint, который объясняет агенту, как читать контекст.
+5. Дать сотрудникам возможность отправлять PR с обновлениями.
+6. Назначить библиотекаря контекста, который ревьюит изменения.
+
+Такой репозиторий работает как operational memory для агентов. Очередная корпоративная база знаний ради галочки тут не поможет. Если контекст плохой, агент будет уверенно генерировать не то.
+
+## Что добавилось из обсуждений
+
+В [нашем тг чатике](https://t.me/ohld_chat) вокруг GBrain/OpenBrain уже был важный мотив: markdown-вики быстро становится полезной, но у нее есть потолок. Она хороша, когда файлов немного и связи очевидны. Когда контекста становится больше, нужен retrieval layer: поиск, связи, краткие briefing packs, дедупликация и правила, что можно показывать агенту.
+
+Отсюда логичная эволюция:
+
+| Стадия | Что использовать |
+| --- | --- |
+| Первый пилот | Markdown + wiki-ссылки + AGENTS.md |
+| Командный rollout | GitHub PR workflow + библиотекарь контекста + changelog |
+| Много команд | GBrain/OpenBrain как retrieval и briefing layer |
+| Публикация знаний | Выжимки превращаются в блог/статьи после редакторского ревью |
+
+## Читать ещё
+
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [Claude Code vs Codex: почему я перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Второй мозг: Obsidian и Claude Code](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
+
+
+---
+
+## Source: /blog-gstack-goal-office-hours-ai-workflow.md
+
+# GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста
+
+Одна из главных ошибок в работе с AI-агентами: просить “сделай проект” и потом читать километровую простыню. Нормальный флоу выглядит как цикл: прожарить идею, зафиксировать цель, дать агенту автономный ран, заставить его показывать прогресс в удобной форме и отдельно ревьюить архитектуру.
+
+Я использую GStack как guardrail для этого цикла: агент меньше соглашается с мутной идеей и чаще показывает, где принял решение сам.
+
+## Мой текущий loop
+
+окей, ладно, это имба:
+
+- **/office-hours скилл GStack**
+  - прожарка любой идеи;
+  - вопросы “нафига” и “зачем” до того, как агент начнет писать код.
+
+- **[/improve-codebase-architecture](/blog/improve-codebase-architecture-prompt/)**
+  - повышает шанс, что вайбкод проживет дольше одного вечера;
+  - заставляет смотреть на границы, дублирование и будущую стоимость изменений.
+
+- **/goal в Codex или /loop в Claude Code**
+  - длинный ран после брейншторма;
+  - агент работает автономно, но с понятным критерием готовности.
+
+- **HTML-progress вместо простыни**
+  - какие решения принял там, где спека мутная;
+  - где отошел от плана и почему;
+  - какие трейдоффы выбрал;
+  - что еще не чекнул;
+  - какая визуализация лучше подходит задаче.
+
+Мой следующий шаг - понять, как неслопно задизайнить что угодно. [Разбирал это отдельно в статье про design engineering и AI-агентов](/articles/ai-tools-for-designers-design-engineering-agents/).
+
+## Рабочий цикл
+
+Вот как это можно собрать без магии:
+
+| Шаг | Что делает |
+| --- | --- |
+| `/office-hours` | Заставляет сформулировать “зачем”, аудиторию, риск и первый эксперимент |
+| `/improve-codebase-architecture` | Ищет неочевидные архитектурные долги после того, как “вроде все работает” |
+| `/goal` или `/loop` | Дает агенту длинный автономный ран с понятной целью и критерием готовности |
+| HTML progress | Превращает ход работы в читаемый артефакт: решения, трейдоффы, unchecked areas |
+
+Главный смысл в том, чтобы не смешивать мышление, исполнение и отчетность в один чат. Сначала агент помогает сузить идею. Потом работает. Потом показывает, где именно принимал решения. Потом отдельный агент или тот же агент в свежем контексте ревьюит результат.
+
+## Что добавилось из обсуждений
+
+В community много раз всплывала одна и та же боль: агент может работать долго, но человек теряет ощущение контроля. В итоге ты либо прерываешь его слишком рано, либо читаешь гигантский лог и уже не понимаешь, где важное.
+
+HTML-progress возвращает контроль. Нормальный progress artifact должен отвечать на вопросы:
+
+- какие решения агент уже принял;
+- где спека была мутной;
+- какие допущения он сделал сам;
+- где отошел от первоначального плана;
+- что не проверил;
+- какие файлы или страницы стоит посмотреть человеку.
+
+Это особенно важно для `okhlopkov.com`: агент может генерировать статьи, но редактору нужен короткий обзор, почему страница создана, какие источники использованы, где текст требует ручной вычитки и какие внутренние ссылки надо поставить.
+
+## Почему это важно для сайта
+
+Такие workflow-посты хорошо ложатся именно в `blog`: личный опыт и твой стиль остаются внутри, а вокруг можно строить нормальную структуру:
+
+- заголовок отвечает на практический запрос;
+- живой текст остается ядром статьи;
+- обсуждения добавляют мясо;
+- внутренние ссылки ведут в статьи, где тема раскрывается глубже;
+- короткие прикладные ответы лучше добавлять прямо в текст, если они не ломают тон.
+
+## Читать ещё
+
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [Что попросить AI-агента сделать, когда задачи закончились](/blog/improve-codebase-architecture-prompt/)
+- [AI-инструменты для дизайнеров: design engineering и агенты](/articles/ai-tools-for-designers-design-engineering-agents/)
+- [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/)
+
+
+---
+
+## Source: /blog-claude-code-vs-codex-perehod.md
+
+# Claude Code vs Codex: почему я на две недели перешёл на Codex
+
+Snapshot на середину мая 2026: почему я временно переехал с Claude Code на Codex, что стало хуже, что стало лучше и какие привычки пришлось поменять.
+
+В таких сравнениях сухая таблица быстро устаревает. Важнее понять, как ощущается ежедневная работа, что ломает контекст, где приходится менять флоу и где инструмент начинает бесить.
+
+## Почему я временно переехал
+
+**2 недели назад я перешел на Codex**
+
+TL:DR; Claude Code увидели клюшку в метриках. Не справились с ростом - на помощь пришли серверы Илона. Ранее добавили кеширование и «оптимизации» в опус 4.7 - юзеры стали чувствовать, что СС тупит жоска. Весь апрель длилась не смешная шутка не только со мной в главной роли, но и в нашем чате и во всем тви. Вот и решил перейти на Codex.
+
+Сами CC объясняют свой тупизм количеством наших установленных скилов, mcp и др контекстной грязи.
+
+Они, конечно, добавили /doctor для чистки и поливают дождем из кредитов и больших лимитов, но я уже чёрнулся, сори. Fuck you, pay me to return. Пока такой вайбик, ждем релиза mythos.
+
+Мой фидбек по Кодексу:
+
+1. Дал задачу - Долго думает - Выдает хороший ответ, но контекст уже заполнен. Приходится чаще явно начинать новую сессию и менять привычки.
+
+2. Чтобы экономить контекст, приходится напоминать использовать субагентов. Немного надоело, нужно найти норм поваренную книгу по кодексу.
+
+3. В кодексе сижу через их десктоп прилу. Чувствую себя корпоратом, скучаю по CC CLI. Микрофончик есть, но продолжаю юзать [Spokenly](https://www.spokenly.app/) на правый command.
+
+4. Нет рисков словить бан из-за экспериментов с другими тулами. Пока что.
+
+В планах научиться работать с контекстом через gbrain/openbrain вместо md с вики-ссылками. И тогда переезжать туда-сюда будет проще, как и шерить фрагменты коллегам. Ну и t3code, ладно, попробую тоже.
+
+Опрос в чате показывал тогда баланс CC/C : ~50/50, вот новый:
+
+## Что важно в этом сравнении
+
+Сравнение Claude Code и Codex быстро устаревает, если обсуждать только “какая модель умнее”. Сегодня один релиз, завтра другой лимит, послезавтра поменялась политика доступа, а через неделю весь Twitter уже ругает новый regression.
+
+Более стабильные критерии такие:
+
+| Критерий | Почему важно |
+| --- | --- |
+| Работа с контекстом | Агент может быть умным, но если сессия быстро забивается, вы платите вниманием за cleanup |
+| Субагенты | Для длинных задач важно уметь разгружать основной контекст и не превращать чат в кашу |
+| CLI/Desktop привычки | Интерфейс влияет на скорость: голос, хоткеи, файлы, permissions, рабочие директории |
+| Риск блокировок и экспериментов | Если вы подключаете другие тулзы, важно понимать, где вас может наказать платформа |
+| Переносимость знаний | GBrain/OpenBrain/markdown-вики нужны, чтобы не быть заложником одного клиента |
+
+## Что добавилось из обсуждений
+
+В [нашем тг чатике](https://t.me/ohld_chat) вокруг этого периода шло много сравнений Claude Code и Codex. Полезный сигнал: опыт стал примерно поляризованным. Часть людей оставалась на Claude Code из-за привычного CLI и качества флоу, часть уходила в Codex из-за стабильности, доступности и меньших рисков.
+
+Еще один повторяющийся community insight: люди недооценивают стоимость context hygiene. Когда в Claude Code лежит много MCP, skills и локальной грязи, деградация ощущается как “модель тупит”, хотя часть проблемы может быть в среде. В Codex похожая проблема выглядит иначе: ответ хороший, но контекст быстрее заполняется, и нужно дисциплинированнее начинать новые сессии.
+
+Из донорских каналов в тот же период видно похожее направление: обсуждали обновления Codex, `goal`-режимы, computer-use сценарии и деградации Claude-моделей. Вывод простой: рынок живет короткими циклами, поэтому такие сравнения нужно обновлять в формате changelog, без вечного мануала.
+
+## Мой текущий вывод
+
+Если вы выбираете “Claude Code или Codex”, не выбирайте по чужому фанатству. Сделайте маленький benchmark на своем проекте:
+
+1. Один и тот же issue или рефакторинг.
+2. Один и тот же контекст: README, relevant files, constraints.
+3. Один и тот же критерий готовности: тесты, diff size, читаемость, риск.
+4. Отдельный раунд ревью: “что ты мог сломать?”.
+5. Замер качества ответа и того, сколько раз вы вмешивались.
+
+И уже потом решайте, где жить каждый день. Для меня на момент поста Codex стал способом не зависеть от просадки Claude Code, но не снял проблему контекста. Он просто поменял ее форму.
+
+## Читать ещё
+
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code + Codex: двойное ревью AI-агентов](/claude-codex-dual-review/)
+- [Мой сетап Claude Code после 4 месяцев ежедневной работы](/claude-code-nastrojka-mcp-hooks-skills-2026/)
+
+
+---
+
+## Source: /blog-ai-agents-s-chego-nachat.md
+
+# AI-агенты: с чего начать в 2026 — карта материалов, Claude Code, Codex и живые кейсы
+
+Входная карта по моим материалам про AI-агентов: Claude Code, Codex, Obsidian, skills, промпты, видео с живым сетапом и community loop вокруг всего этого.
+
+Люди обычно приходят с практическими вопросами: “с чего начать”, “какой инструмент выбрать” и “как не утонуть в настройках”. Поэтому здесь маршрут без энциклопедии.
+
+## Карта входа
+
+Черновик v2.
+
+**топ моих материалов про AI agents**
+
+Собрал карту входа: посты, которые реально пересылали, плюс видосы, где я показывал сетап руками.
+
+Это маршрут, после которого можно уже идти и навайбкодить что-нибудь живое.
+
+**читать**
+
+- [Claude Code: пост, с которого у меня начался кринжовый e/acc период](/claude-code-nastrojka-mcp-hooks-skills-2026/)
+- Флоу работы с AI coding agent: идея → спека → plan mode → новый чат без context rot
+- [Что кидать агенту, когда очевидные таски закончились: “почисти код, сделай лучше”](/blog/improve-codebase-architecture-prompt/)
+- [Промпты, которые улучшили мой опыт работы с AI агентами](/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/)
+- 21 неудобный вопрос для агента — проверка мышления поверх скорости кодинга
+- [Claude Code + Obsidian + голосовой ввод — всё, я в 2030](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
+- Paperclip: AI-организация, где промпты превращаются в найм агентов
+- [AI-инструменты, которые я реально попробовал: что осталось, что выкинул](/ai-tools-march-2026-review/)
+- Не обновлял AI-сетап 2 недели — опоздал. Фомо по инструментам после отпуска
+
+**смотреть**
+
+- [AI-сетап с @og_mishgun: какие инструменты реально используем](https://www.youtube.com/watch?v=yJuzI2u-AnM)
+- [AI-агенты ведут проект, пока я в отпуске: Claude Code, Paperclip, GStack](https://youtu.be/E3P0a03mN8A)
+- [Self-hosted AI с @technotears: приватность, локальные модели и Doom голосом](https://www.youtube.com/watch?v=Fxw6IQuL36o)
+
+Если нужен самый короткий маршрут, я бы шел так:
+[Claude Code](/claude-code-nastrojka-mcp-hooks-skills-2026/) → рабочий флоу → [промпты для докрутки проекта](/blog/improve-codebase-architecture-prompt/) → [видос с реальным сетапом](https://youtu.be/E3P0a03mN8A).
+
+О чем еще написать? Где больше всего непонятно: с чего начать, как промптить, как сетапить, как не утонуть в инструментах или как применять это в работе?
+
+## Как читать эту карту
+
+Если вы только заходите в тему AI-агентов, не начинайте с выбора “лучшей модели”. Это почти всегда тупик. Инструменты меняются быстрее, чем вы успеваете привыкнуть к хоткеям, а рабочий флоу остается примерно тем же:
+
+1. Сформулировать задачу как маленький проект, без попытки упаковать всё в один промпт.
+2. Дать агенту контекст: код, заметки, ограничения, стиль, ссылки, критерии готовности.
+3. Попросить план до кода.
+4. Разбить работу на короткие итерации.
+5. После первой версии прогнать ревью, тесты и отдельный “а что я не вижу?” раунд.
+
+Поэтому короткий маршрут из поста лучше читать как последовательность навыков. Сначала понять, как выглядит нормальная работа с Claude Code/Codex. Потом взять промпты и skills для докрутки проекта. Потом посмотреть видео с живым сетапом.
+
+## Что добавилось из обсуждений
+
+Самый частый полезный паттерн из обсуждений: “я вроде поставил агента, но не понимаю, что ему давать и как понять, что он сделал хорошо”. Обычно дело упирается в контекст, ожидания и ревью. Интерфейсная кнопка редко решает это сама.
+
+В чате также всплывает сильный practical angle: многие уже используют Claude Code, Codex, Cursor и локальные заметки, но знания остаются на уровне личных привычек. Один человек нашел удачную команду, второй собрал skill, третий понял, как экономить контекст, но все это быстро тонет в ленте. Поэтому сайт должен превращать такие находки в долговечные страницы и связывать их внутренними ссылками.
+
+Для этой страницы роль такая: входная развилка. Если человеку нужен setup, он идет в материалы про Claude Code. Если нужен выбор инструмента, идет в сравнение [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/). Если хочется улучшить уже собранный проект, идет в пост про [improve-codebase-architecture](/blog/improve-codebase-architecture-prompt/).
+
+## Какие вопросы закрывает эта карта
+
+Широкий запрос `ai агенты` сам по себе слишком общий. Нормальный вход в тему должен закрывать практические next-step вопросы без попытки победить Википедию.
+
+| Интент | Что должна дать страница |
+| --- | --- |
+| “AI-агенты с чего начать” | Маршрут чтения и первый рабочий флоу |
+| “Claude Code или Codex” | Честное сравнение на базе опыта, без README-таблицы |
+| “Claude Code skills” | Примеры skills и зачем они нужны |
+| “AI coding agent workflow” | Как вести задачу: спека, plan mode, отдельный чат, ревью |
+
+## Читать ещё
+
+- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
+- [Что попросить AI-агента сделать, когда задачи закончились](/blog/improve-codebase-architecture-prompt/)
+- [Второй мозг: Obsidian и Claude Code](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
+- [Промпты, которые улучшили опыт работы с AI-агентами](/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/)
+- [AI-инструменты для дизайнеров: design engineering и агенты](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+
+---
+
+## Source: /blog-improve-codebase-architecture-prompt.md
+
+# Что попросить AI-агента сделать, когда задачи закончились: improve-codebase-architecture и рефакторинг без магии
+
+Есть момент, который узнают все, кто активно вайбкодит: проект вроде работает, очевидные таски закрыты, но хочется сказать агенту “сделай лучше”. Обычно это плохой промпт. Агент начнет полировать не то, трогать случайные файлы и делать косметический refactor без понимания архитектуры.
+
+Более рабочий вариант: дать агенту конкретную роль и skill, который заставляет его ревьюить кодовую базу по архитектурным принципам, искать реальные deepening opportunities и объяснять tradeoffs.
+
+## Когда хочется сказать “сделай лучше”
+
+Опытные вайбкодеры поймут.
+
+У вас проект. Вроде как все желанные таски сделали.
+
+Иногда хочется закинуть туда промпт а-ля
+
+Почисти код там туда-сюда. Улучши что-нибудь. Сделай то, что я подсознательно хочу, но явно не говорю. Make no mistakes
+
+Недавно в приватке нашли такой промпт: ревьюит, что напрогано, и предлагает рефакторинг архитектуры по учебникам уважаемых дядек. Я кидаю ссылку, говорю “изучи и предложи улучшения”. Отрабатывает годно.
+
+https://github.com/mattpocock/skills/tree/main/skills/engineering/improve-codebase-architecture
+
+А у вас есть такие промты формата “сделай лучше”?
+
+## Почему “сделай лучше” плохо работает
+
+Потому что “сделай лучше” звучит как настроение без задачи. Человек примерно понимает, что в проекте накопилась грязь, но не формулирует, где именно:
+
+- структура файлов;
+- дублирование;
+- плохие boundaries;
+- слабая типизация;
+- мертвый код;
+- слишком умные компоненты;
+- отсутствие тестов вокруг рискованных мест;
+- UI, который выглядит собранным из случайных кусков.
+
+AI-агент без рамки обычно выбирает самое доступное: переименовать переменные, вынести функции, добавить пару комментариев. Иногда это полезно. Часто это просто шум в diff.
+
+## Более сильный промпт
+
+Можно дать агенту такую задачу:
+
+```text
+Изучи этот репозиторий как инженер, который отвечает за долгую жизнь продукта.
+
+Не начинай с правок. Сначала найди 5-10 архитектурных deepening opportunities:
+- где модель данных или границы модулей уже начинают мешать;
+- где есть дублирование, которое реально повышает стоимость изменений;
+- где UI/доменные сущности перемешаны;
+- где тесты не покрывают опасные переходы;
+- где текущая структура мешает будущим content workflows.
+
+Для каждого пункта дай:
+1. почему это проблема;
+2. какой blast radius;
+3. что поменять минимально;
+4. какие тесты/проверки нужны;
+5. что лучше не трогать сейчас.
+
+После этого предложи один самый безопасный первый шаг.
+```
+
+Такой промпт не заменяет хороший skill, но уже меняет режим: агент перестает “полировать” и начинает объяснять технические ставки.
+
+## Что добавилось из обсуждений
+
+В чате похожий запрос повторяется в разных формах: “что дать агенту, когда он уже сделал очевидное?”. Самый полезный ответ: дать агенту задачу на понимание системы. Очередная просьба написать больше кода обычно не помогает.
+
+Для этого хорошо работают:
+
+- архитектурный review;
+- security review;
+- dead code review;
+- UI/design review;
+- crawlability review;
+- “что я не заметил?” review;
+- сравнение текущего решения с domain model из docs.
+
+Для `okhlopkov.com` этот подход особенно важен. Если агент просто начнет генерировать много страниц, сайт быстро станет мусоркой. Поэтому перед масштабированием нужны ревью-циклы: где `blog`, где `articles`, где canonical URL, где internal links, где sitemap, где noindex.
+
+## Как применять без вреда
+
+1. Запускайте такой review в отдельной сессии, чтобы агент не был заложником контекста предыдущих правок.
+2. Просите сначала список предложений до diff.
+3. Отбирайте один маленький change.
+4. После правки прогоняйте тесты и смотрите diff глазами.
+5. Не принимайте “большой cleanup” без понятной причины.
+
+## Читать ещё
+
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code + Codex: двойное ревью AI-агентов](/claude-codex-dual-review/)
+- [Мой сетап Claude Code после 4 месяцев ежедневной работы](/claude-code-nastrojka-mcp-hooks-skills-2026/)
+
+
+---
+
+## Source: /topic-ai-agents.md
+
+# AI-агенты — Даниил Охлопков
+
+Практические материалы про агентные флоу, Claude Code, Codex, skills, ревью и рабочий контекст.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-claude-code.md
+
+# Claude Code — Даниил Охлопков
+
+Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-codex.md
+
+# Codex — Даниил Охлопков
+
+Переходы между Codex и Claude Code, review loops, desktop app и context hygiene.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-mcp.md
+
+# MCP — Даниил Охлопков
+
+MCP-серверы, agent-browser, Telegram/Coolify интеграции и практическое расширение агентных инструментов.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-gstack.md
+
+# GStack — Даниил Охлопков
+
+GStack, office-hours, goal loops и HTML-progress как рабочий цикл для AI-агента.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-gbrain.md
+
+# GBrain — Даниил Охлопков
+
+GBrain/OpenBrain, retrieval layer, shared context and memory for agents.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-ai-coding.md
+
+# AI coding — Даниил Охлопков
+
+Практика coding agents: specs, plan mode, review, context hygiene и переносимость флоу.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-ai-transformation.md
+
+# AI-трансформация — Даниил Охлопков
+
+Как компании превращают AI-доступы, skills и общий контекст в рабочую систему.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-refactoring.md
+
+# Рефакторинг — Даниил Охлопков
+
+Архитектурные ревью, improve-codebase-architecture и аккуратная докрутка вайбкода.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-ai-tools.md
+
+# AI-инструменты — Даниил Охлопков
+
+Инструменты для агентного рабочего флоу: что пробовать, что выкидывать, где реальная польза.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-design-engineering.md
+
+# Design engineering — Даниил Охлопков
+
+AI-assisted frontend, Figma-to-code, design tokens, taste и борьба с AI-slop.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-html.md
+
+# HTML — Даниил Охлопков
+
+HTML как формат для AI-agent артефактов, статей, компонентов и LLM-readable страниц.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-second-brain.md
+
+# Second Brain — Даниил Охлопков
+
+Obsidian, markdown vaults, wiki-ссылки, raw notes и персональный рабочий контекст для агентов.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-web-scraping.md
+
+# Web scraping — Даниил Охлопков
+
+Browser automation, agent-browser и новые способы доставать данные из сайтов.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-frameworks.md
+
+# Фреймворки для агентов — Даниил Охлопков
+
+Beads, Gastown, first-party tools and the cost of adopting someone else’s agent framework.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-workflow.md
+
+# Workflow — Даниил Охлопков
+
+Agent workflows: setup, context, review loops, progress artifacts and daily usage.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-community.md
+
+# Community — Даниил Охлопков
+
+Telegram-чаты, обсуждения, community insights and the feedback loop around AI-agent content.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-openclaw.md
+
+# OpenClaw — Даниил Охлопков
+
+Заготовка под OpenClaw hub: practical setup, Codex/Hermes сравнения и skills flow.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-ton-data.md
+
+# TON-данные — Даниил Охлопков
+
+On-chain analytics, TON research, Dune, EVAA, USDT и AI-ассистенты для анализа данных.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+
+
+
+---
+
+## Source: /topic-telegram-automation.md
+
+# Telegram-автоматизация — Даниил Охлопков
+
+Telegram bots, Mini Apps, voice workflows, AI-агенты в чатах и автоматизация через Telegram.
+
+## Материалы
+
+- [Блог](/blog/) — записи и рабочие заметки.
+- [Статьи](/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+
+## Смежные темы
+
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+

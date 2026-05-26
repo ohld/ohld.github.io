@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deploy database to production with official Dokku plugins</title>
+    <meta name="description" content="Self-hosted prod deployment with 3 lines of code: Postgres, MySQL, Mongo, Redis, MariaDB, Elastic, Clickhouse, RabbitMQ, Rethink, CouchDB and more" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/one-click-deploy-to-production-this-databases-with-dokku/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/one-click-deploy-to-production-this-databases-with-dokku/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/one-click-deploy-to-production-this-databases-with-dokku/" />
+    <link rel="alternate" type="text/markdown" href="/article-one-click-deploy-to-production-this-databases-with-dokku.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Deploy database to production with official Dokku plugins" />
+    <meta property="og:description" content="Self-hosted prod deployment with 3 lines of code: Postgres, MySQL, Mongo, Redis, MariaDB, Elastic, Clickhouse, RabbitMQ, Rethink, CouchDB and more" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/one-click-deploy-to-production-this-databases-with-dokku/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/11/Screenshot-2021-11-03-at-12.47.14.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Deploy database to production with official Dokku plugins" />
+    <meta name="twitter:description" content="Self-hosted prod deployment with 3 lines of code: Postgres, MySQL, Mongo, Redis, MariaDB, Elastic, Clickhouse, RabbitMQ, Rethink, CouchDB and more" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/11/Screenshot-2021-11-03-at-12.47.14.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/one-click-deploy-to-production-this-databases-with-dokku/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/one-click-deploy-to-production-this-databases-with-dokku/#article-content",
+  "headline": "Deploy database to production with official Dokku plugins",
+  "description": "Self-hosted prod deployment with 3 lines of code: Postgres, MySQL, Mongo, Redis, MariaDB, Elastic, Clickhouse, RabbitMQ, Rethink, CouchDB and more",
+  "datePublished": "2021-11-03",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/11/Screenshot-2021-11-03-at-12.47.14.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/one-click-deploy-to-production-this-databases-with-dokku/"
+  },
+  "url": "https://okhlopkov.com/one-click-deploy-to-production-this-databases-with-dokku/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "I'll give a list of databases that already has Dokku integrations (plugins or addons). It means that you can easily attach them to your Dokku apps and run everything in production using literally 3 bash commands. What is Dokku TL;DR: Dokku is a self-hosted Heroku alternative. Many of devs really like Heroku which automatically deploys the code from Github repo so you don't have to spend time on DevOps stuff. But when your project grows Heroku becomes very-very expensive. Moreover, you have to pay separately for a service and for attached databases. So here comes Dokku - open-source Heroku clone. It has the same things you liked Heroku for except for GUI (yes, Dokku has a CLI only but there are a plenty free open-source web interfaces on Github). You can easily install Dokku to any machine, e.g. I use Digital Ocean droplets . What about database add-ons on Heroku There are two ways to run any service on Heroku (e.g. Mongo, Postgres, MySQL): using official add-ons or run them on a Dyno. First way is more production-friendly, but in this case you would be charged a lot to have something more than a free tier. The second way is a real DevOps challenge. Hopefully, there are a bunch of Heroku buildpacks out there but there (e.g. for CouchDB ). But again: Heroku free tiers are pretty limited so you would need to pay a lot real soon. So that's why I prefer to rent a Droplet on DigitalOcean , install Dokku and then run anything I want. If I need to scale things up, I just enlarge a droplet using DigitalOcean's website. How to attach database to Dokku app Let's assume that you have a Django app and you need to create &amp; attach Postgres database to your Dokku app (you don't want to run Sqlite3 in production). First of all, you need to install the integration you need (if now installed yet): go to the official integration Github repo and copy-paste the installation script: sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres Then you need to create the database. dokku postgres:create my_sexy_database And then link it to your Dokku app: dokku postgres:link my_sexy_database my_sexy_dokku_app In result, your Dokku app will receive a new DATABASE_URL environment variable with a connection string (with host, port, login, password and database name). dj_database_url DATABASES = { 'default': dj_database_url.config(conn_max_age=600), } Databases with 1-click Dokku add-ons Here is a list of official Dokku plugins to 11 databases. It means that you can install any of there databases with only 3 lines of code (like I showed above for Postgres). PostgreSQL postgresql.org Github Dokku plugin The World's Most Advanced Open Source Relational Database. PostgreSQL features transactions with Atomicity, Consistency, Isolation, Durability (ACID) properties, automatically updatable views, materialized views, triggers, foreign keys, and stored procedures. It is designed to handle a range of workloads, from single machines to data warehouses or Web services with many concurrent users. MySQL mysql.com Github Dokku plugin MySQL is conceivably the most popular and recognizable RDBMS worldwide. Such giants as Facebook, YouTube, Uber, Google, and countless other corporations prefer MySQL for their data storing and management. And they have all the reasons to stick to this RDBMS. MongoDB mongodb.com Github Dokku plugin MongoDB is a document-oriented NoSQL database used for high volume data storage. Instead of using tables and rows as in the traditional relational databases, MongoDB makes use of collections and documents. Documents consist of key-value pairs which are the basic unit of data in MongoDB. Collections contain sets of documents and function which is the equivalent of relational database tables. MongoDB is a database which came into light around the mid-2000s. Redis redis.io Github Dokku plugin Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker. Redis provides data structures such as strings, hashes, lists, sets, sorted sets with range queries, bitmaps, hyperloglogs, geospatial indexes, and streams. Redis has built-in replication, Lua scripting, LRU eviction, transactions, and different levels of on-disk persistence, and provides high availability via Redis Sentinel and automatic partitioning with Redis Cluster. Memcached memcached.org Github Dokku plugin Memcached is a high-performance free, open-source cache framework for distributed objects. It is used for accelerating dynamic web applications by loading the database. The websites have huge information they use the Example: Twitter, Youtube, and Wiki, etc. One of the key things you can do to speed up the website properties’ delivery is to have the correct cache arrangements in place. MariaDB mariadb.org Github Dokku plugin The open source relational database. Started by core members of the original MySQL team, MariaDB actively works with outside developers to deliver the most featureful, stable, and sanely licensed open SQL server in the industry. Elasticsearch elastic.co/elasticsearch Github Dokku plugin Elasticsearch is a highly scalable open-source full-text search and analytics engine. It allows you to store, search, and analyze big volumes of data quickly and in near real time. It is generally used as the underlying engine/technology that powers applications that have complex search features and requirements. Elasticsearch provides a distributed system on top of Lucene StandardAnalyzer for indexing and automatic type guessing and utilizes a JSON based REST API to refer to Lucene features. ClickHouse clickhouse.com Github Dokku plugin ClickHouse® is a real column-oriented DBMS with no extra data stored with the values. Among other things, this means that constant-length values must be supported, to avoid storing their length “number” next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any “garbage”) even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data. RethinkDB rethinkdb.com , Github 25.1k ⭐️, Dokku plugin RethinkDB is an open-source database that, unlike traditional database systems, stores the information in JSON (JavaScript Object Notation) format. Because of this, it's considered a NoSQL (Not Only SQL) database, such as MongoDB, Cassandra, and CouchDB. RabbitMQ rabbitmq.com Github ⭐️ Dokku plugin Most widely deployed open source message broker. RabbitMQ is an open-source message-broker software that originally implemented the Advanced Message Queuing Protocol (AMQP) and has since been extended with a plug-in architecture to support Streaming Text Oriented Messaging Protocol (STOMP), MQ Telemetry Transport (MQTT), and other protocols. CouchDB couchdb.apache.org , Github ⭐️ Dokku plugin Seamless multi-master syncing database with an intuitive HTTP/JSON API, designed for reliability. CouchDB supports both horizontal partitioning and replication to create an easily managed solution for balancing both read and write loads during a database deployment. CouchDB features a very durable and reliable storage engine that was built from the ground up for multicloud and multi-database infrastructures. More databases in Dokku You can find unofficial plugins on Github - there are a lot of them because people love Dokku! * - this repo is a Github mirror. That is why there are so few stars. For all data lovers I've created a spreadsheet with all mentioned databases! Thanks for reading! Feel free to ask me any question on Twitter twitter.com/danokhlopkov",
+  "articleBody": "I'll give a list of databases that already has Dokku integrations (plugins or addons). It means that you can easily attach them to your Dokku apps and run everything in production using literally 3 bash commands. What is Dokku TL;DR: Dokku is a self-hosted Heroku alternative. Many of devs really like Heroku which automatically deploys the code from Github repo so you don't have to spend time on DevOps stuff. But when your project grows Heroku becomes very-very expensive. Moreover, you have to pay separately for a service and for attached databases. So here comes Dokku - open-source Heroku clone. It has the same things you liked Heroku for except for GUI (yes, Dokku has a CLI only but there are a plenty free open-source web interfaces on Github). You can easily install Dokku to any machine, e.g. I use Digital Ocean droplets . What about database add-ons on Heroku There are two ways to run any service on Heroku (e.g. Mongo, Postgres, MySQL): using official add-ons or run them on a Dyno. First way is more production-friendly, but in this case you would be charged a lot to have something more than a free tier. The second way is a real DevOps challenge. Hopefully, there are a bunch of Heroku buildpacks out there but there (e.g. for CouchDB ). But again: Heroku free tiers are pretty limited so you would need to pay a lot real soon. So that's why I prefer to rent a Droplet on DigitalOcean , install Dokku and then run anything I want. If I need to scale things up, I just enlarge a droplet using DigitalOcean's website. How to attach database to Dokku app Let's assume that you have a Django app and you need to create &amp; attach Postgres database to your Dokku app (you don't want to run Sqlite3 in production). First of all, you need to install the integration you need (if now installed yet): go to the official integration Github repo and copy-paste the installation script: sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres Then you need to create the database. dokku postgres:create my_sexy_database And then link it to your Dokku app: dokku postgres:link my_sexy_database my_sexy_dokku_app In result, your Dokku app will receive a new DATABASE_URL environment variable with a connection string (with host, port, login, password and database name). dj_database_url DATABASES = { 'default': dj_database_url.config(conn_max_age=600), } Databases with 1-click Dokku add-ons Here is a list of official Dokku plugins to 11 databases. It means that you can install any of there databases with only 3 lines of code (like I showed above for Postgres). PostgreSQL postgresql.org Github Dokku plugin The World's Most Advanced Open Source Relational Database. PostgreSQL features transactions with Atomicity, Consistency, Isolation, Durability (ACID) properties, automatically updatable views, materialized views, triggers, foreign keys, and stored procedures. It is designed to handle a range of workloads, from single machines to data warehouses or Web services with many concurrent users. MySQL mysql.com Github Dokku plugin MySQL is conceivably the most popular and recognizable RDBMS worldwide. Such giants as Facebook, YouTube, Uber, Google, and countless other corporations prefer MySQL for their data storing and management. And they have all the reasons to stick to this RDBMS. MongoDB mongodb.com Github Dokku plugin MongoDB is a document-oriented NoSQL database used for high volume data storage. Instead of using tables and rows as in the traditional relational databases, MongoDB makes use of collections and documents. Documents consist of key-value pairs which are the basic unit of data in MongoDB. Collections contain sets of documents and function which is the equivalent of relational database tables. MongoDB is a database which came into light around the mid-2000s. Redis redis.io Github Dokku plugin Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker. Redis provides data structures such as strings, hashes, lists, sets, sorted sets with range queries, bitmaps, hyperloglogs, geospatial indexes, and streams. Redis has built-in replication, Lua scripting, LRU eviction, transactions, and different levels of on-disk persistence, and provides high availability via Redis Sentinel and automatic partitioning with Redis Cluster. Memcached memcached.org Github Dokku plugin Memcached is a high-performance free, open-source cache framework for distributed objects. It is used for accelerating dynamic web applications by loading the database. The websites have huge information they use the Example: Twitter, Youtube, and Wiki, etc. One of the key things you can do to speed up the website properties’ delivery is to have the correct cache arrangements in place. MariaDB mariadb.org Github Dokku plugin The open source relational database. Started by core members of the original MySQL team, MariaDB actively works with outside developers to deliver the most featureful, stable, and sanely licensed open SQL server in the industry. Elasticsearch elastic.co/elasticsearch Github Dokku plugin Elasticsearch is a highly scalable open-source full-text search and analytics engine. It allows you to store, search, and analyze big volumes of data quickly and in near real time. It is generally used as the underlying engine/technology that powers applications that have complex search features and requirements. Elasticsearch provides a distributed system on top of Lucene StandardAnalyzer for indexing and automatic type guessing and utilizes a JSON based REST API to refer to Lucene features. ClickHouse clickhouse.com Github Dokku plugin ClickHouse® is a real column-oriented DBMS with no extra data stored with the values. Among other things, this means that constant-length values must be supported, to avoid storing their length “number” next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any “garbage”) even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data. RethinkDB rethinkdb.com , Github 25.1k ⭐️, Dokku plugin RethinkDB is an open-source database that, unlike traditional database systems, stores the information in JSON (JavaScript Object Notation) format. Because of this, it's considered a NoSQL (Not Only SQL) database, such as MongoDB, Cassandra, and CouchDB. RabbitMQ rabbitmq.com Github ⭐️ Dokku plugin Most widely deployed open source message broker. RabbitMQ is an open-source message-broker software that originally implemented the Advanced Message Queuing Protocol (AMQP) and has since been extended with a plug-in architecture to support Streaming Text Oriented Messaging Protocol (STOMP), MQ Telemetry Transport (MQTT), and other protocols. CouchDB couchdb.apache.org , Github ⭐️ Dokku plugin Seamless multi-master syncing database with an intuitive HTTP/JSON API, designed for reliability. CouchDB supports both horizontal partitioning and replication to create an easily managed solution for balancing both read and write loads during a database deployment. CouchDB features a very durable and reliable storage engine that was built from the ground up for multicloud and multi-database infrastructures. More databases in Dokku You can find unofficial plugins on Github - there are a lot of them because people love Dokku! * - this repo is a Github mirror. That is why there are so few stars. For all data lovers I've created a spreadsheet with all mentioned databases! Thanks for reading! Feel free to ask me any question on Twitter twitter.com/danokhlopkov"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Deploy database to production with official Dokku plugins",
+      "item": "https://okhlopkov.com/one-click-deploy-to-production-this-databases-with-dokku/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2021-11-03T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Deploy database to production with official Dokku plugins</h1>
+      <p>Self-hosted prod deployment with 3 lines of code: Postgres, MySQL, Mongo, Redis, MariaDB, Elastic, Clickhouse, RabbitMQ, Rethink, CouchDB and more</p>
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/11/Screenshot-2021-11-03-at-12.47.14.png" alt="Deploy database to production with official Dokku plugins" /></figure>
+    <section><p>I'll give a list of databases that already has Dokku integrations (plugins or addons). It means that you can easily attach them to your Dokku apps and run everything in production using literally 3 bash commands.</p><h1 id="what-is-dokku">What is Dokku</h1><blockquote>TL;DR: Dokku is a self-hosted Heroku alternative.</blockquote><p>Many of devs really like Heroku which automatically deploys the code from Github repo so you don't have to spend time on DevOps stuff. But when your project grows Heroku becomes very-very expensive. Moreover, you have to pay separately for a service and for attached databases.</p><p>So here comes Dokku - open-source Heroku clone. It has the same things you liked Heroku for except for GUI (yes, Dokku has a CLI only but there are a plenty free <a href="https://github.com/ledokku/ledokku?ref=okhlopkov.com">open-source web interfaces</a> on Github). You can easily <a href="https://dokku.com/docs/getting-started/installation/?ref=okhlopkov.com">install Dokku</a> to any machine, e.g. I use <a href="https://m.do.co/c/260555f64021?ref=okhlopkov.com">Digital Ocean droplets</a>.</p><h2 id="what-about-database-add-ons-on-heroku">What about database add-ons on Heroku</h2><p>There are two ways to run any service on Heroku (e.g. Mongo, Postgres, MySQL): using official add-ons or run them on a Dyno. First way is more production-friendly, but in this case you would be charged a lot to have something more than a free tier.</p><p>The second way is a real DevOps challenge. Hopefully, there are a bunch of Heroku buildpacks out there but there (e.g. for <a href="https://elements.heroku.com/buildpacks/creativegeekjp/heroku-buildpack-couchdb?ref=okhlopkov.com">CouchDB</a>). But again: Heroku free tiers are pretty limited so you would need to pay a lot real soon.</p><p>So that's why I prefer to rent a Droplet on <a href="https://m.do.co/c/260555f64021?ref=okhlopkov.com">DigitalOcean</a>, install Dokku and then run anything I want. If I need to scale things up, I just enlarge a droplet using DigitalOcean's website.</p><h1 id="how-to-attach-database-to-dokku-app">How to attach database to Dokku app</h1><p>Let's assume that you have a Django app and you need to create &amp; attach <strong>Postgres</strong> database to your Dokku app (you don't want to run Sqlite3 in production).</p><p>First of all, you need to install the integration you need (if now installed yet): go to the <a href="https://github.com/dokku/dokku-postgres?ref=okhlopkov.com">official integration Github repo</a> and copy-paste the installation script:</p><pre><code class="language-bash">sudo dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres</code></pre><p>Then you need to create the database.</p><pre><code class="language-bash">dokku postgres:create my_sexy_database</code></pre><p>And then link it to your Dokku app:</p><pre><code class="language-bash">dokku postgres:link my_sexy_database my_sexy_dokku_app
+</code></pre><p>In result, your Dokku app will receive a new <code>DATABASE_URL</code> environment variable with a connection string (with host, port, login, password and database name).</p><blockquote><a href="https://github.com/jacobian/dj-database-url?ref=okhlopkov.com">dj_database_url</a></blockquote><pre><code class="language-python">DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600),
+}</code></pre><h1 id="databases-with-1-click-dokku-add-ons">Databases with 1-click Dokku add-ons</h1><p>Here is a list of official Dokku plugins to 11 databases. It means that you can install any of there databases with only 3 lines of code (like I showed above for Postgres).</p><h2 id="postgresql">PostgreSQL</h2><blockquote><a href="https://postgresql.org/?ref=okhlopkov.com">postgresql.org</a><a href="https://github.com/postgres/postgres?ref=okhlopkov.com">Github</a><a href="https://github.com/dokku/dokku-postgres?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>The World's Most Advanced Open Source Relational Database. PostgreSQL features transactions with Atomicity, Consistency, Isolation, Durability (ACID) properties, automatically updatable views, materialized views, triggers, foreign keys, and stored procedures. It is designed to handle a range of workloads, from single machines to data warehouses or Web services with many concurrent users.</p><h2 id="mysql">MySQL</h2><blockquote><a href="https://mysql.com/?ref=okhlopkov.com">mysql.com</a><a href="https://github.com/mysql/mysql-server?ref=okhlopkov.com">Github</a><a href="https://github.com/dokku/dokku-mysql?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>MySQL is conceivably the most popular and recognizable RDBMS worldwide. Such giants as Facebook, YouTube, Uber, Google, and countless other corporations prefer MySQL for their data storing and management. And they have all the reasons to stick to this RDBMS.</p><h2 id="mongodb">MongoDB</h2><blockquote><a href="https://mongodb.com/?ref=okhlopkov.com">mongodb.com</a><a href="https://github.com/mongodb/mongo?ref=okhlopkov.com">Github</a><a href="https://github.com/dokku/dokku-mongo?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>MongoDB is a document-oriented NoSQL database used for high volume data storage. Instead of using tables and rows as in the traditional relational databases, MongoDB makes use of collections and documents. Documents consist of key-value pairs which are the basic unit of data in MongoDB. Collections contain sets of documents and function which is the equivalent of relational database tables. MongoDB is a database which came into light around the mid-2000s.</p><h2 id="redis">Redis</h2><blockquote><a href="https://redis.io/?ref=okhlopkov.com">redis.io</a><a href="https://github.com/redis/redis?ref=okhlopkov.com">Github</a><a href="https://github.com/dokku/dokku-redis?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache, and message broker. Redis provides data structures such as strings, hashes, lists, sets, sorted sets with range queries, bitmaps, hyperloglogs, geospatial indexes, and streams. Redis has built-in replication, Lua scripting, LRU eviction, transactions, and different levels of on-disk persistence, and provides high availability via Redis Sentinel and automatic partitioning with Redis Cluster.</p><h2 id="memcached">Memcached</h2><blockquote><a href="https://memcached.org/?ref=okhlopkov.com">memcached.org</a><a href="https://github.com/memcached/memcached?ref=okhlopkov.com">Github</a><a href="https://github.com/dokku/dokku-memcached?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>Memcached is a high-performance free, open-source cache framework for distributed objects. It is used for accelerating dynamic web applications by loading the database. The websites have huge information they use the Example: Twitter, Youtube, and Wiki, etc. One of the key things you can do to speed up the website properties’ delivery is to have the correct cache arrangements in place.</p><h2 id="mariadb">MariaDB</h2><blockquote><a href="https://mariadb.org/?ref=okhlopkov.com">mariadb.org</a><a href="https://github.com/MariaDB/server?ref=okhlopkov.com">Github</a><a href="https://github.com/dokku/dokku-mariadb?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>The open source relational database. Started by core members of the original MySQL team, MariaDB actively works with outside developers to deliver the most featureful, stable, and sanely licensed open SQL server in the industry.</p><h2 id="elasticsearch">Elasticsearch</h2><blockquote><a href="https://elastic.co/elasticsearch?ref=okhlopkov.com">elastic.co/elasticsearch</a><a href="https://github.com/elastic/elasticsearch?ref=okhlopkov.com">Github</a><a href="https://github.com/dokku/dokku-elasticsearch?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>Elasticsearch is a highly scalable open-source full-text search and analytics engine. It allows you to store, search, and analyze big volumes of data quickly and in near real time. It is generally used as the underlying engine/technology that powers applications that have complex search features and requirements. Elasticsearch provides a distributed system on top of Lucene StandardAnalyzer for indexing and automatic type guessing and utilizes a JSON based REST API to refer to Lucene features.</p><h2 id="clickhouse">ClickHouse</h2><blockquote><a href="https://clickhouse.com/?ref=okhlopkov.com">clickhouse.com</a><a href="https://github.com/ClickHouse/ClickHouse?ref=okhlopkov.com">Github</a><a href="https://github.com/dokku/dokku-clickhouse?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>ClickHouse® is a real column-oriented DBMS with no extra data stored with the values. Among other things, this means that constant-length values must be supported, to avoid storing their length “number” next to the values. For example, a billion UInt8-type values should consume around 1 GB uncompressed, or this strongly affects the CPU use. It is essential to store data compactly (without any “garbage”) even when uncompressed since the speed of decompression (CPU usage) depends mainly on the volume of uncompressed data.</p><h2 id="rethinkdb">RethinkDB</h2><blockquote><em><a href="https://rethinkdb.com/?ref=okhlopkov.com">rethinkdb.com</a>, <a href="https://github.com/rethinkdb/rethinkdb?ref=okhlopkov.com">Github</a> 25.1k ⭐️,  </em><a href="https://github.com/dokku/dokku-rethinkdb?ref=okhlopkov.com"><em>Dokku </em>plugin</a></blockquote><p>RethinkDB is an open-source database that, unlike traditional database systems, stores the information in JSON (JavaScript Object Notation) format. Because of this, it's considered a NoSQL (Not Only SQL) database, such as MongoDB, Cassandra, and CouchDB.</p><h2 id="rabbitmq">RabbitMQ</h2><blockquote><a href="https://rabbitmq.com/?ref=okhlopkov.com">rabbitmq.com</a><a href="https://github.com/rabbitmq?ref=okhlopkov.com">Github</a><em>⭐️</em><a href="https://github.com/dokku/dokku-rabbitmq?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>Most widely deployed open source message broker. RabbitMQ is an open-source message-broker software that originally implemented the Advanced Message Queuing Protocol (AMQP) and has since been extended with a plug-in architecture to support Streaming Text Oriented Messaging Protocol (STOMP), MQ Telemetry Transport (MQTT), and other protocols.</p><h2 id="couchdb">CouchDB</h2><blockquote><a href="https://couchdb.apache.org/?ref=okhlopkov.com">couchdb.apache.org</a><a href="https://rabbitmq.com/?ref=okhlopkov.com">,</a><a href="https://github.com/apache/couchdb?ref=okhlopkov.com">Github</a><em>⭐️</em><a href="https://github.com/dokku/dokku-couchdb?ref=okhlopkov.com">Dokku plugin</a></blockquote><p>Seamless multi-master syncing database with an intuitive HTTP/JSON API, designed for reliability. CouchDB supports both horizontal partitioning and replication to create an easily managed solution for balancing both read and write loads during a database deployment. CouchDB features a very durable and reliable storage engine that was built from the ground up for multicloud and multi-database infrastructures.</p><h2 id="more-databases-in-dokku">More databases in Dokku</h2><p>You can find <a href="https://github.com/search?q=dokku+plugin&ref=okhlopkov.com">unofficial plugins</a> on Github - there are a lot of them because people love Dokku!</p><p><em>* - this repo is a Github mirror. That is why there are so few stars.</em></p><p>For all data lovers I've created a <a href="https://docs.google.com/spreadsheets/d/1_dVANE0-RQUJHoe_LF4aXH2-UuqtXHpV53Yk6Nwgrqc/edit?usp=sharing&ref=okhlopkov.com">spreadsheet</a> with all mentioned databases!</p><hr><p>Thanks for reading! Feel free to ask me any question on Twitter <a href="https://twitter.com/danokhlopkov?ref=okhlopkov.com">twitter.com/danokhlopkov</a></p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

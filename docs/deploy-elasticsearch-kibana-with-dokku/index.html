@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deploy Elasticsearch &amp; Kibana with Dokku</title>
+    <meta name="description" content="" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/deploy-elasticsearch-kibana-with-dokku/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/deploy-elasticsearch-kibana-with-dokku/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/deploy-elasticsearch-kibana-with-dokku/" />
+    <link rel="alternate" type="text/markdown" href="/article-deploy-elasticsearch-kibana-with-dokku.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Deploy Elasticsearch &amp; Kibana with Dokku" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/deploy-elasticsearch-kibana-with-dokku/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Deploy Elasticsearch &amp; Kibana with Dokku" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/deploy-elasticsearch-kibana-with-dokku/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/deploy-elasticsearch-kibana-with-dokku/#article-content",
+  "headline": "Deploy Elasticsearch & Kibana with Dokku",
+  "datePublished": "2021-12-20",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/deploy-elasticsearch-kibana-with-dokku/"
+  },
+  "url": "https://okhlopkov.com/deploy-elasticsearch-kibana-with-dokku/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "I really love to use Dokku as it drastically simplifies the deployment of my nodejs and python apps. I also try to deploy other popular open-source apps with it. This is my attempt to deploy ELK stack with Dokku. Enjoy. Install Dokku Install latest Dokku (mid-December 2021): wget https://raw.githubusercontent.com/dokku/dokku/v0.26.6/bootstrap.sh; sudo DOKKU_TAG=v0.26.6 bash bootstrap.sh Finish the installation by providing your public ssh key cat .ssh/id_rsa.pub : # usually your key is already available under the current user's `~/.ssh/authorized_keys` file cat ~/.ssh/authorized_keys | dokku ssh-keys:add admin # you can use any domain you already have access to dokku domains:set-global yourdomain.com Install Elasticsearch with Dokku Install the dokku elasticsearch plugin: sudo dokku plugin:install https://github.com/dokku/dokku-elasticsearch.git elasticsearch Find the version that you want to deploy on the official site . I take the latest - 7.16.1 export ELASTICSEARCH_IMAGE_VERSION=\"7.16.1\" Create Elasticsearch: dokku elasticsearch:create elastic If you received an error from dokku - just copy-paste the suggested bash command, run it and try to create Elastic again. You may also want to expose ports of elasticsearch container to make it accessible outside: dokku elasticsearch:expose elastic -----&gt; Service elastic exposed on port(s) [container-&gt;host]: 9200-&gt;27701 9300-&gt;16897 Let's check that everything is installed and run (notice that I used not 9200 port but the exposed one). curl -X GET http://localhost:27701/ { \"name\" : \"dokku.elasticsearch.elastic-1\", \"cluster_name\" : \"dokku.elasticsearch.elastic-cluster\", \"cluster_uuid\" : \"8T5-w6S2345KYUON66J6Q\", \"version\" : { \"number\" : \"7.16.1\", \"build_flavor\" : \"default\", \"build_type\" : \"docker\", \"build_hash\" : \"5b38441b16b14444447c107a4c3865776e20c53\", \"build_date\" : \"2021-12-11T00:29:38.865893768Z\", \"build_snapshot\" : false, \"lucene_version\" : \"8.10.1\", \"minimum_wire_compatibility_version\" : \"6.8.0\", \"minimum_index_compatibility_version\" : \"6.0.0-beta1\" }, \"tagline\" : \"You Know, for Search\" } Install Kibana with Dokku Create Dokku app and add essential environment variables. dokku apps:create kibana dokku elasticsearch:link elastic kibana # take ELASTICSEARCH_URL variable and put it below # for my setup it looks like 'http://dokku-elasticsearch-elastic:9200' dokku config:set kibana ELASTICSEARCH_HOSTS=http://dokku-elasticsearch-elastic:9200 You need to make your Kibana storage persistent (for future config editing and kibana-keystore saving across deployments): dokku storage:ensure-directory kibana # created folder at path '/var/lib/dokku/data/storage/kibana' mkdir /var/lib/dokku/data/storage/kibana/config/ mkdir /var/lib/dokku/data/storage/kibana/data/ dokku storage:mount kibana /var/lib/dokku/data/storage/kibana/config/:/usr/share/kibana/config/ dokku storage:mount kibana /var/lib/dokku/data/storage/kibana/data/:/usr/share/kibana/data/ echo \"server.host: \"0.0.0.0\"\" &gt; /var/lib/dokku/data/storage/kibana/config/kibana.yml echo \"0000-0000-0000-0000\" &gt; /usr/share/kibana/data/uuid sudo chmod a+rwx /root/kibana/ The latest lines create an empty kibana.yml and uuid files - somehow Kibana doesn't automatically create all required files so we have to create them from scratch (our new shiny folders are empty). Now we are ready to deploy an official Kibana docker image: dokku git:from-image kibana docker.elastic.co/kibana/kibana:7.16.1 Additional Setup Let your Kibana have a pretty URL and HTTPS. Proxy its port to 80: dokku proxy:ports-set kibana http:80:5601 Specify a subdomain for Kibana: dokku domains:set kibana kibana.yourdomain.com dokku config:set kibana SERVER_HOST=kibana.yourdomain.com SERVER_PORT=80 If you want to enable HTTPS on your Kibana, use letsencrypt plugin: sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git dokku letsencrypt:enable kibana Now open your browser on kibana.yourdomain.com . It should work 🤗 Enable basic security for Elasticsearch &amp; Kibana Note that by default your Elasticsearch and Kibana are not secured: anyone can access your web address and start to operate with your data. So you need to setup authentication on Elasticsearch and Kibana. dokku elasticsearch:info elastic # find path to config dir cd /var/lib/dokku/services/elasticsearch/elastic/config Enable security in config file ( official docs are large and quite misleading). Just add two lines (you can open a file like this vim elasticsearch.yml : xpack.security.enabled: true xpack.security.transport.ssl.enabled: true Enter the container with Elasticsearch and create passwords for default services: dokku elasticsearch:enter elastic ./bin/elasticsearch-setup-passwords auto Copy-paste them somewhere. Now add creadentials to Kibana: dokku config:set kibana ELASTICSEARCH_USERNAME=\"kibana_system\" Enter Kibana container and add generated password: dokku enter kibana ./bin/kibana-keystore create ./bin/kibana-keystore add elasticsearch.password &lt;copy-paste generate password now&gt; And on that point, I decided to use Elastic.co cloud version because I spent almost 8 hours figuring out how to deploy it. And I failed to secure the elasticsearch &amp; kibana. And I don't know if is it even possible to do without paid license. Sorry, guys.",
+  "articleBody": "I really love to use Dokku as it drastically simplifies the deployment of my nodejs and python apps. I also try to deploy other popular open-source apps with it. This is my attempt to deploy ELK stack with Dokku. Enjoy. Install Dokku Install latest Dokku (mid-December 2021): wget https://raw.githubusercontent.com/dokku/dokku/v0.26.6/bootstrap.sh; sudo DOKKU_TAG=v0.26.6 bash bootstrap.sh Finish the installation by providing your public ssh key cat .ssh/id_rsa.pub : # usually your key is already available under the current user's `~/.ssh/authorized_keys` file cat ~/.ssh/authorized_keys | dokku ssh-keys:add admin # you can use any domain you already have access to dokku domains:set-global yourdomain.com Install Elasticsearch with Dokku Install the dokku elasticsearch plugin: sudo dokku plugin:install https://github.com/dokku/dokku-elasticsearch.git elasticsearch Find the version that you want to deploy on the official site . I take the latest - 7.16.1 export ELASTICSEARCH_IMAGE_VERSION=\"7.16.1\" Create Elasticsearch: dokku elasticsearch:create elastic If you received an error from dokku - just copy-paste the suggested bash command, run it and try to create Elastic again. You may also want to expose ports of elasticsearch container to make it accessible outside: dokku elasticsearch:expose elastic -----&gt; Service elastic exposed on port(s) [container-&gt;host]: 9200-&gt;27701 9300-&gt;16897 Let's check that everything is installed and run (notice that I used not 9200 port but the exposed one). curl -X GET http://localhost:27701/ { \"name\" : \"dokku.elasticsearch.elastic-1\", \"cluster_name\" : \"dokku.elasticsearch.elastic-cluster\", \"cluster_uuid\" : \"8T5-w6S2345KYUON66J6Q\", \"version\" : { \"number\" : \"7.16.1\", \"build_flavor\" : \"default\", \"build_type\" : \"docker\", \"build_hash\" : \"5b38441b16b14444447c107a4c3865776e20c53\", \"build_date\" : \"2021-12-11T00:29:38.865893768Z\", \"build_snapshot\" : false, \"lucene_version\" : \"8.10.1\", \"minimum_wire_compatibility_version\" : \"6.8.0\", \"minimum_index_compatibility_version\" : \"6.0.0-beta1\" }, \"tagline\" : \"You Know, for Search\" } Install Kibana with Dokku Create Dokku app and add essential environment variables. dokku apps:create kibana dokku elasticsearch:link elastic kibana # take ELASTICSEARCH_URL variable and put it below # for my setup it looks like 'http://dokku-elasticsearch-elastic:9200' dokku config:set kibana ELASTICSEARCH_HOSTS=http://dokku-elasticsearch-elastic:9200 You need to make your Kibana storage persistent (for future config editing and kibana-keystore saving across deployments): dokku storage:ensure-directory kibana # created folder at path '/var/lib/dokku/data/storage/kibana' mkdir /var/lib/dokku/data/storage/kibana/config/ mkdir /var/lib/dokku/data/storage/kibana/data/ dokku storage:mount kibana /var/lib/dokku/data/storage/kibana/config/:/usr/share/kibana/config/ dokku storage:mount kibana /var/lib/dokku/data/storage/kibana/data/:/usr/share/kibana/data/ echo \"server.host: \"0.0.0.0\"\" &gt; /var/lib/dokku/data/storage/kibana/config/kibana.yml echo \"0000-0000-0000-0000\" &gt; /usr/share/kibana/data/uuid sudo chmod a+rwx /root/kibana/ The latest lines create an empty kibana.yml and uuid files - somehow Kibana doesn't automatically create all required files so we have to create them from scratch (our new shiny folders are empty). Now we are ready to deploy an official Kibana docker image: dokku git:from-image kibana docker.elastic.co/kibana/kibana:7.16.1 Additional Setup Let your Kibana have a pretty URL and HTTPS. Proxy its port to 80: dokku proxy:ports-set kibana http:80:5601 Specify a subdomain for Kibana: dokku domains:set kibana kibana.yourdomain.com dokku config:set kibana SERVER_HOST=kibana.yourdomain.com SERVER_PORT=80 If you want to enable HTTPS on your Kibana, use letsencrypt plugin: sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git dokku letsencrypt:enable kibana Now open your browser on kibana.yourdomain.com . It should work 🤗 Enable basic security for Elasticsearch &amp; Kibana Note that by default your Elasticsearch and Kibana are not secured: anyone can access your web address and start to operate with your data. So you need to setup authentication on Elasticsearch and Kibana. dokku elasticsearch:info elastic # find path to config dir cd /var/lib/dokku/services/elasticsearch/elastic/config Enable security in config file ( official docs are large and quite misleading). Just add two lines (you can open a file like this vim elasticsearch.yml : xpack.security.enabled: true xpack.security.transport.ssl.enabled: true Enter the container with Elasticsearch and create passwords for default services: dokku elasticsearch:enter elastic ./bin/elasticsearch-setup-passwords auto Copy-paste them somewhere. Now add creadentials to Kibana: dokku config:set kibana ELASTICSEARCH_USERNAME=\"kibana_system\" Enter Kibana container and add generated password: dokku enter kibana ./bin/kibana-keystore create ./bin/kibana-keystore add elasticsearch.password &lt;copy-paste generate password now&gt; And on that point, I decided to use Elastic.co cloud version because I spent almost 8 hours figuring out how to deploy it. And I failed to secure the elasticsearch &amp; kibana. And I don't know if is it even possible to do without paid license. Sorry, guys."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Deploy Elasticsearch & Kibana with Dokku",
+      "item": "https://okhlopkov.com/deploy-elasticsearch-kibana-with-dokku/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2021-12-20T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Deploy Elasticsearch &amp; Kibana with Dokku</h1>
+      
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" alt="Deploy Elasticsearch &amp; Kibana with Dokku" /></figure>
+    <section><p>I really love to use Dokku as it drastically simplifies the deployment of my nodejs and python apps. I also try to deploy other popular open-source apps with it. This is my attempt to deploy ELK stack with Dokku. Enjoy.</p><h1 id="install-dokku">Install Dokku</h1><p><a href="https://dokku.com/docs/getting-started/installation/?ref=okhlopkov.com">Install latest</a> Dokku (mid-December 2021):</p><pre><code>wget https://raw.githubusercontent.com/dokku/dokku/v0.26.6/bootstrap.sh;
+sudo DOKKU_TAG=v0.26.6 bash bootstrap.sh</code></pre><p>Finish the installation by providing your public ssh key <code>cat .ssh/id_rsa.pub</code>:</p><pre><code># usually your key is already available under the current user's `~/.ssh/authorized_keys` file
+cat ~/.ssh/authorized_keys | dokku ssh-keys:add admin
+
+# you can use any domain you already have access to
+dokku domains:set-global yourdomain.com</code></pre><h1 id="install-elasticsearch-with-dokku">Install Elasticsearch with Dokku</h1><p>Install the dokku elasticsearch plugin:</p><pre><code>sudo dokku plugin:install https://github.com/dokku/dokku-elasticsearch.git elasticsearch</code></pre><p>Find the version that you want to deploy <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/es-release-notes.html?ref=okhlopkov.com">on the official site</a>. I take the latest - 7.16.1</p><pre><code>export ELASTICSEARCH_IMAGE_VERSION="7.16.1"
+</code></pre><p>Create Elasticsearch:</p><pre><code>dokku elasticsearch:create elastic</code></pre><p>If you received an error from dokku - just copy-paste the suggested bash command, run it and try to create Elastic again.</p><p>You may also want to expose ports of elasticsearch container to make it accessible outside:</p><pre><code>dokku elasticsearch:expose elastic
+
+-----&gt; Service elastic exposed on port(s) [container-&gt;host]: 9200-&gt;27701 9300-&gt;16897</code></pre><p>Let's check that everything is installed and run (notice that I used not 9200 port but the <em>exposed</em> one).</p><pre><code>curl -X GET http://localhost:27701/
+
+{
+  "name" : "dokku.elasticsearch.elastic-1",
+  "cluster_name" : "dokku.elasticsearch.elastic-cluster",
+  "cluster_uuid" : "8T5-w6S2345KYUON66J6Q",
+  "version" : {
+    "number" : "7.16.1",
+    "build_flavor" : "default",
+    "build_type" : "docker",
+    "build_hash" : "5b38441b16b14444447c107a4c3865776e20c53",
+    "build_date" : "2021-12-11T00:29:38.865893768Z",
+    "build_snapshot" : false,
+    "lucene_version" : "8.10.1",
+    "minimum_wire_compatibility_version" : "6.8.0",
+    "minimum_index_compatibility_version" : "6.0.0-beta1"
+  },
+  "tagline" : "You Know, for Search"
+}</code></pre><h1 id="install-kibana-with-dokku">Install Kibana with Dokku</h1><p>Create Dokku app and add essential environment variables.</p><pre><code>dokku apps:create kibana
+
+dokku elasticsearch:link elastic kibana
+# take ELASTICSEARCH_URL variable and put it below
+# for my setup it looks like 'http://dokku-elasticsearch-elastic:9200'
+
+dokku config:set kibana ELASTICSEARCH_HOSTS=http://dokku-elasticsearch-elastic:9200</code></pre><p>You need to make your Kibana storage persistent (for future config editing and kibana-keystore saving across deployments):</p><pre><code>dokku storage:ensure-directory kibana
+# created folder at path '/var/lib/dokku/data/storage/kibana'
+
+mkdir /var/lib/dokku/data/storage/kibana/config/
+mkdir /var/lib/dokku/data/storage/kibana/data/
+
+dokku storage:mount kibana /var/lib/dokku/data/storage/kibana/config/:/usr/share/kibana/config/
+dokku storage:mount kibana /var/lib/dokku/data/storage/kibana/data/:/usr/share/kibana/data/
+
+echo "server.host: "0.0.0.0"" &gt; /var/lib/dokku/data/storage/kibana/config/kibana.yml
+
+
+echo "0000-0000-0000-0000" &gt; /usr/share/kibana/data/uuid
+
+sudo chmod a+rwx /root/kibana/</code></pre><p>The latest lines create an empty <code>kibana.yml</code> and <code>uuid</code> files - somehow Kibana doesn't automatically create all required files so we have to create them from scratch (our new shiny folders are empty).</p><p>Now we are ready to deploy an official Kibana docker image:</p><pre><code>dokku git:from-image kibana docker.elastic.co/kibana/kibana:7.16.1</code></pre><h4 id="additional-setup">Additional Setup</h4><p>Let your Kibana have a pretty URL and HTTPS. Proxy its port to 80:</p><pre><code>dokku proxy:ports-set kibana http:80:5601</code></pre><p>Specify a subdomain for Kibana:</p><pre><code>dokku domains:set kibana kibana.yourdomain.com
+dokku config:set kibana SERVER_HOST=kibana.yourdomain.com SERVER_PORT=80</code></pre><p>If you want to enable HTTPS on your Kibana, use letsencrypt plugin:</p><pre><code>sudo dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+dokku letsencrypt:enable kibana</code></pre><p>Now open your browser on <em>kibana.yourdomain.com</em>. It should work 🤗</p><hr><h2 id="enable-basic-security-for-elasticsearch-kibana">Enable basic security for Elasticsearch &amp; Kibana</h2><p>Note that by default your Elasticsearch and Kibana are not secured: anyone can access your web address and start to operate with your data. So you need to setup authentication on Elasticsearch and Kibana.</p><pre><code>dokku elasticsearch:info elastic
+
+# find path to config dir
+cd /var/lib/dokku/services/elasticsearch/elastic/config</code></pre><p>Enable security in config file (<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/security-minimal-setup.html?ref=okhlopkov.com">official docs</a> are large and quite misleading). Just add two lines (you can open a file like this <code>vim elasticsearch.yml</code>:</p><pre><code>xpack.security.enabled: true
+xpack.security.transport.ssl.enabled: true</code></pre><p>Enter the container with Elasticsearch and create passwords for default services:</p><pre><code>dokku elasticsearch:enter elastic
+
+./bin/elasticsearch-setup-passwords auto</code></pre><p>Copy-paste them somewhere.</p><p>Now add creadentials to Kibana:</p><pre><code>dokku config:set kibana ELASTICSEARCH_USERNAME="kibana_system"</code></pre><p>Enter Kibana container and add generated password:</p><pre><code>dokku enter kibana
+
+./bin/kibana-keystore create
+./bin/kibana-keystore add elasticsearch.password
+
+&lt;copy-paste generate password now&gt;</code></pre><p>And on that point, I decided to use Elastic.co cloud version because I spent almost 8 hours figuring out how to deploy it. And I failed to secure the elasticsearch &amp; kibana. And I don't know if is it even possible to do without paid license. Sorry, guys.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

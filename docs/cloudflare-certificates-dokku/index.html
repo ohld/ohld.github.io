@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cloudflare certificates + Dokku</title>
+    <meta name="description" content="How to create and install Cloudflare SSL / TLS encryption certificates for your Dokku app (instead of Letsencrypt)." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/cloudflare-certificates-dokku/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/cloudflare-certificates-dokku/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/cloudflare-certificates-dokku/" />
+    <link rel="alternate" type="text/markdown" href="/article-cloudflare-certificates-dokku.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Cloudflare certificates + Dokku" />
+    <meta property="og:description" content="How to create and install Cloudflare SSL / TLS encryption certificates for your Dokku app (instead of Letsencrypt)." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/cloudflare-certificates-dokku/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/Screenshot-2021-07-27-at-02.51.52.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Cloudflare certificates + Dokku" />
+    <meta name="twitter:description" content="How to create and install Cloudflare SSL / TLS encryption certificates for your Dokku app (instead of Letsencrypt)." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/Screenshot-2021-07-27-at-02.51.52.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/cloudflare-certificates-dokku/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/cloudflare-certificates-dokku/#article-content",
+  "headline": "Cloudflare certificates + Dokku",
+  "description": "How to create and install Cloudflare SSL / TLS encryption certificates for your Dokku app (instead of Letsencrypt).",
+  "datePublished": "2021-07-30",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/07/Screenshot-2021-07-27-at-02.51.52.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/cloudflare-certificates-dokku/"
+  },
+  "url": "https://okhlopkov.com/cloudflare-certificates-dokku/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "I'll show you how I did it with the blog you are currently reading: okhlopkov.com . Cloudflare is a free worldwide CDN which also can issue a TLS/HTTPS certificate for your domain or subdomain. Dokku is a free open-source self-hosted Heroku alternative which I use in all my production environments. Why you might want to do it Letsencrypt is cool but you need to renew its certificates every 3 months. Yes, you can create a crontab task to automatically do it but I always forget to. CF certificates are valid for 15+ years. 😎 Cloudflare is not only DNS but also a CDN. If your Dokku apps have a frontend you might want to benefit from worldwide &amp; free CDN to speed up your stuff and decrease the load on servers. Step 1: Attach your domain to Cloudflare You need to change the nameservers on your DNS provider (probably just where you have bought your domain). Create an account on Cloudflare and it will show you a step-by-step guide on how to do that (great onboarding by the way). Really loved @Cloudflare onboarding! So easy to start and transfer my domains — Dan Okhlopkov 🍪 (@danokhlopkov) July 26, 2021 Step 2: Create certificates for your backend Now we are going to create our own certificates to encrypt CF &lt;&gt; Backend communication. https://twitter.com/danokhlopkov/status/1419800321166094336 Open SSL/TLS -&gt; Origin Server menu and press Create Certificate . Ow, boy! 15 years If you want to also encrypt domains like super.secret.okhlopkov.com , you need to manually specify them in the List of hostnames field. Otherwise, just press create. Congratz! Now you have your unique and shiny HTTPS encryption certificates! try to guess the other part of my keys! Step 3: Upload certs to the server Now you need to create files on your server and copy-paste there your keys. Open a new ssh connection, create a folder for certs and create these files. I like to use vim to copy-paste the keys. mkdir certs vim certs/okhlopkov.com.crt # copy-paste the first Certificate vim certs/okhlopkov.com.key # copy-paste the second Private Key Step 4: Attach certs to Dokku app You will need to create a .tar archive with these files and then send it to the dokku. Imagine that the name of your Dokku app is ghost : tar -cvf certs/okhlopkov.com.tar certs/okhlopkov.com.crt certs/okhlopkov.com.key dokku certs:add ghost &lt; certs/okhlopkov.com.tar dokku proxy:build-config ghost Step 5: Enable CF Proxy and Full encryption Now you can do it! OW YEAH, Let's do it, CDN! That's it! Thanks for reading. I basically just did the SSL/TSL encryption for my blog and simultaneously wrote down this step-by-step guide. Good luck with your stuff, dudes! Share this article somewhere , please.",
+  "articleBody": "I'll show you how I did it with the blog you are currently reading: okhlopkov.com . Cloudflare is a free worldwide CDN which also can issue a TLS/HTTPS certificate for your domain or subdomain. Dokku is a free open-source self-hosted Heroku alternative which I use in all my production environments. Why you might want to do it Letsencrypt is cool but you need to renew its certificates every 3 months. Yes, you can create a crontab task to automatically do it but I always forget to. CF certificates are valid for 15+ years. 😎 Cloudflare is not only DNS but also a CDN. If your Dokku apps have a frontend you might want to benefit from worldwide &amp; free CDN to speed up your stuff and decrease the load on servers. Step 1: Attach your domain to Cloudflare You need to change the nameservers on your DNS provider (probably just where you have bought your domain). Create an account on Cloudflare and it will show you a step-by-step guide on how to do that (great onboarding by the way). Really loved @Cloudflare onboarding! So easy to start and transfer my domains — Dan Okhlopkov 🍪 (@danokhlopkov) July 26, 2021 Step 2: Create certificates for your backend Now we are going to create our own certificates to encrypt CF &lt;&gt; Backend communication. https://twitter.com/danokhlopkov/status/1419800321166094336 Open SSL/TLS -&gt; Origin Server menu and press Create Certificate . Ow, boy! 15 years If you want to also encrypt domains like super.secret.okhlopkov.com , you need to manually specify them in the List of hostnames field. Otherwise, just press create. Congratz! Now you have your unique and shiny HTTPS encryption certificates! try to guess the other part of my keys! Step 3: Upload certs to the server Now you need to create files on your server and copy-paste there your keys. Open a new ssh connection, create a folder for certs and create these files. I like to use vim to copy-paste the keys. mkdir certs vim certs/okhlopkov.com.crt # copy-paste the first Certificate vim certs/okhlopkov.com.key # copy-paste the second Private Key Step 4: Attach certs to Dokku app You will need to create a .tar archive with these files and then send it to the dokku. Imagine that the name of your Dokku app is ghost : tar -cvf certs/okhlopkov.com.tar certs/okhlopkov.com.crt certs/okhlopkov.com.key dokku certs:add ghost &lt; certs/okhlopkov.com.tar dokku proxy:build-config ghost Step 5: Enable CF Proxy and Full encryption Now you can do it! OW YEAH, Let's do it, CDN! That's it! Thanks for reading. I basically just did the SSL/TSL encryption for my blog and simultaneously wrote down this step-by-step guide. Good luck with your stuff, dudes! Share this article somewhere , please."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Cloudflare certificates + Dokku",
+      "item": "https://okhlopkov.com/cloudflare-certificates-dokku/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2021-07-30T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Cloudflare certificates + Dokku</h1>
+      <p>How to create and install Cloudflare SSL / TLS encryption certificates for your Dokku app (instead of Letsencrypt).</p>
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/07/Screenshot-2021-07-27-at-02.51.52.png" alt="Cloudflare certificates + Dokku" /></figure>
+    <section><p>I'll show you how I did it with the blog you are currently reading: <a href="/">okhlopkov.com</a>.</p><p>Cloudflare is a free worldwide CDN which also can issue a TLS/HTTPS certificate for your domain or subdomain.</p><p>Dokku is a free open-source self-hosted Heroku alternative which I use in all my production environments.</p><h2 id="why-you-might-want-to-do-it">Why you might want to do it</h2><ol><li>Letsencrypt is cool but you need to renew its certificates every 3 months. Yes, you can create a crontab task to automatically do it but I always forget to. CF certificates are valid for 15+ years. 😎</li><li>Cloudflare is not only DNS but also a CDN. If your Dokku apps have a frontend you might want to benefit from worldwide &amp; free CDN to speed up your stuff and decrease the load on servers.</li></ol><h2 id="step-1-attach-your-domain-to-cloudflare">Step 1: Attach your domain to Cloudflare</h2><p>You need to change the nameservers on your DNS provider (probably just where you have bought your domain). Create an account on Cloudflare and it will show you a step-by-step guide on how to do that (great onboarding by the way).</p><figure class="kg-card kg-embed-card"><blockquote class="twitter-tweet"><p lang="en" dir="ltr">Really loved <a href="https://twitter.com/Cloudflare?ref_src=twsrc%5Etfw&ref=okhlopkov.com">@Cloudflare</a> onboarding! So easy to start and transfer my domains</p>— Dan Okhlopkov 🍪 (@danokhlopkov) <a href="https://twitter.com/danokhlopkov/status/1419800321166094336?ref_src=twsrc%5Etfw&ref=okhlopkov.com">July 26, 2021</a></blockquote>
+
+</figure><h2 id="step-2-create-certificates-for-your-backend">Step 2: Create certificates for your backend</h2><p>Now we are going to create our own certificates to encrypt CF &lt;&gt; Backend communication.</p><figure class="tweet-embed"><blockquote class="twitter-tweet"><a href="https://twitter.com/danokhlopkov/status/1419800321166094336">https://twitter.com/danokhlopkov/status/1419800321166094336</a></blockquote></figure><p>Open <em>SSL/TLS -&gt; Origin Server</em> menu and press <em>Create Certificate</em>.</p><figure class="kg-card kg-image-card"><img src="/content/images/2021/07/image-2.png" class="kg-image" alt loading="lazy" width="2000" height="1018" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-2.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/07/image-2.png 1000w, https://okhlopkov.com/content/images/size/w1600/2021/07/image-2.png 1600w, https://okhlopkov.com/content/images/2021/07/image-2.png 2000w" sizes="(min-width: 720px) 720px"></figure><figure class="kg-card kg-image-card kg-card-hascaption"><img src="/content/images/2021/07/image-3.png" class="kg-image" alt loading="lazy" width="2000" height="1320" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-3.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/07/image-3.png 1000w, https://okhlopkov.com/content/images/size/w1600/2021/07/image-3.png 1600w, https://okhlopkov.com/content/images/2021/07/image-3.png 2000w" sizes="(min-width: 720px) 720px"><figcaption>Ow, boy! 15 years</figcaption></figure><p>If you want to also encrypt domains like <em>super.secret.okhlopkov.com</em>, you need to manually specify them in the List of hostnames field. Otherwise, just press create.</p><p>Congratz! Now you have your unique and shiny HTTPS encryption certificates!</p><figure class="kg-card kg-image-card kg-card-hascaption"><img src="/content/images/2021/07/image-4.png" class="kg-image" alt loading="lazy" width="2000" height="1169" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-4.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/07/image-4.png 1000w, https://okhlopkov.com/content/images/size/w1600/2021/07/image-4.png 1600w, https://okhlopkov.com/content/images/2021/07/image-4.png 2000w" sizes="(min-width: 720px) 720px"><figcaption>try to guess the other part of my keys!</figcaption></figure><h2 id="step-3-upload-certs-to-the-server">Step 3: Upload certs to the server</h2><p>Now you need to create files on your server and copy-paste there your keys. Open a new ssh connection, create a folder for certs and create these files. I like to use vim to copy-paste the keys.</p><pre><code class="language-bash">mkdir certs
+vim certs/okhlopkov.com.crt
+# copy-paste the first Certificate
+
+vim certs/okhlopkov.com.key
+# copy-paste the second Private Key</code></pre><h2 id="step-4-attach-certs-to-dokku-app">Step 4: Attach certs to Dokku app</h2><p>You will need to create a .tar archive with these files and then send it to the dokku. Imagine that the name of your Dokku app is <code>ghost</code>:</p><pre><code>tar -cvf certs/okhlopkov.com.tar certs/okhlopkov.com.crt certs/okhlopkov.com.key
+
+dokku certs:add ghost &lt; certs/okhlopkov.com.tar
+dokku proxy:build-config ghost</code></pre><h2 id="step-5-enable-cf-proxy-and-full-encryption">Step 5: Enable CF Proxy and Full encryption</h2><p>Now you can do it!</p><figure class="kg-card kg-image-card"><img src="/content/images/2021/07/image-5.png" class="kg-image" alt loading="lazy" width="2000" height="1002" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-5.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/07/image-5.png 1000w, https://okhlopkov.com/content/images/size/w1600/2021/07/image-5.png 1600w, https://okhlopkov.com/content/images/2021/07/image-5.png 2000w" sizes="(min-width: 720px) 720px"></figure><figure class="kg-card kg-image-card kg-card-hascaption"><img src="/content/images/2021/07/image-6.png" class="kg-image" alt loading="lazy" width="540" height="172"><figcaption>OW YEAH, Let's do it, CDN!</figcaption></figure><hr><p>That's it! Thanks for reading. I basically just did the SSL/TSL encryption for my blog and simultaneously wrote down this step-by-step guide. Good luck with your stuff, dudes! Share this article <a href="https://twitter.com/danokhlopkov?ref=okhlopkov.com">somewhere</a>, please.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

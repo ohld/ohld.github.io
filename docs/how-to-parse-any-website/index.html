@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How to parse any website</title>
+    <meta name="description" content="" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/how-to-parse-any-website/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/how-to-parse-any-website/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/how-to-parse-any-website/" />
+    <link rel="alternate" type="text/markdown" href="/article-how-to-parse-any-website.md" /><!-- alternate-md -->
+    <meta property="og:title" content="How to parse any website" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/how-to-parse-any-website/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/09/Screenshot-2021-09-13-at-23.54.19.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="How to parse any website" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/09/Screenshot-2021-09-13-at-23.54.19.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/how-to-parse-any-website/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/how-to-parse-any-website/#article-content",
+  "headline": "How to parse any website",
+  "datePublished": "2021-09-13",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/09/Screenshot-2021-09-13-at-23.54.19.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/how-to-parse-any-website/"
+  },
+  "url": "https://okhlopkov.com/how-to-parse-any-website/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "I'll share my approach which helps me to build reliable parsers of any website. I'm not going to show here actual scripts but I'll describe how I extract the data from any website. It should be useful when you need to decide how and what part of the website should be parsed. TL;DR: Find an official API Find XHR requests in the browser's dev tools Find JSON data in page's HTML Render page using any headless browser Parse HTML Pro tip: don't start with BS4/Scrapy Cool companies perform a ton of A/B tests to increase conversions and improve the funnels of their websites. That means the layout (the HTML) and data formatting may be easily changed next week. Ideally, you want to code the parser once and without having to adapt it to a new layout periodically. Don't parse HTML unless nothing else works. XPath &amp; Beutifulsoup are not robust agains website change. Find official API Sometimes websites simply give you the API to let you extract the raw data you might need. You need to check if API exists before trying to parse anything. Don't spend time fighting with HTML and cookies if you don't need to. Some websites still have RSS feeds. They are made to be easily parsed by machines but they are not popular anymore so most websites don't have them. If you want to extract data from some blogs or news websites - you should definitely check for RSS feeds! Look for XHR requests All modern websites (not on the dark web lol) use Javascript to fetch the data. It allows websites to open smoothly and load the content (data) after the basic layout is shown (HTML, skeleton). Usually, this data is fetched by Javascript using GET/POST requests. A great example is Producthunt: Just take the Raw data JSON!&nbsp; Workflow is simple: Open a webpage you want to parse Right-click --&gt; Inspect (open dev tools of your browser) Open Network tab and select XHR filter (to display only requests you might need) Find requests that return data you need Copy this request as cURL and use it in your parser's code Sometimes you notice that these XHR requests require large strings - tokens, cookies, and sessions. They are generated using Javascript or backend. Don't spend time looking into the JS code to understand how they were made. Instead, you can try to simply copy-paste them from your browser to your code - they are usually valid for 7-30 days. Perhaps, this is ok for your needs. Or you may find another XHR request (e.g. /login ) which outputs with all tokens and sessions you need. Otherwise, I'd suggest switching to browser automation (Selenium, Puppeteer, Splash, etc.). Look for JSON data in HTML code But sometimes, for SEO purposes some data is already embedded into the HTML page: If you open the page source of any Linkedin page , you'll notice a huuuuge JSONS in its HTML. Just use these JSONs from HTML code because the possibility that its structure would be changed is really-really low. Write your parser to cut extract these JSONs using simple regular expressions or basic tools you already know. If you see JSON data in a page's HTML, you don't need to render it using headless browsers – you can simply use GET calls (e.g. requests.get in Python). Render JS For scalability and simplicity, I suggest using remote browsers clusters. Recently I found the cool remote Selenium grid automation called Selenoid . Their support team is awful, but the microservice itself is quite easy to run on your machine. As a result, you'll have a magic URL that you'll insert in your Selenium driver to render all stuff remotely and not locally e.g. using chromedriver file. Super useful. This is my Selenoid usage snippet (Python). Notice the enable_vnc param: it will open the VNC connection to actually see what is happening on the remote Selenoid browser. def get_selenoid_driver( enable_vnc=False, browser_name=\"firefox\" ): capabilities = { \"browserName\": browser_name, \"version\": \"\", \"enableVNC\": enable_vnc, \"enableVideo\": False, \"screenResolution\": \"1280x1024x24\", \"sessionTimeout\": \"3m\", # Someone used these params too, let's have them as well \"goog:chromeOptions\": {\"excludeSwitches\": [\"enable-automation\"]}, \"prefs\": { \"credentials_enable_service\": False, \"profile.password_manager_enabled\": False }, } driver = webdriver.Remote( command_executor=SELENOID_URL, desired_capabilities=capabilities, ) driver.implicitly_wait(10) # wait for the page load no matter what if enable_vnc: print(f\"You can view VNC here: {SELENOID_WEB_URL}\") return driver After page rendering, you may accidentally find the JSON with all data you need in the page's HTML. Again, try to extract this JSON and take all the data you need from it instead of trying to parse HTML tags &amp; fields that might change next week. driver.get(url_to_open) html = driver.page_source Parse HTML If you can find neither proper XHR query nor JSON in the page's HTML, that means the website use SSR which prefills all the data. In this rare case (probably the old website), the only thing left is to try to extract the data you need using CSS or XPath selectors. My only advice here is to try to minimize the queries &amp; filters used to prevent overfitting and having NULL output if some page blocks become switched or slightly changed. Hope this was useful. Please tweet me the comments and questions. See you soon for more parsing &amp; ELT tutorials! 👋",
+  "articleBody": "I'll share my approach which helps me to build reliable parsers of any website. I'm not going to show here actual scripts but I'll describe how I extract the data from any website. It should be useful when you need to decide how and what part of the website should be parsed. TL;DR: Find an official API Find XHR requests in the browser's dev tools Find JSON data in page's HTML Render page using any headless browser Parse HTML Pro tip: don't start with BS4/Scrapy Cool companies perform a ton of A/B tests to increase conversions and improve the funnels of their websites. That means the layout (the HTML) and data formatting may be easily changed next week. Ideally, you want to code the parser once and without having to adapt it to a new layout periodically. Don't parse HTML unless nothing else works. XPath &amp; Beutifulsoup are not robust agains website change. Find official API Sometimes websites simply give you the API to let you extract the raw data you might need. You need to check if API exists before trying to parse anything. Don't spend time fighting with HTML and cookies if you don't need to. Some websites still have RSS feeds. They are made to be easily parsed by machines but they are not popular anymore so most websites don't have them. If you want to extract data from some blogs or news websites - you should definitely check for RSS feeds! Look for XHR requests All modern websites (not on the dark web lol) use Javascript to fetch the data. It allows websites to open smoothly and load the content (data) after the basic layout is shown (HTML, skeleton). Usually, this data is fetched by Javascript using GET/POST requests. A great example is Producthunt: Just take the Raw data JSON!&nbsp; Workflow is simple: Open a webpage you want to parse Right-click --&gt; Inspect (open dev tools of your browser) Open Network tab and select XHR filter (to display only requests you might need) Find requests that return data you need Copy this request as cURL and use it in your parser's code Sometimes you notice that these XHR requests require large strings - tokens, cookies, and sessions. They are generated using Javascript or backend. Don't spend time looking into the JS code to understand how they were made. Instead, you can try to simply copy-paste them from your browser to your code - they are usually valid for 7-30 days. Perhaps, this is ok for your needs. Or you may find another XHR request (e.g. /login ) which outputs with all tokens and sessions you need. Otherwise, I'd suggest switching to browser automation (Selenium, Puppeteer, Splash, etc.). Look for JSON data in HTML code But sometimes, for SEO purposes some data is already embedded into the HTML page: If you open the page source of any Linkedin page , you'll notice a huuuuge JSONS in its HTML. Just use these JSONs from HTML code because the possibility that its structure would be changed is really-really low. Write your parser to cut extract these JSONs using simple regular expressions or basic tools you already know. If you see JSON data in a page's HTML, you don't need to render it using headless browsers – you can simply use GET calls (e.g. requests.get in Python). Render JS For scalability and simplicity, I suggest using remote browsers clusters. Recently I found the cool remote Selenium grid automation called Selenoid . Their support team is awful, but the microservice itself is quite easy to run on your machine. As a result, you'll have a magic URL that you'll insert in your Selenium driver to render all stuff remotely and not locally e.g. using chromedriver file. Super useful. This is my Selenoid usage snippet (Python). Notice the enable_vnc param: it will open the VNC connection to actually see what is happening on the remote Selenoid browser. def get_selenoid_driver( enable_vnc=False, browser_name=\"firefox\" ): capabilities = { \"browserName\": browser_name, \"version\": \"\", \"enableVNC\": enable_vnc, \"enableVideo\": False, \"screenResolution\": \"1280x1024x24\", \"sessionTimeout\": \"3m\", # Someone used these params too, let's have them as well \"goog:chromeOptions\": {\"excludeSwitches\": [\"enable-automation\"]}, \"prefs\": { \"credentials_enable_service\": False, \"profile.password_manager_enabled\": False }, } driver = webdriver.Remote( command_executor=SELENOID_URL, desired_capabilities=capabilities, ) driver.implicitly_wait(10) # wait for the page load no matter what if enable_vnc: print(f\"You can view VNC here: {SELENOID_WEB_URL}\") return driver After page rendering, you may accidentally find the JSON with all data you need in the page's HTML. Again, try to extract this JSON and take all the data you need from it instead of trying to parse HTML tags &amp; fields that might change next week. driver.get(url_to_open) html = driver.page_source Parse HTML If you can find neither proper XHR query nor JSON in the page's HTML, that means the website use SSR which prefills all the data. In this rare case (probably the old website), the only thing left is to try to extract the data you need using CSS or XPath selectors. My only advice here is to try to minimize the queries &amp; filters used to prevent overfitting and having NULL output if some page blocks become switched or slightly changed. Hope this was useful. Please tweet me the comments and questions. See you soon for more parsing &amp; ELT tutorials! 👋"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How to parse any website",
+      "item": "https://okhlopkov.com/how-to-parse-any-website/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2021-09-13T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>How to parse any website</h1>
+      
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/09/Screenshot-2021-09-13-at-23.54.19.png" alt="How to parse any website" /></figure>
+    <section><p>I'll share my approach which helps me to build reliable parsers of any website.</p><p>I'm not going to show here actual scripts but I'll describe how I extract the data from any website. It should be useful when you need to decide how and what part of the website should be parsed.</p><h1 id="tldr">TL;DR:</h1><ol><li>Find an official API</li><li>Find XHR requests in the browser's dev tools</li><li>Find JSON data in page's HTML</li><li>Render page using any headless browser</li><li>Parse HTML</li></ol><h2 id="pro-tip-dont-start-with-bs4scrapy">Pro tip: don't start with BS4/Scrapy</h2><p>Cool companies perform a ton of A/B tests to increase conversions and improve the funnels of their websites. That means the layout (the HTML) and data formatting may be easily changed next week. Ideally, you want to code the parser once and without having to adapt it to a new layout periodically.</p><blockquote>Don't parse HTML unless nothing else works. XPath &amp; Beutifulsoup are not robust agains website change.</blockquote><h2 id="find-official-api">Find official API</h2><p>Sometimes websites simply give you the API to let you extract the raw data you might need. You need to check if API exists before trying to parse anything. Don't spend time fighting with HTML and cookies if you don't need to.</p><p>Some websites still have RSS feeds. They are made to be easily parsed by machines but they are not popular anymore so most websites don't have them. If you want to extract data from some blogs or news websites - you should definitely check for RSS feeds!</p><h2 id="look-for-xhr-requests">Look for XHR requests</h2><figure class="kg-card kg-image-card"><img src="/content/images/2021/09/image-4.png" class="kg-image" alt loading="lazy" width="842" height="268" srcset="https://okhlopkov.com/content/images/size/w600/2021/09/image-4.png 600w, https://okhlopkov.com/content/images/2021/09/image-4.png 842w" sizes="(min-width: 720px) 720px"></figure><p>All modern websites (not on the dark web lol) use Javascript to fetch the data. It allows websites to open smoothly and load the content (data) after the basic layout is shown (HTML, skeleton).</p><p>Usually, this data is fetched by Javascript using GET/POST requests. A great example is Producthunt:</p><figure class="kg-card kg-image-card kg-card-hascaption"><img src="/content/images/2021/09/image-1.png" class="kg-image" alt loading="lazy" width="2000" height="1393" srcset="https://okhlopkov.com/content/images/size/w600/2021/09/image-1.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/09/image-1.png 1000w, https://okhlopkov.com/content/images/size/w1600/2021/09/image-1.png 1600w, https://okhlopkov.com/content/images/2021/09/image-1.png 2000w" sizes="(min-width: 720px) 720px"><figcaption>Just take the Raw data JSON!&nbsp;</figcaption></figure><p>Workflow is simple:</p><ol><li>Open a webpage you want to parse</li><li>Right-click --&gt; Inspect (open dev tools of your browser)</li><li>Open Network tab and select XHR filter (to display only requests you might need)</li><li>Find requests that return data you need</li><li>Copy this request as cURL and use it in your parser's code</li></ol><figure class="kg-card kg-image-card"><img src="/content/images/2021/09/image-2.png" class="kg-image" alt loading="lazy" width="1034" height="680" srcset="https://okhlopkov.com/content/images/size/w600/2021/09/image-2.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/09/image-2.png 1000w, https://okhlopkov.com/content/images/2021/09/image-2.png 1034w" sizes="(min-width: 720px) 720px"></figure><p>Sometimes you notice that these XHR requests require large strings - tokens, cookies, and sessions. They are generated using Javascript or backend. Don't spend time looking into the JS code to understand how they were made.</p><p>Instead, you can try to simply copy-paste them from your browser to your code - they are usually valid for 7-30 days. Perhaps, this is ok for your needs. Or you may find another XHR request (e.g. <code>/login</code>) which outputs with all tokens and sessions you need. Otherwise, I'd suggest switching to browser automation (Selenium, Puppeteer, Splash, etc.).</p><h2 id="look-for-json-data-in-html-code">Look for JSON data in HTML code</h2><p>But sometimes, for SEO purposes some data is already embedded into the HTML page: If you open the page source of <a href="https://www.linkedin.com/in/danokhlopkov/?ref=okhlopkov.com">any Linkedin page</a>, you'll notice a huuuuge JSONS in its HTML.</p><figure class="kg-card kg-image-card"><img src="/content/images/2021/09/image.png" class="kg-image" alt loading="lazy" width="2000" height="1009" srcset="https://okhlopkov.com/content/images/size/w600/2021/09/image.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/09/image.png 1000w, https://okhlopkov.com/content/images/size/w1600/2021/09/image.png 1600w, https://okhlopkov.com/content/images/2021/09/image.png 2000w" sizes="(min-width: 720px) 720px"></figure><p>Just use these JSONs from HTML code because the possibility that its structure would be changed is really-really low. Write your parser to cut extract these JSONs using simple regular expressions or basic tools you already know.</p><p>If you see JSON data in a page's HTML, you don't need to render it using headless browsers – you can simply use GET calls (e.g. <code>requests.get</code> in Python).</p><h2 id="render-js">Render JS</h2><p>For scalability and simplicity, I suggest using remote browsers clusters. Recently I found the cool remote Selenium grid automation called <a href="https://aerokube.com/selenoid/latest/?ref=okhlopkov.com">Selenoid</a>. Their support team is awful, but the microservice itself is quite easy to run on your machine. As a result, you'll have a magic URL that you'll insert in your Selenium driver to render all stuff remotely and not locally e.g. using chromedriver file. Super useful.</p><p>This is my Selenoid usage snippet (Python). Notice the <code>enable_vnc</code> param: it will open the VNC connection to actually see what is happening on the remote Selenoid browser.</p><pre><code class="language-python">def get_selenoid_driver(
+    enable_vnc=False, browser_name="firefox"
+):
+    capabilities = {
+        "browserName": browser_name,
+        "version": "",
+        "enableVNC": enable_vnc,
+        "enableVideo": False,
+        "screenResolution": "1280x1024x24",
+        "sessionTimeout": "3m",
+        
+        # Someone used these params too, let's have them as well
+        "goog:chromeOptions": {"excludeSwitches": ["enable-automation"]},
+        "prefs": {
+            "credentials_enable_service": False, 			
+            "profile.password_manager_enabled": False
+        },
+    }
+
+    driver = webdriver.Remote(
+        command_executor=SELENOID_URL,
+        desired_capabilities=capabilities,
+    )
+    driver.implicitly_wait(10)  # wait for the page load no matter what
+
+    if enable_vnc:
+        print(f"You can view VNC here: {SELENOID_WEB_URL}")
+    return driver</code></pre><p>After page rendering, you may accidentally find the JSON with all data you need in the page's HTML. Again, try to extract this JSON and take all the data you need from it instead of trying to parse HTML tags &amp; fields that might change next week.</p><pre><code class="language-python">driver.get(url_to_open)
+html = driver.page_source</code></pre><h2 id="parse-html">Parse HTML</h2><p>If you can find neither proper XHR query nor JSON in the page's HTML, that means the website use SSR which prefills all the data. In this <strong>rare</strong> case (probably the old website), the only thing left is to try to extract the data you need using CSS or XPath selectors. My only advice here is to try to minimize the queries &amp; filters used to prevent overfitting and having NULL output if some page blocks become switched or slightly changed.</p><hr><p>Hope this was useful. Please <a href="https://twitter.com/danokhlopkov?ref=okhlopkov.com">tweet me</a> the comments and questions. See you soon for more parsing &amp; ELT tutorials! 👋</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

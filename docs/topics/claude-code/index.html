@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Claude Code — Даниил Охлопков</title>
+    <meta name="description" content="Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/topics/claude-code/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/topics/claude-code/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/topics/claude-code/" />
+    <link rel="alternate" type="text/markdown" href="/topic-claude-code.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Claude Code — Даниил Охлопков" />
+    <meta property="og:description" content="Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://okhlopkov.com/topics/claude-code/" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:image" content="https://github.com/ohld.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Claude Code — Даниил Охлопков" />
+    <meta name="twitter:description" content="Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code." />
+    <meta name="twitter:image" content="https://github.com/ohld.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/topics/claude-code/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Claude Code",
+  "description": "Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code.",
+  "url": "https://okhlopkov.com/topics/claude-code/",
+  "isPartOf": {
+    "@id": "https://okhlopkov.com/#website"
+  },
+  "inLanguage": "ru"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://okhlopkov.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Темы",
+      "item": "https://okhlopkov.com/articles/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Claude Code",
+      "item": "https://okhlopkov.com/topics/claude-code/"
+    }
+  ]
+}
+</script>
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><header><h1>Claude Code — Даниил Охлопков</h1></header><article><p>Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code.</p>
+<h2>Материалы</h2>
+<ul>
+<li><a href="/blog/">Блог</a> — записи и рабочие заметки.
+</li>
+<li><a href="/articles/">Статьи</a> — гайды, сравнения и туториалы.
+</li>
+<li><a href="/blog/ai-agents-s-chego-nachat/">AI-агенты: с чего начать в 2026</a>
+</li>
+<li><a href="/blog/gstack-goal-office-hours-ai-workflow/">GStack, /goal и office hours</a>
+</li>
+<li><a href="/blog/claude-code-vs-codex-perehod/">Claude Code vs Codex</a>
+</li>
+<li><a href="/articles/ai-tools-for-designers-design-engineering-agents/">AI-инструменты для дизайнеров</a>
+</li>
+</ul>
+<h2>Смежные темы</h2>
+<p><a href="/topics/ai-agents/">AI-агенты</a> · <a href="/topics/claude-code/">Claude Code</a> · <a href="/topics/codex/">Codex</a> · <a href="/topics/mcp/">MCP</a> · <a href="/topics/gstack/">GStack</a> · <a href="/topics/openclaw/">OpenClaw</a> · <a href="/topics/ton-data/">TON-данные</a> · <a href="/topics/telegram-automation/">Telegram</a></p></article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

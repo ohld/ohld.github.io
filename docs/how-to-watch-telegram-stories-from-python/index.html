@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How to watch Telegram stories from Python</title>
+    <meta name="description" content="" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/how-to-watch-telegram-stories-from-python/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/how-to-watch-telegram-stories-from-python/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/how-to-watch-telegram-stories-from-python/" />
+    <link rel="alternate" type="text/markdown" href="/article-how-to-watch-telegram-stories-from-python.md" /><!-- alternate-md -->
+    <meta property="og:title" content="How to watch Telegram stories from Python" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/how-to-watch-telegram-stories-from-python/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/02/how-to-watch-telegram-stories-from-python-1.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="How to watch Telegram stories from Python" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/02/how-to-watch-telegram-stories-from-python-1.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/how-to-watch-telegram-stories-from-python/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/how-to-watch-telegram-stories-from-python/#article-content",
+  "headline": "How to watch Telegram stories from Python",
+  "datePublished": "2023-08-25",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/02/how-to-watch-telegram-stories-from-python-1.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/how-to-watch-telegram-stories-from-python/"
+  },
+  "url": "https://okhlopkov.com/how-to-watch-telegram-stories-from-python/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "Masslooking, Masswatching or Mass story viewing. This was quite popular marketing strategy on Instagram couple years ago when they launched Stories. At that time, it was quite easy to watch up to million (!) stories each day. Recently, Telegram introduced the Stories feature as well. Let's write a code that will log into our Telegram profile and watch stories of users. Masslooking strategy You need to find out users with stories. This can be achieved by multiple ways but in this article I'll show the basic strategy: Find out all public chats you're in (because you can see the participants list) Filter ones with stories and watch them! Telegram Story Masswatching with Telethon Telethon is a great python library that emulates the Telegram client which can be automated with async python scripts. Find comments in the snippet below to understand the code better: from telethon import TelegramClient from telethon import types, functions api_id, api_hash = \"\", \"\" # get yours on my.telegram.org client = TelegramClient(\"masslooking\", api_id, api_hash) # iterate over all chats your TG account has async for dialog in client.iter_dialogs(limit=500): # you can see participants of a public chat if dialog.is_group: async for user in client.iter_participants( entity=dialog.entity, limit=1000 ): # check if a person has active stories if ( not user.stories_unavailable and not user.stories_hidden and user.stories_max_id ): res = await client( functions.stories.ReadStoriesRequest( user_id=user.id, max_id=user.stories_max_id ) ) You can also find this snippet on Github Gist . If you want to improve this script, you may want to add time.sleep(random.random() * m + n) to prevent from Rate Limiting and BAN. Also you can add a logging to make something like a CRM system to measure the results of this \"telegram marketing campaign\". How to measure the effectiveness You can watch hundreds of thousands stories each day but what for? You need a metric that will show you if this marketing strategy works for you. In Telegram case you can measure the \"conversion\" to your telegram channel (if you put a link in bio). In that case you can find a % of users that follows your channel after you watched their stories. The similar thing can be done with a conversion to your DMs. To check if a user follows your channel, you can use sync for res in client.iter_participants(\" https://t.me/danokhlopkov \", search=target_user_id) . To check if a user DM'ed you: client.iter_messages(target_user_id) . Hope this was useful! Please share this article and follow me on Twitter and on Telegram (rus blog).",
+  "articleBody": "Masslooking, Masswatching or Mass story viewing. This was quite popular marketing strategy on Instagram couple years ago when they launched Stories. At that time, it was quite easy to watch up to million (!) stories each day. Recently, Telegram introduced the Stories feature as well. Let's write a code that will log into our Telegram profile and watch stories of users. Masslooking strategy You need to find out users with stories. This can be achieved by multiple ways but in this article I'll show the basic strategy: Find out all public chats you're in (because you can see the participants list) Filter ones with stories and watch them! Telegram Story Masswatching with Telethon Telethon is a great python library that emulates the Telegram client which can be automated with async python scripts. Find comments in the snippet below to understand the code better: from telethon import TelegramClient from telethon import types, functions api_id, api_hash = \"\", \"\" # get yours on my.telegram.org client = TelegramClient(\"masslooking\", api_id, api_hash) # iterate over all chats your TG account has async for dialog in client.iter_dialogs(limit=500): # you can see participants of a public chat if dialog.is_group: async for user in client.iter_participants( entity=dialog.entity, limit=1000 ): # check if a person has active stories if ( not user.stories_unavailable and not user.stories_hidden and user.stories_max_id ): res = await client( functions.stories.ReadStoriesRequest( user_id=user.id, max_id=user.stories_max_id ) ) You can also find this snippet on Github Gist . If you want to improve this script, you may want to add time.sleep(random.random() * m + n) to prevent from Rate Limiting and BAN. Also you can add a logging to make something like a CRM system to measure the results of this \"telegram marketing campaign\". How to measure the effectiveness You can watch hundreds of thousands stories each day but what for? You need a metric that will show you if this marketing strategy works for you. In Telegram case you can measure the \"conversion\" to your telegram channel (if you put a link in bio). In that case you can find a % of users that follows your channel after you watched their stories. The similar thing can be done with a conversion to your DMs. To check if a user follows your channel, you can use sync for res in client.iter_participants(\" https://t.me/danokhlopkov \", search=target_user_id) . To check if a user DM'ed you: client.iter_messages(target_user_id) . Hope this was useful! Please share this article and follow me on Twitter and on Telegram (rus blog)."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How to watch Telegram stories from Python",
+      "item": "https://okhlopkov.com/how-to-watch-telegram-stories-from-python/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2023-08-25T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>How to watch Telegram stories from Python</h1>
+      
+    </header>
+    <figure><img src="/content/images/2026/02/how-to-watch-telegram-stories-from-python-1.png" alt="How to watch Telegram stories from Python" /></figure>
+    <section><p>Masslooking, Masswatching or Mass story viewing. This was quite popular marketing strategy on Instagram couple years ago when they launched Stories. At that time, it was quite easy to watch up to million (!) stories each day.</p><p>Recently, Telegram introduced the Stories feature as well. Let's write a code that will log into our Telegram profile and watch stories of users.</p><h2 id="masslooking-strategy">Masslooking strategy</h2><p>You need to find out users with stories. This can be achieved by multiple ways but in this article I'll show the basic strategy:</p><ol><li>Find out all public chats you're in (because you can see the participants list)</li><li>Filter ones with stories and watch them!</li></ol><h2 id="telegram-story-masswatching-with-telethon">Telegram Story Masswatching with Telethon</h2><p><a href="https://github.com/lonamiwebs/telethon/wiki?ref=okhlopkov.com">Telethon</a> is a great python library that emulates the Telegram client which can be automated with async python scripts.</p><p>Find comments in the snippet below to understand the code better:</p><pre><code class="language-python">from telethon import TelegramClient
+from telethon import types, functions
+
+api_id, api_hash = "", ""  # get yours on my.telegram.org
+client = TelegramClient("masslooking", api_id, api_hash)
+
+# iterate over all chats your TG account has
+async for dialog in client.iter_dialogs(limit=500):
+
+	# you can see participants of a public chat
+    if dialog.is_group:
+ 		
+        async for user in client.iter_participants(
+        	entity=dialog.entity, 
+            limit=1000
+        ):
+        	# check if a person has active stories
+            if (
+                not user.stories_unavailable and 
+                not user.stories_hidden and 
+                user.stories_max_id
+            ):
+                res = await client(
+                    functions.stories.ReadStoriesRequest(
+                        user_id=user.id, 
+                        max_id=user.stories_max_id
+                    )
+                )</code></pre><p>You can also find this snippet on <a href="https://gist.github.com/ohld/9ab13034c1796ca79db19c50eab47684?ref=okhlopkov.com">Github Gist</a>.</p><p>If you want to improve this script, you may want to add <code>time.sleep(random.random() * m + n)</code> to prevent from Rate Limiting and BAN. Also you can add a logging to make something like a CRM system to measure the results of this "telegram marketing campaign".</p><h2 id="how-to-measure-the-effectiveness">How to measure the effectiveness</h2><p>You can watch hundreds of thousands stories each day but what for? You need a metric that will show you if this marketing strategy works for you.</p><p>In Telegram case you can measure the "conversion" to your telegram channel (if you put a link in bio). In that case you can find a % of users that follows your channel after you watched their stories. The similar thing can be done with a conversion to your DMs.</p><p>To check if a user follows your channel, you can use <code>sync for res in client.iter_participants("</code><a href="https://t.me/danokhlopkov?ref=okhlopkov.com"><code>https://t.me/danokhlopkov</code></a><code>", search=target_user_id)</code>. To check if a user DM'ed you: <code>client.iter_messages(target_user_id)</code>.</p><hr><p>Hope this was useful! Please share this article and follow me on <a href="https://twitter.com/danokhlopkov?ref=okhlopkov.com">Twitter</a> and on <a href="https://telegram.me/danokhlopkov?ref=okhlopkov.com">Telegram</a> (rus blog).</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

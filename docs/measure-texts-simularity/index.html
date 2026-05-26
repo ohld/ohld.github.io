@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Measure texts similarity with Sentence Transformers (embeddings)</title>
+    <meta name="description" content="Imagine you have a lot of objects with text descriptions (users and their bios, tweets, comments) and you need to somehow cluster them: find groups of similar objects." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/measure-texts-simularity/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/measure-texts-simularity/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/measure-texts-simularity/" />
+    <link rel="alternate" type="text/markdown" href="/article-measure-texts-simularity.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Measure texts similarity with Sentence Transformers (embeddings)" />
+    <meta property="og:description" content="Imagine you have a lot of objects with text descriptions (users and their bios, tweets, comments) and you need to somehow cluster them: find groups of similar objects." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/measure-texts-simularity/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/Screenshot-2021-07-28-at-14.21.41.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Measure texts similarity with Sentence Transformers (embeddings)" />
+    <meta name="twitter:description" content="Imagine you have a lot of objects with text descriptions (users and their bios, tweets, comments) and you need to somehow cluster them: find groups of similar objects." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/Screenshot-2021-07-28-at-14.21.41.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/measure-texts-simularity/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/measure-texts-simularity/#article-content",
+  "headline": "Measure texts similarity with Sentence Transformers (embeddings)",
+  "description": "Imagine you have a lot of objects with text descriptions (users and their bios, tweets, comments) and you need to somehow cluster them: find groups of similar objects.",
+  "datePublished": "2021-07-28",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/07/Screenshot-2021-07-28-at-14.21.41.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/measure-texts-simularity/"
+  },
+  "url": "https://okhlopkov.com/measure-texts-simularity/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "Imagine you have a lot of objects with text descriptions (users and their bios, tweets, comments) and you need to somehow cluster them: find groups of similar objects. You can come up with keyword-based distance but that's not scalable and simply not cool. The cool thing is to use neural networks to transform texts into vectors (embeddings) because it is simple to find the distance between vectors. In this post, I'll show you how I did it with Crunchbase companies and their long descriptions using Google Colab (free GPUs for transformers) and Sentence transformers from Python library (for embeddings). Step 1: Prepare dataset Basically, you need a CSV table with two columns: object id and its text description. I'd suggest starting with the small subsample of data and then, if everything works fine, enlarge the data. Step 2: Upload it to Google Colab Open https://colab.research.google.com/ and create a new notebook. Then upload your file with descriptions using the side menu: You can upload files to Google Colab here Step 3: Run the code Install required python library. Others are already installed. Just copy-paste the code to Google Colab cells and press SHIFT+Enter to run it. !pip install -U sentence-transformers Download the embedding transformers (will take some time). You play with other networks, I just used a random one called paraphrase-distilroberta-base-v1 : from sentence_transformers import SentenceTransformer model = SentenceTransformer('paraphrase-distilroberta-base-v1') Read your uploaded dataset: import pandas as pd descs = pd.read_csv(\"./cb_descs.csv.gz\", index_col=0) descs.head() Now let's run our DL stuff and wait while GPUs go brrr Don't forget to enable GPUs for your notebook: Calculate embeddings (I wait 16 minutes for my data with 200k rows): clean_embeddings = model.encode(descs[\"description\"].values) Find 10 similar object ids to every id in the dataset: from scipy import spatial tree = spatial.KDTree(clean_embeddings) uuid_embeds = dict(zip(list(descs.index), clean_embeddings)) index_to_uuid = dict(zip(range(len(descs.index)), list(descs.index))) RESULTS = {} from tqdm.notebook import tqdm for uuid, embeddings_vector in tqdm(uuid_embeds.items()): if uuid in RESULTS: continue closest_indexes_of_vectors = tree.query(embeddings_vector, k=11)[1][1:] RESULTS[uuid] = closest_indexes_of_vectors Tqdm says it will work 100h which is nonsense. But here you go: now you can measure the distance using texts and find the top 10 closest objects. And finally, prettify and save results: FINAL_DATA = [] for uuid, indexes in RESULTS.items(): FINAL_DATA.extend([ { \"cb_org_uuid\": uuid, \"similar_to_org_uuid\": index_to_uuid[i], } for i in indexes ]) print(len(FINAL_DATA)) results_df = pd.DataFrame(FINAL_DATA) results_df.to_csv(\"./results.csv.gz\") My DL / NLP friends suggest using KNN to speed up the last part. Now your turn to research stuff! Tweet me if you succeed 👋",
+  "articleBody": "Imagine you have a lot of objects with text descriptions (users and their bios, tweets, comments) and you need to somehow cluster them: find groups of similar objects. You can come up with keyword-based distance but that's not scalable and simply not cool. The cool thing is to use neural networks to transform texts into vectors (embeddings) because it is simple to find the distance between vectors. In this post, I'll show you how I did it with Crunchbase companies and their long descriptions using Google Colab (free GPUs for transformers) and Sentence transformers from Python library (for embeddings). Step 1: Prepare dataset Basically, you need a CSV table with two columns: object id and its text description. I'd suggest starting with the small subsample of data and then, if everything works fine, enlarge the data. Step 2: Upload it to Google Colab Open https://colab.research.google.com/ and create a new notebook. Then upload your file with descriptions using the side menu: You can upload files to Google Colab here Step 3: Run the code Install required python library. Others are already installed. Just copy-paste the code to Google Colab cells and press SHIFT+Enter to run it. !pip install -U sentence-transformers Download the embedding transformers (will take some time). You play with other networks, I just used a random one called paraphrase-distilroberta-base-v1 : from sentence_transformers import SentenceTransformer model = SentenceTransformer('paraphrase-distilroberta-base-v1') Read your uploaded dataset: import pandas as pd descs = pd.read_csv(\"./cb_descs.csv.gz\", index_col=0) descs.head() Now let's run our DL stuff and wait while GPUs go brrr Don't forget to enable GPUs for your notebook: Calculate embeddings (I wait 16 minutes for my data with 200k rows): clean_embeddings = model.encode(descs[\"description\"].values) Find 10 similar object ids to every id in the dataset: from scipy import spatial tree = spatial.KDTree(clean_embeddings) uuid_embeds = dict(zip(list(descs.index), clean_embeddings)) index_to_uuid = dict(zip(range(len(descs.index)), list(descs.index))) RESULTS = {} from tqdm.notebook import tqdm for uuid, embeddings_vector in tqdm(uuid_embeds.items()): if uuid in RESULTS: continue closest_indexes_of_vectors = tree.query(embeddings_vector, k=11)[1][1:] RESULTS[uuid] = closest_indexes_of_vectors Tqdm says it will work 100h which is nonsense. But here you go: now you can measure the distance using texts and find the top 10 closest objects. And finally, prettify and save results: FINAL_DATA = [] for uuid, indexes in RESULTS.items(): FINAL_DATA.extend([ { \"cb_org_uuid\": uuid, \"similar_to_org_uuid\": index_to_uuid[i], } for i in indexes ]) print(len(FINAL_DATA)) results_df = pd.DataFrame(FINAL_DATA) results_df.to_csv(\"./results.csv.gz\") My DL / NLP friends suggest using KNN to speed up the last part. Now your turn to research stuff! Tweet me if you succeed 👋"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Measure texts similarity with Sentence Transformers (embeddings)",
+      "item": "https://okhlopkov.com/measure-texts-simularity/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2021-07-28T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Measure texts similarity with Sentence Transformers (embeddings)</h1>
+      <p>Imagine you have a lot of objects with text descriptions (users and their bios, tweets, comments) and you need to somehow cluster them: find groups of similar objects.</p>
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/07/Screenshot-2021-07-28-at-14.21.41.png" alt="Measure texts similarity with Sentence Transformers (embeddings)" /></figure>
+    <section><p>Imagine you have a lot of objects with text descriptions (users and their bios, tweets, comments) and you need to somehow cluster them: find groups of similar objects.</p><p>You can come up with keyword-based distance but that's not scalable and simply not cool. The cool thing is to use neural networks to transform texts into vectors (embeddings) because it is simple to find the distance between vectors.</p><p>In this post, I'll show you how I did it with Crunchbase companies and their long descriptions using Google Colab (free GPUs for transformers) and Sentence transformers from <a href="https://github.com/UKPLab/sentence-transformers?ref=okhlopkov.com">Python library</a> (for embeddings).</p><h2 id="step-1-prepare-dataset">Step 1: Prepare dataset</h2><p>Basically, you need a CSV table with two columns: object id and its text description. I'd suggest starting with the small subsample of data and then, if everything works fine, enlarge the data.</p><figure class="kg-card kg-image-card"><img src="/content/images/2021/07/image-8.png" class="kg-image" alt loading="lazy" width="1320" height="592" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-8.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/07/image-8.png 1000w, https://okhlopkov.com/content/images/2021/07/image-8.png 1320w" sizes="(min-width: 720px) 720px"></figure><h2 id="step-2-upload-it-to-google-colab">Step 2: Upload it to Google Colab</h2><p>Open <a href="https://colab.research.google.com/?ref=okhlopkov.com">https://colab.research.google.com/</a> and create a new notebook. Then upload your file with descriptions using the side menu:</p><figure class="kg-card kg-image-card kg-card-hascaption"><img src="/content/images/2021/07/image-7.png" class="kg-image" alt loading="lazy" width="670" height="400" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-7.png 600w, https://okhlopkov.com/content/images/2021/07/image-7.png 670w"><figcaption>You can upload files to Google Colab here</figcaption></figure><h2 id="step-3-run-the-code">Step 3: Run the code</h2><p>Install required python library. Others are already installed. Just copy-paste the code to Google Colab cells and press SHIFT+Enter to run it.</p><pre><code>!pip install -U sentence-transformers</code></pre><p>Download the embedding transformers (will take some time). You play with other networks, I just used a random one called <strong>paraphrase-distilroberta-base-v1</strong>:</p><pre><code class="language-python">from sentence_transformers import SentenceTransformer
+model = SentenceTransformer('paraphrase-distilroberta-base-v1')</code></pre><p>Read your uploaded dataset:</p><pre><code class="language-python">import pandas as pd
+descs = pd.read_csv("./cb_descs.csv.gz", index_col=0)
+descs.head()</code></pre><h3 id="now-lets-run-our-dl-stuff-and-wait-while-gpus-go-brrr">Now let's run our DL stuff and wait while GPUs go brrr</h3><p>Don't forget to enable GPUs for your notebook:</p><figure class="kg-card kg-image-card"><img src="/content/images/2021/07/image-9.png" class="kg-image" alt loading="lazy" width="742" height="822" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-9.png 600w, https://okhlopkov.com/content/images/2021/07/image-9.png 742w" sizes="(min-width: 720px) 720px"></figure><p>Calculate embeddings (I wait 16 minutes for my data with 200k rows):</p><pre><code class="language-python">clean_embeddings = model.encode(descs["description"].values)</code></pre><p>Find 10 similar object ids to every id in the dataset:</p><pre><code>from scipy import spatial
+tree = spatial.KDTree(clean_embeddings)
+
+uuid_embeds = dict(zip(list(descs.index), clean_embeddings))
+index_to_uuid = dict(zip(range(len(descs.index)), list(descs.index)))
+
+RESULTS = {}
+
+from tqdm.notebook import tqdm
+
+for uuid, embeddings_vector in tqdm(uuid_embeds.items()):
+  if uuid in RESULTS:
+    continue
+
+  closest_indexes_of_vectors = tree.query(embeddings_vector, k=11)[1][1:]
+
+  RESULTS[uuid] = closest_indexes_of_vectors</code></pre><p>Tqdm says it will work 100h which is nonsense. But here you go: now you can measure the distance using texts and find the top 10 closest objects.</p><p>And finally, prettify and save results:</p><pre><code class="language-python">FINAL_DATA = []
+for uuid, indexes in RESULTS.items():
+  FINAL_DATA.extend([
+    {
+      "cb_org_uuid": uuid,
+      "similar_to_org_uuid": index_to_uuid[i],
+    }
+    for i in indexes
+  ])
+
+print(len(FINAL_DATA))
+
+results_df = pd.DataFrame(FINAL_DATA)
+results_df.to_csv("./results.csv.gz")</code></pre><figure class="kg-card kg-image-card"><img src="/content/images/2021/07/image-10.png" class="kg-image" alt loading="lazy" width="1362" height="540" srcset="https://okhlopkov.com/content/images/size/w600/2021/07/image-10.png 600w, https://okhlopkov.com/content/images/size/w1000/2021/07/image-10.png 1000w, https://okhlopkov.com/content/images/2021/07/image-10.png 1362w" sizes="(min-width: 720px) 720px"></figure><hr><p>My DL / NLP friends suggest using KNN to speed up the last part. Now your turn to research stuff! <a href="https://twitter.com/danokhlopkov?ref=okhlopkov.com">Tweet</a> me if you succeed 👋</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

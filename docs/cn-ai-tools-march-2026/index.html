@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>2026年3月我实测的AI工具:真实评测</title>
+    <meta name="description" content="2026年3月实测5个AI工具：paperclip任务追踪、gstack YC创始人提示词、conductor.build IDE、x402加密支付、agent-browser。真实体验分享。" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/cn-ai-tools-march-2026/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="zh" href="https://okhlopkov.com/cn-ai-tools-march-2026/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/cn-ai-tools-march-2026/" />
+    <link rel="alternate" type="text/markdown" href="/article-cn-ai-tools-march-2026.md" /><!-- alternate-md -->
+    <meta property="og:title" content="2026年3月我实测的AI工具:真实评测" />
+    <meta property="og:description" content="2026年3月实测5个AI工具：paperclip任务追踪、gstack YC创始人提示词、conductor.build IDE、x402加密支付、agent-browser。真实体验分享。" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/cn-ai-tools-march-2026/" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/03/cn-ai-tools-march-2026.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="2026年3月我实测的AI工具:真实评测" />
+    <meta name="twitter:description" content="2026年3月实测5个AI工具：paperclip任务追踪、gstack YC创始人提示词、conductor.build IDE、x402加密支付、agent-browser。真实体验分享。" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/03/cn-ai-tools-march-2026.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/cn-ai-tools-march-2026/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/cn-ai-tools-march-2026/#article-content",
+  "headline": "2026年3月我实测的AI工具:真实评测",
+  "description": "2026年3月实测5个AI工具：paperclip任务追踪、gstack YC创始人提示词、conductor.build IDE、x402加密支付、agent-browser。真实体验分享。",
+  "datePublished": "2026-03-31",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/03/cn-ai-tools-march-2026.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/cn-ai-tools-march-2026/"
+  },
+  "url": "https://okhlopkov.com/cn-ai-tools-march-2026/#article-content",
+  "inLanguage": "zh",
+  "articleSection": "Блог",
+  "text": "3月份我试了这些AI工具，分享真实体验。新东西不断出来，我尽量试用并分享值得关注的。 paperclip — AI自动化组织 paperclip.ing 是给AI代理用的可视化任务追踪器。支持Claude Code、Codex、Openclaw——任何有heartbeat的都行。入职体验很有意思：你是董事会成员，雇一个CEO，CEO可以雇其他员工。 但目前还没什么魔法。任务和方向还是你定。Token消耗很猛（在修）。产品才出来几天，还很粗糙，但Discord社区已经很活跃了。等他们出1-click公司克隆（比如\"一键安装SEO团队\"）的时候，再认真聊。 gstack — YC创始人的提示词框架 gstack 是YC总裁Garry Tan做的一套提示词。目前我挺喜欢的。核心玩法：启动一个CEO代理，给它描述你的想法，它告诉你怎么做到10倍好。然后还有单独的设计和代码评审提示词。本质上是让AI推你提高质量，而不是什么都顺着你说。 conductor.build — AI IDE conductor.build 是个给AI工作用的IDE，不用一直待在终端里。但我已经习惯了直接commit到main，搞什么PR？而且我已经习惯在 Ghostty 里切tab了。视觉上需要适应一下，看起来还行，但不确定能替代我现在的终端流程。 x402 — Coinbase的代理支付标准 发现了Coinbase做的 x402.org ——一个用低Gas链上加密货币支付\"付费API端点\"的标准。HTTP 402 Payment Required这个状态码等了30年终于有用武之地了。我 提了个PR给TON加支持 。代理经济正在变成真实的基础设施。 agent-browser + debug port 给AI代理注册了单独的Google账号，配了专用Chrome浏览器。Debug port + 原生Chrome——这个方案对我来说最稳定，虽然不是最快。Playwright和其他无头浏览器搞AI任务经常出问题，单独的Chrome配置文件通过debug port给代理一个真实浏览器，不用各种hack。 你最近发现了什么新工具？ 关注我: Twitter/X | Telegram | 小红书",
+  "articleBody": "3月份我试了这些AI工具，分享真实体验。新东西不断出来，我尽量试用并分享值得关注的。 paperclip — AI自动化组织 paperclip.ing 是给AI代理用的可视化任务追踪器。支持Claude Code、Codex、Openclaw——任何有heartbeat的都行。入职体验很有意思：你是董事会成员，雇一个CEO，CEO可以雇其他员工。 但目前还没什么魔法。任务和方向还是你定。Token消耗很猛（在修）。产品才出来几天，还很粗糙，但Discord社区已经很活跃了。等他们出1-click公司克隆（比如\"一键安装SEO团队\"）的时候，再认真聊。 gstack — YC创始人的提示词框架 gstack 是YC总裁Garry Tan做的一套提示词。目前我挺喜欢的。核心玩法：启动一个CEO代理，给它描述你的想法，它告诉你怎么做到10倍好。然后还有单独的设计和代码评审提示词。本质上是让AI推你提高质量，而不是什么都顺着你说。 conductor.build — AI IDE conductor.build 是个给AI工作用的IDE，不用一直待在终端里。但我已经习惯了直接commit到main，搞什么PR？而且我已经习惯在 Ghostty 里切tab了。视觉上需要适应一下，看起来还行，但不确定能替代我现在的终端流程。 x402 — Coinbase的代理支付标准 发现了Coinbase做的 x402.org ——一个用低Gas链上加密货币支付\"付费API端点\"的标准。HTTP 402 Payment Required这个状态码等了30年终于有用武之地了。我 提了个PR给TON加支持 。代理经济正在变成真实的基础设施。 agent-browser + debug port 给AI代理注册了单独的Google账号，配了专用Chrome浏览器。Debug port + 原生Chrome——这个方案对我来说最稳定，虽然不是最快。Playwright和其他无头浏览器搞AI任务经常出问题，单独的Chrome配置文件通过debug port给代理一个真实浏览器，不用各种hack。 你最近发现了什么新工具？ 关注我: Twitter/X | Telegram | 小红书"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://okhlopkov.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Блог",
+      "item": "https://okhlopkov.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "2026年3月我实测的AI工具:真实评测",
+      "item": "https://okhlopkov.com/cn-ai-tools-march-2026/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-03-31T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Блог" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>2026年3月我实测的AI工具:真实评测</h1>
+      <p>2026年3月实测5个AI工具：paperclip任务追踪、gstack YC创始人提示词、conductor.build IDE、x402加密支付、agent-browser。真实体验分享。</p>
+    </header>
+    <figure><img src="/content/images/2026/03/cn-ai-tools-march-2026.png" alt="2026年3月我实测的AI工具:真实评测" /></figure>
+    <section><p>3月份我试了这些AI工具，分享真实体验。新东西不断出来，我尽量试用并分享值得关注的。</p><h2 id="paperclip-%E2%80%94-ai%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BB%84%E7%BB%87">paperclip — AI自动化组织</h2><p><a href="https://paperclip.ing/?ref=okhlopkov.com">paperclip.ing</a>是给AI代理用的可视化任务追踪器。支持Claude Code、Codex、Openclaw——任何有heartbeat的都行。入职体验很有意思：你是董事会成员，雇一个CEO，CEO可以雇其他员工。</p><p>但目前还没什么魔法。任务和方向还是你定。Token消耗很猛（在修）。产品才出来几天，还很粗糙，但Discord社区已经很活跃了。等他们出1-click公司克隆（比如"一键安装SEO团队"）的时候，再认真聊。</p><h2 id="gstack-%E2%80%94-yc%E5%88%9B%E5%A7%8B%E4%BA%BA%E7%9A%84%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%A1%86%E6%9E%B6">gstack — YC创始人的提示词框架</h2><p><a href="https://github.com/garrytan/gstack?ref=okhlopkov.com">gstack</a>是YC总裁Garry Tan做的一套提示词。目前我挺喜欢的。核心玩法：启动一个CEO代理，给它描述你的想法，它告诉你怎么做到10倍好。然后还有单独的设计和代码评审提示词。本质上是让AI推你提高质量，而不是什么都顺着你说。</p><h2 id="conductorbuild-%E2%80%94-ai-ide">conductor.build — AI IDE</h2><p><a href="https://conductor.build/?ref=okhlopkov.com">conductor.build</a>是个给AI工作用的IDE，不用一直待在终端里。但我已经习惯了直接commit到main，搞什么PR？而且我已经习惯在<a href="https://ghostty.org/?ref=okhlopkov.com">Ghostty</a>里切tab了。视觉上需要适应一下，看起来还行，但不确定能替代我现在的终端流程。</p><h2 id="x402-%E2%80%94-coinbase%E7%9A%84%E4%BB%A3%E7%90%86%E6%94%AF%E4%BB%98%E6%A0%87%E5%87%86">x402 — Coinbase的代理支付标准</h2><p>发现了Coinbase做的<a href="https://x402.org/?ref=okhlopkov.com">x402.org</a>——一个用低Gas链上加密货币支付"付费API端点"的标准。HTTP 402 Payment Required这个状态码等了30年终于有用武之地了。我<a href="https://github.com/coinbase/x402/pull/1455?ref=okhlopkov.com">提了个PR给TON加支持</a>。代理经济正在变成真实的基础设施。</p><h2 id="agent-browser-debug-port">agent-browser + debug port</h2><p>给AI代理注册了单独的Google账号，配了专用Chrome浏览器。Debug port + 原生Chrome——这个方案对我来说最稳定，虽然不是最快。Playwright和其他无头浏览器搞AI任务经常出问题，单独的Chrome配置文件通过debug port给代理一个真实浏览器，不用各种hack。</p><p>你最近发现了什么新工具？</p><hr><p>关注我: <a href="https://x.com/danokhlopkov?ref=okhlopkov.com">Twitter/X</a> | <a href="https://t.me/danokhlopkov?ref=okhlopkov.com">Telegram</a> | <a href="https://xhslink.com/m/7sYku4tQwWr?ref=okhlopkov.com">小红书</a></p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

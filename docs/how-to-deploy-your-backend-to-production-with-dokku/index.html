@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>How to deploy your backend to production with Dokku</title>
+    <meta name="description" content="" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/how-to-deploy-your-backend-to-production-with-dokku/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/how-to-deploy-your-backend-to-production-with-dokku/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/how-to-deploy-your-backend-to-production-with-dokku/" />
+    <link rel="alternate" type="text/markdown" href="/article-how-to-deploy-your-backend-to-production-with-dokku.md" /><!-- alternate-md -->
+    <meta property="og:title" content="How to deploy your backend to production with Dokku" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/how-to-deploy-your-backend-to-production-with-dokku/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="How to deploy your backend to production with Dokku" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/how-to-deploy-your-backend-to-production-with-dokku/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/how-to-deploy-your-backend-to-production-with-dokku/#article-content",
+  "headline": "How to deploy your backend to production with Dokku",
+  "datePublished": "2023-12-26",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/how-to-deploy-your-backend-to-production-with-dokku/"
+  },
+  "url": "https://okhlopkov.com/how-to-deploy-your-backend-to-production-with-dokku/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "Imagine that you've created a backend app on Node.js, FastAPI, Django or any other framework and now you want to deploy your fancy endpoints to the world. I'll show you the step-by-step guide on how to do it with Dokku - open source PaaS which acts like a CLI &amp; Free version of Heroku. Let's go! We will also create a CI/CD pipeline which will trigger the deploy after each commit on main branch. What a miracle! 1. Install Dokku on a machine Check https://dokku.com/ for Dokku latest installation instructions. 2. Add your ssh keys You've probably should already done that on the previous step. Read more about dokku ssh-keys . echo \"$CONTENTS_OF_YOUR_PUBLIC_SSH_KEY_HERE\" | dokku ssh-keys:add KEY_NAME You will need to send your SSH private key to Github's encrypted storage because Github Actions need to have an SSH access to your machine to trigger the deploy. You also can create a new SSH pair to keep your own's in secret. 3. Create Dokku app Let's call your backend app just api . dokku apps:create api 4. Set environment variables Your app probably needs some envs to start. If you are deploying an open-source project, the repo probably should have a file like .env.example which states all the env variables required for the app to run. dokku config:set api ENVIRONMENT=PRODUCTION TOKEN=asdadgs ... You can also see all set env variables using dokku config:show api command. 5. Create databases (postgres, redis, ...) If your app needs a database you can install them using Dokku plugins. Check for example dokku-postgres plugin, read its readme and feel that it is so much easier to use rather than deploying a database on your own. dokku postgres:create api dokku postgres:link api api I called the database with the same name as my dokku app api for simplicity. The postgres:link comman sets DATABASE_URL .env variable with a connection string to your database. If you need to have a Redis plugin you can create and link it the same way (after installation ): dokku redis:create api dokku redis:link api api Redis will create .env called REDIS_URL . Cool, huh? 6. Attach a domain to an app If you want your api to run on api.yourdomain.com first of all you need to open your DNS provider (where you have bought your domain) and create a DNS \"A\" record which points api.yourdomain.com to the IP address of your server. I personally like to transfer the DNS nameservers to Cloudflare because it has a nice UI and cool features built-in. dokku domains:set api api.yourdomain.com If you need to sercure your backend with https, check dokku-letsencrypt plugin. 7. Set SSH_PRIVATE_KEY in Github repo Open your Github repo's settings and set the SSH_PRIVATE_KEY in Settings -&gt; Secrets and Variables -&gt; Actions. You need to specify the private key which has the ssh access to the server. Github Actions worker will connect to your server and trigger the deploy, as simple as that. 8. Create Github Actions workflow file There are multiple Github Actions plugins for Dokku available but I like to use this one . Copy it to .github/workflows/dokku.yml of your repo and specify your machine host &amp; dokku app name inside. 9. Send a commit and check Github Actions for deployment logs. ~~ viola ~~ ~~~ you've dome a great job ~~~ Please share this page with your tech friends. My links: linkedin.com/in/danokhlopkov twitter.com/danokhlopkov t.me/danokhlopkov",
+  "articleBody": "Imagine that you've created a backend app on Node.js, FastAPI, Django or any other framework and now you want to deploy your fancy endpoints to the world. I'll show you the step-by-step guide on how to do it with Dokku - open source PaaS which acts like a CLI &amp; Free version of Heroku. Let's go! We will also create a CI/CD pipeline which will trigger the deploy after each commit on main branch. What a miracle! 1. Install Dokku on a machine Check https://dokku.com/ for Dokku latest installation instructions. 2. Add your ssh keys You've probably should already done that on the previous step. Read more about dokku ssh-keys . echo \"$CONTENTS_OF_YOUR_PUBLIC_SSH_KEY_HERE\" | dokku ssh-keys:add KEY_NAME You will need to send your SSH private key to Github's encrypted storage because Github Actions need to have an SSH access to your machine to trigger the deploy. You also can create a new SSH pair to keep your own's in secret. 3. Create Dokku app Let's call your backend app just api . dokku apps:create api 4. Set environment variables Your app probably needs some envs to start. If you are deploying an open-source project, the repo probably should have a file like .env.example which states all the env variables required for the app to run. dokku config:set api ENVIRONMENT=PRODUCTION TOKEN=asdadgs ... You can also see all set env variables using dokku config:show api command. 5. Create databases (postgres, redis, ...) If your app needs a database you can install them using Dokku plugins. Check for example dokku-postgres plugin, read its readme and feel that it is so much easier to use rather than deploying a database on your own. dokku postgres:create api dokku postgres:link api api I called the database with the same name as my dokku app api for simplicity. The postgres:link comman sets DATABASE_URL .env variable with a connection string to your database. If you need to have a Redis plugin you can create and link it the same way (after installation ): dokku redis:create api dokku redis:link api api Redis will create .env called REDIS_URL . Cool, huh? 6. Attach a domain to an app If you want your api to run on api.yourdomain.com first of all you need to open your DNS provider (where you have bought your domain) and create a DNS \"A\" record which points api.yourdomain.com to the IP address of your server. I personally like to transfer the DNS nameservers to Cloudflare because it has a nice UI and cool features built-in. dokku domains:set api api.yourdomain.com If you need to sercure your backend with https, check dokku-letsencrypt plugin. 7. Set SSH_PRIVATE_KEY in Github repo Open your Github repo's settings and set the SSH_PRIVATE_KEY in Settings -&gt; Secrets and Variables -&gt; Actions. You need to specify the private key which has the ssh access to the server. Github Actions worker will connect to your server and trigger the deploy, as simple as that. 8. Create Github Actions workflow file There are multiple Github Actions plugins for Dokku available but I like to use this one . Copy it to .github/workflows/dokku.yml of your repo and specify your machine host &amp; dokku app name inside. 9. Send a commit and check Github Actions for deployment logs. ~~ viola ~~ ~~~ you've dome a great job ~~~ Please share this page with your tech friends. My links: linkedin.com/in/danokhlopkov twitter.com/danokhlopkov t.me/danokhlopkov"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "How to deploy your backend to production with Dokku",
+      "item": "https://okhlopkov.com/how-to-deploy-your-backend-to-production-with-dokku/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2023-12-26T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>How to deploy your backend to production with Dokku</h1>
+      
+    </header>
+    <figure><img src="/content/images/size/w1200/2021/07/camphoto_959030623-copy-2.jpg" alt="How to deploy your backend to production with Dokku" /></figure>
+    <section><ul class="article-inline-list"><li>Imagine that you've created a backend app on Node.js, FastAPI, Django or any other framework and now you want to deploy your fancy endpoints to the world. I'll show you the step-by-step guide on how to do it with Dokku - open source PaaS which acts like a CLI &amp; Free version of Heroku. Let's go!</p><p>We will also create a CI/CD pipeline which will trigger the deploy after each commit on main branch. What a miracle!</p><h3 id="1-install-dokku-on-a-machine">1. Install Dokku on a machine</h3><p>Check <a href="https://dokku.com/?ref=okhlopkov.com">https://dokku.com/</a> for Dokku latest installation instructions.</p><h3 id="2-add-your-ssh-keys">2. Add your ssh keys</h3><p>You've probably should already done that on the previous step. Read more about <a href="https://dokku.com/docs/deployment/user-management/?ref=okhlopkov.com">dokku ssh-keys</a>.</p><pre><code class="language-bash">echo "$CONTENTS_OF_YOUR_PUBLIC_SSH_KEY_HERE" | dokku ssh-keys:add KEY_NAME</code></pre><p>You will need to send your SSH private key to Github's encrypted storage because Github Actions need to have an SSH access to your machine to trigger the deploy. You also can create a new SSH pair to keep your own's in secret.</p><h3 id="3-create-dokku-app">3. Create Dokku app</h3><p>Let's call your backend app just <code>api</code>.</p><pre><code>dokku apps:create api</code></pre><h3 id="4-set-environment-variables">4. Set environment variables</h3><p>Your app probably needs some envs to start. If you are deploying an open-source project, the repo probably should have a file like <code>.env.example</code> which states all the env variables required for the app to run.</p><pre><code>dokku config:set api ENVIRONMENT=PRODUCTION TOKEN=asdadgs ...</code></pre><p>You can also see all set env variables using <code>dokku config:show api</code> command.</p><h3 id="5-create-databases-postgres-redis">5. Create databases (postgres, redis, ...)</h3><p>If your app needs a database you can install them using Dokku plugins. Check for example <a href="https://github.com/dokku/dokku-postgres?ref=okhlopkov.com">dokku-postgres</a> plugin, read its readme and feel that it is so much easier to use rather than deploying a database on your own.</p><pre><code>dokku postgres:create api
+dokku postgres:link api api</code></pre><p>I called the database with the same name as my dokku app <code>api</code>  for simplicity. The <code>postgres:link</code> comman sets DATABASE_URL .env variable with a connection string to your database.</p><p>If you need to have a Redis plugin you can create and link it the same way (after <a href="https://github.com/dokku/dokku-redis?ref=okhlopkov.com">installation</a>):</p><pre><code>dokku redis:create api
+dokku redis:link api api</code></pre><p>Redis will create .env called <code>REDIS_URL</code>. Cool, huh?</p><h3 id="6-attach-a-domain-to-an-app">6. Attach a domain to an app</h3><p>If you want your api to run on <code>api.yourdomain.com</code> first of all you need to open your DNS provider (where you have bought your domain) and create a DNS "A" record which points <code>api.yourdomain.com</code> to the IP address of your server.</p><p>I personally like to transfer the DNS nameservers to Cloudflare because it has a nice UI and cool features built-in.</p><pre><code>dokku domains:set api api.yourdomain.com</code></pre><p>If you need to sercure your backend with https, check <a href="https://github.com/dokku/dokku-letsencrypt?ref=okhlopkov.com">dokku-letsencrypt</a> plugin.</p><h3 id="7-set-sshprivatekey-in-github-repo">7. Set SSH_PRIVATE_KEY in Github repo</h3><p>Open your Github repo's settings and set the SSH_PRIVATE_KEY in Settings -&gt; Secrets and Variables -&gt; Actions. You need to specify the private key which has the ssh access to the server. Github Actions worker will connect to your server and trigger the deploy, as simple as that.</p><h3 id="8-create-github-actions-workflow-file"></li><li>8. Create Github Actions workflow file</h3><p>There are multiple Github Actions plugins for Dokku available but I like to use <a href="https://github.com/ffmemes/ff-backend/blob/main/.github/workflows/staging.yml?ref=okhlopkov.com">this one</a>. Copy it to <code>.github/workflows/dokku.yml</code> of your repo and specify your machine host &amp; dokku app name inside.</li></ul><h3 id="9-send-a-commit-and-check-github-actions-for-deployment-logs">9. Send a commit  and check Github Actions for deployment logs.</h3><p>~~ viola ~~</p><p>~~~ you've dome a great job ~~~</p><p>Please share this page with your tech friends.</p><p>My links:</p><ul><li><a href="https://linkedin.com/in/danokhlopkov?ref=okhlopkov.com">linkedin.com/in/danokhlopkov</a></li><li><a href="https://twitter.com/danokhlopkov?ref=okhlopkov.com">twitter.com/danokhlopkov</a></li><li><a href="https://t.me/danokhlopkov?ref=okhlopkov.com">t.me/danokhlopkov</a></li></ul></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

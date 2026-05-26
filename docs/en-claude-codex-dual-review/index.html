@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Claude Code + Codex Dual Review: How Two AI Agents Cross-Check Each Other's Plans</title>
+    <meta name="description" content="How to set up cross-validation between Claude Code and OpenAI Codex via MCP. Step-by-step Dual Review protocol with prompt examples." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/en-claude-codex-dual-review/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/claude-codex-dual-review/" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/en-claude-codex-dual-review/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/en-claude-codex-dual-review/" />
+    <link rel="alternate" type="text/markdown" href="/article-en-claude-codex-dual-review.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Claude Code + Codex Dual Review: How Two AI Agents Cross-Check Each Other's Plans" />
+    <meta property="og:description" content="How to set up cross-validation between Claude Code and OpenAI Codex via MCP. Step-by-step Dual Review protocol with prompt examples." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/en-claude-codex-dual-review/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/02/en-claude-codex-dual-review-2.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Claude Code + Codex Dual Review: How Two AI Agents Cross-Check Each Other's Plans" />
+    <meta name="twitter:description" content="How to set up cross-validation between Claude Code and OpenAI Codex via MCP. Step-by-step Dual Review protocol with prompt examples." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/02/en-claude-codex-dual-review-2.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/en-claude-codex-dual-review/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/en-claude-codex-dual-review/#article-content",
+  "headline": "Claude Code + Codex Dual Review: How Two AI Agents Cross-Check Each Other's Plans",
+  "description": "How to set up cross-validation between Claude Code and OpenAI Codex via MCP. Step-by-step Dual Review protocol with prompt examples.",
+  "datePublished": "2026-02-19",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/02/en-claude-codex-dual-review-2.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/en-claude-codex-dual-review/"
+  },
+  "url": "https://okhlopkov.com/en-claude-codex-dual-review/#article-content",
+  "inLanguage": "en",
+  "articleSection": "Blog",
+  "text": "👨 Claude + Codex combo: Dual Review 👩 Why Use Two AI Agents Together? Turns out I have 2 subscriptions: Claude Code at $100 and ChatGPT at $20. Didn't want Codex sitting idle, so I started researching combos. @vlad_shlapakov suggested: you can connect Codex as a tool via codex MCP. How to Set Up Dual Review in Claude Code Paste this into your CLAUDE.md and at the end of every plan mode, your plan gets sent to Codex for cross-review. Step 1: First Codex Call mcp__codex__codex( prompt: \"Review this implementation plan. ## Plan [plan contents] ## Questions 1. Are there gaps in the plan? 2. What could go wrong? 3. Is there a better approach? Return JSON: {verdict: APPROVED|NEEDS_REVISION, concerns, suggestions, missedCases}\", approval-policy: \"never\", sandbox: \"read-only\" ) Step 2: Handle Response APPROVED → ExitPlanMode NEEDS_REVISION → Accept/Reject suggestions → codex-reply with updated plan Step 3: Exit Conditions verdict: APPROVED Consensus reached (no new blocking concerns) Max 3 cycles → present final plan to user with discussion history Pro Tips Don't want to bloat your Claude.md ? Save it in a separate file and reference it with 1 line. Misha even turned it into a skill. Does It Actually Help? I love that now different agents check each other's work, often debating back and forth, increasing \"useful work\" time. Hard to say definitively if it's better, but I've definitely noticed my manual corrections are decreasing. I especially like using this not for coding tasks, but more for creative ones. Especially when the project already has tons of notes, specs, and docs in .txt files.",
+  "articleBody": "👨 Claude + Codex combo: Dual Review 👩 Why Use Two AI Agents Together? Turns out I have 2 subscriptions: Claude Code at $100 and ChatGPT at $20. Didn't want Codex sitting idle, so I started researching combos. @vlad_shlapakov suggested: you can connect Codex as a tool via codex MCP. How to Set Up Dual Review in Claude Code Paste this into your CLAUDE.md and at the end of every plan mode, your plan gets sent to Codex for cross-review. Step 1: First Codex Call mcp__codex__codex( prompt: \"Review this implementation plan. ## Plan [plan contents] ## Questions 1. Are there gaps in the plan? 2. What could go wrong? 3. Is there a better approach? Return JSON: {verdict: APPROVED|NEEDS_REVISION, concerns, suggestions, missedCases}\", approval-policy: \"never\", sandbox: \"read-only\" ) Step 2: Handle Response APPROVED → ExitPlanMode NEEDS_REVISION → Accept/Reject suggestions → codex-reply with updated plan Step 3: Exit Conditions verdict: APPROVED Consensus reached (no new blocking concerns) Max 3 cycles → present final plan to user with discussion history Pro Tips Don't want to bloat your Claude.md ? Save it in a separate file and reference it with 1 line. Misha even turned it into a skill. Does It Actually Help? I love that now different agents check each other's work, often debating back and forth, increasing \"useful work\" time. Hard to say definitively if it's better, but I've definitely noticed my manual corrections are decreasing. I especially like using this not for coding tasks, but more for creative ones. Especially when the project already has tons of notes, specs, and docs in .txt files."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://okhlopkov.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://okhlopkov.com/en/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Claude Code + Codex Dual Review: How Two AI Agents Cross-Check Each Other's Plans",
+      "item": "https://okhlopkov.com/en-claude-codex-dual-review/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-02-19T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Blog" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Claude Code + Codex Dual Review: How Two AI Agents Cross-Check Each Other's Plans</h1>
+      <p>How to set up cross-validation between Claude Code and OpenAI Codex via MCP. Step-by-step Dual Review protocol with prompt examples.</p>
+    </header>
+    <figure><img src="/content/images/2026/02/en-claude-codex-dual-review-2.png" alt="Claude Code + Codex Dual Review: How Two AI Agents Cross-Check Each Other's Plans" /></figure>
+    <section><p>👨 Claude + Codex combo: Dual Review 👩</p><h2 id="why-use-two-ai-agents-together">Why Use Two AI Agents Together?</h2><p>Turns out I have 2 subscriptions: Claude Code at $100 and ChatGPT at $20. Didn't want Codex sitting idle, so I started researching combos. @vlad_shlapakov suggested: you can connect Codex as a tool via codex MCP.</p><h2 id="how-to-set-up-dual-review-in-claude-code">How to Set Up Dual Review in Claude Code</h2><p>Paste this into your <a href="https://t.me/danokhlopkov/1582?ref=okhlopkov.com" rel="noopener">CLAUDE.md</a> and at the end of every plan mode, your plan gets sent to Codex for cross-review.</p><h3 id="step-1-first-codex-call">Step 1: First Codex Call</h3><pre><code>mcp__codex__codex(
+  prompt: "Review this implementation plan.
+  ## Plan
+  [plan contents]
+  ## Questions
+  1. Are there gaps in the plan?
+  2. What could go wrong?
+  3. Is there a better approach?
+  Return JSON: {verdict: APPROVED|NEEDS_REVISION, concerns, suggestions, missedCases}",
+  approval-policy: "never",
+  sandbox: "read-only"
+)</code></pre><h3 id="step-2-handle-response">Step 2: Handle Response</h3><ul><li><strong>APPROVED</strong> → ExitPlanMode</li><li><strong>NEEDS_REVISION</strong> → Accept/Reject suggestions → codex-reply with updated plan</li></ul><h3 id="step-3-exit-conditions">Step 3: Exit Conditions</h3><ul><li>verdict: APPROVED</li><li>Consensus reached (no new blocking concerns)</li><li>Max 3 cycles → present final plan to user with discussion history</li></ul><h2 id="pro-tips">Pro Tips</h2><p>Don't want to bloat your <a href="https://t.me/danokhlopkov/1589?ref=okhlopkov.com" rel="noopener">Claude.md</a>? Save it in a separate file and reference it with 1 line. <a href="https://t.me/og_mishgun/313?ref=okhlopkov.com" rel="noopener">Misha</a> even turned it into a skill.</p><h2 id="does-it-actually-help">Does It Actually Help?</h2><p>I love that now different agents check each other's work, often debating back and forth, increasing "useful work" time. Hard to say definitively if it's better, but I've definitely noticed my manual corrections are decreasing.</p><p>I especially like using this not for coding tasks, but more for creative ones. Especially when the project already has tons of notes, specs, and docs in .txt files.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

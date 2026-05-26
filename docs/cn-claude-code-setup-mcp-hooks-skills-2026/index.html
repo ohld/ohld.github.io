@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Claude Code配置：MCP、Hooks、Skills — 2026真实使用</title>
+    <meta name="description" content="我每天怎么用Claude Code：MCP服务器、自定义Skills、Hooks、子代理。真实配置、真实花费。" />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/cn-claude-code-setup-mcp-hooks-skills-2026/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="zh" href="https://okhlopkov.com/cn-claude-code-setup-mcp-hooks-skills-2026/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/cn-claude-code-setup-mcp-hooks-skills-2026/" />
+    <link rel="alternate" type="text/markdown" href="/article-cn-claude-code-setup-mcp-hooks-skills-2026.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Claude Code配置：MCP、Hooks、Skills — 2026真实使用" />
+    <meta property="og:description" content="我每天怎么用Claude Code：MCP服务器、自定义Skills、Hooks、子代理。真实配置、真实花费。" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/cn-claude-code-setup-mcp-hooks-skills-2026/" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/02/cn-claude-code-setup-mcp-hooks-skills-2026.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Claude Code配置：MCP、Hooks、Skills — 2026真实使用" />
+    <meta name="twitter:description" content="我每天怎么用Claude Code：MCP服务器、自定义Skills、Hooks、子代理。真实配置、真实花费。" />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/02/cn-claude-code-setup-mcp-hooks-skills-2026.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/cn-claude-code-setup-mcp-hooks-skills-2026/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/cn-claude-code-setup-mcp-hooks-skills-2026/#article-content",
+  "headline": "Claude Code配置：MCP、Hooks、Skills — 2026真实使用",
+  "description": "我每天怎么用Claude Code：MCP服务器、自定义Skills、Hooks、子代理。真实配置、真实花费。",
+  "datePublished": "2026-02-23",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/02/cn-claude-code-setup-mcp-hooks-skills-2026.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/cn-claude-code-setup-mcp-hooks-skills-2026/"
+  },
+  "url": "https://okhlopkov.com/cn-claude-code-setup-mcp-hooks-skills-2026/#article-content",
+  "inLanguage": "zh",
+  "articleSection": "Блог",
+  "text": "Claude Code是Anthropic的AI代理，在终端里运行。能读文件、执行命令、搜索网页、调用API。你描述你要什么，它搞定怎么做。我用了4个月，这是我的真实配置——不是文档翻译，是我实际怎么用的。 Claude Code到底是什么（不是什么） Claude Code不是聊天机器人，不是自动补全。基本上就是终端里跑的 while True 循环——接任务，选工具，跑一下，看看结果怎样，想下一步该干嘛。一直循环到搞定或者卡住来问你。 工具都是真的：文件读写、 bash 、网页搜索、MCP服务器。中间没有IDE。进项目目录，打 claude ，就这样——你在跟一个能看到整个代码库并且真的能操作的东西对话。 价格：$20/月Pro计划有限额。$100/月Max无限制——我用这个。Claude Code本身没有免费版。需要Claude订阅，然后用 npm install -g @anthropic-ai/claude-code 安装。 我每天怎么用Claude Code 我的工作方式跟传统写代码完全不同。我在Telegram录一条语音，描述我需要什么。我的服务器代理（Claude Code跑在Hetzner VPS上，24/7运行）接收语音转文字，开始干活。 做数据分析，我描述问题然后代理自己去干。写Dune的SQL、拉数据、画图表、组报告。以前手写SQL加格式化要3-4小时，现在说20分钟的话加审查就行。 写代码也一样。说我要什么，代理读文件、写代码、跑测试、commit。我看diff——通常直接接受，偶尔用文字让它改改。 以前我得开15个浏览器标签：文档、Stack Overflow、GitHub issues、API参考。现在一个终端窗口。代理替我读文档。 我的CLAUDE.md——让一切运转的文件 每个Claude Code项目根目录有个 CLAUDE.md 文件。代理启动时先读它。把它想成代理的操作系统，不是prompt。 我的一部分（总共106行）： # Personal Obsidian Vault ## Architecture - **Keep files short** (&lt;150 lines). Use [[links]] for navigation. - **AI never edits raw content.** Voice notes stay pristine. ## 语音消息 收到语音时： - 如果关于具体项目 → 存到: projects/X/ai-docs/ - 如果是私人的 → 存到: personal/diary/ 然后： 1. 在原文下面加标签和项目链接 2. 提取TODO → tasks.md 3. 事实 → overview.md 这个文件路由一切。语音、任务、凭证、项目结构——代理按这些规则搞清楚东西往哪放。差不多每周更新一次，工作流变了就改。 关键理解： CLAUDE.md 不是告诉代理它 是 什么，而是告诉它你的世界怎么 运转 。项目结构、命名规范、文件位置、禁区。更详细的内容在 Building a Second Brain with Obsidian and Claude Code 。 我每天用的MCP服务器 MCP（Model Context Protocol）是让Claude Code连接外部服务的方式。在 .mcp.json 里配好服务器，代理就多了标准文件和bash之外的新能力。 我的 .mcp.json ： { \"mcpServers\": { \"coolify\": { \"command\": \"npx\", \"args\": [\"-y\", \"@masonator/coolify-mcp\"], \"env\": { \"COOLIFY_ACCESS_TOKEN\": \"${COOLIFY_ACCESS_TOKEN}\", \"COOLIFY_BASE_URL\": \"${COOLIFY_BASE_URL}\" } }, \"telegram\": { \"command\": \"python\", \"args\": [\"telegram_mcp_proxy.py\"], \"env\": {} } } } Coolify MCP ——我的部署服务器。代理能部署应用、重启服务、查看日志、管理数据库。更新代理配置时，它自己部署自己。一个能自己部署到生产环境的AI代理。 Telegram MCP ——完整的Telegram访问。读消息、发回复、管理频道。我的服务器代理用它在我睡觉时回答频道讨论里的问题。 还用 Codex MCP 做双重审查。Claude写计划，发给OpenAI的Codex做独立审查，然后整合反馈。两个AI代理互相检查。写过一篇详细的： Claude Code + Codex Dual Review 。 Skills——给代理超能力的Markdown文件 Skill是 ~/.claude/skills/ 里的 .md 文件。没有SDK，没有API，不需要编译。用markdown写指令，Claude Code在相关时候就会遵循。 我做的skill： ton-analyst ——给TON区块链分析写Dune SQL查询。知道schema，知道坑（比如必须过滤 direction = 'in' 避免重复计数），会轮询Dune API拿结果。 ton-profiler ——调查TON钱包关联。调用内部API，构建图数据，识别相关地址集群。 crosspost ——在Telegram、Ghost博客、Twitter/X上用三种语言（俄/英/中）发布内容。 ton-analyst的skill文件大约200行markdown。SQL模板、API端点、常见错误、示例查询。没有代码——只有代理解释并执行的指令。 我在创建skill时犯了很多错。如果你刚开始，先看 写Claude Code Skills的7个常见错误 。 Hooks——每个操作都会触发的代码 Hook是在Claude Code特定事件时自动触发的shell命令。commit前、工具调用后、代理碰某些文件时——基本上什么都能拦截。 我的例子——阻止代理提交敏感文件的pre-commit hook： # .claude/hooks/pre-commit.sh if git diff --cached --name-only | grep -qE '\\.(env|key|pem)$|creds\\.md'; then echo \"BLOCKED: Attempting to commit sensitive files\" exit 1 fi 正是hook让Claude Code能无人值守地运行。我的服务器代理24/7跑着，我不担心它泄露凭证或push到错误分支——因为hook不让。 子代理和团队 Claude Code能启动子代理——相当于一个会委派任务的leader。主代理把活儿拆开，分给几个worker，它们各自在自己的上下文窗口里并行干。 我用这个做区块链研究。主代理收到\"分析这个钱包最近30天的活动\"。它启动： 数据代理——在Dune上写和执行SQL 画像代理——查我们内部的钱包数据库 报告代理——拿两个输出写最终分析 三个代理并行，各有自己的上下文。主代理协调。本来要半天的事，15分钟搞定。 Team更进一步——多个命名代理共享任务列表，在同一个项目上协作。我用team做过大型研究报告：一个代理收集数据，一个写章节，一个做质量审查。 Claude Code vs Cursor——什么时候用哪个 我还装着Cursor。什么时候用什么： Cursor赢在： 快速行内编辑——看到代码，选一块，要求修改。可视化，快速。 探索不熟悉的代码库——Cursor的UI让你边点文件边听AI解释。 确切知道改什么在哪——指比描述快。 Claude Code赢在： 多工具操作——任务涉及读文件+bash+API+改代码。Cursor做不到全部。 自主工作流——后台代理、服务器部署、定时任务。Cursor需要你坐在面前。 大规模修改——重构20个文件，每次改后跑测试。终端比GUI快。 外部系统集成——MCP让代理跟Telegram对话、部署到生产、查询数据库。 我的比例：90% Claude Code，10% Cursor。但我主要做数据分析和代理编排，不做UI。如果整天写React组件，Cursor可能会赢。 费用——$100/月值不值？ Claude Pro（$20/月）给你有限的Claude Code访问。适合尝试、学习工作流、跑简单任务。忙的时候会撞到限额。 Claude Max（$100/月）取消限制。我用Pro两周后就转了，因为每天都撞到上限。$100，我从来不想用量——直接用就是了。 值不值？我工作一小时远超$50。工具每月省2小时就回本了。实际上每 天 省2小时以上。光SQL查询以前就要好几小时。数据格式化、图表、写报告——现在代理全包了。 2026年2月的真实数据：我让代理做区块链研究，产出30页报告含15个图表和40+条SQL查询。手动做要整整一周。代理一个晚上搞定，我审查输出。 「第二大脑」模式 以上所有通过一个想法串联：代理活在我的Obsidian vault里。笔记、项目文件、任务、语音转录——都在一个目录。Claude Code读它们， 知道 我在做什么、什么待办、项目怎么组织。 叫它\"第二大脑\"因为字面上就是。我把想法倒进语音，代理整理。凌晨2点有灵感，代理早上接手。项目上下文永远不会丢——它在markdown文件里，代理和我都能读。 更深层的版本——把整个职业身份打包成AI能用的格式——我在 dania.zip: Packaging Yourself for AI Agents 里写过。 到底改变了什么 4个月后，最大的变化不是效率。是我不再切换上下文了。以前在SQL编辑器、终端、浏览器、Slack、Notion和代码编辑器之间来回跳。现在坐在一个终端前描述需求，代理搞定剩下的。 不是写更少的代码——大多数任务我 压根不 写代码了。代理写，我审查。工作从\"敲代码的人\"变成\"知道该造什么、能判断对不对的人\"。 完整工作流详解看 我的工作流文章 。Obsidian集成看 第二大脑文章 。Skill开发看 这里 。 Daniil Okhlopkov — TON Foundation数据分析负责人。搭建AI代理工作流、区块链分析工具，并记录这一切。 Telegram · Twitter/X · YouTube · Instagram · 小红书",
+  "articleBody": "Claude Code是Anthropic的AI代理，在终端里运行。能读文件、执行命令、搜索网页、调用API。你描述你要什么，它搞定怎么做。我用了4个月，这是我的真实配置——不是文档翻译，是我实际怎么用的。 Claude Code到底是什么（不是什么） Claude Code不是聊天机器人，不是自动补全。基本上就是终端里跑的 while True 循环——接任务，选工具，跑一下，看看结果怎样，想下一步该干嘛。一直循环到搞定或者卡住来问你。 工具都是真的：文件读写、 bash 、网页搜索、MCP服务器。中间没有IDE。进项目目录，打 claude ，就这样——你在跟一个能看到整个代码库并且真的能操作的东西对话。 价格：$20/月Pro计划有限额。$100/月Max无限制——我用这个。Claude Code本身没有免费版。需要Claude订阅，然后用 npm install -g @anthropic-ai/claude-code 安装。 我每天怎么用Claude Code 我的工作方式跟传统写代码完全不同。我在Telegram录一条语音，描述我需要什么。我的服务器代理（Claude Code跑在Hetzner VPS上，24/7运行）接收语音转文字，开始干活。 做数据分析，我描述问题然后代理自己去干。写Dune的SQL、拉数据、画图表、组报告。以前手写SQL加格式化要3-4小时，现在说20分钟的话加审查就行。 写代码也一样。说我要什么，代理读文件、写代码、跑测试、commit。我看diff——通常直接接受，偶尔用文字让它改改。 以前我得开15个浏览器标签：文档、Stack Overflow、GitHub issues、API参考。现在一个终端窗口。代理替我读文档。 我的CLAUDE.md——让一切运转的文件 每个Claude Code项目根目录有个 CLAUDE.md 文件。代理启动时先读它。把它想成代理的操作系统，不是prompt。 我的一部分（总共106行）： # Personal Obsidian Vault ## Architecture - **Keep files short** (&lt;150 lines). Use [[links]] for navigation. - **AI never edits raw content.** Voice notes stay pristine. ## 语音消息 收到语音时： - 如果关于具体项目 → 存到: projects/X/ai-docs/ - 如果是私人的 → 存到: personal/diary/ 然后： 1. 在原文下面加标签和项目链接 2. 提取TODO → tasks.md 3. 事实 → overview.md 这个文件路由一切。语音、任务、凭证、项目结构——代理按这些规则搞清楚东西往哪放。差不多每周更新一次，工作流变了就改。 关键理解： CLAUDE.md 不是告诉代理它 是 什么，而是告诉它你的世界怎么 运转 。项目结构、命名规范、文件位置、禁区。更详细的内容在 Building a Second Brain with Obsidian and Claude Code 。 我每天用的MCP服务器 MCP（Model Context Protocol）是让Claude Code连接外部服务的方式。在 .mcp.json 里配好服务器，代理就多了标准文件和bash之外的新能力。 我的 .mcp.json ： { \"mcpServers\": { \"coolify\": { \"command\": \"npx\", \"args\": [\"-y\", \"@masonator/coolify-mcp\"], \"env\": { \"COOLIFY_ACCESS_TOKEN\": \"${COOLIFY_ACCESS_TOKEN}\", \"COOLIFY_BASE_URL\": \"${COOLIFY_BASE_URL}\" } }, \"telegram\": { \"command\": \"python\", \"args\": [\"telegram_mcp_proxy.py\"], \"env\": {} } } } Coolify MCP ——我的部署服务器。代理能部署应用、重启服务、查看日志、管理数据库。更新代理配置时，它自己部署自己。一个能自己部署到生产环境的AI代理。 Telegram MCP ——完整的Telegram访问。读消息、发回复、管理频道。我的服务器代理用它在我睡觉时回答频道讨论里的问题。 还用 Codex MCP 做双重审查。Claude写计划，发给OpenAI的Codex做独立审查，然后整合反馈。两个AI代理互相检查。写过一篇详细的： Claude Code + Codex Dual Review 。 Skills——给代理超能力的Markdown文件 Skill是 ~/.claude/skills/ 里的 .md 文件。没有SDK，没有API，不需要编译。用markdown写指令，Claude Code在相关时候就会遵循。 我做的skill： ton-analyst ——给TON区块链分析写Dune SQL查询。知道schema，知道坑（比如必须过滤 direction = 'in' 避免重复计数），会轮询Dune API拿结果。 ton-profiler ——调查TON钱包关联。调用内部API，构建图数据，识别相关地址集群。 crosspost ——在Telegram、Ghost博客、Twitter/X上用三种语言（俄/英/中）发布内容。 ton-analyst的skill文件大约200行markdown。SQL模板、API端点、常见错误、示例查询。没有代码——只有代理解释并执行的指令。 我在创建skill时犯了很多错。如果你刚开始，先看 写Claude Code Skills的7个常见错误 。 Hooks——每个操作都会触发的代码 Hook是在Claude Code特定事件时自动触发的shell命令。commit前、工具调用后、代理碰某些文件时——基本上什么都能拦截。 我的例子——阻止代理提交敏感文件的pre-commit hook： # .claude/hooks/pre-commit.sh if git diff --cached --name-only | grep -qE '\\.(env|key|pem)$|creds\\.md'; then echo \"BLOCKED: Attempting to commit sensitive files\" exit 1 fi 正是hook让Claude Code能无人值守地运行。我的服务器代理24/7跑着，我不担心它泄露凭证或push到错误分支——因为hook不让。 子代理和团队 Claude Code能启动子代理——相当于一个会委派任务的leader。主代理把活儿拆开，分给几个worker，它们各自在自己的上下文窗口里并行干。 我用这个做区块链研究。主代理收到\"分析这个钱包最近30天的活动\"。它启动： 数据代理——在Dune上写和执行SQL 画像代理——查我们内部的钱包数据库 报告代理——拿两个输出写最终分析 三个代理并行，各有自己的上下文。主代理协调。本来要半天的事，15分钟搞定。 Team更进一步——多个命名代理共享任务列表，在同一个项目上协作。我用team做过大型研究报告：一个代理收集数据，一个写章节，一个做质量审查。 Claude Code vs Cursor——什么时候用哪个 我还装着Cursor。什么时候用什么： Cursor赢在： 快速行内编辑——看到代码，选一块，要求修改。可视化，快速。 探索不熟悉的代码库——Cursor的UI让你边点文件边听AI解释。 确切知道改什么在哪——指比描述快。 Claude Code赢在： 多工具操作——任务涉及读文件+bash+API+改代码。Cursor做不到全部。 自主工作流——后台代理、服务器部署、定时任务。Cursor需要你坐在面前。 大规模修改——重构20个文件，每次改后跑测试。终端比GUI快。 外部系统集成——MCP让代理跟Telegram对话、部署到生产、查询数据库。 我的比例：90% Claude Code，10% Cursor。但我主要做数据分析和代理编排，不做UI。如果整天写React组件，Cursor可能会赢。 费用——$100/月值不值？ Claude Pro（$20/月）给你有限的Claude Code访问。适合尝试、学习工作流、跑简单任务。忙的时候会撞到限额。 Claude Max（$100/月）取消限制。我用Pro两周后就转了，因为每天都撞到上限。$100，我从来不想用量——直接用就是了。 值不值？我工作一小时远超$50。工具每月省2小时就回本了。实际上每 天 省2小时以上。光SQL查询以前就要好几小时。数据格式化、图表、写报告——现在代理全包了。 2026年2月的真实数据：我让代理做区块链研究，产出30页报告含15个图表和40+条SQL查询。手动做要整整一周。代理一个晚上搞定，我审查输出。 「第二大脑」模式 以上所有通过一个想法串联：代理活在我的Obsidian vault里。笔记、项目文件、任务、语音转录——都在一个目录。Claude Code读它们， 知道 我在做什么、什么待办、项目怎么组织。 叫它\"第二大脑\"因为字面上就是。我把想法倒进语音，代理整理。凌晨2点有灵感，代理早上接手。项目上下文永远不会丢——它在markdown文件里，代理和我都能读。 更深层的版本——把整个职业身份打包成AI能用的格式——我在 dania.zip: Packaging Yourself for AI Agents 里写过。 到底改变了什么 4个月后，最大的变化不是效率。是我不再切换上下文了。以前在SQL编辑器、终端、浏览器、Slack、Notion和代码编辑器之间来回跳。现在坐在一个终端前描述需求，代理搞定剩下的。 不是写更少的代码——大多数任务我 压根不 写代码了。代理写，我审查。工作从\"敲代码的人\"变成\"知道该造什么、能判断对不对的人\"。 完整工作流详解看 我的工作流文章 。Obsidian集成看 第二大脑文章 。Skill开发看 这里 。 Daniil Okhlopkov — TON Foundation数据分析负责人。搭建AI代理工作流、区块链分析工具，并记录这一切。 Telegram · Twitter/X · YouTube · Instagram · 小红书"
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://okhlopkov.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Блог",
+      "item": "https://okhlopkov.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Claude Code配置：MCP、Hooks、Skills — 2026真实使用",
+      "item": "https://okhlopkov.com/cn-claude-code-setup-mcp-hooks-skills-2026/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-02-23T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Блог" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Claude Code配置：MCP、Hooks、Skills — 2026真实使用</h1>
+      <p>我每天怎么用Claude Code：MCP服务器、自定义Skills、Hooks、子代理。真实配置、真实花费。</p>
+    </header>
+    <figure><img src="/content/images/2026/02/cn-claude-code-setup-mcp-hooks-skills-2026.png" alt="Claude Code配置：MCP、Hooks、Skills — 2026真实使用" /></figure>
+    <section><p>Claude Code是Anthropic的AI代理，在终端里运行。能读文件、执行命令、搜索网页、调用API。你描述你要什么，它搞定怎么做。我用了4个月，这是我的真实配置——不是文档翻译，是我实际怎么用的。</p><h2 id="claude-code%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%88%E4%B8%8D%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%89">Claude Code到底是什么（不是什么）</h2><p>Claude Code不是聊天机器人，不是自动补全。基本上就是终端里跑的<code>while True</code>循环——接任务，选工具，跑一下，看看结果怎样，想下一步该干嘛。一直循环到搞定或者卡住来问你。</p><p>工具都是真的：文件读写、<code>bash</code>、网页搜索、MCP服务器。中间没有IDE。进项目目录，打<code>claude</code>，就这样——你在跟一个能看到整个代码库并且真的能操作的东西对话。</p><p>价格：$20/月Pro计划有限额。$100/月Max无限制——我用这个。Claude Code本身没有免费版。需要Claude订阅，然后用<code>npm install -g @anthropic-ai/claude-code</code>安装。</p><h2 id="%E6%88%91%E6%AF%8F%E5%A4%A9%E6%80%8E%E4%B9%88%E7%94%A8claude-code">我每天怎么用Claude Code</h2><p>我的工作方式跟传统写代码完全不同。我在Telegram录一条语音，描述我需要什么。我的服务器代理（Claude Code跑在Hetzner VPS上，24/7运行）接收语音转文字，开始干活。</p><p>做数据分析，我描述问题然后代理自己去干。写Dune的SQL、拉数据、画图表、组报告。以前手写SQL加格式化要3-4小时，现在说20分钟的话加审查就行。</p><p>写代码也一样。说我要什么，代理读文件、写代码、跑测试、commit。我看diff——通常直接接受，偶尔用文字让它改改。</p><p>以前我得开15个浏览器标签：文档、Stack Overflow、GitHub issues、API参考。现在一个终端窗口。代理替我读文档。</p><h2 id="%E6%88%91%E7%9A%84claudemd%E2%80%94%E2%80%94%E8%AE%A9%E4%B8%80%E5%88%87%E8%BF%90%E8%BD%AC%E7%9A%84%E6%96%87%E4%BB%B6">我的CLAUDE.md——让一切运转的文件</h2><p>每个Claude Code项目根目录有个<code>CLAUDE.md</code>文件。代理启动时先读它。把它想成代理的操作系统，不是prompt。</p><p>我的一部分（总共106行）：</p><pre><code># Personal Obsidian Vault
+
+## Architecture
+- **Keep files short** (&lt;150 lines). Use [[links]] for navigation.
+- **AI never edits raw content.** Voice notes stay pristine.
+
+## 语音消息
+收到语音时：
+- 如果关于具体项目 → 存到: projects/X/ai-docs/
+- 如果是私人的 → 存到: personal/diary/
+
+然后：
+1. 在原文下面加标签和项目链接
+2. 提取TODO → tasks.md
+3. 事实 → overview.md</code></pre><p>这个文件路由一切。语音、任务、凭证、项目结构——代理按这些规则搞清楚东西往哪放。差不多每周更新一次，工作流变了就改。</p><p>关键理解：<code>CLAUDE.md</code>不是告诉代理它<em>是</em>什么，而是告诉它你的世界怎么<em>运转</em>。项目结构、命名规范、文件位置、禁区。更详细的内容在<a href="/en-second-brain-obsidian-claude-code-assistant/">Building a Second Brain with Obsidian and Claude Code</a>。</p><h2 id="%E6%88%91%E6%AF%8F%E5%A4%A9%E7%94%A8%E7%9A%84mcp%E6%9C%8D%E5%8A%A1%E5%99%A8">我每天用的MCP服务器</h2><p>MCP（Model Context Protocol）是让Claude Code连接外部服务的方式。在<code>.mcp.json</code>里配好服务器，代理就多了标准文件和bash之外的新能力。</p><p>我的<code>.mcp.json</code>：</p><pre><code>{
+  "mcpServers": {
+    "coolify": {
+      "command": "npx",
+      "args": ["-y", "@masonator/coolify-mcp"],
+      "env": {
+        "COOLIFY_ACCESS_TOKEN": "${COOLIFY_ACCESS_TOKEN}",
+        "COOLIFY_BASE_URL": "${COOLIFY_BASE_URL}"
+      }
+    },
+    "telegram": {
+      "command": "python",
+      "args": ["telegram_mcp_proxy.py"],
+      "env": {}
+    }
+  }
+}</code></pre><p><strong>Coolify MCP</strong>——我的部署服务器。代理能部署应用、重启服务、查看日志、管理数据库。更新代理配置时，它自己部署自己。一个能自己部署到生产环境的AI代理。</p><p><strong>Telegram MCP</strong>——完整的Telegram访问。读消息、发回复、管理频道。我的服务器代理用它在我睡觉时回答频道讨论里的问题。</p><p>还用<strong>Codex MCP</strong>做双重审查。Claude写计划，发给OpenAI的Codex做独立审查，然后整合反馈。两个AI代理互相检查。写过一篇详细的：<a href="/en-claude-codex-dual-review/">Claude Code + Codex Dual Review</a>。</p><h2 id="skills%E2%80%94%E2%80%94%E7%BB%99%E4%BB%A3%E7%90%86%E8%B6%85%E8%83%BD%E5%8A%9B%E7%9A%84markdown%E6%96%87%E4%BB%B6">Skills——给代理超能力的Markdown文件</h2><p>Skill是<code>~/.claude/skills/</code>里的<code>.md</code>文件。没有SDK，没有API，不需要编译。用markdown写指令，Claude Code在相关时候就会遵循。</p><p>我做的skill：</p><ul><li><strong>ton-analyst</strong>——给TON区块链分析写Dune SQL查询。知道schema，知道坑（比如必须过滤<code>direction = 'in'</code>避免重复计数），会轮询Dune API拿结果。</li><li><strong>ton-profiler</strong>——调查TON钱包关联。调用内部API，构建图数据，识别相关地址集群。</li><li><strong>crosspost</strong>——在Telegram、Ghost博客、Twitter/X上用三种语言（俄/英/中）发布内容。</li></ul><p>ton-analyst的skill文件大约200行markdown。SQL模板、API端点、常见错误、示例查询。没有代码——只有代理解释并执行的指令。</p><p>我在创建skill时犯了很多错。如果你刚开始，先看<a href="/en-write-claude-code-skills-7-mistakes/">写Claude Code Skills的7个常见错误</a>。</p><h2 id="hooks%E2%80%94%E2%80%94%E6%AF%8F%E4%B8%AA%E6%93%8D%E4%BD%9C%E9%83%BD%E4%BC%9A%E8%A7%A6%E5%8F%91%E7%9A%84%E4%BB%A3%E7%A0%81">Hooks——每个操作都会触发的代码</h2><p>Hook是在Claude Code特定事件时自动触发的shell命令。commit前、工具调用后、代理碰某些文件时——基本上什么都能拦截。</p><p>我的例子——阻止代理提交敏感文件的pre-commit hook：</p><pre><code># .claude/hooks/pre-commit.sh
+if git diff --cached --name-only | grep -qE '\.(env|key|pem)$|creds\.md'; then
+  echo "BLOCKED: Attempting to commit sensitive files"
+  exit 1
+fi</code></pre><p>正是hook让Claude Code能无人值守地运行。我的服务器代理24/7跑着，我不担心它泄露凭证或push到错误分支——因为hook不让。</p><h2 id="%E5%AD%90%E4%BB%A3%E7%90%86%E5%92%8C%E5%9B%A2%E9%98%9F">子代理和团队</h2><p>Claude Code能启动子代理——相当于一个会委派任务的leader。主代理把活儿拆开，分给几个worker，它们各自在自己的上下文窗口里并行干。</p><p>我用这个做区块链研究。主代理收到"分析这个钱包最近30天的活动"。它启动：</p><ul><li>数据代理——在Dune上写和执行SQL</li><li>画像代理——查我们内部的钱包数据库</li><li>报告代理——拿两个输出写最终分析</li></ul><p>三个代理并行，各有自己的上下文。主代理协调。本来要半天的事，15分钟搞定。</p><p>Team更进一步——多个命名代理共享任务列表，在同一个项目上协作。我用team做过大型研究报告：一个代理收集数据，一个写章节，一个做质量审查。</p><h2 id="claude-code-vs-cursor%E2%80%94%E2%80%94%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8%E5%93%AA%E4%B8%AA">Claude Code vs Cursor——什么时候用哪个</h2><p>我还装着Cursor。什么时候用什么：</p><p><strong>Cursor赢在：</strong></p><ul><li>快速行内编辑——看到代码，选一块，要求修改。可视化，快速。</li><li>探索不熟悉的代码库——Cursor的UI让你边点文件边听AI解释。</li><li>确切知道改什么在哪——指比描述快。</li></ul><p><strong>Claude Code赢在：</strong></p><ul><li>多工具操作——任务涉及读文件+bash+API+改代码。Cursor做不到全部。</li><li>自主工作流——后台代理、服务器部署、定时任务。Cursor需要你坐在面前。</li><li>大规模修改——重构20个文件，每次改后跑测试。终端比GUI快。</li><li>外部系统集成——MCP让代理跟Telegram对话、部署到生产、查询数据库。</li></ul><p>我的比例：90% Claude Code，10% Cursor。但我主要做数据分析和代理编排，不做UI。如果整天写React组件，Cursor可能会赢。</p><h2 id="%E8%B4%B9%E7%94%A8%E2%80%94%E2%80%94100%E6%9C%88%E5%80%BC%E4%B8%8D%E5%80%BC%EF%BC%9F">费用——$100/月值不值？</h2><p>Claude Pro（$20/月）给你有限的Claude Code访问。适合尝试、学习工作流、跑简单任务。忙的时候会撞到限额。</p><p>Claude Max（$100/月）取消限制。我用Pro两周后就转了，因为每天都撞到上限。$100，我从来不想用量——直接用就是了。</p><p>值不值？我工作一小时远超$50。工具每月省2小时就回本了。实际上每<em>天</em>省2小时以上。光SQL查询以前就要好几小时。数据格式化、图表、写报告——现在代理全包了。</p><p>2026年2月的真实数据：我让代理做区块链研究，产出30页报告含15个图表和40+条SQL查询。手动做要整整一周。代理一个晚上搞定，我审查输出。</p><h2 id="%E3%80%8C%E7%AC%AC%E4%BA%8C%E5%A4%A7%E8%84%91%E3%80%8D%E6%A8%A1%E5%BC%8F">「第二大脑」模式</h2><p>以上所有通过一个想法串联：代理活在我的Obsidian vault里。笔记、项目文件、任务、语音转录——都在一个目录。Claude Code读它们，<em>知道</em>我在做什么、什么待办、项目怎么组织。</p><p>叫它"第二大脑"因为字面上就是。我把想法倒进语音，代理整理。凌晨2点有灵感，代理早上接手。项目上下文永远不会丢——它在markdown文件里，代理和我都能读。</p><p>更深层的版本——把整个职业身份打包成AI能用的格式——我在<a href="/dania-zip-packaging-yourself-for-ai/">dania.zip: Packaging Yourself for AI Agents</a>里写过。</p><h2 id="%E5%88%B0%E5%BA%95%E6%94%B9%E5%8F%98%E4%BA%86%E4%BB%80%E4%B9%88">到底改变了什么</h2><p>4个月后，最大的变化不是效率。是我不再切换上下文了。以前在SQL编辑器、终端、浏览器、Slack、Notion和代码编辑器之间来回跳。现在坐在一个终端前描述需求，代理搞定剩下的。</p><p>不是写更少的代码——大多数任务我<em>压根不</em>写代码了。代理写，我审查。工作从"敲代码的人"变成"知道该造什么、能判断对不对的人"。</p><p>完整工作流详解看<a href="/claude-code-workflow-2026/">我的工作流文章</a>。Obsidian集成看<a href="/en-second-brain-obsidian-claude-code-assistant/">第二大脑文章</a>。Skill开发看<a href="/en-write-claude-code-skills-7-mistakes/">这里</a>。</p><hr><p><em>Daniil Okhlopkov — TON Foundation数据分析负责人。搭建AI代理工作流、区块链分析工具，并记录这一切。</em></p><p><a href="https://t.me/danokhlopkov?ref=okhlopkov.com">Telegram</a> · <a href="https://x.com/danokhlopkov?ref=okhlopkov.com">Twitter/X</a> · <a href="https://youtube.com/@danokhlopkov?ref=okhlopkov.com">YouTube</a> · <a href="https://instagram.com/d7733o?ref=okhlopkov.com">Instagram</a> · <a href="https://www.xiaohongshu.com/user/profile/6973c8c800000000260016ce?ref=okhlopkov.com">小红书</a></p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>

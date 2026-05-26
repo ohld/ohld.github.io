@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Compaction в Claude Code: как работает сжатие контекста</title>
+    <meta name="description" content="Как работает compaction в Claude Code. Кастомные промпты сжатия, что теряется и как сохранить важный контекст." />
+    <meta name="robots" content="index, follow" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://telegram.org https://www.googletagmanager.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://api.telegram.org https://ohldbot.swanrate.com https://www.google-analytics.com https://www.google.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru wss://mc.yandex.com;" />
+    <meta name="yandex-verification" content="1b82de56693018c1" />
+    <meta name="yandex-verification" content="3553f1209d48d2c4" />
+    <meta name="yandex-verification" content="46f37b41341c75f5" />
+    <link rel="canonical" href="https://okhlopkov.com/claude-code-compaction-kak-rabotaet/" />
+    <link rel="icon" href="/favicon-120.png" type="image/png" sizes="120x120" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="alternate" hreflang="ru" href="https://okhlopkov.com/claude-code-compaction-kak-rabotaet/" />
+    <link rel="alternate" hreflang="en" href="https://okhlopkov.com/claude-code-compaction-explained/" />
+    <link rel="alternate" hreflang="x-default" href="https://okhlopkov.com/claude-code-compaction-kak-rabotaet/" />
+    <link rel="alternate" type="text/markdown" href="/article-claude-code-compaction-kak-rabotaet.md" /><!-- alternate-md -->
+    <meta property="og:title" content="Compaction в Claude Code: как работает сжатие контекста" />
+    <meta property="og:description" content="Как работает compaction в Claude Code. Кастомные промпты сжатия, что теряется и как сохранить важный контекст." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://okhlopkov.com/claude-code-compaction-kak-rabotaet/" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:image" content="https://okhlopkov.com/content/images/2026/03/claude-code-compaction-kak-rabotaet.png" />
+    <meta property="og:image:alt" content="Даниил Охлопков" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Compaction в Claude Code: как работает сжатие контекста" />
+    <meta name="twitter:description" content="Как работает compaction в Claude Code. Кастомные промпты сжатия, что теряется и как сохранить важный контекст." />
+    <meta name="twitter:image" content="https://okhlopkov.com/content/images/2026/03/claude-code-compaction-kak-rabotaet.png" />
+    <meta name="twitter:image:alt" content="Даниил Охлопков" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://okhlopkov.com/#person",
+      "name": "Даниил Охлопков",
+      "alternateName": "Daniil Okhlopkov",
+      "description": "Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Forbes 30 Under 30 Russia (2022). Бывший CTO Via Protocol ($1.5B annual volume), фаундер InstaBot и Shazam-ботсетей (13.7M юзеров).",
+      "jobTitle": "Head of Analytics",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TON Foundation",
+        "url": "https://ton.org"
+      },
+      "url": "https://okhlopkov.com/",
+      "image": "https://github.com/ohld.png",
+      "award": "Forbes 30 Under 30 Russia, 2022",
+      "sameAs": [
+        "https://t.me/danokhlopkov",
+        "https://x.com/danokhlopkov",
+        "https://github.com/ohld",
+        "https://okhlopkov.com",
+        "https://youtube.com/@danokhlopkov",
+        "https://instagram.com/d7733o",
+        "https://www.linkedin.com/in/danokhlopkov/",
+        "https://habr.com/ru/users/danokhlopkov/"
+      ],
+      "knowsAbout": [
+        "AI Agents",
+        "Blockchain Analytics",
+        "TON",
+        "Telegram Bots",
+        "Data Engineering",
+        "x402 Agent Economy"
+      ],
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Moscow Institute of Physics and Technology"
+      },
+      "mainEntityOfPage": "https://okhlopkov.com/claude-code-compaction-kak-rabotaet/"
+    }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-9Z5T725JJD');
+    </script>
+    <script>
+      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+      ym(46266270, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+      });
+    </script>
+    <script>
+      // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
+      // Restores the real path that the user requested before the 404 redirect.
+      (function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function (s) {
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, '',
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+    </script>
+
+    <script type="module" crossorigin src="/assets/index-BymIJBZ8.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DMTajxZJ.css">
+  <script id="page-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://okhlopkov.com/claude-code-compaction-kak-rabotaet/#article-content",
+  "headline": "Compaction в Claude Code: как работает сжатие контекста",
+  "description": "Как работает compaction в Claude Code. Кастомные промпты сжатия, что теряется и как сохранить важный контекст.",
+  "datePublished": "2026-03-31",
+  "dateModified": "2026-05-25T00:00:00+03:00",
+  "author": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Даниил Охлопков",
+    "alternateName": "Daniil Okhlopkov",
+    "url": "https://okhlopkov.com/"
+  },
+  "image": [
+    "https://okhlopkov.com/content/images/2026/03/claude-code-compaction-kak-rabotaet.png"
+  ],
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://okhlopkov.com/claude-code-compaction-kak-rabotaet/"
+  },
+  "url": "https://okhlopkov.com/claude-code-compaction-kak-rabotaet/#article-content",
+  "inLanguage": "ru",
+  "articleSection": "Блог",
+  "text": "У Claude Code есть скрытая механика, о которой мало кто задумывается, пока не потеряет из-за неё час работы. Compaction — автоматическое сжатие контекста, когда разговор подходит к лимиту токенов. Я столкнулся с этим, когда мой агент на 200-й минуте сессии \"забыл\" критическое правило из начала диалога. Стал разбираться — и вот что выяснил. Что такое compaction и зачем оно нужно Claude Code работает в терминале и ведёт длинные сессии. В отличие от ChatGPT, где каждое сообщение — отдельный запрос, Claude Code накапливает контекст: файлы, которые прочитал, команды, которые выполнил, результаты grep и diff. Всё это складывается в один огромный промпт. Проблема: у моделей есть лимит контекстного окна. У Claude Sonnet — 200K токенов, у Opus — до 1M. Но даже миллион токенов заканчивается, если агент активно работает с кодовой базой. Compaction — это механизм, который сжимает историю разговора, когда контекст приближается к ~95% лимита. По сути, Claude Code берёт всю текущую беседу, отправляет её в отдельный вызов модели с промптом \"сожми это в ключевые факты\" и заменяет полную историю на сжатое саммари. Ты этого не видишь — просто в какой-то момент агент начинает работать с \"памятью\" о прошлом, а не с полной записью. Что сохраняется, а что теряется По моему опыту, compaction хорошо сохраняет: Текущую задачу и её контекст — над чем работаем прямо сейчас Имена файлов, которые недавно редактировались Последние ошибки и их решения Общую архитектуру проекта А вот что регулярно теряется: Инструкции из начала сессии — \"не трогай этот файл\", \"используй такой формат\" Промежуточные решения — почему выбрали подход А вместо Б Конкретные code snippets, которые обсуждались 50 сообщений назад Тонкие стилистические правила — \"не добавляй emoji\", \"пиши без Co-Authored-By\" Это логично: compaction оптимизирует под \"что делать дальше\", а не \"почему мы делали то, что делали\". Контекст принятия решений — первая жертва сжатия. Кастомный compaction prompt Claude Code позволяет переопределить промпт сжатия. Это, мб, самая недооценённая настройка. В settings.json (путь: ~/.claude/settings.json ) есть параметр: { \"compactPrompt\": \"Preserve ALL rules from CLAUDE.md verbatim. Keep file paths, error messages, and architectural decisions. Summarize tool outputs but keep their conclusions.\" } Я тестировал разные варианты. Дефолтный промпт — generic \"summarize the conversation\". Он нормально работает для коротких сессий, но для агентов, которые крутятся часами, нужно быть точнее. Мой текущий вариант: { \"compactPrompt\": \"When compacting, you MUST preserve:\\n1. All rules and constraints from CLAUDE.md and system prompt — copy them verbatim\\n2. Current task context and progress\\n3. File paths that were modified\\n4. Specific error messages and their solutions\\n5. User corrections and preferences stated during the session\\n\\nYou MAY summarize:\\n- Tool call outputs (keep conclusions, drop raw output)\\n- File contents that were read (keep what was learned, drop the text)\\n- Exploratory steps that led nowhere\" } Разница заметна. После переключения на кастомный промпт мои агенты перестали \"забывать\" правила из CLAUDE.md в длинных сессиях. CLAUDE.md vs compaction: что куда класть Главный инсайт, который я вынес за три месяца: не полагайся на compaction для критических правил . Всё, что агент обязан помнить всегда, должно жить в CLAUDE.md. CLAUDE.md загружается в каждую сессию как системный промпт. Compaction его не трогает — он вне истории разговора. Это единственное место, которое гарантированно переживёт любое сжатие. Моя стратегия: CLAUDE.md — архитектурные правила, стиль кода, запреты, credential paths, naming conventions. Всё, что актуально для любой сессии Контекст разговора — текущая задача, промежуточные результаты, обсуждения. Это ок потерять при compaction Файлы в проекте — TODO.md, ARCHITECTURE.md, notes. Агент может их перечитать, если compaction потёр контекст Правило: если ты ловишь себя на том, что повторяешь одну и ту же инструкцию агенту — вынеси её в CLAUDE.md. Это не для compaction, это для тебя. Как понять, что compaction произошёл В терминале Claude Code показывает компактный индикатор — строку вроде [context compacted] . Но если ты отвлёкся, легко пропустить. Более надёжный способ — следить за cost counter в правом нижнем углу. Резкий скачок стоимости (compaction — это отдельный API call) + сброс счётчика контекста = compaction только что случился. Ещё один признак: агент начинает переспрашивать вещи, которые вы уже обсуждали. \"В каком файле находится конфиг?\" — хотя вы этот файл редактировали 20 минут назад. Это верный сигнал, что контекст сжался и детали потерялись. Когда compaction создаёт проблемы Реальный кейс из моей практики. У меня есть server-agent — Claude Code, который крутится 24/7 на VPS и отвечает в Telegram. Агент получает сообщение, обрабатывает, ждёт следующее. Сессия может длиться часами. Проблема: после compaction агент \"забывал\" access control rules. У меня есть матрица доступа — какие файлы можно читать из какого чата. Эти правила были в начале промпта, но после сжатия модель их теряла и начинала отвечать на запросы, которые должна была блокировать. Решение: я перенёс все security rules в CLAUDE.md (точнее, в CLAUDE.local.md, который загружается поверх основного). Теперь они в системном промпте, а не в истории — compaction их не затрагивает. Практические советы ■ Настрой compactPrompt под свой workflow. Если работаешь с данными — проси сохранять SQL queries. Если пишешь статьи — проси сохранять стилистические правила ■ Держи сессии короткими , если задача позволяет. Новая сессия = чистый контекст + полный CLAUDE.md. Иногда лучше, чем длинная сессия с двумя compactions ■ Используй файлы как внешнюю память. Попроси агента записать ключевые решения в TODO.md или NOTES.md в проекте. После compaction он сможет их перечитать ■ CLAUDE.md — для всего критического. Правила, которые должны работать всегда — только туда. Не надейся, что compaction их сохранит. Подробнее о настройке CLAUDE.md я писал в гайде по настройке Claude Code ■ Тестируй compaction намеренно. Запусти длинную сессию, дождись сжатия, проверь — помнит ли агент правила из начала. Это сэкономит часы дебага потом Compaction — не баг, это необходимый компромисс. Контекстные окна растут, но пока они конечны, сжатие будет частью работы с AI-агентами. Лучше понимать, как оно работает, чем удивляться, когда агент \"забудет\" важное правило на 200-й минуте.",
+  "articleBody": "У Claude Code есть скрытая механика, о которой мало кто задумывается, пока не потеряет из-за неё час работы. Compaction — автоматическое сжатие контекста, когда разговор подходит к лимиту токенов. Я столкнулся с этим, когда мой агент на 200-й минуте сессии \"забыл\" критическое правило из начала диалога. Стал разбираться — и вот что выяснил. Что такое compaction и зачем оно нужно Claude Code работает в терминале и ведёт длинные сессии. В отличие от ChatGPT, где каждое сообщение — отдельный запрос, Claude Code накапливает контекст: файлы, которые прочитал, команды, которые выполнил, результаты grep и diff. Всё это складывается в один огромный промпт. Проблема: у моделей есть лимит контекстного окна. У Claude Sonnet — 200K токенов, у Opus — до 1M. Но даже миллион токенов заканчивается, если агент активно работает с кодовой базой. Compaction — это механизм, который сжимает историю разговора, когда контекст приближается к ~95% лимита. По сути, Claude Code берёт всю текущую беседу, отправляет её в отдельный вызов модели с промптом \"сожми это в ключевые факты\" и заменяет полную историю на сжатое саммари. Ты этого не видишь — просто в какой-то момент агент начинает работать с \"памятью\" о прошлом, а не с полной записью. Что сохраняется, а что теряется По моему опыту, compaction хорошо сохраняет: Текущую задачу и её контекст — над чем работаем прямо сейчас Имена файлов, которые недавно редактировались Последние ошибки и их решения Общую архитектуру проекта А вот что регулярно теряется: Инструкции из начала сессии — \"не трогай этот файл\", \"используй такой формат\" Промежуточные решения — почему выбрали подход А вместо Б Конкретные code snippets, которые обсуждались 50 сообщений назад Тонкие стилистические правила — \"не добавляй emoji\", \"пиши без Co-Authored-By\" Это логично: compaction оптимизирует под \"что делать дальше\", а не \"почему мы делали то, что делали\". Контекст принятия решений — первая жертва сжатия. Кастомный compaction prompt Claude Code позволяет переопределить промпт сжатия. Это, мб, самая недооценённая настройка. В settings.json (путь: ~/.claude/settings.json ) есть параметр: { \"compactPrompt\": \"Preserve ALL rules from CLAUDE.md verbatim. Keep file paths, error messages, and architectural decisions. Summarize tool outputs but keep their conclusions.\" } Я тестировал разные варианты. Дефолтный промпт — generic \"summarize the conversation\". Он нормально работает для коротких сессий, но для агентов, которые крутятся часами, нужно быть точнее. Мой текущий вариант: { \"compactPrompt\": \"When compacting, you MUST preserve:\\n1. All rules and constraints from CLAUDE.md and system prompt — copy them verbatim\\n2. Current task context and progress\\n3. File paths that were modified\\n4. Specific error messages and their solutions\\n5. User corrections and preferences stated during the session\\n\\nYou MAY summarize:\\n- Tool call outputs (keep conclusions, drop raw output)\\n- File contents that were read (keep what was learned, drop the text)\\n- Exploratory steps that led nowhere\" } Разница заметна. После переключения на кастомный промпт мои агенты перестали \"забывать\" правила из CLAUDE.md в длинных сессиях. CLAUDE.md vs compaction: что куда класть Главный инсайт, который я вынес за три месяца: не полагайся на compaction для критических правил . Всё, что агент обязан помнить всегда, должно жить в CLAUDE.md. CLAUDE.md загружается в каждую сессию как системный промпт. Compaction его не трогает — он вне истории разговора. Это единственное место, которое гарантированно переживёт любое сжатие. Моя стратегия: CLAUDE.md — архитектурные правила, стиль кода, запреты, credential paths, naming conventions. Всё, что актуально для любой сессии Контекст разговора — текущая задача, промежуточные результаты, обсуждения. Это ок потерять при compaction Файлы в проекте — TODO.md, ARCHITECTURE.md, notes. Агент может их перечитать, если compaction потёр контекст Правило: если ты ловишь себя на том, что повторяешь одну и ту же инструкцию агенту — вынеси её в CLAUDE.md. Это не для compaction, это для тебя. Как понять, что compaction произошёл В терминале Claude Code показывает компактный индикатор — строку вроде [context compacted] . Но если ты отвлёкся, легко пропустить. Более надёжный способ — следить за cost counter в правом нижнем углу. Резкий скачок стоимости (compaction — это отдельный API call) + сброс счётчика контекста = compaction только что случился. Ещё один признак: агент начинает переспрашивать вещи, которые вы уже обсуждали. \"В каком файле находится конфиг?\" — хотя вы этот файл редактировали 20 минут назад. Это верный сигнал, что контекст сжался и детали потерялись. Когда compaction создаёт проблемы Реальный кейс из моей практики. У меня есть server-agent — Claude Code, который крутится 24/7 на VPS и отвечает в Telegram. Агент получает сообщение, обрабатывает, ждёт следующее. Сессия может длиться часами. Проблема: после compaction агент \"забывал\" access control rules. У меня есть матрица доступа — какие файлы можно читать из какого чата. Эти правила были в начале промпта, но после сжатия модель их теряла и начинала отвечать на запросы, которые должна была блокировать. Решение: я перенёс все security rules в CLAUDE.md (точнее, в CLAUDE.local.md, который загружается поверх основного). Теперь они в системном промпте, а не в истории — compaction их не затрагивает. Практические советы ■ Настрой compactPrompt под свой workflow. Если работаешь с данными — проси сохранять SQL queries. Если пишешь статьи — проси сохранять стилистические правила ■ Держи сессии короткими , если задача позволяет. Новая сессия = чистый контекст + полный CLAUDE.md. Иногда лучше, чем длинная сессия с двумя compactions ■ Используй файлы как внешнюю память. Попроси агента записать ключевые решения в TODO.md или NOTES.md в проекте. После compaction он сможет их перечитать ■ CLAUDE.md — для всего критического. Правила, которые должны работать всегда — только туда. Не надейся, что compaction их сохранит. Подробнее о настройке CLAUDE.md я писал в гайде по настройке Claude Code ■ Тестируй compaction намеренно. Запусти длинную сессию, дождись сжатия, проверь — помнит ли агент правила из начала. Это сэкономит часы дебага потом Compaction — не баг, это необходимый компромисс. Контекстные окна растут, но пока они конечны, сжатие будет частью работы с AI-агентами. Лучше понимать, как оно работает, чем удивляться, когда агент \"забудет\" важное правило на 200-й минуте."
+}
+</script>
+  <script id="breadcrumb-structured-data" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Главная",
+      "item": "https://okhlopkov.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Блог",
+      "item": "https://okhlopkov.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Compaction в Claude Code: как работает сжатие контекста",
+      "item": "https://okhlopkov.com/claude-code-compaction-kak-rabotaet/"
+    }
+  ]
+}
+</script>
+    <meta property="article:published_time" content="2026-03-31T00:00:00+03:00" />
+  <meta property="article:modified_time" content="2026-05-25T00:00:00+03:00" />
+  <meta property="article:author" content="Даниил Охлопков" />
+  <meta property="article:section" content="Блог" />
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <div id="root"><article id="article-content" data-article-engine="article">
+    <header>
+      <h1>Compaction в Claude Code: как работает сжатие контекста</h1>
+      <p>Как работает compaction в Claude Code. Кастомные промпты сжатия, что теряется и как сохранить важный контекст.</p>
+    </header>
+    <figure><img src="/content/images/2026/03/claude-code-compaction-kak-rabotaet.png" alt="Compaction в Claude Code: как работает сжатие контекста" /></figure>
+    <section><p>У Claude Code есть скрытая механика, о которой мало кто задумывается, пока не потеряет из-за неё час работы. Compaction — автоматическое сжатие контекста, когда разговор подходит к лимиту токенов. Я столкнулся с этим, когда мой агент на 200-й минуте сессии "забыл" критическое правило из начала диалога. Стал разбираться — и вот что выяснил.</p><h2 id="%D1%87%D1%82%D0%BE-%D1%82%D0%B0%D0%BA%D0%BE%D0%B5-compaction-%D0%B8-%D0%B7%D0%B0%D1%87%D0%B5%D0%BC-%D0%BE%D0%BD%D0%BE-%D0%BD%D1%83%D0%B6%D0%BD%D0%BE">Что такое compaction и зачем оно нужно</h2><p>Claude Code работает в терминале и ведёт длинные сессии. В отличие от ChatGPT, где каждое сообщение — отдельный запрос, Claude Code накапливает контекст: файлы, которые прочитал, команды, которые выполнил, результаты grep и diff. Всё это складывается в один огромный промпт.</p><p>Проблема: у моделей есть лимит контекстного окна. У Claude Sonnet — 200K токенов, у Opus — до 1M. Но даже миллион токенов заканчивается, если агент активно работает с кодовой базой. Compaction — это механизм, который сжимает историю разговора, когда контекст приближается к ~95% лимита.</p><p>По сути, Claude Code берёт всю текущую беседу, отправляет её в отдельный вызов модели с промптом "сожми это в ключевые факты" и заменяет полную историю на сжатое саммари. Ты этого не видишь — просто в какой-то момент агент начинает работать с "памятью" о прошлом, а не с полной записью.</p><h2 id="%D1%87%D1%82%D0%BE-%D1%81%D0%BE%D1%85%D1%80%D0%B0%D0%BD%D1%8F%D0%B5%D1%82%D1%81%D1%8F-%D0%B0-%D1%87%D1%82%D0%BE-%D1%82%D0%B5%D1%80%D1%8F%D0%B5%D1%82%D1%81%D1%8F">Что сохраняется, а что теряется</h2><p>По моему опыту, compaction хорошо сохраняет:</p><ul class="article-inline-list"><li>Текущую задачу и её контекст — над чем работаем прямо сейчас</li><li>Имена файлов, которые недавно редактировались</li><li>Последние ошибки и их решения</li><li>Общую архитектуру проекта</li></ul><p>А вот что регулярно теряется:</p><ul class="article-inline-list"><li>Инструкции из начала сессии — "не трогай этот файл", "используй такой формат"</li><li>Промежуточные решения — почему выбрали подход А вместо Б</li><li>Конкретные code snippets, которые обсуждались 50 сообщений назад</li><li>Тонкие стилистические правила — "не добавляй emoji", "пиши без Co-Authored-By"</li></ul><p>Это логично: compaction оптимизирует под "что делать дальше", а не "почему мы делали то, что делали". Контекст принятия решений — первая жертва сжатия.</p><h2 id="%D0%BA%D0%B0%D1%81%D1%82%D0%BE%D0%BC%D0%BD%D1%8B%D0%B9-compaction-prompt">Кастомный compaction prompt</h2><p>Claude Code позволяет переопределить промпт сжатия. Это, мб, самая недооценённая настройка. В <code>settings.json</code> (путь: <code>~/.claude/settings.json</code>) есть параметр:</p><pre><code>{
+  "compactPrompt": "Preserve ALL rules from CLAUDE.md verbatim. Keep file paths, error messages, and architectural decisions. Summarize tool outputs but keep their conclusions."
+}</code></pre><p>Я тестировал разные варианты. Дефолтный промпт — generic "summarize the conversation". Он нормально работает для коротких сессий, но для агентов, которые крутятся часами, нужно быть точнее.</p><p>Мой текущий вариант:</p><pre><code>{
+  "compactPrompt": "When compacting, you MUST preserve:\n1. All rules and constraints from CLAUDE.md and system prompt — copy them verbatim\n2. Current task context and progress\n3. File paths that were modified\n4. Specific error messages and their solutions\n5. User corrections and preferences stated during the session\n\nYou MAY summarize:\n- Tool call outputs (keep conclusions, drop raw output)\n- File contents that were read (keep what was learned, drop the text)\n- Exploratory steps that led nowhere"
+}</code></pre><p>Разница заметна. После переключения на кастомный промпт мои агенты перестали "забывать" правила из CLAUDE.md в длинных сессиях.</p><h2 id="claudemd-vs-compaction-%D1%87%D1%82%D0%BE-%D0%BA%D1%83%D0%B4%D0%B0-%D0%BA%D0%BB%D0%B0%D1%81%D1%82%D1%8C">CLAUDE.md vs compaction: что куда класть</h2><p>Главный инсайт, который я вынес за три месяца: <strong>не полагайся на compaction для критических правил</strong>. Всё, что агент обязан помнить всегда, должно жить в CLAUDE.md.</p><p>CLAUDE.md загружается в каждую сессию как системный промпт. Compaction его не трогает — он вне истории разговора. Это единственное место, которое гарантированно переживёт любое сжатие.</p><p>Моя стратегия:</p><ul class="article-inline-list"><li><strong>CLAUDE.md</strong> — архитектурные правила, стиль кода, запреты, credential paths, naming conventions. Всё, что актуально для любой сессии</li><li><strong>Контекст разговора</strong> — текущая задача, промежуточные результаты, обсуждения. Это ок потерять при compaction</li><li><strong>Файлы в проекте</strong> — TODO.md, ARCHITECTURE.md, notes. Агент может их перечитать, если compaction потёр контекст</li></ul><p>Правило: если ты ловишь себя на том, что повторяешь одну и ту же инструкцию агенту — вынеси её в CLAUDE.md. Это не для compaction, это для тебя.</p><h2 id="%D0%BA%D0%B0%D0%BA-%D0%BF%D0%BE%D0%BD%D1%8F%D1%82%D1%8C-%D1%87%D1%82%D0%BE-compaction-%D0%BF%D1%80%D0%BE%D0%B8%D0%B7%D0%BE%D1%88%D1%91%D0%BB">Как понять, что compaction произошёл</h2><p>В терминале Claude Code показывает компактный индикатор — строку вроде <code>[context compacted]</code>. Но если ты отвлёкся, легко пропустить. Более надёжный способ — следить за cost counter в правом нижнем углу. Резкий скачок стоимости (compaction — это отдельный API call) + сброс счётчика контекста = compaction только что случился.</p><p>Ещё один признак: агент начинает переспрашивать вещи, которые вы уже обсуждали. "В каком файле находится конфиг?" — хотя вы этот файл редактировали 20 минут назад. Это верный сигнал, что контекст сжался и детали потерялись.</p><h2 id="%D0%BA%D0%BE%D0%B3%D0%B4%D0%B0-compaction-%D1%81%D0%BE%D0%B7%D0%B4%D0%B0%D1%91%D1%82-%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D1%8B">Когда compaction создаёт проблемы</h2><p>Реальный кейс из моей практики. У меня есть <a href="/claude-code-nastrojka-mcp-hooks-skills-2026/">server-agent</a> — Claude Code, который крутится 24/7 на VPS и отвечает в Telegram. Агент получает сообщение, обрабатывает, ждёт следующее. Сессия может длиться часами.</p><p>Проблема: после compaction агент "забывал" access control rules. У меня есть матрица доступа — какие файлы можно читать из какого чата. Эти правила были в начале промпта, но после сжатия модель их теряла и начинала отвечать на запросы, которые должна была блокировать.</p><p>Решение: я перенёс все security rules в CLAUDE.md (точнее, в CLAUDE.local.md, который загружается поверх основного). Теперь они в системном промпте, а не в истории — compaction их не затрагивает.</p><h2 id="%D0%BF%D1%80%D0%B0%D0%BA%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B5-%D1%81%D0%BE%D0%B2%D0%B5%D1%82%D1%8B">Практические советы</h2><p><strong>■</strong> <strong>Настрой compactPrompt</strong> под свой workflow. Если работаешь с данными — проси сохранять SQL queries. Если пишешь статьи — проси сохранять стилистические правила</p><p><strong>■</strong> <strong>Держи сессии короткими</strong>, если задача позволяет. Новая сессия = чистый контекст + полный CLAUDE.md. Иногда лучше, чем длинная сессия с двумя compactions</p><p><strong>■</strong> <strong>Используй файлы как внешнюю память.</strong> Попроси агента записать ключевые решения в TODO.md или NOTES.md в проекте. После compaction он сможет их перечитать</p><p><strong>■</strong> <strong>CLAUDE.md — для всего критического.</strong> Правила, которые должны работать всегда — только туда. Не надейся, что compaction их сохранит. Подробнее о настройке CLAUDE.md я писал в <a href="/claude-code-nastrojka-mcp-hooks-skills-2026/">гайде по настройке Claude Code</a></p><p><strong>■</strong> <strong>Тестируй compaction намеренно.</strong> Запусти длинную сессию, дождись сжатия, проверь — помнит ли агент правила из начала. Это сэкономит часы дебага потом</p><p>Compaction — не баг, это необходимый компромисс. Контекстные окна растут, но пока они конечны, сжатие будет частью работы с AI-агентами. Лучше понимать, как оно работает, чем удивляться, когда агент "забудет" важное правило на 200-й минуте.</p></section>
+  </article><nav><a href="/">Главная</a> · <a href="/blog/">Блог</a> · <a href="/articles/">Статьи</a> · <a href="/about/">Обо мне</a> · <a href="/en/">English</a> · <a href="/privacy/">Privacy</a></nav><footer><a href="https://t.me/danokhlopkov" rel="me">Telegram</a> · <a href="https://youtube.com/@danokhlopkov" rel="me">YouTube</a> · <a href="https://instagram.com/d7733o" rel="me">Instagram</a> · <a href="https://x.com/danokhlopkov" rel="me">X</a> · <a href="https://www.linkedin.com/in/danokhlopkov/" rel="me">LinkedIn</a> · <a href="https://github.com/ohld" rel="me">GitHub</a></footer></div>
+  </body>
+</html>
