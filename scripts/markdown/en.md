@@ -6,7 +6,7 @@
 
 I lead analytics at TON Foundation: on-chain data, research, ecosystem metrics and tools that help people understand the blockchain faster.
 
-This site is a map of my evergreen work: practical AI-agent workflows, Telegram-derived blog posts, articles and consulting context. Most new material is Russian-first, but the strongest pieces will also get English versions.
+This site is a map of my evergreen work: practical AI-agent workflows, blog notes, articles and consulting context.
 
 ## Focus
 
@@ -24,7 +24,7 @@ Bots, Mini Apps, channels, Ads and TG+TON distribution. Telegram is one of the m
 
 ## Start here
 
-If you came for AI agents, start with Articles for tutorials/comparisons and Blog for preserved posts about Codex, Claude Code, MCP, worktrees and second-brain workflows. The current material is Russian-first, but the concepts are practical and tool-first.
+If you came for AI agents, start with Articles for tutorials/comparisons and Blog for notes about Codex, Claude Code, MCP, worktrees and second-brain workflows.
 
 If you need context about my work, open About. If you want the fastest read on how I think, the post archive is still the best entry point.
 

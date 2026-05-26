@@ -266,7 +266,7 @@ const ROUTES = [
     path: '/en/articles',
     slug: 'en-articles',
     title: 'Articles — Daniil Okhlopkov',
-    description: 'English tutorials and preserved explainers by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP and automation.',
+    description: 'English tutorials and evergreen explainers by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP and automation.',
     lang: 'en',
     alternates: {
       ru: `${SITE_URL}/articles/`,
