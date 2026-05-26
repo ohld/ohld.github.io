@@ -8,7 +8,7 @@ import { useDocumentMeta } from '../useDocumentMeta'
 export function EnglishBlogIndex() {
   useDocumentMeta({
     title: 'Blog — Daniil Okhlopkov',
-    description: 'English blog posts and preserved notes by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP, data and Telegram workflows.',
+    description: 'English blog posts by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP, data and Telegram workflows.',
     canonical: absoluteUrl('/en/blog/'),
     lang: 'en',
     alternates: {
@@ -24,7 +24,7 @@ export function EnglishBlogIndex() {
         <BackButton to="/en/" />
         <h1 className="subpage-title">Blog</h1>
         <p className="subpage-subtitle">
-          English-only blog posts and preserved notes. Russian-first originals live in the RU blog.
+          Notes and field reports about AI agents, Claude Code, Codex, MCP, data and Telegram workflows.
         </p>
       </div>
 

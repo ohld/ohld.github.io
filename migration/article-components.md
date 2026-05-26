@@ -154,6 +154,10 @@ asset storage, optimization and public-repo safety.
 
 - Use one clear canonical URL per article.
 - Keep internal links inside the body, not only in footer/nav.
+- Public page copy must not expose internal editorial/migration mechanics. Avoid
+  phrases like "preserved notes", "translated when there is demand",
+  "Telegram posts turned into articles", "static migration", "legacy HTML" or
+  similar service-language on visible pages and metadata.
 - Lists and tables are good, but every generated page needs original synthesis:
   a take, tested workflow, source pack, examples or screenshots.
 - Add `BlogPosting` JSON-LD for articles.

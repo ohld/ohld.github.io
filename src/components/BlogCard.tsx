@@ -6,13 +6,21 @@ export function BlogCard({
   article,
   ctaLabel,
   tagsLabel,
+  mediaLayout = 'side',
 }: {
   article: BlogListItem
   ctaLabel: string
   tagsLabel?: string
+  mediaLayout?: 'side' | 'top'
 }) {
+  const cardClassName = [
+    'blog-card',
+    article.thumbnail ? 'blog-card-with-thumb' : 'blog-card-no-thumb',
+    article.thumbnail && mediaLayout === 'top' ? 'blog-card-image-first' : '',
+  ].filter(Boolean).join(' ')
+
   return (
-    <article className={`blog-card ${article.thumbnail ? 'blog-card-with-thumb' : 'blog-card-no-thumb'}`}>
+    <article className={cardClassName}>
       <a className="blog-card-hitarea" href={article.path} aria-label={article.title} />
       {article.thumbnail && (
         <div className="blog-card-media" aria-hidden="true">

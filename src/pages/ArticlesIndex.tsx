@@ -30,7 +30,7 @@ export function ArticlesIndex() {
 
       <main className="blog-list" aria-label="Статьи">
         {russianArticleItems.map((article) => (
-          <BlogCard article={article} ctaLabel="Читать" key={article.path} />
+          <BlogCard article={article} ctaLabel="Читать" mediaLayout="top" key={article.path} />
         ))}
       </main>
 

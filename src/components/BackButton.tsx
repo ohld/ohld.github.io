@@ -4,10 +4,13 @@ import { ArrowLeftIcon } from './Icons'
 
 interface BackButtonProps {
   to?: string
+  label?: string
 }
 
-export function BackButton({ to = '/' }: BackButtonProps = {}) {
+export function BackButton({ to = '/', label }: BackButtonProps = {}) {
   const navigate = useNavigate()
+  const visibleLabel = label || (to.startsWith('/en') ? 'Back' : 'Назад')
+
   const goBack = useCallback(() => {
     const historyState = window.history.state as { idx?: number } | null
     let hasSameOriginReferrer = false
@@ -47,7 +50,7 @@ export function BackButton({ to = '/' }: BackButtonProps = {}) {
   return (
     <button className="back-nav" onClick={goBack}>
       <ArrowLeftIcon size={18} />
-      <span>Назад</span>
+      <span>{visibleLabel}</span>
     </button>
   )
 }
