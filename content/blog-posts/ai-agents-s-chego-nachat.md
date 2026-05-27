@@ -6,6 +6,8 @@ publishedAt: 2026-05-05
 updatedAt: 2026-05-26
 readingTime: 9 мин
 tags: AI Agents, Claude Code, Codex
+coverImage: /assets/blog/ai-agents-s-chego-nachat/ai-agents-playlist-meme.webp
+coverAlt: Мем-картинка про плейлист AI-агентов
 sourceTelegramId: 1671
 primaryKeyword: ai агенты
 secondaryKeywords: ai agent; claude code; codex cli; claude code skills

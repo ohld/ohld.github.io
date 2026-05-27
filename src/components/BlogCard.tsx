@@ -1,6 +1,7 @@
 import { ArrowRightIcon } from './Icons'
 import { TopicTags } from './TopicTags'
 import type { BlogListItem } from '../blog'
+import { SITE_IMAGE } from '../site'
 
 export function BlogCard({
   article,
@@ -13,20 +14,19 @@ export function BlogCard({
   tagsLabel?: string
   mediaLayout?: 'side' | 'top'
 }) {
+  const thumbnail = article.thumbnail || SITE_IMAGE
   const cardClassName = [
     'blog-card',
-    article.thumbnail ? 'blog-card-with-thumb' : 'blog-card-no-thumb',
-    article.thumbnail && mediaLayout === 'top' ? 'blog-card-image-first' : '',
+    'blog-card-with-thumb',
+    mediaLayout === 'top' ? 'blog-card-image-first' : '',
   ].filter(Boolean).join(' ')
 
   return (
     <article className={cardClassName}>
       <a className="blog-card-hitarea" href={article.path} aria-label={article.title} />
-      {article.thumbnail && (
-        <div className="blog-card-media">
-          <img className="blog-card-thumb" src={article.thumbnail} alt={article.title} loading="lazy" />
-        </div>
-      )}
+      <div className="blog-card-media">
+        <img className="blog-card-thumb" src={thumbnail} alt={article.title} loading="lazy" />
+      </div>
       <div className="blog-card-body">
         <div className="content-card-meta">
           <span>{article.publishedAt}</span>

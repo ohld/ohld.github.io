@@ -6,6 +6,8 @@ publishedAt: 2026-05-26
 updatedAt: 2026-05-26
 readingTime: 8 мин
 tags: AI Tools, Claude Code, Productivity
+coverImage: /assets/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/phone-agent-meme.webp
+coverAlt: Мем-картинка про общение с AI-агентом с телефона
 sourceTelegramId: 1602
 primaryKeyword: claude code setup 2026
 secondaryKeywords: ai tools setup; ghostty ai; spokenly; descript mcp; cursor ai; ownyourchat

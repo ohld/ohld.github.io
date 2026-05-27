@@ -69,6 +69,7 @@ export function ArticleLayout({
     canonical: canonicalUrl,
     lang,
     image: structuredImage ? absoluteUrl(structuredImage) : undefined,
+    imageAlt: heroAlt || title,
     type: 'article',
     publishedTime: publishedAt || date,
     modifiedTime: updatedAt || date,

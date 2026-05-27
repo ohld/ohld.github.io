@@ -9,6 +9,7 @@ interface DocumentMeta {
   alternates?: Record<string, string>
   robots?: string
   image?: string
+  imageAlt?: string
   type?: 'website' | 'article'
   publishedTime?: string
   modifiedTime?: string
@@ -29,6 +30,7 @@ export function useDocumentMeta({
   alternates,
   robots = 'index, follow',
   image,
+  imageAlt,
   type = 'website',
   publishedTime,
   modifiedTime,
@@ -41,17 +43,22 @@ export function useDocumentMeta({
     document.documentElement.lang = lang
     const ogLocale = lang === 'en' ? 'en_US' : lang === 'zh' ? 'zh_CN' : 'ru_RU'
     const socialImage = image || SITE_IMAGE
+    const socialImageAlt = imageAlt || 'Даниил Охлопков'
+    const twitterCard = image ? 'summary_large_image' : 'summary'
 
     setMeta('name', 'description', description)
     setMeta('property', 'og:title', title)
     setMeta('property', 'og:description', description)
     setMeta('property', 'og:type', type)
     setMeta('property', 'og:locale', ogLocale)
+    setMeta('name', 'twitter:card', twitterCard)
     setMeta('name', 'twitter:title', title)
     setMeta('name', 'twitter:description', description)
     setMeta('name', 'robots', robots)
     setMeta('property', 'og:image', socialImage)
+    setMeta('property', 'og:image:alt', socialImageAlt)
     setMeta('name', 'twitter:image', socialImage)
+    setMeta('name', 'twitter:image:alt', socialImageAlt)
     setArticleMeta(type, publishedTime, modifiedTime, tags, section)
     setJsonLd(jsonLd)
 
@@ -74,7 +81,7 @@ export function useDocumentMeta({
         setHreflang(hrefLang, href)
       }
     }
-  }, [title, description, canonical, lang, alternates, robots, image, type, publishedTime, modifiedTime, tags, section, jsonLd])
+  }, [title, description, canonical, lang, alternates, robots, image, imageAlt, type, publishedTime, modifiedTime, tags, section, jsonLd])
 }
 
 function setMeta(attr: 'name' | 'property', key: string, content: string | undefined) {

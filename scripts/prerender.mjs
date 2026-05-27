@@ -517,6 +517,8 @@ for (const post of GENERATED_BLOG_POSTS) {
     comments: post.comments,
     reactions: post.reactions,
     heroImage: post.coverImage,
+    imageAlt: post.coverAlt || post.title,
+    ...imageMetadataForUrl(post.coverImage),
     image: absoluteImageUrl(post.coverImage) || 'https://github.com/ohld.png',
     markdown: post.body,
   })
@@ -548,6 +550,8 @@ for (const article of GENERATED_SEO_ARTICLES) {
     comments: article.comments,
     reactions: article.reactions,
     heroImage: article.coverImage,
+    imageAlt: article.coverAlt || article.title,
+    ...imageMetadataForUrl(article.coverImage),
     image: absoluteImageUrl(article.coverImage) || 'https://github.com/ohld.png',
     markdown: article.body,
   })
@@ -587,6 +591,8 @@ for (const article of IMPORTED_ARTICLES) {
     markdown: articleMarkdown(article, article.bodyHtml),
     bodyHtml: article.bodyHtml,
     heroImage: article.heroImage,
+    imageAlt: article.title,
+    ...imageMetadataForUrl(article.heroImage),
     image: absoluteImageUrl(article.heroImage) || 'https://github.com/ohld.png',
     alternates: importedArticleAlternates(canonical, article.lang || 'ru'),
   })
@@ -620,6 +626,47 @@ function jsonForHtml(data) {
 function absoluteImageUrl(url = '') {
   if (!url) return ''
   return url.startsWith('/') ? `${SITE_URL}${url}` : url
+}
+
+function imageTypeForUrl(url = '') {
+  const cleanUrl = url.split('?')[0].toLowerCase()
+  if (cleanUrl.endsWith('.webp')) return 'image/webp'
+  if (cleanUrl.endsWith('.avif')) return 'image/avif'
+  if (cleanUrl.endsWith('.png')) return 'image/png'
+  if (cleanUrl.endsWith('.jpg') || cleanUrl.endsWith('.jpeg')) return 'image/jpeg'
+  if (cleanUrl.endsWith('.gif')) return 'image/gif'
+  return undefined
+}
+
+function imageMetadataForUrl(url = '') {
+  const metadata = {
+    imageType: imageTypeForUrl(url),
+  }
+  if (!url.startsWith('/')) return metadata
+
+  const assetPath = path.join('public', decodeURI(url.replace(/^\//, '')))
+  const metaPath = assetPath.replace(/\.[^.]+$/, '.meta.json')
+  if (!fs.existsSync(metaPath)) return metadata
+
+  try {
+    const parsed = JSON.parse(fs.readFileSync(metaPath, 'utf8'))
+    const webAsset = parsed.web_asset || {}
+    if (Number.isFinite(webAsset.width)) metadata.imageWidth = webAsset.width
+    if (Number.isFinite(webAsset.height)) metadata.imageHeight = webAsset.height
+  } catch (error) {
+    console.warn(`Could not read image metadata ${metaPath}: ${error.message}`)
+  }
+
+  return metadata
+}
+
+function ogImageStructuredMeta(route) {
+  const rows = [
+    route.imageType && `<meta property="og:image:type" content="${escape(route.imageType)}" />`,
+    route.imageWidth && `<meta property="og:image:width" content="${escape(String(route.imageWidth))}" />`,
+    route.imageHeight && `<meta property="og:image:height" content="${escape(String(route.imageHeight))}" />`,
+  ].filter(Boolean)
+  return rows.length ? `${rows.map((row) => `    ${row}`).join('\n')}\n` : ''
 }
 
 const AUTHOR_SCHEMA = {
@@ -858,12 +905,13 @@ function buildFallback(title, mdBody, withArticleContentId = false) {
 function buildArticleFallback(route) {
   const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
   const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
+  const imageAlt = route.imageAlt || route.title
   return `<article id="article-content" data-article-engine="article">
     <header>
       <h1>${escape(route.title)}</h1>
       ${route.description ? `<p>${escape(route.description)}</p>` : ''}
     </header>
-    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(route.title)}" /></figure>` : ''}
+    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" /></figure>` : ''}
     <section>${route.bodyHtml || ''}</section>
   </article><nav>${nav}</nav><footer>${socials}</footer>`
 }
@@ -872,12 +920,13 @@ function buildGeneratedBlogFallback(route) {
   const article = mdToHtml(route.markdown || '')
   const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
   const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
+  const imageAlt = route.imageAlt || route.title
   return `<article id="article-content" data-article-engine="article">
     <header>
       <h1>${escape(route.title)}</h1>
       ${route.description ? `<p>${escape(route.description)}</p>` : ''}
     </header>
-    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(route.title)}" /></figure>` : ''}
+    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" /></figure>` : ''}
     <section>${article}</section>
   </article><nav>${nav}</nav><footer>${socials}</footer>`
 }
@@ -1053,6 +1102,8 @@ function rewrite(html, route) {
   const articleRoute = isArticleRoute(route)
   const ogType = articleRoute ? 'article' : 'website'
   const image = route.image || 'https://github.com/ohld.png'
+  const imageAlt = route.imageAlt || route.title || 'Даниил Охлопков'
+  const twitterCard = route.heroImage ? 'summary_large_image' : 'summary'
   const mdBody = getRouteMd(route)
   const fallback = route.kind === 'article-page'
     ? buildArticleFallback(route)
@@ -1070,9 +1121,13 @@ function rewrite(html, route) {
     .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${url}$2`)
     .replace(/(<meta property="og:locale" content=")[^"]*(")/, `$1${ogLocale}$2`)
     .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${image}$2`)
+    .replace(/(<meta property="og:image:alt" content=")[^"]*(")/, `$1${escape(imageAlt)}$2`)
+    .replace(/(<meta property="og:image:alt" content="[^"]*" \/>\n)/, `$1${ogImageStructuredMeta(route)}`)
+    .replace(/(<meta name="twitter:card" content=")[^"]*(")/, `$1${twitterCard}$2`)
     .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${escape(title)}$2`)
     .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${escape(description)}$2`)
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${image}$2`)
+    .replace(/(<meta name="twitter:image:alt" content=")[^"]*(")/, `$1${escape(imageAlt)}$2`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`)
     .replace(/<link rel="alternate" hreflang="[^"]+" href="[^"]+" \/>\n?    /g, '')
     .replace('    <link rel="alternate" type="text/markdown"', `${buildHreflang(route, url)}    <link rel="alternate" type="text/markdown"`)
