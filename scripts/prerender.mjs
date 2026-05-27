@@ -484,14 +484,15 @@ const ROUTES = [
 ]
 
 for (const post of GENERATED_BLOG_POSTS) {
+  const postLang = post.lang || 'ru'
   ROUTES.push({
     path: `/blog/${post.slug}`,
     slug: `blog-${post.slug}`,
     title: post.title,
     description: post.description,
-    lang: 'ru',
+    lang: postLang,
     alternates: {
-      ru: `${SITE_URL}/blog/${post.slug}/`,
+      [postLang]: `${SITE_URL}/blog/${post.slug}/`,
       'x-default': `${SITE_URL}/blog/${post.slug}/`,
     },
     kind: 'generated-blog-post',

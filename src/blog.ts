@@ -1,4 +1,4 @@
-import { generatedBlogItems } from './generatedBlogPosts'
+import { generatedEnglishBlogItems, generatedRussianBlogItems } from './generatedBlogPosts'
 import { importedArticleListItems } from './importedArticles'
 
 export interface BlogArticle {
@@ -28,7 +28,7 @@ export interface BlogListItem {
 }
 
 export const russianBlogItems: BlogListItem[] = [
-  ...generatedBlogItems,
+  ...generatedRussianBlogItems,
   ...importedArticleListItems([
     '/claude-code-nastrojka-mcp-hooks-skills-2026/',
     '/vtoroj-mozg-ai-assistent-obsidian-claude-code/',
@@ -87,6 +87,7 @@ export const englishArticleItems: BlogListItem[] = [
 ]
 
 export const englishBlogItems: BlogListItem[] = [
+  ...generatedEnglishBlogItems,
   ...importedArticleListItems([
     '/claude-code-setup-mcp-hooks-skills-2026/',
     '/en-second-brain-obsidian-claude-code-assistant/',

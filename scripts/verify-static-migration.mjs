@@ -148,13 +148,16 @@ const staticPages = [
     ogLocale: 'ru_RU',
     hreflangs: ['ru', 'x-default'],
   })),
-  ...generatedBlogPosts.map((post) => ({
-    path: `/blog/${post.slug}/`,
-    title: post.title,
-    lang: 'ru',
-    ogLocale: 'ru_RU',
-    hreflangs: ['ru', 'x-default'],
-  })),
+  ...generatedBlogPosts.map((post) => {
+    const lang = post.lang || 'ru'
+    return {
+      path: `/blog/${post.slug}/`,
+      title: post.title,
+      lang,
+      ogLocale: lang === 'en' ? 'en_US' : 'ru_RU',
+      hreflangs: [lang, 'x-default'],
+    }
+  }),
 ]
 
 const redirects = [
@@ -202,14 +205,16 @@ const blogArticleChecks = [
   },
 ]
 
-const generatedBlogChecks = generatedBlogPosts.map((post) => ({
-  path: `/blog/${post.slug}/`,
-  title: post.title,
-  requiredText: [
-    'Что добавилось из обсуждений',
-    'Читать ещё',
-  ],
-}))
+const generatedBlogChecks = generatedBlogPosts.map((post) => {
+  const lang = post.lang || 'ru'
+  return {
+    path: `/blog/${post.slug}/`,
+    title: post.title,
+    requiredText: lang === 'en'
+      ? ['Short version:', 'Read next']
+      : ['Что добавилось из обсуждений', 'Читать ещё'],
+  }
+})
 
 const migrationMapStaticPaths = [
   '/',
@@ -734,6 +739,9 @@ async function verifySitemap(migrationRows) {
     }))
   const actualLocs = new Set(sitemapRows.map((row) => row.loc))
   const lastmodByLoc = new Map(sitemapRows.map((row) => [row.loc, row.lastmod]))
+  const expectedLastmodByLoc = new Map(
+    generatedBlogPosts.map((post) => [canonicalUrl(`/blog/${post.slug}/`), post.updatedAt || post.publishedAt || expectedSitemapLastmod])
+  )
   const expectedLocs = new Set(
     migrationRows
       .filter((row) => row.expected_status === '200' && row.robots === 'index, follow' && row.new_path)
@@ -744,7 +752,8 @@ async function verifySitemap(migrationRows) {
   for (const loc of expectedLocs) {
     assert(actualLocs.has(loc), `/sitemap.xml: missing ${loc}`)
     const actualLastmod = lastmodByLoc.get(loc)
-    assert(actualLastmod === expectedSitemapLastmod, `/sitemap.xml: ${loc} lastmod mismatch`)
+    const expectedLastmod = expectedLastmodByLoc.get(loc) || expectedSitemapLastmod
+    assert(actualLastmod === expectedLastmod, `/sitemap.xml: ${loc} lastmod mismatch`)
   }
   for (const loc of actualLocs) {
     assert(expectedLocs.has(loc), `/sitemap.xml: unexpected ${loc}`)
