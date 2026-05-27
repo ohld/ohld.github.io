@@ -864,26 +864,34 @@ button:focus-visible,
 .article-body table {
   width: 100%;
   table-layout: fixed;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin: 20px 0;
   border: 1px solid var(--border);
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.4);
+  overflow: hidden;
+  background: rgba(26, 26, 26, 0.025);
 }
 
 .article-body th,
 .article-body td {
-  padding: 10px;
+  padding: 11px 12px;
   border-bottom: 1px solid var(--border-light);
   text-align: left;
   vertical-align: top;
   overflow-wrap: anywhere;
   word-break: break-word;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 .article-body th {
   font-weight: 650;
-  background: rgba(23, 95, 152, 0.055);
+  background: rgba(26, 26, 26, 0.035);
+}
+
+.article-body tr:last-child td {
+  border-bottom: 0;
 }
 
 .article-body pre {
@@ -991,36 +999,44 @@ button:focus-visible,
 }
 
 .article-table-wrap {
+  margin: 20px 0;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: 4px;
+  background: rgba(26, 26, 26, 0.025);
 }
 
 .article-table {
   width: 100%;
   min-width: 620px;
-  border-collapse: collapse;
-  background: rgba(255, 255, 255, 0.4);
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+
+.article-table-wrap .article-table {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
 }
 
 .article-table th,
 .article-table td {
-  padding: 12px;
+  padding: 11px 12px;
   border-bottom: 1px solid var(--border-light);
   text-align: left;
   vertical-align: top;
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 .article-table th {
   font-family: inherit;
-  font-size: 13px;
   font-weight: 650;
   color: var(--text);
   text-transform: none;
   letter-spacing: 0;
-  background: rgba(23, 95, 152, 0.055);
+  background: rgba(26, 26, 26, 0.035);
 }
 
 .article-table td:first-child {

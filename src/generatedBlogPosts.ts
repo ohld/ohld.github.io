@@ -6,7 +6,7 @@ import improveArchitectureFromTelegram from '../content/blog-posts/improve-codeb
 import aiSetupFromTelegram from '../content/blog-posts/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty.md?raw'
 import tmaVibecodingFromTelegram from '../content/blog-posts/vibecoding-telegram-mini-app-claude-code.md?raw'
 import vacationAgentsFromTelegram from '../content/blog-posts/business-on-ai-agent-claude-code-paperclip-gstack.md?raw'
-import hermesVsOpenClawFromTelegram from '../content/blog-posts/hermes-agent-vs-openclaw.md?raw'
+import hermesVsOpenClawArticle from '../content/seo-articles/hermes-agent-vs-openclaw.md?raw'
 
 interface BlogListItem {
   path: string
@@ -48,7 +48,10 @@ const sources = [
   aiSetupFromTelegram,
   tmaVibecodingFromTelegram,
   vacationAgentsFromTelegram,
-  hermesVsOpenClawFromTelegram,
+]
+
+const articleSources = [
+  hermesVsOpenClawArticle,
 ]
 
 function parseFrontmatter(raw: string): GeneratedBlogPost {
@@ -89,6 +92,10 @@ export const generatedBlogPosts = sources
   .map(parseFrontmatter)
   .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
 
+export const generatedArticlePosts = articleSources
+  .map(parseFrontmatter)
+  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+
 export const generatedBlogItems: BlogListItem[] = generatedBlogPosts.map((post) => ({
   path: `/blog/${post.slug}/`,
   title: post.title,
@@ -125,4 +132,36 @@ export const generatedRussianBlogItems: BlogListItem[] = generatedBlogPosts
 
 export function getGeneratedBlogPost(slug: string | undefined) {
   return generatedBlogPosts.find((post) => post.slug === slug)
+}
+
+export const generatedEnglishArticleItems: BlogListItem[] = generatedArticlePosts
+  .filter((post) => post.lang === 'en')
+  .map((post) => ({
+    path: generatedArticlePath(post.slug, post.lang),
+    title: post.title,
+    description: post.description,
+    publishedAt: post.publishedAt,
+    readingTime: post.readingTime,
+    tags: post.tags,
+    thumbnail: post.coverImage,
+  }))
+
+export const generatedRussianArticleItems: BlogListItem[] = generatedArticlePosts
+  .filter((post) => post.lang !== 'en')
+  .map((post) => ({
+    path: generatedArticlePath(post.slug, post.lang),
+    title: post.title,
+    description: post.description,
+    publishedAt: post.publishedAt,
+    readingTime: post.readingTime,
+    tags: post.tags,
+    thumbnail: post.coverImage,
+  }))
+
+export function getGeneratedArticlePost(slug: string | undefined) {
+  return generatedArticlePosts.find((post) => post.slug === slug)
+}
+
+export function generatedArticlePath(slug: string, lang = 'ru') {
+  return lang === 'en' ? `/en/articles/${slug}/` : `/articles/${slug}/`
 }

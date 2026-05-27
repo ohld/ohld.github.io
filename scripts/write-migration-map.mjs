@@ -5,6 +5,7 @@ import path from 'node:path'
 const SITE_URL = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/, '')
 const importedArticlesPath = path.join('content', 'articles', 'imported-index.json')
 const blogPostsPath = path.join('content', 'blog-posts')
+const seoArticlesPath = path.join('content', 'seo-articles')
 const outPath = path.join('migration', 'url-map.csv')
 
 const redirects = [
@@ -183,6 +184,13 @@ const redirects = [
     source: 'static_ia_cleanup',
     note: 'The design engineering piece is an article, not a Telegram-derived blog post.',
   },
+  {
+    old_path: '/blog/hermes-agent-vs-openclaw/',
+    new_path: '/en/articles/hermes-agent-vs-openclaw/',
+    action: '308_redirect',
+    source: 'static_ia_cleanup',
+    note: 'SEO-generated comparison moved from Blog to Articles to keep Blog reserved for Dan-authored channel posts.',
+  },
 ]
 
 const newStaticPages = [
@@ -233,10 +241,22 @@ function parseFrontmatter(raw, filename = 'markdown file') {
 }
 
 function readGeneratedBlogPosts() {
-  if (!fs.existsSync(blogPostsPath)) return []
-  return fs.readdirSync(blogPostsPath)
+  return readGeneratedMarkdownEntries(blogPostsPath)
+}
+
+function readGeneratedSeoArticles() {
+  return readGeneratedMarkdownEntries(seoArticlesPath)
+}
+
+function generatedArticlePath(article) {
+  return article.lang === 'en' ? `/en/articles/${article.slug}/` : `/articles/${article.slug}/`
+}
+
+function readGeneratedMarkdownEntries(dir) {
+  if (!fs.existsSync(dir)) return []
+  return fs.readdirSync(dir)
     .filter((file) => file.endsWith('.md'))
-    .map((file) => parseFrontmatter(fs.readFileSync(path.join(blogPostsPath, file), 'utf8'), file))
+    .map((file) => parseFrontmatter(fs.readFileSync(path.join(dir, file), 'utf8'), file))
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
 }
 
@@ -334,6 +354,23 @@ for (const post of readGeneratedBlogPosts()) {
     post.title || '',
     'telegram_derived_blog_post',
     `Blog post from Dan Telegram source #${post.sourceTelegramId}; adapted as a native site article.`,
+  ]))
+}
+
+for (const article of readGeneratedSeoArticles()) {
+  const pagePath = generatedArticlePath(article)
+  lines.push(row([
+    '',
+    '',
+    'new_static_page',
+    `${SITE_URL}${pagePath}`,
+    pagePath,
+    '200',
+    'index, follow',
+    article.lang || 'ru',
+    article.title || '',
+    'seo_generated_article',
+    'SEO-generated source-pack article; canonical under Articles, not Blog.',
   ]))
 }
 
