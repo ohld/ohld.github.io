@@ -1,4 +1,9 @@
-import { generatedEnglishBlogItems, generatedRussianBlogItems } from './generatedBlogPosts'
+import {
+  generatedEnglishArticleItems,
+  generatedEnglishBlogItems,
+  generatedRussianArticleItems,
+  generatedRussianBlogItems,
+} from './generatedBlogPosts'
 import { importedArticleListItems } from './importedArticles'
 
 export interface BlogArticle {
@@ -58,6 +63,7 @@ export const seoArticles: BlogArticle[] = [
 ]
 
 export const russianArticleItems: BlogListItem[] = [
+  ...generatedRussianArticleItems,
   ...seoArticles.map((article) => ({
     path: articlePath(article.slug),
     title: article.title,
@@ -78,6 +84,7 @@ export const russianArticleItems: BlogListItem[] = [
 ]
 
 export const englishArticleItems: BlogListItem[] = [
+  ...generatedEnglishArticleItems,
   ...importedArticleListItems([
     '/web-scraping-ai-agents-2026/',
     '/en-best-skills-mcp-claude-code-agent-browser/',
@@ -102,8 +109,8 @@ export function blogPath(slug: string) {
   return `/blog/${slug}/`
 }
 
-export function articlePath(slug: string) {
-  return `/articles/${slug}/`
+export function articlePath(slug: string, lang = 'ru') {
+  return lang === 'en' ? `/en/articles/${slug}/` : `/articles/${slug}/`
 }
 
 export function getBlogArticle(slug: string | undefined) {

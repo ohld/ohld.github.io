@@ -8,6 +8,7 @@ const importedArticleContentPath = process.env.VERIFY_IMPORTED_ARTICLE_CONTENT |
 const migrationMapPath = process.env.VERIFY_MIGRATION_MAP || 'migration/url-map.csv'
 const backlinkCriticalPath = process.env.VERIFY_BACKLINK_CRITICAL || 'migration/backlink-critical-urls.csv'
 const blogPostsPath = process.env.VERIFY_BLOG_POSTS || 'content/blog-posts'
+const seoArticlesPath = process.env.VERIFY_SEO_ARTICLES || 'content/seo-articles'
 const verbose = process.env.VERIFY_VERBOSE === '1'
 const requireStrict404 = process.env.VERIFY_REQUIRE_STRICT_404 === '1'
 const requireRealRedirects = process.env.VERIFY_REQUIRE_REAL_REDIRECTS === '1'
@@ -39,7 +40,7 @@ const topImportedSmokePages = [
   },
 ]
 
-function parseBlogFrontmatter(raw, filename = 'markdown file') {
+function parseMarkdownFrontmatter(raw, filename = 'markdown file') {
   const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
   if (!match) throw new Error(`${filename}: missing frontmatter`)
   const meta = {}
@@ -52,14 +53,27 @@ function parseBlogFrontmatter(raw, filename = 'markdown file') {
 }
 
 function loadGeneratedBlogPosts() {
-  if (!fs.existsSync(blogPostsPath)) return []
-  return fs.readdirSync(blogPostsPath)
+  return loadGeneratedMarkdownEntries(blogPostsPath)
+}
+
+function loadGeneratedSeoArticles() {
+  return loadGeneratedMarkdownEntries(seoArticlesPath)
+}
+
+function loadGeneratedMarkdownEntries(dir) {
+  if (!fs.existsSync(dir)) return []
+  return fs.readdirSync(dir)
     .filter((file) => file.endsWith('.md'))
-    .map((file) => parseBlogFrontmatter(fs.readFileSync(`${blogPostsPath}/${file}`, 'utf8'), file))
+    .map((file) => parseMarkdownFrontmatter(fs.readFileSync(`${dir}/${file}`, 'utf8'), file))
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
 }
 
 const generatedBlogPosts = loadGeneratedBlogPosts()
+const generatedSeoArticles = loadGeneratedSeoArticles()
+
+function generatedArticlePath(article) {
+  return article.lang === 'en' ? `/en/articles/${article.slug}/` : `/articles/${article.slug}/`
+}
 
 const topicPages = [
   ['/topics/ai-agents/', 'AI-агенты — Даниил Охлопков'],
@@ -159,6 +173,16 @@ const staticPages = [
       hreflangs: [lang, 'x-default'],
     }
   }),
+  ...generatedSeoArticles.map((article) => {
+    const lang = article.lang || 'ru'
+    return {
+      path: generatedArticlePath(article),
+      title: article.title,
+      lang,
+      ogLocale: lang === 'en' ? 'en_US' : 'ru_RU',
+      hreflangs: [lang, 'x-default'],
+    }
+  }),
 ]
 
 const redirects = [
@@ -170,6 +194,7 @@ const redirects = [
   ['/ai-agents/', '/articles/'],
   ['/ai-course/', '/articles/'],
   ['/blog/ai-tools-for-designers-design-engineering-agents/', '/articles/ai-tools-for-designers-design-engineering-agents/'],
+  ['/blog/hermes-agent-vs-openclaw/', '/en/articles/hermes-agent-vs-openclaw/'],
   ['/author/okhlopkov/', '/about/'],
   ['/projects/', '/about/'],
   ['/tag/second-brain/', '/vtoroj-mozg-ai-assistent-obsidian-claude-code/'],
@@ -217,6 +242,12 @@ const generatedBlogChecks = generatedBlogPosts.map((post) => {
   }
 })
 
+const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
+  path: generatedArticlePath(article),
+  title: article.title,
+  requiredText: ['Quick answer', 'The wrong way to choose', 'Read next'],
+}))
+
 const migrationMapStaticPaths = [
   '/',
   '/en/',
@@ -231,6 +262,7 @@ const migrationMapStaticPaths = [
   ...topicPages.map(([path]) => path),
   '/privacy/',
   ...generatedBlogPosts.map((post) => `/blog/${post.slug}/`),
+  ...generatedSeoArticles.map((article) => generatedArticlePath(article)),
 ]
 
 function loadImportedArticles() {
@@ -656,6 +688,24 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   console.log(`✓ generated blog post ${path}`)
 }
 
+async function verifyGeneratedSeoArticle({ path, requiredText }) {
+  const res = await fetchManual(path)
+  assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
+  const html = await res.text()
+  assert(html.includes('"@type": "BlogPosting"'), `${path}: missing article JSON-LD`)
+  assert(html.includes('"articleSection": "Articles"'), `${path}: articleSection should be Articles`)
+  verifyArticleContentAnalyticsMarkup(html, path)
+  assert(readMeta(html, 'canonical') === canonicalUrl(path), `${path}: canonical mismatch`)
+  assert(!html.includes('/blog/hermes-agent-vs-openclaw/'), `${path}: should not link to old Blog URL`)
+  assert(html.includes('/articles/'), `${path}: missing internal article links`)
+  assert(html.includes('/blog/'), `${path}: missing related blog links`)
+  assert(/"dateModified": "2026-05-(25|26|27)"/.test(html), `${path}: missing generated article dateModified`)
+  for (const text of requiredText) {
+    assert(html.includes(text), `${path}: missing required text "${text}"`)
+  }
+  console.log(`✓ generated SEO article ${path}`)
+}
+
 async function verifyRedirect([from, to]) {
   const res = await fetchManual(from)
   if (res.status >= 300 && res.status < 400) {
@@ -741,7 +791,10 @@ async function verifySitemap(migrationRows) {
   const actualLocs = new Set(sitemapRows.map((row) => row.loc))
   const lastmodByLoc = new Map(sitemapRows.map((row) => [row.loc, row.lastmod]))
   const expectedLastmodByLoc = new Map(
-    generatedBlogPosts.map((post) => [canonicalUrl(`/blog/${post.slug}/`), post.updatedAt || post.publishedAt || expectedSitemapLastmod])
+    [
+      ...generatedBlogPosts.map((post) => [canonicalUrl(`/blog/${post.slug}/`), post.updatedAt || post.publishedAt || expectedSitemapLastmod]),
+      ...generatedSeoArticles.map((article) => [canonicalUrl(generatedArticlePath(article)), article.updatedAt || article.publishedAt || expectedSitemapLastmod]),
+    ]
   )
   const expectedLocs = new Set(
     migrationRows
@@ -945,6 +998,7 @@ async function main() {
   for (const page of staticPages) await verifyStaticPage(page)
   for (const page of blogArticleChecks) await verifyBlogArticle(page)
   for (const page of generatedBlogChecks) await verifyGeneratedBlogPost(page)
+  for (const page of generatedSeoArticleChecks) await verifyGeneratedSeoArticle(page)
   await verifyImportedArticles(importedArticles)
   for (const redirect of redirects) await verifyRedirect(redirect)
   for (const path of noindexPages) await verifyNoindexPage(path)

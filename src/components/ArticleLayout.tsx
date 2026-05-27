@@ -64,7 +64,7 @@ export function ArticleLayout({
   })
 
   useDocumentMeta({
-    title: `${title} — Даниил Охлопков`,
+    title: `${title} — ${lang === 'en' ? 'Daniil Okhlopkov' : 'Даниил Охлопков'}`,
     description,
     canonical: canonicalUrl,
     lang,

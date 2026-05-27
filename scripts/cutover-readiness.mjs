@@ -32,7 +32,7 @@ const requiredPackageScripts = [
 ]
 
 const EXPECTED_IMPORTED_ARTICLES = 88
-const EXPECTED_REDIRECTS = 25
+const EXPECTED_REDIRECTS = 26
 const BASE_STATIC_PATHS = [
   '/',
   '/en/',
@@ -62,14 +62,17 @@ const BASE_STATIC_PATHS = [
   '/topics/workflow/',
   '/topics/community/',
   '/topics/openclaw/',
+  '/topics/hermes-agent/',
   '/topics/ton-data/',
   '/topics/telegram-automation/',
   '/privacy/',
 ]
 const GENERATED_BLOG_POSTS_PATH = 'content/blog-posts'
+const GENERATED_SEO_ARTICLES_PATH = 'content/seo-articles'
 const REQUIRED_STATIC_PATHS = [
   ...BASE_STATIC_PATHS,
   ...readGeneratedBlogPaths(),
+  ...readGeneratedSeoArticlePaths(),
 ]
 
 function parseFrontmatter(raw, filename = 'markdown file') {
@@ -85,12 +88,21 @@ function parseFrontmatter(raw, filename = 'markdown file') {
 }
 
 function readGeneratedBlogPaths() {
-  if (!fs.existsSync(GENERATED_BLOG_POSTS_PATH)) return []
-  return fs.readdirSync(GENERATED_BLOG_POSTS_PATH)
+  return readGeneratedMarkdownPaths(GENERATED_BLOG_POSTS_PATH, '/blog')
+}
+
+function readGeneratedSeoArticlePaths() {
+  return readGeneratedMarkdownPaths(GENERATED_SEO_ARTICLES_PATH, '/articles', true)
+}
+
+function readGeneratedMarkdownPaths(dir, routePrefix, useLanguagePrefix = false) {
+  if (!fs.existsSync(dir)) return []
+  return fs.readdirSync(dir)
     .filter((file) => file.endsWith('.md'))
     .map((file) => {
-      const meta = parseFrontmatter(fs.readFileSync(`${GENERATED_BLOG_POSTS_PATH}/${file}`, 'utf8'), file)
-      return `/blog/${meta.slug}/`
+      const meta = parseFrontmatter(fs.readFileSync(`${dir}/${file}`, 'utf8'), file)
+      const prefix = useLanguagePrefix && meta.lang === 'en' ? `/en${routePrefix}` : routePrefix
+      return `${prefix}/${meta.slug}/`
     })
     .sort()
 }

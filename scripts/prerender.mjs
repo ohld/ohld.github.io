@@ -20,6 +20,7 @@ const indexHtml = fs.readFileSync(path.join(dist, 'index.html'), 'utf8')
 const STATIC_UPDATED_DATE = '2026-05-26'
 const STATIC_UPDATED_AT = `${STATIC_UPDATED_DATE}T00:00:00+03:00`
 const BLOG_POSTS_DIR = path.join('content', 'blog-posts')
+const SEO_ARTICLES_DIR = path.join('content', 'seo-articles')
 const IMPORTED_ARTICLES_INDEX = path.join('content', 'articles', 'imported-index.json')
 const IMPORTED_ARTICLES_CONTENT = path.join('content', 'articles', 'imported-content.json')
 const LOCALIZED_GROUPS_PATH = path.join('content', 'articles', 'localized-groups.json')
@@ -148,7 +149,7 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 - [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — как хранить сырьё, решения и память проекта.
 - [Skills и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/) — что ставить, а что не усложнять.
 - [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering без generic UI-slop.
-- [Hermes Agent vs OpenClaw](/blog/hermes-agent-vs-openclaw/) — какой self-hosted AI agent выбрать после демо.
+- [Hermes Agent vs OpenClaw](/en/articles/hermes-agent-vs-openclaw/) — какой self-hosted AI agent выбрать после демо.
 - [GStack, goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/) — как вести длинную agent-задачу до результата.
 
 ## Карта терминов без маркетинга
@@ -225,7 +226,7 @@ the main editing context.
 - [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — how to store raw notes, decisions and project memory.
 - [Claude Code skills and MCP](/luchshie-skills-mcp-claude-code-agent-browser/) — what to install, and what not to over-engineer.
 - [AI tools for designers](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering without generic UI-slop.
-- [Hermes Agent vs OpenClaw](/blog/hermes-agent-vs-openclaw/) — choosing a self-hosted AI agent after the demo.
+- [Hermes Agent vs OpenClaw](/en/articles/hermes-agent-vs-openclaw/) — choosing a self-hosted AI agent after the demo.
 - [GStack, goal and office hours](/blog/gstack-goal-office-hours-ai-workflow/) — how to keep a long agent task moving until it ships.
 
 ## Agent terms without marketing
@@ -288,12 +289,12 @@ function splitList(value = '', separator = ',') {
   return value.split(separator).map((item) => item.trim()).filter(Boolean)
 }
 
-function loadGeneratedBlogPosts() {
-  if (!fs.existsSync(BLOG_POSTS_DIR)) return []
-  return fs.readdirSync(BLOG_POSTS_DIR)
+function loadGeneratedMarkdownEntries(dir) {
+  if (!fs.existsSync(dir)) return []
+  return fs.readdirSync(dir)
     .filter((file) => file.endsWith('.md'))
     .map((file) => {
-      const fullPath = path.join(BLOG_POSTS_DIR, file)
+      const fullPath = path.join(dir, file)
       const { meta, body } = parseFrontmatter(fs.readFileSync(fullPath, 'utf8'), fullPath)
       return {
         ...meta,
@@ -305,7 +306,12 @@ function loadGeneratedBlogPosts() {
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
 }
 
-const GENERATED_BLOG_POSTS = loadGeneratedBlogPosts()
+const GENERATED_BLOG_POSTS = loadGeneratedMarkdownEntries(BLOG_POSTS_DIR)
+const GENERATED_SEO_ARTICLES = loadGeneratedMarkdownEntries(SEO_ARTICLES_DIR)
+
+function generatedArticlePath(article) {
+  return article.lang === 'en' ? `/en/articles/${article.slug}` : `/articles/${article.slug}`
+}
 
 function loadImportedArticleRows() {
   if (!fs.existsSync(IMPORTED_ARTICLES_INDEX) || !fs.existsSync(IMPORTED_ARTICLES_CONTENT)) return []
@@ -354,7 +360,7 @@ function topicMarkdown(title, description) {
 - [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
 - [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
 - [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
-- [Hermes Agent vs OpenClaw](/blog/hermes-agent-vs-openclaw/)
+- [Hermes Agent vs OpenClaw](/en/articles/hermes-agent-vs-openclaw/)
 - [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
 
 ## Смежные темы
@@ -516,6 +522,37 @@ for (const post of GENERATED_BLOG_POSTS) {
   })
 }
 
+for (const article of GENERATED_SEO_ARTICLES) {
+  const articleLang = article.lang || 'ru'
+  const articlePath = generatedArticlePath(article)
+  ROUTES.push({
+    path: articlePath,
+    slug: `article-${article.slug}`,
+    title: article.title,
+    description: article.description,
+    lang: articleLang,
+    alternates: {
+      [articleLang]: `${SITE_URL}${articlePath}/`,
+      'x-default': `${SITE_URL}${articlePath}/`,
+    },
+    kind: 'generated-article-post',
+    section: articleLang === 'en' ? 'Articles' : 'Статьи',
+    publishedAt: article.publishedAt,
+    updatedAt: article.updatedAt,
+    sourceTelegramId: article.sourceTelegramId,
+    primaryKeyword: article.primaryKeyword,
+    secondaryKeywords: article.secondaryKeywords,
+    tags: article.tags,
+    views: article.views,
+    forwards: article.forwards,
+    comments: article.comments,
+    reactions: article.reactions,
+    heroImage: article.coverImage,
+    image: absoluteImageUrl(article.coverImage) || 'https://github.com/ohld.png',
+    markdown: article.body,
+  })
+}
+
 for (const [slug, title, description] of TOPIC_PAGES) {
   ROUTES.push({
     path: `/topics/${slug}`,
@@ -594,6 +631,7 @@ const AUTHOR_SCHEMA = {
 
 function isArticleRoute(route) {
   return route.kind === 'generated-blog-post'
+    || route.kind === 'generated-article-post'
     || route.kind === 'article-page'
     || route.slug === 'markdown-vs-html'
     || route.slug === 'articles-ai-tools-for-designers-design-engineering-agents'
@@ -846,7 +884,7 @@ function buildGeneratedBlogFallback(route) {
 
 function getRouteMd(route) {
   if (route.markdown) return route.markdown
-  if (route.kind === 'generated-blog-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
+  if (route.kind === 'generated-blog-post' || route.kind === 'generated-article-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
     return route.markdown || ''
   }
   const tplPath = path.join('scripts', 'markdown', `${route.slug}.md`)
@@ -933,10 +971,18 @@ function generatedBlogPostSchema(route) {
   })
 }
 
+function generatedArticlePostSchema(route) {
+  return articleSchema(route, {
+    keywords: [route.primaryKeyword, ...(route.secondaryKeywords || [])].filter(Boolean),
+    about: (route.tags || []).map((name) => ({ '@type': 'Thing', name })),
+    articleSection: route.lang === 'en' ? 'Articles' : 'Статьи',
+  })
+}
+
 function articlePageSchema(route) {
   return articleSchema(route, {
     dateModified: route.updatedAt ? `${route.updatedAt}T00:00:00+03:00` : STATIC_UPDATED_AT,
-    articleSection: route.lang === 'en' ? 'Blog' : 'Блог',
+    articleSection: route.lang === 'en' ? 'Articles' : 'Статьи',
   })
 }
 
@@ -957,8 +1003,10 @@ const BREADCRUMBS_BY_SLUG = {
 function buildBreadcrumb(route) {
   const items = route.kind === 'generated-blog-post'
     ? [['Главная', `${SITE_URL}/`], ['Блог', `${SITE_URL}/blog/`], [route.title, `${SITE_URL}${route.path}/`]]
+    : route.kind === 'generated-article-post'
+      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
     : route.kind === 'article-page'
-      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Blog' : 'Блог', `${SITE_URL}${route.lang === 'en' ? '/en/blog/' : '/blog/'}`], [route.title, `${SITE_URL}${route.path}/`]]
+      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
     : route.kind === 'topic-page'
       ? [['Главная', `${SITE_URL}/`], ['Темы', `${SITE_URL}/articles/`], [route.topicTitle || route.title, `${SITE_URL}${route.path}/`]]
     : BREADCRUMBS_BY_SLUG[route.slug]
@@ -1008,7 +1056,7 @@ function rewrite(html, route) {
   const mdBody = getRouteMd(route)
   const fallback = route.kind === 'article-page'
     ? buildArticleFallback(route)
-    : route.kind === 'generated-blog-post'
+    : route.kind === 'generated-blog-post' || route.kind === 'generated-article-post'
       ? buildGeneratedBlogFallback(route)
       : mdBody ? buildFallback(title, mdBody, articleRoute) : buildFallback(title, '', articleRoute)
   let out = applySiteUrl(html)
@@ -1041,6 +1089,8 @@ function rewrite(html, route) {
     .replace('<!-- body-fallback -->', fallback)
   const extraSchema = route.kind === 'generated-blog-post'
     ? generatedBlogPostSchema(route)
+    : route.kind === 'generated-article-post'
+      ? generatedArticlePostSchema(route)
     : route.kind === 'article-page'
       ? articlePageSchema(route)
     : route.kind === 'topic-page'
@@ -1111,7 +1161,7 @@ for (const route of ROUTES) {
   if (route.robots?.startsWith('noindex')) continue
   const src = path.join(templatesDir, `${route.slug}.md`)
   const dest = path.join(dist, `${route.slug}.md`)
-  if (route.kind === 'generated-blog-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
+  if (route.kind === 'generated-blog-post' || route.kind === 'generated-article-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
     fs.writeFileSync(dest, `# ${route.title}\n\n${route.markdown}\n`)
   } else {
     fs.copyFileSync(src, dest)
@@ -1132,6 +1182,7 @@ const REDIRECTS = [
   { from: '/ai-agents', fromSlug: 'ai-agents', to: '/articles/', toSlug: 'articles' },
   { from: '/ai-course', fromSlug: 'ai-course', to: '/articles/', toSlug: 'articles' },
   { from: '/blog/ai-tools-for-designers-design-engineering-agents', fromSlug: 'blog-ai-tools-for-designers-design-engineering-agents', to: '/articles/ai-tools-for-designers-design-engineering-agents/', toSlug: 'articles-ai-tools-for-designers-design-engineering-agents' },
+  { from: '/blog/hermes-agent-vs-openclaw', fromSlug: 'blog-hermes-agent-vs-openclaw', to: '/en/articles/hermes-agent-vs-openclaw/', toSlug: 'article-hermes-agent-vs-openclaw' },
   { from: '/author/okhlopkov', fromSlug: 'author-okhlopkov', to: '/about/', toSlug: 'about' },
   { from: '/projects', fromSlug: 'projects', to: '/about/', toSlug: 'about' },
   { from: '/tag/second-brain', fromSlug: 'tag-second-brain', to: '/vtoroj-mozg-ai-assistent-obsidian-claude-code/', toSlug: 'vtoroj-mozg-ai-assistent-obsidian-claude-code' },
@@ -1191,6 +1242,7 @@ const BUNDLE_SLUGS = [
   'markdown-vs-html',
   'privacy',
   ...GENERATED_BLOG_POSTS.map((post) => `blog-${post.slug}`),
+  ...GENERATED_SEO_ARTICLES.map((article) => `article-${article.slug}`),
   ...TOPIC_PAGES.map(([slug]) => `topic-${slug}`),
 ]
 const bundleHeader = `# Daniil Okhlopkov — Full Content Bundle
@@ -1265,6 +1317,9 @@ ${stripTags(body)}
 
 for (const post of GENERATED_BLOG_POSTS) {
   addSitemapUrl(`/blog/${post.slug}/`, post.updatedAt || STATIC_UPDATED_DATE)
+}
+for (const article of GENERATED_SEO_ARTICLES) {
+  addSitemapUrl(`${generatedArticlePath(article)}/`, article.updatedAt || STATIC_UPDATED_DATE)
 }
 for (const [slug] of TOPIC_PAGES) {
   addSitemapUrl(`/topics/${slug}/`)

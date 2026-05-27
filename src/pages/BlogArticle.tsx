@@ -1,7 +1,10 @@
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import { ArticleLayout } from '../components/ArticleLayout'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { articlePath, getBlogArticle } from '../blog'
+import { getGeneratedArticlePost } from '../generatedBlogPosts'
+import { markdownToHtml } from '../markdown'
+import { markdownToPlainText } from '../structuredData'
 
 const designAgentPrompt = `Ты помогаешь сделать frontend экран не похожим на AI-slop.
 
@@ -20,7 +23,39 @@ const designAgentPrompt = `Ты помогаешь сделать frontend эк�
 
 export function BlogArticle() {
   const { slug } = useParams()
+  const location = useLocation()
+  const generatedArticle = getGeneratedArticlePost(slug)
   const article = getBlogArticle(slug)
+
+  if (generatedArticle) {
+    const canonical = articlePath(generatedArticle.slug, generatedArticle.lang)
+    const currentPath = location.pathname.endsWith('/') ? location.pathname : `${location.pathname}/`
+    if (currentPath !== canonical) return <Navigate to={canonical} replace />
+
+    return (
+      <ArticleLayout
+        title={generatedArticle.title}
+        description={generatedArticle.description}
+        canonical={canonical}
+        lang={generatedArticle.lang}
+        date={generatedArticle.updatedAt}
+        publishedAt={generatedArticle.publishedAt}
+        updatedAt={generatedArticle.updatedAt}
+        readingTime={generatedArticle.readingTime}
+        backTo={generatedArticle.lang === 'en' ? '/en/articles/' : '/articles/'}
+        heroImage={generatedArticle.coverImage}
+        heroAlt={generatedArticle.coverAlt}
+        tags={generatedArticle.tags}
+        section={generatedArticle.lang === 'en' ? 'Articles' : 'Статьи'}
+        bodyText={markdownToPlainText(generatedArticle.body)}
+        bodyHtml={markdownToHtml(generatedArticle.body)}
+        alternates={{
+          [generatedArticle.lang]: canonical,
+          'x-default': canonical,
+        }}
+      />
+    )
+  }
 
   if (!article) return <Navigate to="/articles/" replace />
 
