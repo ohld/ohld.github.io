@@ -549,7 +549,7 @@ async function verifyImportedArticle({ path, title }) {
   assert(!html.includes('Оригинал:'), `${path}: public page leaked original post label`)
   assert(!html.includes('Continue reading'), `${path}: public page leaked old continue-reading footer`)
   assert(!html.includes('Читайте также'), `${path}: public page leaked old continue-reading footer`)
-  assert(/"dateModified": "2026-05-(25|26)T00:00:00\+03:00"/.test(html), `${path}: missing JSON-LD dateModified`)
+  assert(/"dateModified": "2026-05-(25|26|27)T00:00:00\+03:00"/.test(html), `${path}: missing JSON-LD dateModified`)
   assert(!path.startsWith('/author/') && !path.startsWith('/tag/') && path !== '/cn/', `${path}: service page leaked into imported articles`)
   if (path === '/en-beads-gastown-framework-ai-agents/' || path === '/beads-gastown-framework-ai-agenty/') {
     assert(html.includes('https://x.com/trq212/status/2014480496013803643'), `${path}: missing X source link`)
@@ -641,7 +641,7 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)
   assert(!html.includes('>Коротко<'), `${path}: leaked generic summary heading`)
   assert(!html.includes('Эта страница не про'), `${path}: leaked AI-tell contrast construction`)
-  assert(/"dateModified": "2026-05-(25|26)"/.test(html), `${path}: missing generated post dateModified`)
+  assert(/"dateModified": "2026-05-(25|26|27)"/.test(html), `${path}: missing generated post dateModified`)
   assert(html.includes('/blog/'), `${path}: missing internal blog links`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   for (const text of requiredText) {

@@ -1,14 +1,14 @@
 ---
 slug: ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain
 title: AI-трансформация в компании: общий контекст, skills и GBrain вместо хаоса на ноутбуках
-description: Почему корпоративной AI-трансформации нужны общий контекст, обновляемые skills, GBrain/OpenBrain и роль библиотекаря контекста.
+description: Почему корпоративной AI-трансформации нужны общий контекст, обновляемые skills, GBrain/OpenBrain, TencentDB Agent Memory и роль библиотекаря контекста.
 publishedAt: 2026-05-24
 updatedAt: 2026-05-26
-readingTime: 7 мин
+readingTime: 8 мин
 tags: AI Transformation, GBrain, Skills
 sourceTelegramId: 1685
 primaryKeyword: ai агенты
-secondaryKeywords: claude code skills; gbrain; mcp сервер что это
+secondaryKeywords: claude code skills; gbrain; tencentdb agent memory; память ai агентов; mcp сервер что это
 views: 2863
 forwards: 158
 comments: 13
@@ -69,13 +69,17 @@ reactions: 58
 
 В [нашем тг чатике](https://t.me/ohld_chat) вокруг GBrain/OpenBrain уже был важный мотив: markdown-вики быстро становится полезной, но у нее есть потолок. Она хороша, когда файлов немного и связи очевидны. Когда контекста становится больше, нужен retrieval layer: поиск, связи, краткие briefing packs, дедупликация и правила, что можно показывать агенту.
 
+Свежий пример этой же линии — [TencentDB Agent Memory](https://github.com/Tencent/TencentDB-Agent-Memory). Tencent не делает “еще один векторный стор”, а явно раскладывает память AI-агента по слоям: L0 — сырые диалоги, L1 — атомарные факты, L2 — сценарии, L3 — persona. Плюс короткая память для длинных задач: тяжелые tool logs уезжают в `refs/*.md`, а в контексте остается Mermaid-карта состояния, по которой агент может drill-down обратно к сырому логу через `node_id`.
+
+Мне это нравится не как готовый ответ для каждой компании, а как хороший сигнал направления. Markdown всё еще нужен: его можно читать глазами, ревьюить в PR и объяснять людям. Но поверх markdown постепенно появляется “память как инфраструктура”: BM25 + embeddings + RRF, дедупликация, профили, traceability, timeout на recall, чтобы агент не зависал из-за умной памяти. В бенчмарках Tencent заявляет до 61% экономии токенов на WideSearch и рост PersonaMem с 48% до 76%, но я бы относился к этим цифрам как к заявке, а не к истине. Сам факт важнее: индустрия двигается от плоского RAG к слоистой операционной памяти.
+
 Отсюда логичная эволюция:
 
 | Стадия | Что использовать |
 | --- | --- |
 | Первый пилот | Markdown + wiki-ссылки + AGENTS.md |
 | Командный rollout | GitHub PR workflow + библиотекарь контекста + changelog |
-| Много команд | GBrain/OpenBrain как retrieval и briefing layer |
+| Много команд | GBrain/OpenBrain/TencentDB Agent Memory как retrieval, briefing и memory layer |
 | Публикация знаний | Выжимки превращаются в блог/статьи после редакторского ревью |
 
 ## Читать ещё
