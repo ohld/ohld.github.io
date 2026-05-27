@@ -2,21 +2,21 @@
 slug: hermes-agent-vs-openclaw
 lang: en
 title: Hermes Agent vs OpenClaw: which open-source AI agent should you use?
-description: A practical comparison of Hermes Agent and OpenClaw for people who want a real personal AI agent, not another README-driven demo.
+description: OpenClaw vs Hermes Agent for self-hosted AI agents: Telegram, memory, skills, cron jobs, browser automation, provider risk and security.
 publishedAt: 2026-05-27
 updatedAt: 2026-05-27
-readingTime: 13 min
-tags: AI Agents, OpenClaw, Hermes Agent, AI Coding
+readingTime: 14 min
+tags: AI Agents, OpenClaw, Hermes Agent, Telegram Automation, Agent Memory
 sourceTelegramId: 0
 primaryKeyword: hermes agent vs openclaw
-secondaryKeywords: hermes agent; openclaw; open source ai agent; self hosted ai agent; telegram ai agent; ai agent with memory; claude code alternative
+secondaryKeywords: hermes agent; openclaw; open source ai agent; self hosted ai agent; telegram ai agent; ai agent with memory; openclaw alternative; claude code alternative; ai agent framework comparison
 views: 0
 forwards: 0
 comments: 0
 reactions: 0
 ---
 
-Short version: **OpenClaw is closer to a local-first multi-channel agent gateway. Hermes Agent is closer to a long-lived personal ops agent that grows around your workflows.**
+Short version: **OpenClaw is closer to a self-hosted multi-channel agent gateway. Hermes Agent is closer to a long-lived personal ops agent that grows around your workflows.**
 
 That sounds like a small distinction, but it changes the decision. If you want to connect many chat channels, tune a gateway, run browser/cron/standing-order workflows, and keep everything local-first, OpenClaw is the more obvious place to start. If you want one persistent assistant in Telegram/terminal that can use tools, remember your operating style, run scheduled tasks, improve through skills, and become part of your daily work loop, I would start with Hermes.
 
@@ -24,11 +24,26 @@ I am deliberately not turning this into a feature checklist. Feature checklists 
 
 > Which system will still be useful on day 30, after the demo is over, the model bill is real, the browser gets stuck on a CAPTCHA, and you need to trust it with your files?
 
+## Quick answer
+
+Hermes Agent is better if you want one personal AI assistant that you can use from terminal and Telegram, teach through skills, connect to GBrain or markdown memory, and run as a daily operator. OpenClaw is better if you want a self-hosted AI agent gateway across many chat apps with explicit channel, browser, cron and security configuration.
+
+| Decision axis | OpenClaw | Hermes Agent |
+| --- | --- | --- |
+| Best default use case | Multi-channel self-hosted AI agent gateway | Persistent personal AI ops agent |
+| Primary interface | Gateway, dashboard and chat channels | Terminal, gateway and messaging platforms |
+| Telegram fit | Strong when Telegram is one channel among many | Strong when Telegram is the main daily control surface |
+| Memory model | Transparent workspace markdown memory | Profile memory plus skills, often stronger with external retrieval like GBrain |
+| Skills | AgentSkills-compatible operational recipes | Self-improving workflow layer that should compound over time |
+| Automation | Gateway cron, background tasks and standing orders | Scheduled personal research, monitoring, content and code workflows |
+| Main risk | Operating too much infrastructure with broad permissions | Letting one trusted assistant accumulate too much authority |
+| My pick | Use it when you want control and channel breadth | Use it when you want day-30 personal utility |
+
 ## Why this comparison is suddenly useful
 
 Open-source agents moved from “coding toy” to “personal operating layer” very quickly. The same names keep showing up in conversations around Claude Code, Codex, MCP, skills, memory, Telegram bots, browser automation, and self-hosted workflows.
 
-For this article I used several types of evidence:
+For this article I checked the current docs and repos on May 27, 2026, then combined them with GBrain source packs and community evidence. I used several types of evidence:
 
 - official docs and repos for [Hermes Agent](https://github.com/NousResearch/hermes-agent) and [OpenClaw](https://github.com/openclaw/openclaw);
 - the OpenClaw docs on [getting started](https://docs.openclaw.ai/start/getting-started), [Telegram](https://docs.openclaw.ai/channels/telegram), [memory](https://docs.openclaw.ai/concepts/memory), [skills](https://docs.openclaw.ai/tools/skills), [cron jobs](https://docs.openclaw.ai/automation/cron-jobs), browser tools and security;
@@ -111,7 +126,7 @@ That is the pattern I trust more:
 
 The mistake is thinking bigger context solves memory. It does not. Bigger context just lets you postpone curation.
 
-## 2. Telegram: not just “bot connected”
+### 2. Telegram: not just “bot connected”
 
 Both systems can be used from Telegram. But Telegram is where agent demos become real systems, because your phone becomes the UI.
 
@@ -129,7 +144,7 @@ Hermes also has a gateway and Telegram support. The reason I like Hermes here is
 
 For my own use, that is more useful than having a huge number of channels. I want one reliable agent in the place I already use all day.
 
-## 3. Skills: the portable layer people underestimate
+### 3. Skills: the portable layer people underestimate
 
 Skills are not just prompts in a nicer folder.
 
@@ -144,7 +159,7 @@ OpenClaw has AgentSkills-compatible skill folders and clear docs around skill ro
 
 This is why I would compare “day-30 behavior”, not “day-1 feature count”. A system with a disciplined skill layer becomes easier to use. A system with stale skills becomes dangerous, because it confidently repeats old assumptions.
 
-## 4. Browser automation: the ugly middle of real agents
+### 4. Browser automation: the ugly middle of real agents
 
 Browser automation is where a lot of AI-agent hype dies.
 
@@ -162,7 +177,7 @@ But the product problem remains: the best browser agent is not the one that pret
 
 This showed up in community discussions too. Browser handoff is not a side feature. It is one of the main primitives for real-world agents.
 
-## 5. Cron, standing orders and autonomy
+### 5. Cron, standing orders and autonomy
 
 OpenClaw has official docs for cron jobs and standing orders. This is important. Scheduled tasks and standing orders are how an assistant stops being a chatbot and becomes a background system.
 
@@ -185,7 +200,7 @@ This is the boring version of agent autonomy, and it works better:
 - durable conclusions go to GBrain or project notes;
 - secrets never go into the article, memory or logs.
 
-## 6. Security: the most important comparison axis
+### 6. Security: the most important comparison axis
 
 OpenClaw’s security docs make one thing explicit: the trust model is a personal assistant boundary, not a hostile multi-tenant boundary. If you need adversarial isolation between users, split gateways, credentials, OS users or hosts.
 
@@ -206,7 +221,7 @@ The minimum serious checklist:
 
 If an agent framework does not make you think about this, that is not simplicity. That is hidden risk.
 
-## 7. Provider risk is not a side issue
+### 7. Provider risk is not a side issue
 
 A lot of agent adoption is being driven by model/provider risk, not just product taste.
 
@@ -223,7 +238,7 @@ OpenClaw has docs around model providers and failover. Hermes is provider-agnost
 
 This is why “Claude Code alternative” is the wrong framing. The better framing is **survivable agent stack**.
 
-## 8. What I would benchmark
+### 8. What I would benchmark
 
 I do not trust most agent benchmarks. They usually measure a clean task on a clean repo with a clean prompt. Real work is dirty.
 
@@ -241,6 +256,20 @@ A useful Hermes vs OpenClaw benchmark would measure operator outcomes:
 One social comparison I saw claimed OpenClaw and Hermes behaved differently on the same local-model task: one more script-first, the other more skill-first. I would not publish the token/time numbers as fact without reproducing them. But the axis is good: **what artifact does the agent leave behind?** A bash script, a skill, a dashboard, a PR, a memory note, a receipt?
 
 That matters more than the leaderboard.
+
+## A practical 48-hour test
+
+If you are serious about choosing between Hermes Agent and OpenClaw, do not spend the first weekend reading every doc page. Run the same five tasks in both systems and keep the receipts.
+
+| Test task | What to measure |
+| --- | --- |
+| Connect Telegram and send a private task | Pairing friction, allowlist clarity, token handling, message delivery |
+| Ask for a repo risk review | Diff quality, tool approvals, whether the result is reviewable |
+| Save one durable preference | Where memory lands, whether it is easy to inspect and prune |
+| Create one recurring brief | Cron behavior, cost, failure visibility, delivery channel |
+| Hit one browser blocker | Manual handoff, recovery, logging and whether the agent knows it got stuck |
+
+After that, the decision is usually obvious. If you keep wanting more channels, gateway policy and infrastructure control, OpenClaw is probably the better bet. If you keep wanting one agent that remembers your workflow and turns fixes into reusable procedures, Hermes is probably the better bet.
 
 ## My current recommendation
 
@@ -276,7 +305,7 @@ The value is control and breadth. The cost is that you are operating more system
 
 ## The wrong way to choose
 
-Do not choose by GitHub stars alone. At the time of checking, GitHub reported very large public numbers for both projects, and OpenClaw’s current repo had moved from an older 404 path to `openclaw/openclaw`. That is useful as a market signal, not as proof of quality.
+Do not choose by GitHub stars alone. At the time I checked on May 27, 2026, the GitHub API reported 374,995 stars for `openclaw/openclaw` and 169,652 stars for `NousResearch/hermes-agent`. That is useful as a market signal, not as proof of quality.
 
 Do not choose by viral threads alone. Threads are good for discovering demand and vocabulary. They are bad at telling you which setup survives your actual week.
 
@@ -323,9 +352,18 @@ Neither is automatically safe. OpenClaw’s docs are explicit about trust bounda
 
 If you already live in terminal/Telegram and want practical daily workflows, try Hermes first. If your main goal is to build a multi-channel personal assistant gateway and tune the infrastructure, try OpenClaw first.
 
+### What is the best self-hosted AI agent for Telegram?
+
+For a one-owner Telegram assistant, I would test Hermes Agent first because the value is the persistent operating loop: memory, skills, scheduled tasks and GBrain-backed source packs. For a Telegram bot that is one channel inside a broader gateway with WhatsApp, Slack, Discord or other surfaces, I would test OpenClaw first.
+
+### Can I use Hermes Agent and OpenClaw together?
+
+Yes, but I would not start there. Use both only if you have a clear boundary: for example, Hermes as the personal operator and OpenClaw as the multi-channel gateway experiment. Running two always-on agents without strict permissions, logs and ownership rules doubles the operational surface.
+
 ## Read next
 
 - [OpenClaw topic hub](/topics/openclaw/)
+- [Hermes Agent topic hub](/topics/hermes-agent/)
 - [AI agents topic hub](/topics/ai-agents/)
 - [Claude Code vs Codex: why I switched for two weeks](/blog/claude-code-vs-codex-perehod/)
 - [My AI setup 2026](/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/)

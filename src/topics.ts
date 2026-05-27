@@ -1,5 +1,5 @@
 import type { BlogListItem } from './blog'
-import { russianArticleItems, russianBlogItems } from './blog'
+import { englishArticleItems, englishBlogItems, russianArticleItems, russianBlogItems } from './blog'
 import { importedArticleListItems } from './importedArticles'
 
 export interface TopicDefinition {
@@ -145,6 +145,13 @@ export const topicDefinitions: TopicDefinition[] = [
     aliases: ['openclaw'],
   },
   {
+    slug: 'hermes-agent',
+    label: 'Hermes Agent',
+    title: 'Hermes Agent',
+    description: 'Hermes Agent, Telegram/VPS, skills, memory и self-hosted personal AI workflows.',
+    aliases: ['hermes agent', 'hermes'],
+  },
+  {
     slug: 'ton-data',
     label: 'TON-данные',
     title: 'TON-данные',
@@ -168,7 +175,7 @@ export const topicDefinitions: TopicDefinition[] = [
   },
 ]
 
-const homeTopicSlugs = ['ai-agents', 'claude-code', 'codex', 'mcp', 'gstack', 'openclaw', 'ton-data', 'telegram-automation']
+const homeTopicSlugs = ['ai-agents', 'claude-code', 'codex', 'mcp', 'gstack', 'openclaw', 'hermes-agent', 'ton-data', 'telegram-automation']
 export const homeTopics = topicDefinitions.filter((topic) => homeTopicSlugs.includes(topic.slug))
 
 export function topicPath(slug: string) {
@@ -201,7 +208,7 @@ export function getTopicItems(slug: string | undefined) {
   const topic = getTopic(slug)
   if (!topic) return []
   const seen = new Set<string>()
-  const items = [...russianBlogItems, ...russianArticleItems, ...(topic.extraItems || [])]
+  const items = [...russianBlogItems, ...englishBlogItems, ...russianArticleItems, ...englishArticleItems, ...(topic.extraItems || [])]
     .filter((item) => itemMatchesTopic(item, topic) || topic.extraItems?.some((extra) => extra.path === item.path))
     .filter((item) => {
       if (seen.has(item.path)) return false

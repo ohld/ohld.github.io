@@ -80,6 +80,7 @@ const topicPages = [
   ['/topics/workflow/', 'Workflow — Даниил Охлопков'],
   ['/topics/community/', 'Community — Даниил Охлопков'],
   ['/topics/openclaw/', 'OpenClaw — Даниил Охлопков'],
+  ['/topics/hermes-agent/', 'Hermes Agent — Даниил Охлопков'],
   ['/topics/ton-data/', 'TON-данные — Даниил Охлопков'],
   ['/topics/telegram-automation/', 'Telegram-автоматизация — Даниил Охлопков'],
 ]

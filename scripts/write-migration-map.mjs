@@ -214,6 +214,7 @@ const newStaticPages = [
   ['/topics/workflow/', 'new_static_page', 'ru', 'Topic collection for workflow internal linking'],
   ['/topics/community/', 'new_static_page', 'ru', 'Topic collection for community internal linking'],
   ['/topics/openclaw/', 'new_static_page', 'ru', 'Topic collection for future OpenClaw content'],
+  ['/topics/hermes-agent/', 'new_static_page', 'ru', 'Topic collection for Hermes Agent content'],
   ['/topics/ton-data/', 'new_static_page', 'ru', 'Topic collection for TON data and analytics'],
   ['/topics/telegram-automation/', 'new_static_page', 'ru', 'Topic collection for Telegram automation'],
   ['/privacy/', 'new_static_page', 'en', 'Privacy policy for Pinterest app review and site data practices'],
