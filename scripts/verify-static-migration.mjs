@@ -20,6 +20,18 @@ const yandexMetrikaId = '46266270'
 const yandexVerificationIds = ['1b82de56693018c1', '3553f1209d48d2c4']
 const expectedSitemapLastmod = process.env.VERIFY_EXPECTED_SITEMAP_LASTMOD || '2026-05-26'
 const indexNowKey = '16f3585acc2f41a2b4ff657222850145'
+const nativeBlogForbiddenPhrases = [
+  'Что было в исходном посте',
+  'Исходный пост:',
+  'исходного поста',
+  'исходных постов',
+  'Оригинальный Telegram-пост',
+  'Открыть пост в Telegram',
+  'Telegram-derived',
+  'from Dan Telegram source',
+  'source Telegram post',
+]
+const danTelegramSourceUrlPattern = /https:\/\/t\.me\/danokhlopkov\/\d+/
 
 const topImportedSmokePages = [
   {
@@ -672,8 +684,10 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(html.includes('"@type": "BlogPosting"'), `${path}: missing BlogPosting JSON-LD`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assert(!html.includes('"isBasedOn":'), `${path}: should not expose source Telegram URL in JSON-LD`)
-  assert(!html.includes('Оригинальный Telegram-пост'), `${path}: should not label Telegram text as original post`)
-  assert(!html.includes('Открыть пост в Telegram'), `${path}: should not link to source Telegram post`)
+  for (const phrase of nativeBlogForbiddenPhrases) {
+    assert(!html.includes(phrase), `${path}: leaked source framing phrase "${phrase}"`)
+  }
+  assert(!danTelegramSourceUrlPattern.test(html), `${path}: should not link to numeric source Telegram posts`)
   assert(!html.includes('<p>&gt;</p>') && !html.includes('&gt;</p>'), `${path}: leaked bare markdown quote marker`)
   assert(!html.includes('SEO'), `${path}: leaked internal search-production label`)
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)

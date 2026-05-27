@@ -1,7 +1,7 @@
 import { ArrowRightIcon } from './Icons'
 import { TopicTags } from './TopicTags'
 import type { BlogListItem } from '../blog'
-import { SITE_IMAGE } from '../site'
+import { SITE_THUMBNAIL } from '../site'
 
 export function BlogCard({
   article,
@@ -14,7 +14,7 @@ export function BlogCard({
   tagsLabel?: string
   mediaLayout?: 'side' | 'top'
 }) {
-  const thumbnail = article.thumbnail || SITE_IMAGE
+  const thumbnail = article.thumbnail?.startsWith('http') ? SITE_THUMBNAIL : article.thumbnail || SITE_THUMBNAIL
   const cardClassName = [
     'blog-card',
     'blog-card-with-thumb',

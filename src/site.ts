@@ -7,6 +7,7 @@ export const SITE_NAME = 'Даниил Охлопков'
 export const SITE_TITLE = 'Даниил Охлопков — AI-агенты, данные, TON и Telegram'
 export const SITE_DESCRIPTION = 'Практические разборы AI-агентов, Claude Code, Codex, MCP, TON-аналитики и Telegram-автоматизаций от Даниила Охлопкова.'
 export const SITE_IMAGE = 'https://github.com/ohld.png'
+export const SITE_THUMBNAIL = '/assets/site/article-fallback.webp'
 
 export const socialLinks = [
   { label: 'Telegram', url: 'https://t.me/danokhlopkov' },

@@ -41,6 +41,8 @@ const codeBlockChecks = [
   { route: '/blog/improve-codebase-architecture-prompt/', min: 1, label: 'generated blog code block' },
 ]
 
+const thumbnailRoutes = new Set(['/blog/', '/en/blog/', '/articles/', '/en/articles/'])
+
 const executableCandidates = [
   process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
@@ -87,6 +89,25 @@ async function loadPlaywright() {
   }
 }
 
+async function forceLoadImages(page, selector) {
+  const images = page.locator(selector)
+  const count = await images.count()
+  for (let index = 0; index < count; index += 1) {
+    const image = images.nth(index)
+    await image.scrollIntoViewIfNeeded().catch(() => {})
+    await image.evaluate((img) => {
+      if (img.complete && img.naturalWidth > 0 && img.naturalHeight > 0) return true
+      return new Promise((resolve) => {
+        const done = () => resolve(true)
+        const fail = () => resolve(false)
+        img.addEventListener('load', done, { once: true })
+        img.addEventListener('error', fail, { once: true })
+        setTimeout(fail, 2500)
+      })
+    }).catch(() => {})
+  }
+}
+
 async function main() {
   const { chromium } = await loadPlaywright()
   const executablePath = findExecutable()
@@ -112,12 +133,19 @@ async function main() {
         const bodyChars = document.body.innerText.trim().length
         return Boolean(document.querySelector('.footer')) && bodyChars >= 500
       }, { timeout: 4000 }).catch(() => {})
+      const checkCardImages = thumbnailRoutes.has(canonicalPath(route))
+      if (checkCardImages) {
+        await forceLoadImages(page, '.blog-card-thumb')
+      }
+      await forceLoadImages(page, '.article-hero-image img')
       const data = await page.evaluate(() => {
         const header = document.querySelector('.site-header')
         const footer = document.querySelector('.footer')
         const main = document.querySelector('main') || document.querySelector('article')
         const headerBox = header?.getBoundingClientRect()
         const mainBox = main?.getBoundingClientRect()
+        const thumbnails = [...document.querySelectorAll('.blog-card-thumb')]
+        const heroImages = [...document.querySelectorAll('.article-hero-image img')]
         return {
           title: document.title,
           canonical: document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '',
@@ -127,11 +155,17 @@ async function main() {
           hasFooter: Boolean(footer),
           overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
           headerMainOverlap: Boolean(headerBox && mainBox && headerBox.bottom > mainBox.top + 4),
+          cardCount: document.querySelectorAll('.blog-card').length,
+          thumbnailCount: thumbnails.length,
+          brokenThumbnails: thumbnails.filter((img) => !img.currentSrc || img.naturalWidth <= 0 || img.naturalHeight <= 0).length,
+          heroImageCount: heroImages.length,
+          brokenHeroImages: heroImages.filter((img) => !img.currentSrc || img.naturalWidth <= 0 || img.naturalHeight <= 0).length,
         }
       })
       results.push({
         viewport: viewport.name,
         route,
+        expectCardThumbnails: thumbnailRoutes.has(canonicalPath(route)),
         status: response?.status(),
         errors: [...errors],
         ...data,
@@ -212,6 +246,12 @@ async function main() {
     if (result.bodyChars < 500) issues.push(`short body ${result.bodyChars}`)
     if (result.overflowX > 2) issues.push(`horizontal overflow ${result.overflowX}`)
     if (result.headerMainOverlap) issues.push('header/main overlap')
+    if (result.expectCardThumbnails) {
+      if (result.cardCount < 1) issues.push('missing cards')
+      if (result.thumbnailCount !== result.cardCount) issues.push(`thumbnails ${result.thumbnailCount} != cards ${result.cardCount}`)
+      if (result.brokenThumbnails) issues.push(`broken thumbnails ${result.brokenThumbnails}`)
+    }
+    if (result.heroImageCount && result.brokenHeroImages) issues.push(`broken hero images ${result.brokenHeroImages}`)
     if (result.expectedCodeBlocks && result.codeBlocks < result.expectedCodeBlocks) issues.push(`code blocks ${result.codeBlocks || 0} < ${result.expectedCodeBlocks}`)
     if (result.expectedCodeBlocks && result.copyButtons < result.expectedCodeBlocks) issues.push(`copy buttons ${result.copyButtons || 0} < ${result.expectedCodeBlocks}`)
     if (result.canonical !== expected) issues.push(`canonical ${result.canonical || '<empty>'} != ${expected}`)

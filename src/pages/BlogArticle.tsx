@@ -4,6 +4,7 @@ import { ArrowRightUpIcon } from '../components/Icons'
 import { articlePath, getBlogArticle } from '../blog'
 import { getGeneratedArticlePost } from '../generatedBlogPosts'
 import { markdownToHtml } from '../markdown'
+import { SITE_THUMBNAIL } from '../site'
 import { markdownToPlainText } from '../structuredData'
 
 const designAgentPrompt = `Ты помогаешь сделать frontend экран не похожим на AI-slop.
@@ -58,6 +59,7 @@ export function BlogArticle() {
   }
 
   if (!article) return <Navigate to="/articles/" replace />
+  const youtubeThumbnail = article.youtube?.thumbnail.startsWith('http') ? SITE_THUMBNAIL : article.youtube?.thumbnail
 
   return (
     <ArticleLayout
@@ -68,7 +70,7 @@ export function BlogArticle() {
       publishedAt={article.publishedAt}
       updatedAt={article.updatedAt}
       readingTime={article.readingTime}
-      schemaImage={article.youtube?.thumbnail}
+      schemaImage={youtubeThumbnail}
       tags={article.tags}
       section="Статьи"
       alternates={{
@@ -83,7 +85,7 @@ export function BlogArticle() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={article.youtube.thumbnail} alt={article.youtube.title} fetchPriority="high" />
+            <img src={youtubeThumbnail} alt={article.youtube.title} fetchPriority="high" />
             <div>
               <strong>{article.youtube.title}</strong>
               <span>Открыть на YouTube <ArrowRightUpIcon size={14} /></span>

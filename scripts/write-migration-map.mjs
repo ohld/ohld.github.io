@@ -182,7 +182,7 @@ const redirects = [
     new_path: '/articles/ai-tools-for-designers-design-engineering-agents/',
     action: '308_redirect',
     source: 'static_ia_cleanup',
-    note: 'The design engineering piece is an article, not a Telegram-derived blog post.',
+    note: 'The design engineering piece belongs in Articles, not in the personal blog feed.',
   },
   {
     old_path: '/blog/hermes-agent-vs-openclaw/',
@@ -200,7 +200,7 @@ const newStaticPages = [
   ['/en/articles/', 'new_static_page', 'en', 'English-only article index'],
   ['/en/about/', 'new_static_page', 'en', 'English about page'],
   ['/about/', 'new_static_page', 'ru', 'About page'],
-  ['/blog/', 'new_static_page', 'ru', 'Indexable blog for Telegram-derived posts'],
+  ['/blog/', 'new_static_page', 'ru', 'Indexable blog for Dan-authored posts'],
   ['/articles/', 'new_static_page', 'ru', 'Article index'],
   ['/articles/ai-tools-for-designers-design-engineering-agents/', 'new_static_page', 'ru', 'First YouTube-derived article with component examples'],
   ['/articles/markdown-vs-html/', 'new_static_page', 'ru', 'Existing static article route moved under Articles'],
@@ -352,8 +352,8 @@ for (const post of readGeneratedBlogPosts()) {
     'index, follow',
     'ru',
     post.title || '',
-    'telegram_derived_blog_post',
-    `Blog post from Dan Telegram source #${post.sourceTelegramId}; adapted as a native site article.`,
+    'dan_authored_blog_post',
+    'Native blog article written in Dan voice for okhlopkov.com.',
   ]))
 }
 

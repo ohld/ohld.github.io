@@ -17,9 +17,9 @@ reactions: 36
 
 Короткая версия: чтобы AI-агент нормально собрал Telegram Mini App, ему нужен не “сделай миниаппку”, а компактный source pack: официальные доки, SDK, ограничения Telegram WebView, init data, деплой и примеры. Для этого я собрал [tma-llms-txt](https://github.com/ohld/tma-llms-txt), а потом на стриме сделал простые крестики-нолики.
 
-Запись: [youtu.be/s92JCCQB9fk](https://youtu.be/s92JCCQB9fk). Исходный пост: [t.me/danokhlopkov/1606](https://t.me/danokhlopkov/1606).
+Запись стрима: [youtu.be/s92JCCQB9fk](https://youtu.be/s92JCCQB9fk).
 
-## Что было в исходном посте
+## С чего всё началось
 
 В закрытом чатике пришла идея написать `llms.txt` по разработке Telegram Mini App с нуля, чтобы упростить онбординг в экосистему.
 
