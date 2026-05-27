@@ -1,14 +1,14 @@
 {
-  "source": "ai",
-  "model": "imagegen",
-  "provider": "codex",
-  "reference": "user-provided meme references used for mood and composition only; final asset is newly generated",
-  "prompt_text": "РИЛЗ НЕ ЗАЛЕТЕЛ / зато статья индексируется",
+  "source": "user-reference-edited",
+  "model": "local-pillow-edit",
+  "provider": "codex-local",
+  "reference": "based directly on /Users/ohld/Desktop/a6a5479550102dc4aadea50c7630e3c8.jpg; composition preserved, old text masked, canvas lightly extended to 16:9",
+  "prompt_text": "ПРОСТИ, Я AI-РИЛЗ / МЕНЯ СОБРАЛИ ПО МЕТРИКАМ",
   "purpose": "coverImage and social preview for /articles/ai-reels-seo-pipeline-telegram-claude-code/",
   "web_asset": {
     "path": "/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/reels-seo-cover.webp",
-    "width": 1672,
-    "height": 941,
+    "width": 1280,
+    "height": 720,
     "quality": 82
   }
 }

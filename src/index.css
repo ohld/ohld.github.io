@@ -743,7 +743,7 @@ button:focus-visible,
 .blog-article ol > li::before {
   content: counter(article-list);
   position: absolute;
-  top: 0.18em;
+  top: 5.5px;
   left: 0;
   min-width: 18px;
   height: 18px;
@@ -852,8 +852,11 @@ button:focus-visible,
 }
 
 .article-body img {
+  display: block;
+  width: min(100%, 760px);
   max-width: 100%;
   height: auto;
+  margin: 22px auto;
   border-radius: 4px;
 }
 

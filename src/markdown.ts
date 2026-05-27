@@ -14,7 +14,7 @@ function inlineFormat(value: string) {
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>')
   html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
   html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_match, alt, url) => (
-    `<img src="${escapeAttr(url)}" alt="${escapeAttr(alt)}" loading="lazy" />`
+    `<img src="${escapeAttr(url)}" alt="${escapeAttr(alt)}" decoding="async" />`
   ))
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, text, url) => (
     `<a href="${escapeAttr(url)}">${text}</a>`
