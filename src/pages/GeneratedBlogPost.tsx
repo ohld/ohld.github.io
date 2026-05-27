@@ -15,19 +15,19 @@ export function GeneratedBlogPost() {
       title={post.title}
       description={post.description}
       canonical={`/blog/${post.slug}/`}
-      lang="ru"
+      lang={post.lang}
       date={post.updatedAt}
       publishedAt={post.publishedAt}
       updatedAt={post.updatedAt}
       readingTime={post.readingTime}
       alternates={{
-        ru: `/blog/${post.slug}/`,
+        [post.lang]: `/blog/${post.slug}/`,
         'x-default': `/blog/${post.slug}/`,
       }}
       heroImage={post.coverImage}
       heroAlt={post.coverAlt}
       tags={post.tags}
-      section="Блог"
+      section={post.lang === 'en' ? 'Blog' : 'Блог'}
       bodyText={markdownToPlainText(post.body)}
       bodyHtml={markdownToHtml(post.body)}
     />

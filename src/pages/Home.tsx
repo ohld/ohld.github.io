@@ -35,7 +35,7 @@ export function Home() {
           <span className="page-header-mono">@danokhlopkov</span>
         </div>
         <p className="page-header-bio">
-          Практика <a href={topicPath('ai-agents')}>AI-агентов</a>: <a href={topicPath('codex')}>Codex</a>, <a href={topicPath('claude-code')}>Claude Code</a>, <a href={topicPath('mcp')}>MCP</a>, <a href={topicPath('gstack')}>GStack</a>, <a href={topicPath('openclaw')}>OpenClaw</a>, <a href={topicPath('ton-data')}>TON-данные</a> и <a href={topicPath('telegram-automation')}>Telegram-автоматизация</a>.
+          Практика <a href={topicPath('ai-agents')}>AI-агентов</a>: <a href={topicPath('codex')}>Codex</a>, <a href={topicPath('claude-code')}>Claude Code</a>, <a href={topicPath('mcp')}>MCP</a>, <a href={topicPath('gstack')}>GStack</a>, <a href={topicPath('openclaw')}>OpenClaw</a>, <a href={topicPath('hermes-agent')}>Hermes Agent</a>, <a href={topicPath('ton-data')}>TON-данные</a> и <a href={topicPath('telegram-automation')}>Telegram-автоматизация</a>.
         </p>
       </header>
 
@@ -95,6 +95,7 @@ export function Home() {
           <li><a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">Second brain + Obsidian</a> — как хранить сырьё, решения и память проекта.</li>
           <li><a href="/luchshie-skills-mcp-claude-code-agent-browser/">Skills и MCP для Claude Code</a> — что ставить, а что не усложнять.</li>
           <li><a href="/articles/ai-tools-for-designers-design-engineering-agents/">AI-инструменты для дизайнеров</a> — design engineering без generic UI-slop.</li>
+          <li><a href="/blog/hermes-agent-vs-openclaw/">Hermes Agent vs OpenClaw</a> — какой self-hosted AI agent выбрать после демо.</li>
           <li><a href="/blog/gstack-goal-office-hours-ai-workflow/">GStack, goal и office hours</a> — как вести длинную agent-задачу до результата.</li>
         </ul>
       </section>

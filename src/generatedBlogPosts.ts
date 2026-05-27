@@ -6,6 +6,7 @@ import improveArchitectureFromTelegram from '../content/blog-posts/improve-codeb
 import aiSetupFromTelegram from '../content/blog-posts/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty.md?raw'
 import tmaVibecodingFromTelegram from '../content/blog-posts/vibecoding-telegram-mini-app-claude-code.md?raw'
 import vacationAgentsFromTelegram from '../content/blog-posts/business-on-ai-agent-claude-code-paperclip-gstack.md?raw'
+import hermesVsOpenClawFromTelegram from '../content/blog-posts/hermes-agent-vs-openclaw.md?raw'
 
 interface BlogListItem {
   path: string
@@ -23,6 +24,7 @@ export interface GeneratedBlogPost {
   description: string
   publishedAt: string
   updatedAt: string
+  lang: string
   readingTime: string
   tags: string[]
   coverImage?: string
@@ -46,6 +48,7 @@ const sources = [
   aiSetupFromTelegram,
   tmaVibecodingFromTelegram,
   vacationAgentsFromTelegram,
+  hermesVsOpenClawFromTelegram,
 ]
 
 function parseFrontmatter(raw: string): GeneratedBlogPost {
@@ -66,6 +69,7 @@ function parseFrontmatter(raw: string): GeneratedBlogPost {
     description: meta.description,
     publishedAt: meta.publishedAt,
     updatedAt: meta.updatedAt,
+    lang: meta.lang || 'ru',
     readingTime: meta.readingTime,
     tags,
     coverImage: meta.coverImage,
@@ -94,6 +98,30 @@ export const generatedBlogItems: BlogListItem[] = generatedBlogPosts.map((post) 
   tags: post.tags,
   thumbnail: post.coverImage,
 }))
+
+export const generatedEnglishBlogItems: BlogListItem[] = generatedBlogPosts
+  .filter((post) => post.lang === 'en')
+  .map((post) => ({
+    path: `/blog/${post.slug}/`,
+    title: post.title,
+    description: post.description,
+    publishedAt: post.publishedAt,
+    readingTime: post.readingTime,
+    tags: post.tags,
+    thumbnail: post.coverImage,
+  }))
+
+export const generatedRussianBlogItems: BlogListItem[] = generatedBlogPosts
+  .filter((post) => post.lang !== 'en')
+  .map((post) => ({
+    path: `/blog/${post.slug}/`,
+    title: post.title,
+    description: post.description,
+    publishedAt: post.publishedAt,
+    readingTime: post.readingTime,
+    tags: post.tags,
+    thumbnail: post.coverImage,
+  }))
 
 export function getGeneratedBlogPost(slug: string | undefined) {
   return generatedBlogPosts.find((post) => post.slug === slug)

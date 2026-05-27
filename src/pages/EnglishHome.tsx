@@ -15,7 +15,7 @@ export function EnglishHome() {
   const navigate = useNavigate()
   useDocumentMeta({
     title: 'Daniil Okhlopkov — AI agents, data, TON and Telegram',
-    description: 'Practical notes on AI agents, Codex, Claude Code, MCP, TON analytics and Telegram automation by Daniil Okhlopkov.',
+    description: 'Practical notes on AI agents, OpenClaw, Hermes Agent, Codex, Claude Code, MCP, TON analytics and Telegram automation by Daniil Okhlopkov.',
     canonical: absoluteUrl('/en/'),
     lang: 'en',
     alternates: {
@@ -34,7 +34,7 @@ export function EnglishHome() {
           <span className="page-header-mono">@danokhlopkov</span>
         </div>
         <p className="page-header-bio">
-          Head of Analytics @ TON Foundation.<br />I write about AI agents, data, crypto and Telegram.
+          Head of Analytics @ TON Foundation.<br />I write about AI agents, OpenClaw, Hermes Agent, data, crypto and Telegram.
         </p>
       </header>
 
@@ -90,6 +90,7 @@ export function EnglishHome() {
           <li><a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">Second brain + Obsidian</a> — how to store raw notes, decisions and project memory.</li>
           <li><a href="/luchshie-skills-mcp-claude-code-agent-browser/">Claude Code skills and MCP</a> — what to install, and what not to over-engineer.</li>
           <li><a href="/articles/ai-tools-for-designers-design-engineering-agents/">AI tools for designers</a> — design engineering without generic UI-slop.</li>
+          <li><a href="/blog/hermes-agent-vs-openclaw/">Hermes Agent vs OpenClaw</a> — choosing a self-hosted AI agent after the demo.</li>
           <li><a href="/blog/gstack-goal-office-hours-ai-workflow/">GStack, goal and office hours</a> — how to keep a long agent task moving until it ships.</li>
         </ul>
       </section>

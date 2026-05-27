@@ -114,7 +114,7 @@ function importedArticleAlternates(pathname, lang) {
 
 const HOME_FALLBACK_MD = `# Даниил Охлопков
 
-> Практика [AI-агентов](/topics/ai-agents/): [Codex](/topics/codex/), [Claude Code](/topics/claude-code/), [MCP](/topics/mcp/), [GStack](/topics/gstack/), [OpenClaw](/topics/openclaw/), [TON-данные](/topics/ton-data/) и [Telegram-автоматизация](/topics/telegram-automation/).
+> Практика [AI-агентов](/topics/ai-agents/): [Codex](/topics/codex/), [Claude Code](/topics/claude-code/), [MCP](/topics/mcp/), [GStack](/topics/gstack/), [OpenClaw](/topics/openclaw/), [Hermes Agent](/topics/hermes-agent/), [TON-данные](/topics/ton-data/) и [Telegram-автоматизация](/topics/telegram-automation/).
 
 ## Разделы
 
@@ -148,6 +148,7 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 - [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — как хранить сырьё, решения и память проекта.
 - [Skills и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/) — что ставить, а что не усложнять.
 - [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering без generic UI-slop.
+- [Hermes Agent vs OpenClaw](/blog/hermes-agent-vs-openclaw/) — какой self-hosted AI agent выбрать после демо.
 - [GStack, goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/) — как вести длинную agent-задачу до результата.
 
 ## Карта терминов без маркетинга
@@ -196,7 +197,7 @@ design engineering и on-chain данных. Главный критерий о�
 
 const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
 
-> Practical notes on AI agents, Codex, Claude Code, MCP, TON analytics and Telegram automation.
+> Practical notes on AI agents, Codex, Claude Code, MCP, OpenClaw, Hermes Agent, TON analytics and Telegram automation.
 
 ## Sections
 
@@ -224,6 +225,7 @@ the main editing context.
 - [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — how to store raw notes, decisions and project memory.
 - [Claude Code skills and MCP](/luchshie-skills-mcp-claude-code-agent-browser/) — what to install, and what not to over-engineer.
 - [AI tools for designers](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering without generic UI-slop.
+- [Hermes Agent vs OpenClaw](/blog/hermes-agent-vs-openclaw/) — choosing a self-hosted AI agent after the demo.
 - [GStack, goal and office hours](/blog/gstack-goal-office-hours-ai-workflow/) — how to keep a long agent task moving until it ships.
 
 ## Agent terms without marketing
@@ -337,6 +339,7 @@ const TOPIC_PAGES = [
   ['workflow', 'Workflow', 'Agent workflows: setup, context, review loops, progress artifacts and daily usage.'],
   ['community', 'Community', 'Telegram-чаты, обсуждения, community insights and the feedback loop around AI-agent content.'],
   ['openclaw', 'OpenClaw', 'Заготовка под OpenClaw hub: practical setup, Codex/Hermes сравнения и skills flow.'],
+  ['hermes-agent', 'Hermes Agent', 'Hermes Agent, Telegram/VPS, skills, memory и self-hosted personal AI workflows.'],
   ['ton-data', 'TON-данные', 'On-chain analytics, TON research, Dune, EVAA, USDT и AI-ассистенты для анализа данных.'],
   ['telegram-automation', 'Telegram-автоматизация', 'Telegram bots, Mini Apps, voice workflows, AI-агенты в чатах и автоматизация через Telegram.'],
 ]
@@ -351,11 +354,12 @@ function topicMarkdown(title, description) {
 - [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
 - [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
 - [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
+- [Hermes Agent vs OpenClaw](/blog/hermes-agent-vs-openclaw/)
 - [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
 
 ## Смежные темы
 
-[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
+[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [Hermes Agent](/topics/hermes-agent/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
 `
 }
 
@@ -484,14 +488,15 @@ const ROUTES = [
 ]
 
 for (const post of GENERATED_BLOG_POSTS) {
+  const postLang = post.lang || 'ru'
   ROUTES.push({
     path: `/blog/${post.slug}`,
     slug: `blog-${post.slug}`,
     title: post.title,
     description: post.description,
-    lang: 'ru',
+    lang: postLang,
     alternates: {
-      ru: `${SITE_URL}/blog/${post.slug}/`,
+      [postLang]: `${SITE_URL}/blog/${post.slug}/`,
       'x-default': `${SITE_URL}/blog/${post.slug}/`,
     },
     kind: 'generated-blog-post',
@@ -636,6 +641,62 @@ function articleSchema(route, overrides = {}) {
     }
   }
   return schema
+}
+
+function faqSchema(route) {
+  const markdown = route.markdown || getRouteMd(route) || ''
+  if (!markdown) return null
+
+  const lines = markdown.replace(/\r\n/g, '\n').split('\n')
+  const items = []
+  let inFaq = false
+  let current = null
+
+  const flush = () => {
+    if (!current) return
+    const answer = markdownToText(current.answer.join('\n'))
+    const question = markdownToText(current.question)
+    if (question && answer) {
+      items.push({
+        '@type': 'Question',
+        name: question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: answer,
+        },
+      })
+    }
+    current = null
+  }
+
+  for (const rawLine of lines) {
+    const line = rawLine.trimEnd()
+    if (/^##\s+FAQ\s*$/i.test(line)) {
+      inFaq = true
+      continue
+    }
+    if (!inFaq) continue
+    if (/^##\s+/.test(line)) {
+      flush()
+      break
+    }
+    const question = line.match(/^###\s+(.+)$/)
+    if (question) {
+      flush()
+      current = { question: question[1], answer: [] }
+      continue
+    }
+    if (current) current.answer.push(rawLine)
+  }
+  flush()
+
+  if (!items.length) return null
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    '@id': `${SITE_URL}${route.path}/#faq`,
+    mainEntity: items,
+  }
 }
 
 // Inline regex md→html: only what our templates use (headings, lists,
@@ -868,7 +929,7 @@ function generatedBlogPostSchema(route) {
   return articleSchema(route, {
     keywords: [route.primaryKeyword, ...(route.secondaryKeywords || [])].filter(Boolean),
     about: (route.tags || []).map((name) => ({ '@type': 'Thing', name })),
-    articleSection: 'Блог',
+    articleSection: route.lang === 'en' ? 'Blog' : 'Блог',
   })
 }
 
@@ -1002,6 +1063,12 @@ function rewrite(html, route) {
   if (crumb) {
     const crumbJson = jsonForHtml(crumb)
     const block = `<script id="breadcrumb-structured-data" type="application/ld+json">\n${crumbJson}\n</script>\n  </head>`
+    out = out.replace('</head>', block)
+  }
+  const faq = faqSchema(route)
+  if (faq) {
+    const faqJson = jsonForHtml(faq)
+    const block = `<script id="faq-structured-data" type="application/ld+json">\n${faqJson}\n</script>\n  </head>`
     out = out.replace('</head>', block)
   }
   if (articleRoute) {
