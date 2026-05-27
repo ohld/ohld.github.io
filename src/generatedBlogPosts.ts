@@ -6,6 +6,7 @@ import improveArchitectureFromTelegram from '../content/blog-posts/improve-codeb
 import aiSetupFromTelegram from '../content/blog-posts/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty.md?raw'
 import tmaVibecodingFromTelegram from '../content/blog-posts/vibecoding-telegram-mini-app-claude-code.md?raw'
 import vacationAgentsFromTelegram from '../content/blog-posts/business-on-ai-agent-claude-code-paperclip-gstack.md?raw'
+import aiReelsSeoPipelineArticle from '../content/seo-articles/ai-reels-seo-pipeline-telegram-claude-code.md?raw'
 import hermesVsOpenClawArticle from '../content/seo-articles/hermes-agent-vs-openclaw.md?raw'
 
 interface BlogListItem {
@@ -51,6 +52,7 @@ const sources = [
 ]
 
 const articleSources = [
+  aiReelsSeoPipelineArticle,
   hermesVsOpenClawArticle,
 ]
 

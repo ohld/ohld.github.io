@@ -1,0 +1,14 @@
+{
+  "source": "ai",
+  "model": "imagegen",
+  "provider": "codex",
+  "reference": "user-provided meme references used for mood and composition only; final asset is newly generated",
+  "prompt_text": "РИЛЗ НЕ ЗАЛЕТЕЛ / зато статья индексируется",
+  "purpose": "coverImage and social preview for /articles/ai-reels-seo-pipeline-telegram-claude-code/",
+  "web_asset": {
+    "path": "/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/reels-seo-cover.webp",
+    "width": 1672,
+    "height": 941,
+    "quality": 82
+  }
+}

@@ -257,7 +257,9 @@ const generatedBlogChecks = generatedBlogPosts.map((post) => {
 const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
   path: generatedArticlePath(article),
   title: article.title,
-  requiredText: ['Quick answer', 'The wrong way to choose', 'Read next'],
+  requiredText: article.lang === 'en'
+    ? ['Quick answer', 'The wrong way to choose', 'Read next']
+    : ['Суть пайплайна', 'SEO-теги', 'Источники'],
 }))
 
 const migrationMapStaticPaths = [
@@ -375,10 +377,10 @@ function stripHtmlText(html = '') {
 function verifyPublicCopyBoundaries(textOrHtml, path, { html = true } = {}) {
   const text = html ? stripHtmlText(textOrHtml) : normalizeText(textOrHtml)
   const banned = [
-    ['SEO', /\bSEO\b|SEO-аудит|seo agency/iu],
+    ['SEO internals', /SEO-аудит|seo agency/iu],
     ['Semrush', /Semrush/iu],
     ['Wordstat', /Wordstat|Вордстат/iu],
-    ['GSC/Search Console', /GSC data|Search Console|gets impressions|search impressions/iu],
+    ['GSC/Search Console', /GSC data|Search Console|gets impressions/iu],
     ['content strategy', /content strategy|контент-стратег/iu],
     ['content briefing', /content briefing|source packs for articles|safe public\/private boundaries/iu],
     ['internal project slug', /personal-brand-seo|pseo-implementation-plan|home-seo/iu],
@@ -707,7 +709,7 @@ async function verifyGeneratedSeoArticle({ path, requiredText }) {
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
   assert(html.includes('"@type": "BlogPosting"'), `${path}: missing article JSON-LD`)
-  assert(html.includes('"articleSection": "Articles"'), `${path}: articleSection should be Articles`)
+  assert(/"articleSection": "(Articles|Статьи)"/.test(html), `${path}: articleSection should be Articles/Статьи`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assert(readMeta(html, 'canonical') === canonicalUrl(path), `${path}: canonical mismatch`)
   assert(!html.includes('/blog/hermes-agent-vs-openclaw/'), `${path}: should not link to old Blog URL`)

@@ -1,0 +1,14 @@
+{
+  "source": "ai",
+  "model": "imagegen",
+  "provider": "codex",
+  "reference": "user-provided meme references used for mood and composition only; final asset is newly generated",
+  "prompt_text": "ДА, ТЫ ПРАВ / только raw сохрани",
+  "purpose": "mid-article illustration for /articles/ai-reels-seo-pipeline-telegram-claude-code/",
+  "web_asset": {
+    "path": "/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/raw-source-pack-meme.webp",
+    "width": 1448,
+    "height": 1086,
+    "quality": 82
+  }
+}

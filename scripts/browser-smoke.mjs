@@ -14,6 +14,7 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/blog/claude-code-vs-codex-perehod/',
   '/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/',
   '/articles/',
+  '/articles/ai-reels-seo-pipeline-telegram-claude-code/',
   '/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
   '/topics/ai-agents/',
