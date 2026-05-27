@@ -2,13 +2,13 @@
   "source": "user-reference-edited",
   "model": "local-pillow-edit",
   "provider": "codex-local",
-  "reference": "based directly on /Users/ohld/Desktop/17bbf7c78f54d567c1ee43823974d53c.jpg; original crop/style preserved, text replaced in-place",
-  "prompt_text": "сейв / шер / коммент",
+  "reference": "based directly on /Users/ohld/Desktop/17bbf7c78f54d567c1ee43823974d53c.jpg; original crop/style preserved, old red text masked and replaced in-place",
+  "prompt_text": "views шум / сейв боль / шер факт",
   "purpose": "mid-article illustration for /articles/ai-reels-seo-pipeline-telegram-claude-code/",
   "web_asset": {
     "path": "/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/raw-source-pack-meme.webp",
     "width": 736,
     "height": 808,
-    "quality": 82
+    "quality": 84
   }
 }
