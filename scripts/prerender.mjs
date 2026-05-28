@@ -946,7 +946,7 @@ function buildArticleFallback(route) {
       <h1>${escape(route.title)}</h1>
       ${route.description ? `<p>${escape(route.description)}</p>` : ''}
     </header>
-    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" ${imageHtmlAttributes(route.heroImage, { priority: true })} /></figure>` : ''}
+    ${route.heroImage ? `<figure class="article-hero-image"><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" ${imageHtmlAttributes(route.heroImage, { priority: true })} /></figure>` : ''}
     <section>${route.bodyHtml || ''}</section>
   </article><nav>${nav}</nav><footer>${socials}</footer>`
 }
@@ -961,7 +961,7 @@ function buildGeneratedBlogFallback(route) {
       <h1>${escape(route.title)}</h1>
       ${route.description ? `<p>${escape(route.description)}</p>` : ''}
     </header>
-    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" ${imageHtmlAttributes(route.heroImage, { priority: true })} /></figure>` : ''}
+    ${route.heroImage ? `<figure class="article-hero-image"><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" ${imageHtmlAttributes(route.heroImage, { priority: true })} /></figure>` : ''}
     <section>${article}</section>
   </article><nav>${nav}</nav><footer>${socials}</footer>`
 }
