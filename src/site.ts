@@ -1,4 +1,5 @@
 import localizedGroups from '../content/articles/localized-groups.json'
+import importedIndex from '../content/articles/imported-index.json'
 
 const DEFAULT_SITE_URL = 'https://okhlopkov.com'
 
@@ -25,11 +26,9 @@ export const navLinks = [
   { path: '/about', enPath: '/en/about/', ru: 'Обо мне', en: 'About' },
 ]
 
-export function isEnglishPath(pathname: string) {
-  return pathname === '/en' || pathname.startsWith('/en/')
-}
-
 type LocalizedArticleGroup = Partial<Record<'ru' | 'en' | 'zh', string>>
+type PageLang = 'ru' | 'en' | 'zh'
+type ImportedArticleLanguage = { path: string; lang: PageLang }
 
 const staticLocalizedPairs: Array<{ ru: string; en: string }> = [
   { ru: '/', en: '/en/' },
@@ -41,6 +40,9 @@ const articleLocalizedPairs = (localizedGroups as LocalizedArticleGroup[])
   .filter((group): group is LocalizedArticleGroup & { ru: string; en: string } => Boolean(group.ru && group.en))
   .map((group) => ({ ru: group.ru, en: group.en }))
 const localizedPairs = [...staticLocalizedPairs, ...articleLocalizedPairs]
+const importedArticleLangByPath = new Map(
+  (importedIndex as ImportedArticleLanguage[]).map((article) => [canonicalPath(article.path), article.lang]),
+)
 
 function canonicalPath(pathname: string) {
   const pathOnly = pathname.split('?')[0].split('#')[0] || '/'
@@ -52,11 +54,26 @@ export function localizedPath(pathname: string, lang: 'ru' | 'en') {
   const current = canonicalPath(pathname)
   const pair = localizedPairs.find((item) => item.ru === current || item.en === current)
   if (pair) return lang === 'en' ? pair.en : pair.ru
+  const importedLang = importedArticleLangByPath.get(current)
+  if (importedLang) {
+    if (importedLang === lang) return current
+    return lang === 'en' ? '/en/' : '/'
+  }
   if (current.startsWith('/en/articles/')) return lang === 'en' ? current : '/articles/'
   if (current.startsWith('/articles/')) return lang === 'en' ? '/en/articles/' : current
   if (current.startsWith('/en/blog/')) return lang === 'en' ? current : '/blog/'
   if (current.startsWith('/blog/')) return lang === 'en' ? '/en/blog/' : current
   return lang === 'en' ? '/en/' : '/'
+}
+
+export function pageLangForPath(pathname: string): PageLang {
+  const current = canonicalPath(pathname)
+  if (current === '/en/' || current.startsWith('/en/')) return 'en'
+  return importedArticleLangByPath.get(current) || 'ru'
+}
+
+export function shellLangForPath(pathname: string): 'ru' | 'en' {
+  return pageLangForPath(pathname) === 'ru' ? 'ru' : 'en'
 }
 
 export function absoluteUrl(path = '/') {

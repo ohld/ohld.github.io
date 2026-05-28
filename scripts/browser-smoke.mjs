@@ -18,6 +18,8 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/articles/ai-reels-seo-pipeline-telegram-claude-code/',
   '/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
+  '/how-to-get-a-telegram-channel-subscribers-list-in-python/',
+  '/claude-code-nastrojka-mcp-hooks-skills-2026/',
   '/topics/ai-agents/',
   '/about/',
 ].join(','))
@@ -44,6 +46,19 @@ const codeBlockChecks = [
 ]
 
 const thumbnailRoutes = new Set(['/blog/', '/en/blog/', '/articles/', '/en/articles/'])
+
+const languageShellExpectations = {
+  '/how-to-get-a-telegram-channel-subscribers-list-in-python/': {
+    links: ['/en/', '/en/blog/', '/en/articles/', '/en/about/'],
+    requiredText: ['Home', 'Blog', 'Articles', 'About'],
+    forbiddenText: ['Главная', 'Блог', 'Статьи', 'Обо мне'],
+  },
+  '/claude-code-nastrojka-mcp-hooks-skills-2026/': {
+    links: ['/', '/blog', '/articles', '/about'],
+    requiredText: ['Главная', 'Блог', 'Статьи', 'Обо мне'],
+    forbiddenText: ['Home', 'Blog', 'Articles', 'About'],
+  },
+}
 
 const executableCandidates = [
   process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
@@ -155,6 +170,8 @@ async function main() {
           bodyChars: document.body.innerText.trim().length,
           hasHeader: Boolean(header),
           hasFooter: Boolean(footer),
+          headerText: header?.textContent || '',
+          headerLinks: Array.from(header?.querySelectorAll('a') || []).map((link) => link.getAttribute('href') || ''),
           overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
           headerMainOverlap: Boolean(headerBox && mainBox && headerBox.bottom > mainBox.top + 4),
           cardCount: document.querySelectorAll('.blog-card').length,
@@ -258,6 +275,18 @@ async function main() {
     if (result.expectedCodeBlocks && result.copyButtons < result.expectedCodeBlocks) issues.push(`copy buttons ${result.copyButtons || 0} < ${result.expectedCodeBlocks}`)
     if (result.canonical !== expected) issues.push(`canonical ${result.canonical || '<empty>'} != ${expected}`)
     if (!['index, follow', 'noindex, follow'].includes(result.robots)) issues.push(`robots ${result.robots || '<empty>'}`)
+    const shell = languageShellExpectations[canonicalPath(result.route)]
+    if (shell) {
+      for (const link of shell.links) {
+        if (!result.headerLinks?.includes(link)) issues.push(`header missing ${link}`)
+      }
+      for (const text of shell.requiredText) {
+        if (!result.headerText?.includes(text)) issues.push(`header missing ${text}`)
+      }
+      for (const text of shell.forbiddenText) {
+        if (result.headerText?.includes(text)) issues.push(`header leaked ${text}`)
+      }
+    }
     if (result.errors.length) issues.push(result.errors.join('; '))
     if (issues.length) failed = true
     console.log(`${issues.length ? 'FAIL' : 'OK'} ${result.viewport} ${result.route} :: ${result.title} :: ${issues.join(' | ')}`)

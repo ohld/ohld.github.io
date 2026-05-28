@@ -25,14 +25,24 @@ const IMPORTED_ARTICLES_INDEX = path.join('content', 'articles', 'imported-index
 const IMPORTED_ARTICLES_CONTENT = path.join('content', 'articles', 'imported-content.json')
 const LOCALIZED_GROUPS_PATH = path.join('content', 'articles', 'localized-groups.json')
 
-const NAV_LINKS = [
-  ['/', 'Главная'],
-  ['/blog/', 'Блог'],
-  ['/articles/', 'Статьи'],
-  ['/about/', 'Обо мне'],
-  ['/en/', 'English'],
-  ['/privacy/', 'Privacy'],
-]
+const NAV_LINKS_BY_SHELL_LANG = {
+  ru: [
+    ['/', 'Главная'],
+    ['/blog/', 'Блог'],
+    ['/articles/', 'Статьи'],
+    ['/about/', 'Обо мне'],
+    ['/en/', 'English'],
+    ['/privacy/', 'Privacy'],
+  ],
+  en: [
+    ['/en/', 'Home'],
+    ['/en/blog/', 'Blog'],
+    ['/en/articles/', 'Articles'],
+    ['/en/about/', 'About'],
+    ['/', 'RU'],
+    ['/privacy/', 'Privacy'],
+  ],
+}
 
 const SOCIAL_LINKS = [
   ['https://t.me/danokhlopkov', 'Telegram'],
@@ -42,6 +52,18 @@ const SOCIAL_LINKS = [
   ['https://www.linkedin.com/in/danokhlopkov/', 'LinkedIn'],
   ['https://github.com/ohld', 'GitHub'],
 ]
+
+function navLinksForLang(lang = 'ru') {
+  return NAV_LINKS_BY_SHELL_LANG[lang === 'ru' ? 'ru' : 'en']
+}
+
+function fallbackNav(lang = 'ru') {
+  return navLinksForLang(lang).map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
+}
+
+function fallbackSocials() {
+  return SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
+}
 
 const ARTICLE_LANGS = ['ru', 'en', 'zh']
 const LOCALIZED_GROUPS = JSON.parse(fs.readFileSync(LOCALIZED_GROUPS_PATH, 'utf8'))
@@ -897,17 +919,17 @@ function mdToHtml(md) {
   return out.join('\n')
 }
 
-function buildFallback(title, mdBody, withArticleContentId = false) {
+function buildFallback(title, mdBody, withArticleContentId = false, lang = 'ru') {
   const article = mdToHtml(mdBody)
-  const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
-  const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
+  const nav = fallbackNav(lang)
+  const socials = fallbackSocials()
   const articleId = withArticleContentId ? ' id="article-content"' : ''
   return `<header><h1>${escape(title)}</h1></header><article${articleId}>${article}</article><nav>${nav}</nav><footer>${socials}</footer>`
 }
 
 function buildArticleFallback(route) {
-  const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
-  const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
+  const nav = fallbackNav(route.lang)
+  const socials = fallbackSocials()
   const imageAlt = route.imageAlt || route.title
   return `<article id="article-content" data-article-engine="article">
     <header>
@@ -921,8 +943,8 @@ function buildArticleFallback(route) {
 
 function buildGeneratedBlogFallback(route) {
   const article = mdToHtml(route.markdown || '')
-  const nav = NAV_LINKS.map(([href, label]) => `<a href="${href}">${label}</a>`).join(' · ')
-  const socials = SOCIAL_LINKS.map(([href, label]) => `<a href="${href}" rel="me">${label}</a>`).join(' · ')
+  const nav = fallbackNav(route.lang)
+  const socials = fallbackSocials()
   const imageAlt = route.imageAlt || route.title
   return `<article id="article-content" data-article-engine="article">
     <header>
@@ -1112,7 +1134,7 @@ function rewrite(html, route) {
     ? buildArticleFallback(route)
     : route.kind === 'generated-blog-post' || route.kind === 'generated-article-post'
       ? buildGeneratedBlogFallback(route)
-      : mdBody ? buildFallback(title, mdBody, articleRoute) : buildFallback(title, '', articleRoute)
+      : mdBody ? buildFallback(title, mdBody, articleRoute, lang) : buildFallback(title, '', articleRoute, lang)
   let out = applySiteUrl(html)
     .replace(/<html lang="[^"]+">/, `<html lang="${lang}">`)
     .replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(title)}</title>`)

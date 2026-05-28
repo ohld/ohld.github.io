@@ -3,7 +3,7 @@ import type { ReactElement } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { TelegramIcon, TwitterXIcon, YoutubeIcon, GithubIcon, LinkedinIcon, InstagramIcon } from './Icons'
 import { openUrl } from '../openUrl'
-import { isEnglishPath, navLinks, socialLinks } from '../site'
+import { navLinks, shellLangForPath, socialLinks } from '../site'
 
 const iconByLabel: Record<string, ReactElement> = {
   Telegram: <TelegramIcon />,
@@ -24,7 +24,7 @@ function handleSocialClick(event: MouseEvent<HTMLAnchorElement>, url: string, la
 
 export function Footer() {
   const location = useLocation()
-  const isEnglish = isEnglishPath(location.pathname)
+  const isEnglish = shellLangForPath(location.pathname) === 'en'
 
   return (
     <footer className="footer">

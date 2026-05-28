@@ -1,10 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
 import { trackNav } from '../analytics'
-import { isEnglishPath, localizedPath, navLinks } from '../site'
+import { localizedPath, navLinks, shellLangForPath } from '../site'
 
 export function SiteHeader() {
   const location = useLocation()
-  const isEnglish = isEnglishPath(location.pathname)
+  const isEnglish = shellLangForPath(location.pathname) === 'en'
   const homePath = isEnglish ? '/en/' : '/'
 
   return (

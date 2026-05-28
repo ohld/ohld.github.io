@@ -587,13 +587,15 @@ async function verifyRootVerificationMeta() {
   console.log(`✓ yandex verification meta (${yandexVerificationIds.length})`)
 }
 
-async function verifyImportedArticle({ path, title }) {
+async function verifyImportedArticle({ path, title, lang = 'ru' }) {
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
   if (title) assert(readTitle(html) === normalizeText(title), `${path}: title mismatch`)
   assert(readMeta(html, 'canonical') === canonicalUrl(path), `${path}: canonical mismatch`)
   assert(readMeta(html, 'robots') === 'index, follow', `${path}: robots mismatch`)
+  assert(readHtmlLang(html) === lang, `${path}: html lang mismatch`)
+  verifyImportedArticleShell(html, path, lang)
   assert(html.includes('data-article-engine="article"'), `${path}: missing common article engine marker`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assertNoMalformedExternalLinks(html, path)
@@ -614,6 +616,22 @@ async function verifyImportedArticle({ path, title }) {
     assert(html.includes('<ul class="article-task-list">'), `${path}: setup checklist is not normalized as a semantic list`)
   }
   if (verbose) console.log(`✓ imported article ${path}`)
+}
+
+function verifyImportedArticleShell(html, path, lang) {
+  const expectsEnglishShell = lang === 'en' || lang === 'zh'
+  if (expectsEnglishShell) {
+    assert(html.includes('<a href="/en/blog/">Blog</a>'), `${path}: imported non-RU page should link to English blog`)
+    assert(html.includes('<a href="/en/articles/">Articles</a>'), `${path}: imported non-RU page should link to English articles`)
+    assert(html.includes('<a href="/en/about/">About</a>'), `${path}: imported non-RU page should link to English about`)
+    assert(!html.includes('<a href="/blog/">Блог</a>'), `${path}: imported non-RU page leaked Russian blog nav`)
+    assert(!html.includes('<a href="/articles/">Статьи</a>'), `${path}: imported non-RU page leaked Russian articles nav`)
+    return
+  }
+
+  assert(html.includes('<a href="/blog/">Блог</a>'), `${path}: imported RU page should link to Russian blog`)
+  assert(html.includes('<a href="/articles/">Статьи</a>'), `${path}: imported RU page should link to Russian articles`)
+  assert(!html.includes('<a href="/en/blog/">Blog</a>'), `${path}: imported RU page leaked English blog nav`)
 }
 
 async function verifyImportedArticles(importedArticles) {
