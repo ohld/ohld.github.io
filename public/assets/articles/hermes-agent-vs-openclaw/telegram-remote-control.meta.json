@@ -1,0 +1,14 @@
+{
+  "source": "ai",
+  "model": "nano-banana-pro",
+  "provider": "cheapaiapi",
+  "reference": "private local Pinterest-style reference, not public source asset",
+  "prompt_text": "Telegram как пульт от агента / написал с телефона — он пашет на VPS",
+  "purpose": "inline illustration for the Telegram section in /articles/hermes-agent-vs-openclaw/",
+  "web_asset": {
+    "path": "/assets/articles/hermes-agent-vs-openclaw/telegram-remote-control.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82
+  }
+}

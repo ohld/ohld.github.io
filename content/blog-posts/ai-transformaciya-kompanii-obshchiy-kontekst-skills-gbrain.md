@@ -6,6 +6,8 @@ publishedAt: 2026-05-24
 updatedAt: 2026-05-26
 readingTime: 8 мин
 tags: AI Transformation, GBrain, Skills
+coverImage: /assets/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/company-context-cover.webp
+coverAlt: Мем-обложка про общий контекст, skills, GBrain и AI-агентов
 sourceTelegramId: 1685
 primaryKeyword: ai агенты
 secondaryKeywords: claude code skills; gbrain; tencentdb agent memory; память ai агентов; mcp сервер что это

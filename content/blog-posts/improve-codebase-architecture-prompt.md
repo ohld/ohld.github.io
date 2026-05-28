@@ -6,6 +6,8 @@ publishedAt: 2026-05-01
 updatedAt: 2026-05-27
 readingTime: 5 мин
 tags: AI Agents, Refactoring, Skills
+coverImage: /assets/blog/improve-codebase-architecture-prompt/architecture-prompt-cover.webp
+coverAlt: Мем-обложка про улучшение архитектуры AI-агентом без поломки продакшена
 sourceTelegramId: 1664
 primaryKeyword: claude code skills
 secondaryKeywords: cursor skills; ai code review; refactoring; codex; рефакторинг кода

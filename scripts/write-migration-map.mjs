@@ -186,7 +186,7 @@ const redirects = [
   },
   {
     old_path: '/blog/hermes-agent-vs-openclaw/',
-    new_path: '/en/articles/hermes-agent-vs-openclaw/',
+    new_path: '/articles/hermes-agent-vs-openclaw/',
     action: '308_redirect',
     source: 'static_ia_cleanup',
     note: 'SEO-generated comparison moved from Blog to Articles to keep Blog reserved for Dan-authored channel posts.',

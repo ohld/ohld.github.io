@@ -6,6 +6,8 @@ publishedAt: 2026-05-26
 updatedAt: 2026-05-26
 readingTime: 10 мин
 tags: AI Agents, GStack, Claude Code
+coverImage: /assets/blog/business-on-ai-agent-claude-code-paperclip-gstack/business-agents-cover.webp
+coverAlt: Мем-обложка про бизнес на AI-агентах, пока автор не у ноутбука
 sourceTelegramId: 1654
 primaryKeyword: ai coding agent workflow
 secondaryKeywords: ai агенты; claude code; gstack; paperclip ai; agent workflow; ai agent 24/7

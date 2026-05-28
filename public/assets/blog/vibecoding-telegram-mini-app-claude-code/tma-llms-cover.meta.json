@@ -1,0 +1,14 @@
+{
+  "source": "ai",
+  "model": "nano-banana-pro",
+  "provider": "cheapaiapi",
+  "reference": "private local Pinterest-style reference, not public source asset",
+  "prompt_text": "llms.txt для mini app / агент сам читает доки",
+  "purpose": "coverImage and social preview for /blog/vibecoding-telegram-mini-app-claude-code/",
+  "web_asset": {
+    "path": "/assets/blog/vibecoding-telegram-mini-app-claude-code/tma-llms-cover.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82
+  }
+}

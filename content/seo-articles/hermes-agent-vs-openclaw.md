@@ -1,256 +1,180 @@
 ---
 slug: hermes-agent-vs-openclaw
-lang: en
-title: Hermes Agent vs OpenClaw: which open-source AI agent should you use?
-description: OpenClaw vs Hermes Agent for self-hosted AI agents: Telegram, memory, skills, cron jobs, browser automation, provider risk and security.
-publishedAt: 2026-05-27
-updatedAt: 2026-05-27
-readingTime: 8 min
-tags: AI Agents, OpenClaw, Hermes Agent, Telegram Automation, Agent Memory
+lang: ru
+title: Hermes Agent vs OpenClaw: что выбрать для AI-агента
+description: Практическое сравнение Hermes Agent и OpenClaw: Telegram, установка, память, skills, MCP, cron, безопасность, токены и сценарии для self-hosted AI-агента.
+publishedAt: 2026-05-28
+updatedAt: 2026-05-28
+readingTime: 12 мин
+tags: AI Agents, Hermes Agent, OpenClaw, Telegram Automation, MCP
+coverImage: /assets/articles/hermes-agent-vs-openclaw/hermes-openclaw-cover.webp
+coverAlt: Мем-обложка Hermes vs OpenClaw про day-30 тест AI-агента
 sourceTelegramId: 0
 primaryKeyword: hermes agent vs openclaw
-secondaryKeywords: hermes agent; openclaw; open source ai agent; self hosted ai agent; telegram ai agent; ai agent with memory; openclaw alternative; claude code alternative; ai agent framework comparison
+secondaryKeywords: hermes agent; openclaw; ai агент telegram; self hosted ai agent; telegram ai agent; ai агент с памятью; openclaw альтернатива; claude code agent; mcp агент; ai agent framework comparison
 views: 0
 forwards: 0
 comments: 0
 reactions: 0
 ---
 
-Short version: **OpenClaw is the better default for a self-hosted multi-channel agent gateway. Hermes Agent is the better default for one persistent personal ops agent in terminal and Telegram.**
+Коротко: **OpenClaw я бы брал как self-hosted gateway для разных каналов, а Hermes Agent как личного ops-агента, который живет в Telegram, помнит рабочий контекст и со временем обрастает skills.**
 
-If you want channel breadth, gateway controls, browser automation, cron jobs and explicit infrastructure policy, start with OpenClaw. If you want one assistant that learns your workflow, reuses skills, writes notes to memory and handles recurring personal work, start with Hermes.
+У них пересекаются фичи: Telegram, память, tools, cron, выполнение кода, работа с файлами, web search, skills. Но выбирать только по таблице функций странно. Настоящий тест начинается не на установке, а на day-30: что происходит с токенами, памятью, безопасностью, cron-задачами, allowlist, браузером и задачами, которые прилетают с телефона голосом.
 
-## Quick answer
+## Короткий вывод
 
-Hermes Agent is better if you want one personal AI assistant that you can use from terminal and Telegram, teach through skills, connect to GBrain or markdown memory, and run as a daily operator. OpenClaw is better if you want a self-hosted AI agent gateway across many chat apps with explicit channel, browser, cron and security configuration.
+Если хочется быстро поднять агентный gateway для Telegram, Slack, WhatsApp, Discord и нескольких рабочих поверхностей, я бы начинал с [OpenClaw](/topics/openclaw/). Если задача ближе к личному ассистенту, который живет на сервере, помнит рабочий контекст, улучшает skills и пишет в Telegram по cron, я бы тестировал Hermes Agent.
 
-| Decision axis | OpenClaw | Hermes Agent |
+Для меня [AI-агент](/topics/ai-agents/) должен переживать обычную неделю: рестарты, лимиты моделей, кривые сайты, устаревшие skills, случайные файлы, Telegram-апрувы и задачи, которые приходят не как аккуратный Jira-ticket, а как "глянь вот это, собери выводы и напомни завтра".
+
+## Почему вообще сравнивать Hermes Agent и OpenClaw
+
+Списков фич хватает. Практических разборов на русском мало: установка, Telegram, память, security, токены, cron и реальная жизнь через месяц обычно важнее красивой таблицы на GitHub.
+
+Я смотрю на эти инструменты как на инфраструктуру для always-on агента. Нужно понять, где он живет, кто может ему писать, какие файлы он видит, как он хранит память, как зовет [MCP](/topics/mcp/), когда просит approval и как доставляет результат обратно в Telegram. В связке с [GBrain](/topics/gbrain/) и [AI-агентом на сервере 24/7](/ai-agent-na-servere-24-7/) это уже похоже на личную операционную систему.
+
+## Что такое OpenClaw
+
+OpenClaw я бы описывал как self-hosted gateway для агентной жизни в мессенджерах. Его сильная сторона не в том, что он "тоже умеет чатиться с LLM", а в control plane: каналы, сессии, tools, доступы, память, skills, cron и multi-agent routing.
+
+Это полезно, когда Telegram не единственная поверхность. Например, один агент работает в Telegram, другой в Slack, третий в Discord, а общий gateway держит правила доступа, sandbox и delivery. Чем больше каналов и ролей, тем важнее явные границы.
+
+## Что такое Hermes Agent
+
+Hermes Agent от Nous Research идейно ближе к личному агенту, который со временем должен становиться полезнее. Важный слой тут не "еще один Telegram bot", а learning loop: curated memory, поиск по прошлым сессиям, skills, MCP, cron, subagents, разные backends для выполнения кода и gateway в мессенджеры.
+
+Мне в Hermes нравится практический angle: агент живет на VPS или в контейнере, общается через Telegram, может доставлять результат обратно в чат и держит отдельные профили под разные роли. Это уже не демо поверх модели, а персональная инфраструктура.
+
+## Главная разница: gateway против learning loop
+
+OpenClaw я бы брал, когда нужен надежный вход из разных мессенджеров и понятное разделение агентов. Hermes Agent выглядит сильнее, когда главный сценарий один: постоянный личный агент, который учится на повторяемых задачах, сам создает или улучшает skills и регулярно делает фоновые штуки через cron.
+
+| Ось | OpenClaw | Hermes Agent |
 | --- | --- | --- |
-| Best default use case | Multi-channel self-hosted AI agent gateway | Persistent personal AI ops agent |
-| Primary interface | Gateway, dashboard and chat channels | Terminal, gateway and messaging platforms |
-| Telegram fit | Strong when Telegram is one channel among many | Strong when Telegram is the main daily control surface |
-| Memory model | Transparent workspace markdown memory | Profile memory plus skills, often stronger with external retrieval like GBrain |
-| Skills | AgentSkills-compatible operational recipes | Self-improving workflow layer that should compound over time |
-| Automation | Gateway cron, background tasks and standing orders | Scheduled personal research, monitoring, content and code workflows |
-| Main risk | Operating too much infrastructure with broad permissions | Letting one trusted assistant accumulate too much authority |
-| My pick | Use it when you want control and channel breadth | Use it when you want day-30 personal utility |
+| Базовая роль | Gateway и control plane для агентных каналов. | Личный агент с learning loop и долгой памятью. |
+| Telegram | Сильный канал, группы, allowlist, topics, plugins. | Удобный gateway для личного агента и delivery cron-задач. |
+| Память | Markdown workspace, daily notes, memory plugins, search. | Curated memory, user/profile context, session search, external providers. |
+| Skills | AgentSkills folders, ClawHub, workspace/global scopes. | Skills как procedural memory, progressive disclosure, auto-improvement angle. |
+| Код и sandbox | Gateway, exec approvals, sandbox, nodes. | Docker/SSH/Modal/Daytona/Singularity-style backends. |
+| Кому ближе | Power users, которым нужен multi-channel router. | Тем, кто хочет персонального ops-агента на сервере. |
 
-## Quick decision
+## Установка и первый setup
 
-Use **OpenClaw** if you care most about:
+По установке OpenClaw сейчас выглядит как Node-проект: актуальный Node, установка через npm, onboarding и запуск dashboard или канала. Hermes Agent ставится как Python-проект: quickstart через install script, дальше provider, модель, профиль и gateway.
 
-- many channels: Telegram, WhatsApp, Slack, Discord and more;
-- explicit configuration for channels, tool policy, sandboxing, approvals and exposure;
-- browser control as a first-class part of the assistant;
-- cron jobs, reminders, heartbeats and standing orders;
-- transparent markdown memory in `MEMORY.md`, daily notes and optional dream/sweep files;
-- a system you are willing to operate like infrastructure.
+Но реальная сложность начинается после первой команды. Нужно решить, где агент живет: локально, на VPS, в Docker, через SSH backend, в Coolify или в отдельном sandbox. Для постоянного Telegram-агента я бы сразу думал про сервер, отдельный volume, backup, allowlist и понятный scope файлов. Агент с доступом к терминалу и домашней папке без границ быстро превращается в риск.
 
-Use **Hermes Agent** if you care most about:
+![Мем про always-on агента и cron дома](/assets/articles/hermes-agent-vs-openclaw/setup-cron-home.webp)
 
-- a daily assistant reachable from terminal and Telegram;
-- skills as reusable procedures that compound over time;
-- persistent user/profile memory without making the prompt huge;
-- scheduled research, monitoring, content and code-review workflows;
-- GBrain or another retrieval layer as durable knowledge outside the active session;
-- less “configure every gateway primitive” and more “run the task, save the lesson, reuse it”.
+## Telegram
 
-If you are a solo operator, founder, researcher or content person, Hermes is usually the faster path to real utility. If you are building a personal-agent gateway across channels and want to own every policy boundary, OpenClaw is more interesting.
+Telegram в этой теме выигрывает у отдельного desktop app почти всегда. Он уже стоит на телефоне и ноуте, умеет голосовые, файлы, группы, топики, push-уведомления и нормальный async-режим. Для бытовых задач, ресерча, напоминаний и фоновых jobs это лучший интерфейс, который не надо объяснять.
 
-## The useful differences
+OpenClaw сильнее, когда Telegram - один из многих каналов. Hermes приятнее, когда Telegram становится home channel для личного агента: ты пишешь с телефона, агент работает на сервере, а результат возвращается туда же. Подробности дальше логично собирать в [Telegram-автоматизации](/topics/telegram-automation/): Telegram как remote control для агентной инфраструктуры.
 
-### Memory: file transparency vs curated operational memory
+![Мем про Telegram как пульт от AI-агента](/assets/articles/hermes-agent-vs-openclaw/telegram-remote-control.webp)
 
-OpenClaw's memory model is concrete: workspace markdown, `MEMORY.md`, daily notes and optional dream/sweep files. That is good because you can inspect and edit what the agent remembers.
+## Память, skills и MCP
 
-The risk is noise. If every session writes every tiny fact, memory becomes a second chat transcript. Hermes feels stronger when paired with a retrieval layer like GBrain: small profile memory for stable preferences, skills for repeatable workflows, and project/source-pack knowledge outside the active prompt.
+Тут важно не верить словам "память" слишком буквально. OpenClaw хранит память в Markdown-файлах workspace и добавляет memory plugins/search. Это кайф для людей, которые любят Obsidian-подход: все лежит на диске, можно открыть глазами, можно версионировать, можно чинить руками.
 
-That is the pattern I trust more:
+Hermes делает более жесткую curated memory: короткие файлы профиля/пользователя, поиск по сессиям и внешние providers для длинной памяти. Плюс в том, что память не обязана превращаться в бесконечную простыню prompt context. Минус очевидный: если ждать от памяти магический infinite context, будет больно в любом инструменте.
 
-- **small profile memory** for stable preferences and environment facts;
-- **skills** for repeatable procedures;
-- **project docs / GBrain / markdown vault** for durable knowledge;
-- **cron output** for recurring checks.
+Skills лучше воспринимать как переносимый operational layer: инструкция к повторяемой работе, где прописано, как собрать ресерч, как проверить браузер, как обновить статью, как не забыть источники. Для моего сайта это уже работает через [Claude Code setup](/claude-code-nastrojka-mcp-hooks-skills-2026/), GBrain и сабагентов: source pack отдельно, текст отдельно, ревью отдельно.
 
-The mistake is thinking bigger context solves memory. Bigger context postpones curation.
+## Что ломается первым
 
-### Telegram: not just a connected bot
+Большинство сравнений упирается в таблицу фич. Она полезна, но скучная. В реальной жизни первыми ломаются границы: контекст, доступы, каналы, токены, память и уверенность агента в старых выводах.
 
-Both systems can work with Telegram. The useful question is what happens after the bot replies once.
+| Проблема | Как выглядит | Что проверять |
+| --- | --- | --- |
+| Token burn | Агент грузит слишком много skills, истории и tool output. | Pruning, prompt cache, лимиты tool output, короткие skills. |
+| Provider risk | Модель упала, rate limit, бан, смена pricing, разные ответы. | Fallback models, OpenRouter/Nous/OpenAI routing, дешевые subagents. |
+| Memory attic | Память растет, агент тащит старые решения и мусор. | Короткая curated memory, отдельные source packs, регулярная чистка. |
+| Browser handoff | Нужны cookies и живой браузер, а агент видит пустой sandbox. | MCP bridge, live Chrome, отдельные browser skills, ручной fallback. |
+| Cron silence | Job сработал, но в Telegram ничего не пришло. | Delivery target, home channel, logs, минимальный test cron. |
+| Security drift | Вчера был безопасный бот, сегодня у него exec и секреты. | Allowlist, approvals, sandbox, отдельный user, backup, audit logs. |
 
-OpenClaw is better if Telegram is one channel inside a broader gateway: DM policy, group behavior, pairing, privacy mode, allowlists and token handling all matter. Hermes is better if Telegram is the main control surface for one trusted operator:
+## Безопасность
 
-- check this repo and summarize the risk;
-- run the content loop and report what changed;
-- watch this source and alert only on meaningful changes;
-- turn messy research into a source pack;
-- remind me weekly with current data, not a static note.
+Агент в Telegram с exec-доступом - это не игрушка. OpenClaw в документации отдельно описывает DM policies, allowlist, exec approvals и sandbox controls. Hermes тоже надо закрывать слоями: allowlist/pairing, approvals для опасных команд, container isolation, MCP credential filtering и ограничения на рабочие директории.
 
-For my own use, one reliable Telegram operator beats ten half-configured channels.
+Мой минимальный baseline: один владелец, явный Telegram allowlist, отдельный серверный пользователь, Docker/SSH sandbox для команд, secrets только в env/secret store, backup workspace, логирование, запрет на публичный open-DM режим. Если агент может читать vault, браузер и терминал, то "потом настрою безопасность" уже поздно.
 
-### Skills and automation
+![Мем про exec без allowlist у AI-агента](/assets/articles/hermes-agent-vs-openclaw/security-allowlist.webp)
 
-Skills are not just prompts in a nicer folder.
+## Кому выбрать OpenClaw
 
-A good skill is an operational recipe: when to use it, exact commands, traps, verification steps and the user's preferred way to do the task. This is how an assistant becomes less random over time.
+- Нужен multi-channel gateway: Telegram, Slack, WhatsApp, Discord, WebChat, mobile nodes.
+- Хочется держать несколько агентов под разные каналы, роли или workspaces.
+- Важны локальные Markdown-файлы памяти, ClawHub, manual skill control и dashboard.
+- Нужна более быстрая gateway-обвязка без обязательного learning-loop overhead.
+- Команда готова красноглазить config/security и нормально документировать доступы.
 
-The compounding loop is the product:
+## Кому выбрать Hermes Agent
 
-1. agent solves something non-trivial;
-2. agent records the procedure as a skill;
-3. the next run loads the skill instead of rediscovering the workflow;
-4. if the skill is wrong, it gets patched.
+- Нужен личный always-on агент в Telegram, который живет на VPS и работает фоном.
+- Важны profiles, personality/user context, curated memory, session search и self-improving skills.
+- Нужны cron-задачи с доставкой результата обратно в чат.
+- Хочется подключать MCP, GBrain, browser/search и external memory providers.
+- Ок с тем, что агент может думать медленнее, зато держит более тяжелый рабочий цикл.
 
-OpenClaw has AgentSkills-compatible skill folders and strong gateway automation. Hermes pushes more naturally toward personal workflow reuse. Compare day-30 behavior, not day-1 feature count.
+## Мой тест-план на 48 часов
 
-### Browser automation
+1. Поднять агента на отдельном VPS или в контейнере, подключить Telegram через allowlist.
+2. Сделать три бытовые задачи: voice summary, web research, file/document analysis.
+3. Сделать одну рабочую задачу: собрать source pack для статьи и сохранить вывод в GBrain.
+4. Настроить один cron: утренний дайджест или мониторинг источников с доставкой в Telegram.
+5. Проверить memory hygiene: что попало в long-term memory, что осталось в raw notes, что надо удалить.
+6. Прогнать security checklist: кто может писать боту, где секреты, есть ли backup и sandbox.
 
-Browser automation is where a lot of AI-agent hype dies.
+Если после этого агентом хочется пользоваться с телефона без ощущения, что ты держишь опасный demo-проект на честном слове, инструмент можно оставлять. Если always-on слой пока рано, начните с более узкого [Claude Code/Codex workflow](/blog/claude-code-vs-codex-perehod/) и добавляйте серверного агента только после нормального security baseline.
 
-The agent can click, then it hits CAPTCHA, 2FA, an iframe, a stale DOM state or the wrong browser profile. A separate agent browser profile is safer than giving an assistant your real browser with all cookies and extensions.
+## Если выбираете стек дальше
 
-The best browser agent is the one with a clean handoff loop:
+Начните с одного сценария и не тащите всю агентную инфраструктуру сразу. Для личного Telegram-агента проверьте Hermes setup, память, cron и approvals. Для gateway-подхода изучите OpenClaw, каналы, allowlist, skills и exec boundaries. Для рабочих задач без сервера часто хватает Claude Code или Codex.
 
-- agent tries;
-- agent detects a manual blocker;
-- human takes over safely;
-- agent resumes with a fresh observation;
-- result is logged in a way you can audit.
-
-This matters more than whether the demo can click a button on a clean website.
-
-### Cron and autonomy
-
-Scheduled tasks and standing orders are where an assistant stops being a chatbot and becomes background infrastructure.
-
-A scheduled agent can spend money, touch files, call APIs, message people, and silently degrade when a provider changes behavior. My default rule: deterministic watchdogs should be scripts, not LLM calls. Let code collect health, disk, index and status data. Use the agent when synthesis is useful.
-
-Good autonomy loop:
-
-- script collects facts;
-- agent summarizes only if reasoning is useful;
-- output goes to Telegram;
-- durable conclusions go to GBrain or project notes;
-- secrets never go into the article, memory or logs.
-
-### Security and provider risk
-
-A personal agent with terminal, browser, GitHub, Telegram, files and cron access is infrastructure with a stochastic interface.
-
-The minimum serious checklist:
-
-- never expose tokens, bot keys or cookies;
-- avoid public gateway exposure unless you understand the auth model;
-- keep dangerous tools behind approvals;
-- separate personal browser profiles from agent browser profiles;
-- log important actions;
-- use PR review for code changes;
-- avoid broad filesystem access for public or group-facing assistants;
-- treat untrusted web content as prompt-injection input.
-
-Provider risk belongs in the same bucket. People move between Claude Code, Codex, OpenClaw-style setups, Hermes and local models because of limits, bans, pricing, API friction and regional availability. Design for survivability:
-
-- keep workflows portable;
-- keep project rules in repo files, not in one vendor chat history;
-- keep skills in portable files;
-- keep durable knowledge in GBrain/Obsidian/markdown;
-- keep deterministic checks as scripts;
-- use stronger models for risky tool actions and cheaper/local models for safe read-only chores.
-
-## A practical 48-hour test
-
-If you are serious about choosing between Hermes Agent and OpenClaw, run the same five tasks in both systems and keep the receipts.
-
-| Test task | What to measure |
-| --- | --- |
-| Connect Telegram and send a private task | Pairing friction, allowlist clarity, token handling, message delivery |
-| Ask for a repo risk review | Diff quality, tool approvals, whether the result is reviewable |
-| Save one durable preference | Where memory lands, whether it is easy to inspect and prune |
-| Create one recurring brief | Cron behavior, cost, failure visibility, delivery channel |
-| Hit one browser blocker | Manual handoff, recovery, logging and whether the agent knows it got stuck |
-
-After that, the decision is usually obvious. If you keep wanting more channels and gateway policy, pick OpenClaw. If you keep wanting one agent that remembers your workflow and turns fixes into reusable procedures, pick Hermes.
-
-## The wrong way to choose
-
-- Do not choose by GitHub stars. At the time I checked on May 27, 2026, the GitHub API reported 374,995 stars for `openclaw/openclaw` and 169,652 stars for `NousResearch/hermes-agent`. Useful market signal, not proof.
-- Do not choose by viral threads. They are good for demand and vocabulary, bad for your actual workflow.
-- Do not choose by "supports Telegram". A connected bot is not an assistant.
-- Do not choose by "has memory". Memory without curation becomes context trash.
-
-## My current recommendation
-
-### Pick Hermes Agent if you want a personal AI operating loop
-
-Hermes is the one I would use for:
-
-- Telegram-first personal assistant;
-- repo/code/content workflows;
-- scheduled research and monitoring;
-- skills that accumulate over time;
-- GBrain-backed source packs and project memory;
-- one agent that learns your preferences and environment;
-- “do this and report back” work from your phone.
-
-The value is not one feature. The value is that the assistant becomes part of your day.
-
-### Pick OpenClaw if you want to operate an agent gateway
-
-OpenClaw is the one I would test for:
-
-- many messaging channels;
-- local-first assistant architecture;
-- explicit channel/gateway/security configuration;
-- browser-control experiments;
-- cron/standing-order workflows;
-- transparent file-based memory;
-- production-ish assistant infrastructure where you want to tune every boundary.
-
-The value is control and breadth. The cost is that you are operating more system.
-
-## Sources checked
-
-- [Hermes Agent GitHub repository](https://github.com/NousResearch/hermes-agent)
-- [OpenClaw GitHub repository](https://github.com/openclaw/openclaw)
-- OpenClaw docs for [getting started](https://docs.openclaw.ai/start/getting-started), [Telegram](https://docs.openclaw.ai/channels/telegram), [memory](https://docs.openclaw.ai/concepts/memory), [skills](https://docs.openclaw.ai/tools/skills), and [cron jobs](https://docs.openclaw.ai/automation/cron-jobs)
-- GitHub API repository metadata checked on May 27, 2026 for rough market-signal numbers, not quality ranking
+- [OpenClaw hub](/topics/openclaw/): установка, настройка, Telegram, GitHub, skills, ошибки.
+- [AI-агенты](/topics/ai-agents/): карта инструментов и сценарии, где агент окупается.
+- [MCP](/topics/mcp/): browser, Telegram, GBrain, docs, GitHub и живые data sources.
+- [Markdown vs HTML](/articles/markdown-vs-html/): формат артефактов, которые агент пишет, а человек читает.
 
 ## FAQ
 
-### Is OpenClaw better than Hermes Agent?
+### Что лучше: Hermes Agent или OpenClaw?
 
-Not globally. OpenClaw looks stronger if you want a configurable multi-channel gateway and local-first assistant infrastructure. Hermes looks stronger if you want one persistent personal ops agent in terminal/Telegram with skills, memory and scheduled workflows.
+Для multi-channel gateway и нескольких агентов я бы начинал с OpenClaw. Для личного Telegram/VPS ассистента с памятью, cron и self-improving skills я бы начинал с Hermes Agent. Лучший выбор зависит от day-30 сценария, а не от списка фич.
 
-### Is Hermes Agent an OpenClaw alternative?
+### Можно ли использовать Hermes Agent через Telegram?
 
-Yes, for many personal-agent workflows. But it is not a drop-in replacement for every OpenClaw gateway/channel setup. Think of Hermes as a durable operator runtime, not just an OpenClaw clone.
+Да. Hermes поддерживает messaging gateway, и Telegram входит в основной сценарий. Но перед продом нужно настроить allowlist/pairing, approvals, sandbox и delivery target для cron.
 
-### Can both work with Telegram?
+### Можно ли использовать OpenClaw через Telegram?
 
-Yes. The important part is not Telegram support itself. The important part is pairing, allowlists, group privacy, bot-token safety, approval boundaries and what workflows you actually run from Telegram.
+Да. Telegram у OpenClaw один из ключевых каналов. Важные настройки: BotFather token, `dmPolicy`, `allowFrom`, группы, topics и доступные tools.
 
-### Which one is safer?
+### Что проще поставить на Windows?
 
-Neither is automatically safe. OpenClaw’s docs are explicit about trust boundaries, sandboxing and gateway exposure. Hermes also needs careful tool, gateway and cron configuration. The safer setup is the one with narrow permissions, approvals, logs and no public exposure of secrets.
+Hermes чаще разумнее ставить через WSL2. OpenClaw ближе к Node/npm setup. Но простая установка не гарантирует безопасную работу 24/7, поэтому Windows я бы использовал для теста. Постоянного агента лучше выносить на сервер.
 
-### What should I try first?
+## Источники
 
-If you already live in terminal/Telegram and want practical daily workflows, try Hermes first. If your main goal is to build a multi-channel personal assistant gateway and tune the infrastructure, try OpenClaw first.
+- [Hermes Agent documentation](https://hermes-agent.nousresearch.com/docs/)
+- [Hermes Agent memory docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/memory)
+- [Hermes Agent skills docs](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)
+- [Hermes Agent security docs](https://hermes-agent.nousresearch.com/docs/user-guide/security/)
+- [OpenClaw documentation](https://docs.openclaw.ai/)
+- [OpenClaw memory docs](https://docs.openclaw.ai/concepts/memory)
+- [OpenClaw skills docs](https://docs.openclaw.ai/tools/skills)
+- [OpenClaw channel access docs](https://docs.openclaw.ai/gateway/config-channels)
+- [OpenClaw exec approvals docs](https://docs.openclaw.ai/tools/exec-approvals)
 
-### What is the best self-hosted AI agent for Telegram?
+## Читать еще
 
-For a one-owner Telegram assistant, I would test Hermes Agent first because the value is the persistent operating loop: memory, skills, scheduled tasks and GBrain-backed source packs. For a Telegram bot that is one channel inside a broader gateway with WhatsApp, Slack, Discord or other surfaces, I would test OpenClaw first.
-
-### Can I use Hermes Agent and OpenClaw together?
-
-Yes, but I would not start there. Use both only if you have a clear boundary: for example, Hermes as the personal operator and OpenClaw as the multi-channel gateway experiment. Running two always-on agents without strict permissions, logs and ownership rules doubles the operational surface.
-
-## Read next
-
-- [OpenClaw topic hub](/topics/openclaw/)
-- [Hermes Agent topic hub](/topics/hermes-agent/)
-- [AI agents topic hub](/topics/ai-agents/)
-- [Claude Code vs Codex: why I switched for two weeks](/blog/claude-code-vs-codex-perehod/)
-- [My AI setup 2026](/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/)
-- [AI transformation: shared context, skills and GBrain](/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/)
-- [Best skills and MCP for Claude Code](/en-best-skills-mcp-claude-code-agent-browser/)
+- [OpenClaw hub](/topics/openclaw/)
+- [AI-агенты](/topics/ai-agents/)
+- [Telegram-автоматизация](/topics/telegram-automation/)
+- [GBrain](/topics/gbrain/)
+- [AI-агент на сервере 24/7](/ai-agent-na-servere-24-7/)
+- [Мой Claude Code setup](/claude-code-nastrojka-mcp-hooks-skills-2026/)

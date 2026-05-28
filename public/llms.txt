@@ -26,7 +26,7 @@
 - [AI-трансформация в компании](https://okhlopkov.com/blog-ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain.md): общий контекст, skills и GBrain/OpenBrain
 - [Статьи](https://okhlopkov.com/articles.md): гайды, сравнения, туториалы и материалы из собранных источников
 - [AI-инструменты для дизайнеров](https://okhlopkov.com/articles-ai-tools-for-designers-design-engineering-agents.md): design engineering, AI-assisted frontend, Paper/Figma-to-code и борьба с AI-slop
-- [Hermes Agent vs OpenClaw](https://okhlopkov.com/article-hermes-agent-vs-openclaw.md): English comparison of two open-source AI agent setups for Telegram, memory, skills and automation
+- [Hermes Agent vs OpenClaw](https://okhlopkov.com/article-hermes-agent-vs-openclaw.md): русское сравнение Hermes Agent и OpenClaw для Telegram, памяти, skills, cron и self-hosted agent workflows
 - [Markdown мёртв — да здравствует HTML](https://okhlopkov.com/markdown-vs-html.md): почему HTML побеждает markdown как формат вывода для AI-агентов
 - [Privacy Policy](https://okhlopkov.com/privacy.md): privacy policy for okhlopkov.com and the Pinterest Content Ideas integration
 

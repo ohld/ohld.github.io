@@ -2,7 +2,6 @@
   "source": "ai",
   "model": "nano-banana-pro",
   "provider": "cheapaiapi",
-  "job_id": "fc932664-5896-4cd7-8d72-549e4f54937d",
   "reference": "private local Pinterest-style reference, not public source asset",
   "prompt_text": "пишу агенту с телефона",
   "purpose": "coverImage and social preview for /blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/",

@@ -1,0 +1,14 @@
+{
+  "source": "ai",
+  "model": "nano-banana-pro",
+  "provider": "cheapaiapi",
+  "reference": "private local Pinterest-style reference, not public source asset",
+  "prompt_text": "бизнес на AI-агентах / пока я не у ноутбука",
+  "purpose": "coverImage and social preview for /blog/business-on-ai-agent-claude-code-paperclip-gstack/",
+  "web_asset": {
+    "path": "/assets/blog/business-on-ai-agent-claude-code-paperclip-gstack/business-agents-cover.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82
+  }
+}

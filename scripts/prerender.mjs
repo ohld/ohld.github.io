@@ -149,7 +149,7 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 - [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — как хранить сырьё, решения и память проекта.
 - [Skills и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/) — что ставить, а что не усложнять.
 - [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering без generic UI-slop.
-- [Hermes Agent vs OpenClaw](/en/articles/hermes-agent-vs-openclaw/) — какой self-hosted AI agent выбрать после демо.
+- [Hermes Agent vs OpenClaw](/articles/hermes-agent-vs-openclaw/) — какой self-hosted AI agent выбрать после демо.
 - [GStack, goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/) — как вести длинную agent-задачу до результата.
 
 ## Карта терминов без маркетинга
@@ -226,7 +226,7 @@ the main editing context.
 - [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — how to store raw notes, decisions and project memory.
 - [Claude Code skills and MCP](/luchshie-skills-mcp-claude-code-agent-browser/) — what to install, and what not to over-engineer.
 - [AI tools for designers](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering without generic UI-slop.
-- [Hermes Agent vs OpenClaw](/en/articles/hermes-agent-vs-openclaw/) — choosing a self-hosted AI agent after the demo.
+- [Hermes Agent vs OpenClaw](/articles/hermes-agent-vs-openclaw/) — Russian comparison of self-hosted AI agents for Telegram and VPS workflows.
 - [GStack, goal and office hours](/blog/gstack-goal-office-hours-ai-workflow/) — how to keep a long agent task moving until it ships.
 
 ## Agent terms without marketing
@@ -360,7 +360,7 @@ function topicMarkdown(title, description) {
 - [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
 - [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
 - [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
-- [Hermes Agent vs OpenClaw](/en/articles/hermes-agent-vs-openclaw/)
+- [Hermes Agent vs OpenClaw](/articles/hermes-agent-vs-openclaw/)
 - [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
 
 ## Смежные темы
@@ -1237,7 +1237,7 @@ const REDIRECTS = [
   { from: '/ai-agents', fromSlug: 'ai-agents', to: '/articles/', toSlug: 'articles' },
   { from: '/ai-course', fromSlug: 'ai-course', to: '/articles/', toSlug: 'articles' },
   { from: '/blog/ai-tools-for-designers-design-engineering-agents', fromSlug: 'blog-ai-tools-for-designers-design-engineering-agents', to: '/articles/ai-tools-for-designers-design-engineering-agents/', toSlug: 'articles-ai-tools-for-designers-design-engineering-agents' },
-  { from: '/blog/hermes-agent-vs-openclaw', fromSlug: 'blog-hermes-agent-vs-openclaw', to: '/en/articles/hermes-agent-vs-openclaw/', toSlug: 'article-hermes-agent-vs-openclaw' },
+  { from: '/blog/hermes-agent-vs-openclaw', fromSlug: 'blog-hermes-agent-vs-openclaw', to: '/articles/hermes-agent-vs-openclaw/', toSlug: 'article-hermes-agent-vs-openclaw' },
   { from: '/author/okhlopkov', fromSlug: 'author-okhlopkov', to: '/about/', toSlug: 'about' },
   { from: '/projects', fromSlug: 'projects', to: '/about/', toSlug: 'about' },
   { from: '/tag/second-brain', fromSlug: 'tag-second-brain', to: '/vtoroj-mozg-ai-assistent-obsidian-claude-code/', toSlug: 'vtoroj-mozg-ai-assistent-obsidian-claude-code' },

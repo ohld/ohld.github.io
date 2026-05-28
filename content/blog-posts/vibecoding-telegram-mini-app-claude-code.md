@@ -6,6 +6,8 @@ publishedAt: 2026-05-26
 updatedAt: 2026-05-26
 readingTime: 9 мин
 tags: Telegram Mini Apps, Claude Code, Vibe Coding
+coverImage: /assets/blog/vibecoding-telegram-mini-app-claude-code/tma-llms-cover.webp
+coverAlt: Мем-обложка про llms.txt для Telegram Mini App и AI-агента, который сам читает документацию
 sourceTelegramId: 1606
 primaryKeyword: telegram mini app claude code
 secondaryKeywords: telegram mini app; llms.txt; telegram mini app tutorial; tma llms; ai coding agent workflow

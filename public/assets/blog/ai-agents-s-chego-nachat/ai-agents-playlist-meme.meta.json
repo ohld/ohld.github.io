@@ -2,7 +2,6 @@
   "source": "ai",
   "model": "nano-banana-pro",
   "provider": "cheapaiapi",
-  "job_id": "b370f7da-338e-4425-a71a-79491ef4933f",
   "reference": "private local Pinterest-style reference, not public source asset",
   "prompt_text": "как я собираю плейлист AI-агентов",
   "purpose": "coverImage and social preview for /blog/ai-agents-s-chego-nachat/",

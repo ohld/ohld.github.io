@@ -171,7 +171,7 @@ function App() {
           <Route path="/en/about" element={<EnglishAbout />} />
           <Route path="/posts" element={<Navigate to="/blog" replace />} />
           <Route path="/blog" element={<BlogIndex />} />
-          <Route path="/blog/hermes-agent-vs-openclaw" element={<Navigate to="/en/articles/hermes-agent-vs-openclaw" replace />} />
+          <Route path="/blog/hermes-agent-vs-openclaw" element={<Navigate to="/articles/hermes-agent-vs-openclaw" replace />} />
           <Route path="/blog/ai-tools-for-designers-design-engineering-agents" element={<Navigate to="/articles/ai-tools-for-designers-design-engineering-agents" replace />} />
           <Route path="/blog/:slug" element={<GeneratedBlogPost />} />
           <Route path="/articles" element={<ArticlesIndex />} />

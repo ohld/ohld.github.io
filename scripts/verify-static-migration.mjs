@@ -206,7 +206,7 @@ const redirects = [
   ['/ai-agents/', '/articles/'],
   ['/ai-course/', '/articles/'],
   ['/blog/ai-tools-for-designers-design-engineering-agents/', '/articles/ai-tools-for-designers-design-engineering-agents/'],
-  ['/blog/hermes-agent-vs-openclaw/', '/en/articles/hermes-agent-vs-openclaw/'],
+  ['/blog/hermes-agent-vs-openclaw/', '/articles/hermes-agent-vs-openclaw/'],
   ['/author/okhlopkov/', '/about/'],
   ['/projects/', '/about/'],
   ['/tag/second-brain/', '/vtoroj-mozg-ai-assistent-obsidian-claude-code/'],
@@ -257,7 +257,9 @@ const generatedBlogChecks = generatedBlogPosts.map((post) => {
 const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
   path: generatedArticlePath(article),
   title: article.title,
-  requiredText: article.lang === 'en'
+  requiredText: article.slug === 'hermes-agent-vs-openclaw'
+    ? ['Короткий вывод', 'Telegram', 'Что ломается первым', 'Безопасность', 'Источники']
+    : article.lang === 'en'
     ? ['Quick answer', 'The wrong way to choose', 'Read next']
     : ['Суть пайплайна', 'SEO-теги', 'Источники'],
 }))
@@ -715,7 +717,7 @@ async function verifyGeneratedSeoArticle({ path, requiredText }) {
   assert(!html.includes('/blog/hermes-agent-vs-openclaw/'), `${path}: should not link to old Blog URL`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   assert(html.includes('/blog/'), `${path}: missing related blog links`)
-  assert(/"dateModified": "2026-05-(25|26|27)"/.test(html), `${path}: missing generated article dateModified`)
+  assert(/"dateModified": "2026-05-(25|26|27|28)"/.test(html), `${path}: missing generated article dateModified`)
   for (const text of requiredText) {
     assert(html.includes(text), `${path}: missing required text "${text}"`)
   }

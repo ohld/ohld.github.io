@@ -1,0 +1,14 @@
+{
+  "source": "ai",
+  "model": "nano-banana-pro",
+  "provider": "cheapaiapi",
+  "reference": "private local Pinterest-style references, not public source assets",
+  "prompt_text": "Hermes vs OpenClaw / тест на day-30",
+  "purpose": "coverImage and social preview for /articles/hermes-agent-vs-openclaw/",
+  "web_asset": {
+    "path": "/assets/articles/hermes-agent-vs-openclaw/hermes-openclaw-cover.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82
+  }
+}

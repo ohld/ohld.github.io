@@ -1,0 +1,14 @@
+{
+  "source": "ai",
+  "model": "nano-banana-pro",
+  "provider": "cheapaiapi",
+  "reference": "private local Pinterest-style reference, not public source asset",
+  "prompt_text": "общий контекст решает / skills · GBrain · агенты",
+  "purpose": "coverImage and social preview for /blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/",
+  "web_asset": {
+    "path": "/assets/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/company-context-cover.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82
+  }
+}
