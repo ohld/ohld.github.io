@@ -233,6 +233,7 @@ const noindexPages = [
 const blogArticleChecks = [
   {
     path: '/articles/ai-tools-for-designers-design-engineering-agents/',
+    cover: 'https://okhlopkov.com/assets/articles/ai-tools-for-designers-design-engineering-agents/design-engineering-cover.webp',
     thumbnail: 'https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg',
     youtubeUrl: 'https://www.youtube.com/watch?v=fIEMOzz0_AI',
     requiredText: [
@@ -663,14 +664,18 @@ async function verifyStaticPage({ path, title, lang = 'ru', ogLocale = 'ru_RU', 
   console.log(`✓ static ${path}`)
 }
 
-async function verifyBlogArticle({ path, thumbnail, youtubeUrl, requiredText }) {
+async function verifyBlogArticle({ path, cover, thumbnail, youtubeUrl, requiredText }) {
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
   assert(html.includes('"@type": "BlogPosting"'), `${path}: missing BlogPosting JSON-LD`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assert(html.includes('"@type": "VideoObject"'), `${path}: missing VideoObject JSON-LD`)
-  assert(html.includes('"dateModified": "2026-05-26"'), `${path}: missing article dateModified`)
+  assert(html.includes('"dateModified": "2026-05-28"'), `${path}: missing article dateModified`)
+  if (cover) {
+    assert(html.includes(cover), `${path}: missing article cover image`)
+    assert(html.includes('<meta name="twitter:card" content="summary_large_image"'), `${path}: cover should render large twitter card`)
+  }
   assert(html.includes(thumbnail), `${path}: missing YouTube thumbnail`)
   assert(html.includes(youtubeUrl), `${path}: missing YouTube watch URL`)
   assert(html.includes('<table>') || html.includes('<table class="article-table"'), `${path}: missing table markup`)

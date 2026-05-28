@@ -14,6 +14,8 @@ export interface BlogArticle {
   updatedAt: string
   readingTime: string
   tags: string[]
+  coverImage?: string
+  coverAlt?: string
   youtube?: {
     title: string
     url: string
@@ -50,9 +52,11 @@ export const seoArticles: BlogArticle[] = [
     title: 'AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code',
     description: 'Разбор стрима про design engineering: как дизайнерам работать с AI-агентами, почему появляется AI-slop, зачем нужны design tokens, Paper, Mobbin MCP и хороший контекст для Codex/Claude Code.',
     publishedAt: '2026-05-25',
-    updatedAt: '2026-05-25',
+    updatedAt: '2026-05-28',
     readingTime: '9 мин',
     tags: ['AI Agents', 'Design Engineering', 'Frontend'],
+    coverImage: '/assets/articles/ai-tools-for-designers-design-engineering-agents/design-engineering-cover.webp',
+    coverAlt: 'Мем-обложка AI-SLOP про design engineering и AI-инструменты для дизайнеров',
     youtube: {
       title: 'ИИ не вывозит норм дизайн или это skill issue? | Подкаст «Мой AI сетап»',
       url: 'https://www.youtube.com/watch?v=fIEMOzz0_AI',
@@ -71,7 +75,7 @@ export const russianArticleItems: BlogListItem[] = [
     publishedAt: article.publishedAt,
     readingTime: article.readingTime,
     tags: article.tags,
-    thumbnail: article.youtube?.thumbnail,
+    thumbnail: article.coverImage || article.youtube?.thumbnail,
   })),
   {
     path: '/articles/markdown-vs-html/',

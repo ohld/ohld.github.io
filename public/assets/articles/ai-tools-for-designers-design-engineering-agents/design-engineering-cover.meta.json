@@ -1,0 +1,14 @@
+{
+  "source": "local_edit",
+  "model": "none",
+  "provider": "local",
+  "reference": "private local Pinterest-style reference, not a public source asset",
+  "edit_summary": "Preserved the source meme composition, adapted to 16:9 with blurred side extension, and replaced the caption text.",
+  "purpose": "coverImage and social preview for /articles/ai-tools-for-designers-design-engineering-agents/",
+  "web_asset": {
+    "path": "/assets/articles/ai-tools-for-designers-design-engineering-agents/design-engineering-cover.webp",
+    "width": 1200,
+    "height": 675,
+    "quality": 82
+  }
+}

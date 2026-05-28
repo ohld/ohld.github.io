@@ -14,7 +14,7 @@ export function BlogCard({
   tagsLabel?: string
   mediaLayout?: 'side' | 'top'
 }) {
-  const thumbnail = article.thumbnail?.startsWith('http') ? SITE_THUMBNAIL : article.thumbnail || SITE_THUMBNAIL
+  const thumbnail = article.thumbnail || SITE_THUMBNAIL
   const cardClassName = [
     'blog-card',
     'blog-card-with-thumb',

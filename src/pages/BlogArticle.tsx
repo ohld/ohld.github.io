@@ -4,7 +4,6 @@ import { ArrowRightUpIcon } from '../components/Icons'
 import { articlePath, getBlogArticle } from '../blog'
 import { getGeneratedArticlePost } from '../generatedBlogPosts'
 import { markdownToHtml } from '../markdown'
-import { SITE_THUMBNAIL } from '../site'
 import { markdownToPlainText } from '../structuredData'
 
 const designAgentPrompt = `Ты помогаешь сделать frontend экран не похожим на AI-slop.
@@ -59,7 +58,7 @@ export function BlogArticle() {
   }
 
   if (!article) return <Navigate to="/articles/" replace />
-  const youtubeThumbnail = article.youtube?.thumbnail.startsWith('http') ? SITE_THUMBNAIL : article.youtube?.thumbnail
+  const youtubeThumbnail = article.youtube?.thumbnail
 
   return (
     <ArticleLayout
@@ -70,7 +69,10 @@ export function BlogArticle() {
       publishedAt={article.publishedAt}
       updatedAt={article.updatedAt}
       readingTime={article.readingTime}
-      schemaImage={youtubeThumbnail}
+      backTo="/articles/"
+      heroImage={article.coverImage}
+      heroAlt={article.coverAlt}
+      schemaImage={article.coverImage || youtubeThumbnail}
       tags={article.tags}
       section="Статьи"
       alternates={{
@@ -96,7 +98,7 @@ export function BlogArticle() {
         <section className="article-callout article-callout-take" aria-label="Ключевые выводы">
           <ul>
             <li>Дизайнеру уже мало просто рисовать в Figma: ценность сдвигается к prototype-first и code-aware работе.</li>
-            <li>AI-агентам нужны нормальные design skills: tokens, states, references, constraints и критерии вкуса.</li>
+            <li><Link to="/topics/ai-agents/">AI-агентам</Link> нужны нормальные design skills: tokens, states, references, constraints и критерии вкуса.</li>
             <li>Главный враг — AI-slop: generic карточки, случайные gradients, непонятная иерархия и отсутствие живого feedback.</li>
           </ul>
         </section>
@@ -105,8 +107,7 @@ export function BlogArticle() {
           <h2>Что реально поменялось</h2>
           <p>
             AI меняет скорость макетов и требования к роли дизайнера. Ценнее становится человек,
-            который умеет соединять вкус, продуктовую задачу и код. Design
-            engineer здесь — роль на стыке: быстро собрать прототип, понять
+            который умеет соединять вкус, продуктовую задачу и код. <Link to="/topics/design-engineering/">Design engineer</Link> здесь — роль на стыке: быстро собрать прототип, понять
             ограничения интерфейса, дать агенту нормальные skills и довести
             идею ближе к работающему продукту.
           </p>
@@ -119,7 +120,7 @@ export function BlogArticle() {
         <section>
           <h2>Почему агенты делают AI-slop</h2>
           <p>
-            Codex, Claude Code, Lovable, v0 и похожие инструменты умеют быстро
+            <Link to="/topics/codex/">Codex</Link>, <a href="/claude-code-nastrojka-mcp-hooks-skills-2026/">Claude Code</a>, Lovable, v0 и похожие инструменты умеют быстро
             собрать интерфейс. Проблема в том, что без ограничений они тянут
             усреднённый интернет: одинаковые карточки, случайную типографику,
             декоративные блоки и визуальный шум. Контент может быть полезным, но
@@ -145,17 +146,17 @@ export function BlogArticle() {
               </thead>
               <tbody>
                 <tr>
-                  <td>Paper</td>
+                  <td><a href="https://paper.design/" target="_blank" rel="noopener noreferrer">Paper</a></td>
                   <td>Design-to-code и импорт живых сайтов ближе к HTML/CSS модели.</td>
                   <td>Нужны продуктовая логика и responsive states.</td>
                 </tr>
                 <tr>
-                  <td>Mobbin MCP</td>
+                  <td><a href="https://mobbin.com/mcp" target="_blank" rel="noopener noreferrer">Mobbin MCP</a></td>
                   <td>Реальные UX-референсы для onboarding, paywall, checkout, settings.</td>
                   <td>Можно скопировать паттерн без понимания контекста.</td>
                 </tr>
                 <tr>
-                  <td>Codex / Claude Code</td>
+                  <td><Link to="/blog/claude-code-vs-codex-perehod/">Codex / Claude Code</Link></td>
                   <td>Сборка route, ревью, перенос UI в код, работа с существующим проектом.</td>
                   <td>Без дизайн-системы быстро скатываются в generic UI.</td>
                 </tr>
@@ -169,6 +170,7 @@ export function BlogArticle() {
           <p>
             Магии тут нет: это заготовка, которая заставляет агента думать про
             пользователя, states, tokens и проверку результата.
+            Для более жесткого вкусового слоя можно взять <a href="https://github.com/emilkowalski/skill" target="_blank" rel="noopener noreferrer">Agents with Taste skill</a> и адаптировать его под проект.
           </p>
           <pre><code data-language="prompt">{designAgentPrompt}</code></pre>
         </section>
@@ -178,8 +180,8 @@ export function BlogArticle() {
           <ol>
             <li>Собрать <code>design.md</code> для проекта: tokens, typography, spacing, radius, components, anti-patterns.</li>
             <li>Для каждого нового UI task давать агенту задачу, референсы и правила визуального стиля.</li>
-            <li>Проверять mobile/desktop, empty/loading/error states и микроинтеракции до финала.</li>
-            <li>Сохранять созвоны, решения и дизайн-обсуждения как будущую память для агентов.</li>
+            <li>Проверять mobile/desktop, empty/loading/error states и микроинтеракции до финала, особенно если в проекте уже есть <Link to="/articles/markdown-vs-html/">дизайн-система</Link> или хотя бы живой HTML-прототип.</li>
+            <li>Сохранять созвоны, решения и дизайн-обсуждения как будущую <a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">память для агентов</a>.</li>
           </ol>
         </section>
 
