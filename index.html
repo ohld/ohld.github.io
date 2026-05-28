@@ -99,6 +99,65 @@
         }
       }(window.location));
     </script>
+    <script>
+      (function () {
+        function cleanParams(params) {
+          var clean = {};
+          Object.keys(params).forEach(function (key) {
+            if (params[key] !== undefined && params[key] !== '') clean[key] = params[key];
+          });
+          return clean;
+        }
+
+        function normalizePath(path) {
+          if (path === '/') return '/';
+          return path.endsWith('/') ? path : path + '/';
+        }
+
+        function readMeta(property) {
+          var meta = document.querySelector('meta[property="' + property + '"]');
+          return meta && meta.content;
+        }
+
+        function stripLocale(parts) {
+          return ['ru', 'en'].indexOf(parts[0]) >= 0 ? parts.slice(1) : parts;
+        }
+
+        function contentGroup(path) {
+          var normalized = normalizePath(path);
+          var parts = stripLocale(normalized.split('/').filter(Boolean));
+          if (normalized === '/' || normalized === '/en/') return 'landing';
+          if (parts[0] === 'blog') return 'blog';
+          if (parts[0] === 'articles') return 'articles';
+          if (parts[0] === 'topics') return 'topic';
+          if (parts[0] === 'about') return 'about';
+          if (readMeta('og:type') === 'article') return 'legacy';
+          return 'site';
+        }
+
+        function articleSlug(path) {
+          var normalized = normalizePath(path);
+          var parts = stripLocale(normalized.split('/').filter(Boolean));
+          if (readMeta('og:type') !== 'article' && ['blog', 'articles'].indexOf(parts[0]) < 0) return undefined;
+          return parts[parts.length - 1];
+        }
+
+        var pagePath = normalizePath(location.pathname);
+        var group = contentGroup(pagePath);
+        window.__INITIAL_GA_PAGE_VIEW_SENT__ = true;
+        window.__INITIAL_GA_PAGE_VIEW_PATH__ = pagePath;
+        gtag('event', 'page_view', cleanParams({
+          page_path: pagePath,
+          page_location: location.href,
+          page_title: document.title,
+          content_group: group,
+          content_type: readMeta('og:type') === 'article' ? 'article' : group,
+          article_slug: articleSlug(pagePath),
+          article_topic: readMeta('article:section') || readMeta('article:tag'),
+          article_lang: document.documentElement.lang
+        }));
+      }());
+    </script>
 
   </head>
   <body>

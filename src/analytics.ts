@@ -9,6 +9,9 @@ declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void
     ym?: (counter: number, action: string, ...args: unknown[]) => void
+    __INITIAL_GA_PAGE_VIEW_SENT__?: boolean
+    __INITIAL_GA_PAGE_VIEW_PATH__?: string
+    __INITIAL_GA_PAGE_VIEW_CONSUMED__?: boolean
   }
 }
 
@@ -27,20 +30,25 @@ function readMeta(property: string) {
   return document.querySelector<HTMLMetaElement>(`meta[property="${property}"]`)?.content
 }
 
+function stripLocale(parts: string[]) {
+  return ['ru', 'en'].includes(parts[0] || '') ? parts.slice(1) : parts
+}
+
 function contentGroup(path = location.pathname) {
   const normalized = normalizePath(path)
+  const parts = stripLocale(normalized.split('/').filter(Boolean))
   if (normalized === '/' || normalized === '/en/') return 'landing'
-  if (normalized.startsWith('/blog/')) return 'blog'
-  if (normalized.startsWith('/articles/')) return 'articles'
-  if (normalized.startsWith('/topics/')) return 'topic'
-  if (normalized === '/about/' || normalized === '/en/about/') return 'about'
+  if (parts[0] === 'blog') return 'blog'
+  if (parts[0] === 'articles') return 'articles'
+  if (parts[0] === 'topics') return 'topic'
+  if (parts[0] === 'about') return 'about'
   if (readMeta('og:type') === 'article') return 'legacy'
   return 'site'
 }
 
 function articleSlug(path = location.pathname) {
   const normalized = normalizePath(path)
-  const parts = normalized.split('/').filter(Boolean)
+  const parts = stripLocale(normalized.split('/').filter(Boolean))
   if (readMeta('og:type') !== 'article' && !['blog', 'articles'].includes(parts[0] || '')) return undefined
   return parts.at(-1)
 }
@@ -88,6 +96,15 @@ function send(event: string, params?: EventParams) {
 /** Track SPA page navigation */
 export function trackPageView(path: string) {
   const pagePath = normalizePath(path)
+  if (
+    window.__INITIAL_GA_PAGE_VIEW_SENT__
+    && !window.__INITIAL_GA_PAGE_VIEW_CONSUMED__
+    && window.__INITIAL_GA_PAGE_VIEW_PATH__ === pagePath
+  ) {
+    window.__INITIAL_GA_PAGE_VIEW_CONSUMED__ = true
+    return
+  }
+
   if (window.gtag) {
     window.gtag('event', 'page_view', {
       ...cleanParams(contentContext(pagePath)),
