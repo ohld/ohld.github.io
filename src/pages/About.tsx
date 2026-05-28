@@ -70,8 +70,8 @@ const experience: Role[] = [
 
 export function About() {
   useDocumentMeta({
-    title: 'Обо мне — Даниил Охлопков',
-    description: 'Head of Analytics @ TON Foundation. Опыт: InstaBot, Shazam-ботсети 13.7M юзеров, Forbes 30 under 30 (2022).',
+    title: 'Даниил Охлопков — AI-агенты, TON-аналитика и Telegram',
+    description: 'Даниил Охлопков: Head of Analytics @ TON Foundation, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.',
     canonical: absoluteUrl('/about/'),
   })
   return (

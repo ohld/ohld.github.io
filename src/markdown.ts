@@ -1,3 +1,5 @@
+import { imageDimensionsForUrl } from './imageMetadata'
+
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, '&amp;')
@@ -13,9 +15,11 @@ function inlineFormat(value: string) {
   let html = escapeHtml(value)
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>')
   html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_match, alt, url) => (
-    `<img src="${escapeAttr(url)}" alt="${escapeAttr(alt)}" decoding="async" />`
-  ))
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_match, alt, url) => {
+    const dimensions = imageDimensionsForUrl(url)
+    const sizeAttrs = dimensions ? ` width="${dimensions.width}" height="${dimensions.height}"` : ''
+    return `<img src="${escapeAttr(url)}" alt="${escapeAttr(alt)}" loading="lazy" decoding="async"${sizeAttrs} />`
+  })
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_match, text, url) => (
     `<a href="${escapeAttr(url)}">${text}</a>`
   ))

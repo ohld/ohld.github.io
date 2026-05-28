@@ -8,7 +8,7 @@ import { useDocumentMeta } from '../useDocumentMeta'
 export function BlogIndex() {
   useDocumentMeta({
     title: 'Блог — Даниил Охлопков',
-    description: 'Блог Даниила Охлопкова: записи и рабочие заметки про AI-агентов, Claude Code, Codex, MCP и рабочие флоу.',
+    description: 'Рабочие заметки Даниила Охлопкова про AI-агентов, Claude Code, Codex, MCP, GBrain, Telegram-автоматизацию и реальные agent workflows.',
     canonical: absoluteUrl('/blog/'),
     lang: 'ru',
     alternates: {

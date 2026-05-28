@@ -1,6 +1,6 @@
-# Обо мне — Даниил Охлопков
+# Даниил Охлопков — AI-агенты, TON-аналитика и Telegram
 
-> Head of Analytics @ TON Foundation. Опыт: InstaBot, Shazam-ботсети 13.7M юзеров, Forbes 30 under 30 (2022).
+> Head of Analytics @ TON Foundation, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.
 
 Head of Analytics @ TON Foundation. До этого — CTO стартапа с $2M fundraise, data scientist в двух VC фондах, Entrepreneur First.
 

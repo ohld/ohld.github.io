@@ -8,7 +8,7 @@ import { useDocumentMeta } from '../useDocumentMeta'
 export function ArticlesIndex() {
   useDocumentMeta({
     title: 'Статьи — Даниил Охлопков',
-    description: 'Туториалы, сравнения AI-инструментов и плотные разборы Даниила Охлопкова: OpenClaw, Claude Code, Codex, Cursor, MCP и agent workflows.',
+    description: 'Гайды и сравнения Даниила Охлопкова про AI-агентов, OpenClaw, Hermes Agent, Claude Code, Codex, MCP, design engineering и Telegram workflows.',
     canonical: absoluteUrl('/articles/'),
     lang: 'ru',
     alternates: {

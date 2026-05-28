@@ -1,6 +1,6 @@
-# About — Daniil Okhlopkov
+# Daniil Okhlopkov — AI Agents, TON Analytics and Telegram
 
-> Analytics Team Lead at TON Foundation. AI agents, on-chain analytics, Telegram workflows and data products.
+> AI agents, on-chain analytics, Telegram workflows, data products and startups.
 
 I lead analytics at TON Foundation and write about practical AI-agent workflows,
 on-chain data, Telegram automation and the tools I actually use.

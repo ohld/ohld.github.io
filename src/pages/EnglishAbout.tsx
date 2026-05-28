@@ -44,8 +44,8 @@ const experience = [
 
 export function EnglishAbout() {
   useDocumentMeta({
-    title: 'About — Daniil Okhlopkov',
-    description: 'Daniil Okhlopkov: Analytics Team Lead at TON Foundation, former CTO and data scientist. AI agents, on-chain analytics and Telegram workflows.',
+    title: 'Daniil Okhlopkov — AI Agents, TON Analytics and Telegram',
+    description: 'Daniil Okhlopkov leads analytics at TON Foundation and writes about AI agents, on-chain analytics, Telegram workflows, data products and startups.',
     canonical: absoluteUrl('/en/about/'),
     lang: 'en',
     alternates: {

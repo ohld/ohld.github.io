@@ -408,8 +408,8 @@ const ROUTES = [
   {
     path: '/en/about',
     slug: 'en-about',
-    title: 'About — Daniil Okhlopkov',
-    description: 'Daniil Okhlopkov: Analytics Team Lead at TON Foundation, former CTO and data scientist. AI agents, on-chain analytics and Telegram workflows.',
+    title: 'Daniil Okhlopkov — AI Agents, TON Analytics and Telegram',
+    description: 'Daniil Okhlopkov leads analytics at TON Foundation and writes about AI agents, on-chain analytics, Telegram workflows, data products and startups.',
     lang: 'en',
     alternates: {
       ru: `${SITE_URL}/about/`,
@@ -420,8 +420,8 @@ const ROUTES = [
   {
     path: '/about',
     slug: 'about',
-    title: 'Обо мне — Даниил Охлопков',
-    description: 'Даниил Охлопков — Head of Analytics @ TON Foundation. Опыт: InstaBot, Shazam-ботсети 13.7M юзеров, Forbes 30 under 30 (2022).',
+    title: 'Даниил Охлопков — AI-агенты, TON-аналитика и Telegram',
+    description: 'Даниил Охлопков: Head of Analytics @ TON Foundation, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.',
     alternates: {
       ru: `${SITE_URL}/about/`,
       en: `${SITE_URL}/en/about/`,
@@ -444,7 +444,7 @@ const ROUTES = [
     path: '/blog',
     slug: 'blog',
     title: 'Блог — Даниил Охлопков',
-    description: 'Блог Даниила Охлопкова: записи и рабочие заметки про AI-агентов, Claude Code, Codex, MCP и рабочие флоу.',
+    description: 'Рабочие заметки Даниила Охлопкова про AI-агентов, Claude Code, Codex, MCP, GBrain, Telegram-автоматизацию и реальные agent workflows.',
     alternates: {
       ru: `${SITE_URL}/blog/`,
       en: `${SITE_URL}/en/blog/`,
@@ -467,7 +467,7 @@ const ROUTES = [
     path: '/articles',
     slug: 'articles',
     title: 'Статьи — Даниил Охлопков',
-    description: 'Туториалы, сравнения AI-инструментов и плотные разборы Даниила Охлопкова: OpenClaw, Claude Code, Codex, Cursor, MCP и agent workflows.',
+    description: 'Гайды и сравнения Даниила Охлопкова про AI-агентов, OpenClaw, Hermes Agent, Claude Code, Codex, MCP, design engineering и Telegram workflows.',
     alternates: {
       ru: `${SITE_URL}/articles/`,
       en: `${SITE_URL}/en/articles/`,
@@ -685,6 +685,16 @@ function imageMetadataForUrl(url = '') {
   return metadata
 }
 
+function imageHtmlAttributes(url = '', { priority = false, lazy = true } = {}) {
+  const metadata = imageMetadataForUrl(url)
+  const attrs = ['decoding="async"']
+  if (Number.isFinite(metadata.imageWidth)) attrs.push(`width="${metadata.imageWidth}"`)
+  if (Number.isFinite(metadata.imageHeight)) attrs.push(`height="${metadata.imageHeight}"`)
+  if (priority) attrs.push('fetchpriority="high"')
+  else if (lazy) attrs.push('loading="lazy"')
+  return attrs.join(' ')
+}
+
 function ogImageStructuredMeta(route) {
   const rows = [
     route.imageType && `<meta property="og:image:type" content="${escape(route.imageType)}" />`,
@@ -869,7 +879,7 @@ function mdToHtml(md) {
     let t = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
     t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     t = t.replace(/`([^`]+)`/g, '<code>$1</code>')
-    t = t.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_m, alt, url) => `<img src="${url.replace(/"/g, '&quot;')}" alt="${alt.replace(/"/g, '&quot;')}" decoding="async" />`)
+    t = t.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_m, alt, url) => `<img src="${url.replace(/"/g, '&quot;')}" alt="${alt.replace(/"/g, '&quot;')}" ${imageHtmlAttributes(url, { lazy: true })} />`)
     t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, txt, url) => `<a href="${url.replace(/"/g, '&quot;')}">${txt}</a>`)
     return t
   }
@@ -936,7 +946,7 @@ function buildArticleFallback(route) {
       <h1>${escape(route.title)}</h1>
       ${route.description ? `<p>${escape(route.description)}</p>` : ''}
     </header>
-    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" /></figure>` : ''}
+    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" ${imageHtmlAttributes(route.heroImage, { priority: true })} /></figure>` : ''}
     <section>${route.bodyHtml || ''}</section>
   </article><nav>${nav}</nav><footer>${socials}</footer>`
 }
@@ -951,13 +961,13 @@ function buildGeneratedBlogFallback(route) {
       <h1>${escape(route.title)}</h1>
       ${route.description ? `<p>${escape(route.description)}</p>` : ''}
     </header>
-    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" /></figure>` : ''}
+    ${route.heroImage ? `<figure><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" ${imageHtmlAttributes(route.heroImage, { priority: true })} /></figure>` : ''}
     <section>${article}</section>
   </article><nav>${nav}</nav><footer>${socials}</footer>`
 }
 
 function getRouteMd(route) {
-  if (route.markdown) return route.markdown
+  if (route.markdown) return route.markdown.replace(/^#\s+[^\n]*\n+/, '')
   if (route.kind === 'generated-blog-post' || route.kind === 'generated-article-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
     return route.markdown || ''
   }

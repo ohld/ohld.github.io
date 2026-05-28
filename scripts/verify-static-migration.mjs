@@ -128,7 +128,7 @@ const staticPages = [
   },
   {
     path: '/en/about/',
-    title: 'About — Daniil Okhlopkov',
+    title: 'Daniil Okhlopkov — AI Agents, TON Analytics and Telegram',
     lang: 'en',
     ogLocale: 'en_US',
     hreflangs: ['ru', 'en', 'x-default'],

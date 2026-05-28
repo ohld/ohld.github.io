@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from 'react'
 import { BackButton } from './BackButton'
 import { Footer } from './Footer'
 import { enhanceCodeBlocks } from '../codeBlocks'
+import { imageDimensionsForUrl } from '../imageMetadata'
 import { absoluteUrl } from '../site'
 import { buildArticleStructuredData, htmlToPlainText } from '../structuredData'
 import { useDocumentMeta } from '../useDocumentMeta'
@@ -49,6 +50,7 @@ export function ArticleLayout({
 }: ArticleLayoutProps) {
   const canonicalUrl = absoluteUrl(canonical)
   const structuredImage = schemaImage || heroImage
+  const heroDimensions = imageDimensionsForUrl(heroImage)
   const articleText = bodyText || (bodyHtml ? htmlToPlainText(bodyHtml) : '')
   const jsonLd = buildArticleStructuredData({
     title,
@@ -101,7 +103,14 @@ export function ArticleLayout({
 
         {heroImage && (
           <figure className="article-hero-image">
-            <img src={heroImage} alt={heroAlt || title} fetchPriority="high" />
+            <img
+              src={heroImage}
+              alt={heroAlt || title}
+              width={heroDimensions?.width}
+              height={heroDimensions?.height}
+              decoding="async"
+              fetchPriority="high"
+            />
           </figure>
         )}
 

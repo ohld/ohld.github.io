@@ -1,5 +1,10 @@
 {
   "sourceType": "blog-cover-image",
   "usage": "Hero image and blog card preview for the blog article.",
-  "notes": "Stored locally for stable site rendering."
+  "notes": "Stored locally for stable site rendering.",
+  "web_asset": {
+    "path": "/assets/blog/gstack-goal-office-hours-ai-workflow/telegram-cover.webp",
+    "width": 753,
+    "height": 800
+  }
 }
