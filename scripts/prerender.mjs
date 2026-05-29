@@ -173,7 +173,7 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
   - [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
 - [Статьи](/articles/) — гайды, сравнения, туториалы и материалы из собранных источников.
   - [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/articles/ai-tools-for-designers-design-engineering-agents/)
-  - [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/)
+  - [Markdown vs HTML для AI-агентов](/articles/markdown-vs-html/)
 - [Обо мне](/about/) — бэкграунд, опыт и ссылки.
 
 ## Если вы настраиваете AI-агентов
@@ -533,12 +533,16 @@ const ROUTES = [
   {
     path: '/articles/markdown-vs-html',
     slug: 'markdown-vs-html',
-    title: 'Markdown мёртв — да здравствует HTML | Даниил Охлопков',
-    description: 'Даниил Охлопков — почему HTML побеждает markdown как формат вывода для AI-агентов. Плотность инфы, читаемость, шеринг, интерактив. С примерами промптов и реальными кейсами.',
+    title: 'Markdown vs HTML для AI-агентов | Даниил Охлопков',
+    description: 'Почему HTML лучше Markdown для AI-агентов: когда агент пишет артефакты, а человек читает и шарит. Сравнение форматов, минусы и промпты.',
     publishedAt: '2026-05-09',
-    updatedAt: '2026-05-10',
-    tags: ['AI Agents', 'HTML', 'Claude Code'],
+    updatedAt: '2026-05-29',
+    tags: ['AI Agents', 'HTML', 'Markdown', 'Claude Code'],
     section: 'Статьи',
+    heroImage: '/assets/articles/markdown-vs-html/html-vs-markdown-cover.webp',
+    imageAlt: 'Мем-обложка HTML > Markdown: исходная Pinterest-картинка, расширенная до 16:9 для статьи про AI-agent артефакты',
+    ...imageMetadataForUrl('/assets/articles/markdown-vs-html/html-vs-markdown-cover.webp'),
+    image: `${SITE_URL}/assets/articles/markdown-vs-html/html-vs-markdown-cover.webp`,
   },
   {
     path: '/privacy',
@@ -1115,7 +1119,7 @@ const BREADCRUMBS_BY_SLUG = {
   'articles': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`]],
   'articles-ai-tools-for-designers-design-engineering-agents': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['AI-инструменты для дизайнеров', `${SITE_URL}/articles/ai-tools-for-designers-design-engineering-agents/`]],
   'private-channel': [['Главная', `${SITE_URL}/`], ['Закрытый канал', `${SITE_URL}/private-channel/`]],
-  'markdown-vs-html': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['Markdown мёртв', `${SITE_URL}/articles/markdown-vs-html/`]],
+  'markdown-vs-html': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['Markdown vs HTML', `${SITE_URL}/articles/markdown-vs-html/`]],
   'privacy': [['Home', `${SITE_URL}/`], ['Privacy Policy', `${SITE_URL}/privacy/`]],
 }
 

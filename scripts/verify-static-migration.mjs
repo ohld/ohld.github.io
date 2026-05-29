@@ -158,7 +158,7 @@ const staticPages = [
   },
   {
     path: '/articles/markdown-vs-html/',
-    title: 'Markdown мёртв — да здравствует HTML | Даниил Охлопков',
+    title: 'Markdown vs HTML для AI-агентов | Даниил Охлопков',
     lang: 'ru',
     ogLocale: 'ru_RU',
     hreflangs: ['ru', 'x-default'],

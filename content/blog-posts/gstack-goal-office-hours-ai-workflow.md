@@ -89,4 +89,4 @@ HTML-progress возвращает контроль. Нормальный progre
 - [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
 - [Что попросить AI-агента сделать, когда задачи закончились](/blog/improve-codebase-architecture-prompt/)
 - [AI-инструменты для дизайнеров: design engineering и агенты](/articles/ai-tools-for-designers-design-engineering-agents/)
-- [Markdown мёртв — да здравствует HTML](/articles/markdown-vs-html/)
+- [Markdown vs HTML для AI-агентов](/articles/markdown-vs-html/)

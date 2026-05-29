@@ -1,0 +1,15 @@
+{
+  "source": "nano_banana_edit",
+  "model": "nano-banana",
+  "provider": "stablestudio.dev",
+  "reference": "private local Pinterest reference, used as edit base and not published as source asset",
+  "reference_path": "/Users/ohld/Desktop/pinterest4content/4b9cf25e7b7348b0b3ee5a1b805d1507.jpg",
+  "edit_summary": "Preserved the source meme photo, expanded it to 16:9, removed the original text, and added HTML > Markdown.",
+  "purpose": "coverImage and social preview for /articles/markdown-vs-html/",
+  "web_asset": {
+    "path": "/assets/articles/markdown-vs-html/html-vs-markdown-cover.webp",
+    "width": 1280,
+    "height": 720,
+    "quality": 84
+  }
+}

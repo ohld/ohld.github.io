@@ -79,11 +79,12 @@ export const russianArticleItems: BlogListItem[] = [
   })),
   {
     path: '/articles/markdown-vs-html/',
-    title: 'Markdown мёртв — да здравствует HTML',
-    description: 'Почему HTML лучше подходит для длинных AI-agent артефактов, когда файлы пишет агент, а человек читает и шарит.',
+    title: 'Markdown vs HTML для AI-агентов',
+    description: 'Почему HTML лучше Markdown для длинных AI-agent артефактов, когда агент пишет, а человек читает, ревьюит и шарит.',
     publishedAt: '2026-05-09',
     readingTime: '10 мин',
-    tags: ['AI Agents', 'HTML', 'Claude Code'],
+    tags: ['AI Agents', 'HTML', 'Markdown', 'Claude Code'],
+    thumbnail: '/assets/articles/markdown-vs-html/html-vs-markdown-cover.webp',
   },
 ]
 

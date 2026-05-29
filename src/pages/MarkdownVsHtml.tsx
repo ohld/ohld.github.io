@@ -4,22 +4,35 @@ import { absoluteUrl } from '../site'
 import { buildArticleStructuredData, htmlToPlainText } from '../structuredData'
 import { useDocumentMeta } from '../useDocumentMeta'
 
+const COVER_IMAGE = '/assets/articles/markdown-vs-html/html-vs-markdown-cover.webp'
+const COVER_ALT = 'Мем-обложка HTML > Markdown: исходная Pinterest-картинка, расширенная до 16:9 для статьи про AI-agent артефакты'
+
 const ARTICLE_HTML = `
 <div class="mvh-meta">
   Адаптация статьи Tariq из команды Claude Code · перевод и комментарии Дана Охлопкова<br>
   Оригинал: <a href="https://x.com/trq212/status/2052809885763747935" target="_blank" rel="noopener">x.com/trq212</a> · примеры автора: <a href="https://thariqs.github.io/html-effectiveness" target="_blank" rel="noopener">thariqs.github.io/html-effectiveness</a>
 </div>
 
+<figure class="mvh-cover">
+  <img src="${COVER_IMAGE}" alt="${COVER_ALT}" width="1280" height="720" fetchpriority="high" decoding="async">
+</figure>
+
 <blockquote>
-  <p>TL;DR — Markdown был хорош, пока ты сам редактировал файлы. Сейчас файлы пишет Claude, ты их только читаешь и шаришь. В этой реальности HTML побеждает по плотности информации, читаемости, шерингу и интерактиву. Цена — токены, время, шумные diff'ы.</p>
+  <p>TL;DR — Markdown был хорош, пока ты сам редактировал файлы. Сейчас файлы пишет агент, ты их читаешь, ревьюишь и шаришь. В этой реальности HTML побеждает по плотности информации, читаемости, шерингу и интерактиву. Цена — токены, время и шумные diff'ы.</p>
 </blockquote>
+
+<div class="mvh-answer">
+  <strong>Коротко:</strong> Markdown всё ещё норм для коротких заметок, raw-транскриптов и файлов, которые человек будет править руками. Для длинных AI-agent артефактов HTML выигрывает: он даёт визуальную плотность, нормальный шеринг ссылкой/PDF, интерактив и copy-back в Claude Code.
+</div>
 
 <div class="mvh-toc">
   <div class="mvh-toc-title">В этой статье</div>
   <ol>
     <li><a href="#kontekst">Что поменялось в работе с агентами</a></li>
+    <li><a href="#kogda">Короткий ответ: когда HTML, когда Markdown</a></li>
     <li><a href="#pochemu">Почему HTML — 6 причин</a></li>
     <li><a href="#sravnenie">Сравнение в одной таблице</a></li>
+    <li><a href="#markdown">Где Markdown всё ещё лучше</a></li>
     <li><a href="#kejsy">Юзкейсы с примерами промптов</a></li>
     <li><a href="#minusy">Честные минусы</a></li>
     <li><a href="#start">Как начать прямо сейчас</a></li>
@@ -29,28 +42,47 @@ const ARTICLE_HTML = `
 
 <h2 id="kontekst">Что поменялось</h2>
 
-<p>Markdown стал дефолтным языком общения между AI-агентами и людьми. Простой, портативный, немного rich text, легко править руками. Claude даже научился рисовать ASCII-диаграммы внутри markdown'а — местами впечатляюще.</p>
+<p><a href="https://spec.commonmark.org/0.31.2/" target="_blank" rel="noopener">Markdown</a> стал дефолтным языком общения между <a href="/topics/ai-agents/">AI-агентами</a> и людьми. Простой, портативный, немного rich text, легко править руками. Claude даже научился рисовать ASCII-диаграммы внутри markdown'а — местами впечатляюще.</p>
 
 <p>Но чем мощнее становятся агенты, тем чаще markdown ощущается как корсет. Markdown-файл больше 100 строк я уже физически не читаю — и точно не заставлю прочитать никого из команды. Хочется цвета, диаграмм, плотных таблиц, интерактивных элементов. И хочется чтобы это можно было кинуть ссылкой.</p>
 
 <p>Главный сдвиг тут — <strong>я перестал редактировать эти файлы руками</strong>. Они стали спецификациями, ресёрчами, brainstorming-выходом, отчётами. Когда мне надо что-то поправить, я не лезу в текст — я промпчу Claude. То есть основное преимущество markdown'а (легко редактировать руками) больше не работает в моём флоу.</p>
+
+<p>Я всё ещё храню свой <a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">Second Brain в Obsidian</a> в markdown: сырые голосовые, <code>overview.md</code>, <code>tasks.md</code>, проектные заметки, AGENTS.md. Мой текущий паттерн такой: markdown живёт как source of truth, HTML уходит наружу как readable artifact.</p>
 
 <div class="mvh-callout">
   <div class="mvh-callout-title">Главный поинт</div>
   <p>Markdown оптимизирован под того, кто <strong>пишет</strong> файл. HTML оптимизирован под того, кто <strong>читает и шарит</strong>. Когда писатель — агент, а ты только читатель — выбор очевиден.</p>
 </div>
 
+<h2 id="kogda">Короткий ответ: когда HTML, когда Markdown</h2>
+
+<p>HTML-артефакт — это одноразовый файл или страница, которую агент собирает под конкретное решение: план, ревью, отчёт, прототип, сортировку задач. Человек читает, кликает, принимает решения и экспортит результат обратно в prompt, JSON или markdown.</p>
+
+<table>
+  <thead>
+    <tr><th>Сценарий</th><th>Что выбрать</th><th>Почему</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Короткая личная заметка</td><td>Markdown</td><td>Быстро, читаемо в source, легко править руками</td></tr>
+    <tr><td>Source pack для агента</td><td>Markdown / JSON</td><td>Машине важнее чистый текст и стабильный diff</td></tr>
+    <tr><td>Спека или план на 100+ строк</td><td>HTML</td><td>Нужны навигация, визуальные акценты, диаграммы</td></tr>
+    <tr><td>PR review для команды</td><td>HTML</td><td>Diff + аннотации + severity читаются быстрее</td></tr>
+    <tr><td>Отчёт для не-разработчика</td><td>HTML → PDF</td><td>Открывается везде и не выглядит как сырая простыня</td></tr>
+  </tbody>
+</table>
+
 <h2 id="pochemu">Почему HTML — 6 причин</h2>
 
 <h3>1. Плотность информации</h3>
 
-<p>HTML может представить почти всё, что Claude способен понять:</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener">HTML</a> может представить почти всё, что Claude способен понять:</p>
 
 <ul class="mvh-bullets">
   <li>Структура документа — заголовки, форматирование (как markdown, только богаче)</li>
   <li>Таблицы — нормальные, с merged cells и стилями вместо убогого markdown table</li>
   <li>Дизайн — через CSS</li>
-  <li>Иллюстрации и диаграммы — через SVG</li>
+  <li>Иллюстрации и диаграммы — через <a href="https://developer.mozilla.org/en-US/docs/Web/SVG" target="_blank" rel="noopener">SVG</a></li>
   <li>Интерактив — через HTML + JS + CSS</li>
   <li>Воркфлоу и стрелочки — SVG поверх HTML</li>
   <li>Картинки и видео — нативно</li>
@@ -90,7 +122,7 @@ const ARTICLE_HTML = `
 
 <h3>2. Читаемость длинных документов</h3>
 
-<p>Claude пишет всё более длинные планы и спецификации. На практике markdown-файл больше 100 строк я не дочитываю до конца, и команду тоже не заставлю. HTML же можно нормально структурировать визуально — табы, навигация, sticky оглавление, mobile-responsive вёрстка под телефон vs десктоп.</p>
+<p><a href="/claude-code-nastrojka-mcp-hooks-skills-2026/">Claude Code</a> пишет всё более длинные планы и спецификации. На практике markdown-файл больше 100 строк я не дочитываю до конца, и команду тоже не заставлю. HTML же можно нормально структурировать визуально — табы, навигация, sticky оглавление, mobile-responsive вёрстка под телефон vs десктоп.</p>
 
 <p><strong>Личный пример.</strong> Я делаю research-отчёты по on-chain-аналитике TON — на 200-500 строк, со встроенными SQL-запросами, цифрами, ссылками на Dune-дашборды. В markdown'е их читают по диагонали: DE-команда пробежалась глазами, внешние партнёры просто не открывают. С тем же контентом в HTML с SVG-диаграммами потоков и кликабельными ссылками на дашборды open rate был бы радикально выше: визуальная структура помогает физически дочитать до выводов.</p>
 
@@ -115,7 +147,7 @@ const ARTICLE_HTML = `
 
 <p>Это та часть, которая для меня была откровением. HTML может <em>показывать</em> и <em>принимать ввод</em>. Слайдеры для подбора параметров анимации. Drag-and-drop для перетаскивания тикетов между колонками. Live-preview шаблона при редактировании промпта.</p>
 
-<p>Финальный ход — кнопка <code>Copy as JSON</code> или <code>Copy as Prompt</code>, которая собирает результат твоих манипуляций обратно в текст, который ты вставляешь в Claude Code. Получается <strong>одноразовый редактор под конкретную задачу</strong>: артефакт на 30 минут, который не обязан становиться продуктом или reusable tool.</p>
+<p>Финальный ход — кнопка <code>Copy as JSON</code> или <code>Copy as Prompt</code>, которая собирает результат твоих манипуляций обратно в текст, который ты вставляешь в Claude Code. Получается <strong>одноразовый редактор под конкретную задачу</strong>: артефакт на 30 минут, который можно выкинуть после решения.</p>
 
 <h3>5. Контекст — суперсила Claude Code</h3>
 
@@ -123,12 +155,12 @@ const ARTICLE_HTML = `
 
 <ul class="mvh-bullets">
   <li>Файловая система — может прочитать твой codebase, ai-docs, заметки</li>
-  <li>MCP-серверы — Slack, Linear, Coolify, Dune, Telegram</li>
+  <li><a href="/topics/mcp/">MCP-серверы</a> — Slack, Linear, Coolify, Dune, Telegram</li>
   <li>Git history — кто что менял и когда</li>
   <li>Браузер (через Claude in Chrome) — может полезть и посмотреть</li>
 </ul>
 
-<p>Tariq, например, попросил Claude Code пройтись по его папке с кодом, найти все HTML-файлы, которые он генерил раньше, сгруппировать по типу и сделать обзорный HTML с диаграммами. Это и стало основой иллюстраций к его статье.</p>
+<p>Tariq, например, попросил Claude Code пройтись по его папке с кодом, найти все HTML-файлы, которые он генерил раньше, сгруппировать по типу и сделать обзорный HTML с диаграммами. Это и стало основой иллюстраций к его статье. Официальный обзор Claude Code тоже упирается в этот же паттерн: агент читает кодовую базу, редактирует файлы, запускает команды и подключает внешние инструменты через <a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" rel="noopener">dev workflow</a>.</p>
 
 <h3>6. Это просто кайфово</h3>
 
@@ -153,6 +185,12 @@ const ARTICLE_HTML = `
     <tr><td>Кому удобно <em>читать</em></td><td>Тебе одному</td><td>Всем, включая телефон</td></tr>
   </tbody>
 </table>
+
+<h2 id="markdown">Где Markdown всё ещё лучше</h2>
+
+<p>Markdown я бы не хоронил совсем. Он всё ещё лучший формат для source packs, README, raw voice notes, ai-docs, списков задач и файлов, которые часто меняются в git. Если документ должен жить месяцами, нормально diff'аться и редактироваться руками — HTML превращается в боль.</p>
+
+<p>Мой рубеж простой: короткое и машинно-читаемое — markdown; длинное и человеко-читаемое — HTML. Поэтому в моём <a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">Obsidian + Claude Code флоу</a> markdown остаётся операционной памятью, а HTML становится интерфейсом для чтения.</p>
 
 <h2 id="kejsy">Юзкейсы с промптами</h2>
 
@@ -181,7 +219,7 @@ const ARTICLE_HTML = `
 
 <h3>Дизайн и прототипы</h3>
 
-<p>HTML невероятно выразителен для дизайна — даже если финальный таргет не веб. Claude может набросать дизайн в HTML, а потом перевести его в React/Swift/whatever. И главное — можно прототипировать <em>интеракции</em> вместе со статикой.</p>
+<p>HTML невероятно выразителен для дизайна — даже если финальный таргет не веб. Claude может набросать дизайн в HTML, а потом перевести его в React/Swift/whatever. И главное — можно прототипировать <em>интеракции</em> вместе со статикой. Про связку design engineering, Figma-to-code и агентов я отдельно писал в <a href="/articles/ai-tools-for-designers-design-engineering-agents/">разборе AI-инструментов для дизайнеров</a>.</p>
 
 <div class="mvh-prompt-box">
   <div class="mvh-prompt-label">Промпт-пример</div>
@@ -199,7 +237,7 @@ const ARTICLE_HTML = `
 
 <h3>Кастомные одноразовые редакторы</h3>
 
-<p>Самый мощный, на мой взгляд, юзкейс. Когда задачу тяжело описать словами в текстбоксе — Claude собирает <strong>throwaway-редактор</strong> под неё. Не продукт, не reusable tool. Один HTML-файл, который ты выкинешь после использования.</p>
+<p>Самый мощный, на мой взгляд, юзкейс. Когда задачу тяжело описать словами в текстбоксе — Claude собирает <strong>throwaway-редактор</strong> под неё. Один HTML-файл, который ты выкинешь после использования. Это хорошо ложится на мой текущий цикл с <a href="/blog/gstack-goal-office-hours-ai-workflow/">GStack, goal и office hours</a>: агент делает механику, человек остаётся в loop'е через понятный артефакт.</p>
 
 <p>Финальный аккорд всегда один: кнопка export — <code>Copy as JSON</code>, <code>Copy as Markdown</code>, <code>Copy as Prompt</code> — которая превращает результат твоих кликов обратно в текст для Claude.</p>
 
@@ -265,20 +303,20 @@ const ARTICLE_HTML = `
 
 <h2 id="faq">FAQ</h2>
 
-<h3>Это же не token-efficient?</h3>
-<p>HTML жрёт больше токенов. Но при 1M-контексте Opus 4.7 это незаметно, а выразительность и шанс что я <em>дочитаю</em> — кратно выше. Trade хороший.</p>
+<h3>HTML лучше Markdown для AI-агентов?</h3>
+<p>Для длинных артефактов — да. Когда агент пишет, а человек читает, HTML даёт больше структуры, визуальной плотности, интерактива и вариантов шеринга. Для коротких заметок и source packs markdown всё ещё проще.</p>
 
-<h3>Когда ты ещё используешь markdown?</h3>
-<p>Tariq говорит — почти никогда. Я мягче: markdown остаётся для коротких заметок, voice memo расшифровок, ai-docs которые точно никто кроме меня не откроет. Всё что длиннее 100 строк или хоть когда-нибудь пойдёт наружу — HTML.</p>
+<h3>Когда всё-таки использовать Markdown?</h3>
+<p>Короткая заметка, TODO, промпт, meeting note, raw-транскрипт, source pack для агента, README, файл с частыми git diff'ами. Если документ читаешь только ты и он меньше 100 строк — markdown норм.</p>
 
-<h3>Дольше же генерится?</h3>
-<p>Да, в 2–4 раза. Окупается читаемостью.</p>
+<h3>HTML-артефакты не слишком дорогие по токенам?</h3>
+<p>HTML жрёт больше токенов и обычно дольше генерится. Но если итоговый документ реально читают, trade нормальный. Дешёвый markdown-план, который никто не дочитал, тоже стоит денег — просто это не видно в счёте.</p>
 
 <h3>Как ревьюить diff'ы HTML?</h3>
 <p>Это реально больно. Один из главных минусов. Если файл часто меняется — может быть оставь его в markdown.</p>
 
-<h3>Как заставить Claude не делать уродство?</h3>
-<p>Frontend design плагин помогает с базовым качеством. Дальше — design system файл, который ты используешь как референс для всех других HTML.</p>
+<h3>Что попросить Claude Code, чтобы HTML не выглядел как generic AI slop?</h3>
+<p>Дай агенту контекст: кто читатель, где документ будет открываться, какие секции обязательны, какие стили проекта использовать, что запрещено. Для рабочих артефактов почти всегда помогает прямой запрет на landing page и декоративный SaaS-дизайн.</p>
 
 <hr>
 
@@ -319,8 +357,11 @@ const ARTICLE_CSS = `
 .mvh-page a:hover { text-decoration-thickness: 2px; }
 .mvh-page .mvh-meta { color: var(--mvh-muted); font-size: 14px; margin-bottom: 32px; border-bottom: 1px solid var(--mvh-border); padding-bottom: 16px; }
 .mvh-page .mvh-meta a { color: var(--mvh-muted); }
+.mvh-page .mvh-cover { margin: 0 0 28px; }
+.mvh-page .mvh-cover img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; border-radius: 6px; border: 1px solid var(--mvh-border); background: #111; }
 .mvh-page blockquote { margin: 20px 0; padding: 14px 20px; background: var(--mvh-soft); border: 1px solid var(--mvh-border); border-radius: 6px; font-style: italic; color: var(--mvh-muted); }
 .mvh-page blockquote p { margin: 4px 0; }
+.mvh-page .mvh-answer { margin: 20px 0; padding: 16px 20px; border-left: 4px solid var(--mvh-accent); background: #fff; font-size: 16px; }
 .mvh-page code { font-family: "SF Mono", "Menlo", "Consolas", monospace; font-size: 14px; background: var(--mvh-soft); padding: 2px 6px; border-radius: 3px; }
 .mvh-page table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 15px; }
 .mvh-page th, .mvh-page td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--mvh-border); vertical-align: top; }
@@ -357,15 +398,16 @@ const ARTICLE_CSS = `
   .mvh-page { font-size: 16px; padding: 16px 16px 60px; }
   .mvh-page h1 { font-size: 30px; }
   .mvh-page h2 { font-size: 22px; }
+  .mvh-page table { display: block; overflow-x: auto; white-space: normal; }
   .mvh-page .mvh-pros-cons { grid-template-columns: 1fr; }
 }
 `
 
 export function MarkdownVsHtml() {
   const canonical = absoluteUrl('/articles/markdown-vs-html/')
-  const description = 'Почему HTML побеждает markdown как формат вывода для AI-агентов. Плотность инфы, читаемость, шеринг, интерактив. С примерами промптов и реальными кейсами.'
-  const title = 'Markdown мёртв — да здравствует HTML | Даниил Охлопков'
-  const tags = ['AI Agents', 'HTML', 'Claude Code']
+  const description = 'Почему HTML лучше Markdown для AI-агентов: когда агент пишет артефакты, а человек читает и шарит. Сравнение форматов, минусы и промпты.'
+  const title = 'Markdown vs HTML для AI-агентов | Даниил Охлопков'
+  const tags = ['AI Agents', 'HTML', 'Markdown', 'Claude Code']
 
   useDocumentMeta({
     title,
@@ -373,7 +415,9 @@ export function MarkdownVsHtml() {
     canonical,
     type: 'article',
     publishedTime: '2026-05-09',
-    modifiedTime: '2026-05-10',
+    modifiedTime: '2026-05-29',
+    image: absoluteUrl(COVER_IMAGE),
+    imageAlt: COVER_ALT,
     tags,
     section: 'Статьи',
     jsonLd: buildArticleStructuredData({
@@ -381,7 +425,8 @@ export function MarkdownVsHtml() {
       description,
       canonical,
       publishedAt: '2026-05-09',
-      updatedAt: '2026-05-10',
+      updatedAt: '2026-05-29',
+      image: COVER_IMAGE,
       tags,
       section: 'Статьи',
       bodyText: htmlToPlainText(ARTICLE_HTML),
