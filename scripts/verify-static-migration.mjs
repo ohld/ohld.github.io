@@ -18,6 +18,7 @@ const missingPath = '/__missing-static-migration-check-404/'
 const gaMeasurementId = 'G-9Z5T725JJD'
 const yandexMetrikaId = '46266270'
 const yandexVerificationIds = ['1b82de56693018c1', '3553f1209d48d2c4']
+const baiduVerificationId = 'codeva-wRmphtHE31'
 const expectedSitemapLastmod = process.env.VERIFY_EXPECTED_SITEMAP_LASTMOD || '2026-05-26'
 const indexNowKey = '16f3585acc2f41a2b4ff657222850145'
 const nativeBlogForbiddenPhrases = [
@@ -588,6 +589,8 @@ async function verifyRootVerificationMeta() {
     assert(verificationValues.has(id), `/: missing yandex-verification ${id}`)
   }
   console.log(`✓ yandex verification meta (${yandexVerificationIds.length})`)
+  assert(readMeta(html, 'baidu-site-verification') === baiduVerificationId, '/: missing baidu-site-verification meta')
+  console.log('✓ baidu verification meta')
 }
 
 async function verifyImportedArticle({ path, title, lang = 'ru' }) {
