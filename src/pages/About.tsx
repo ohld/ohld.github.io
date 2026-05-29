@@ -105,7 +105,6 @@ export function About() {
           </div>
           <div className="experience-meta">
             <span>{role.period}</span>
-            <span className="post-item-dot" />
             <span>{role.location}</span>
           </div>
           {role.description && (

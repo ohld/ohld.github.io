@@ -94,21 +94,21 @@ const ARTICLE_HTML = `
 <div class="mvh-diagram">
   <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
     <rect x="20" y="40" width="240" height="120" fill="#f5f1e8" stroke="#c0392b" stroke-width="2" rx="6"/>
-    <text x="140" y="70" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1a1a">Markdown</text>
+    <text x="140" y="70" text-anchor="middle" font-size="14" font-weight="500" fill="#1a1a1a">Markdown</text>
     <text x="140" y="95" text-anchor="middle" font-size="12" fill="#555">текст</text>
     <text x="140" y="113" text-anchor="middle" font-size="12" fill="#555">заголовки</text>
     <text x="140" y="131" text-anchor="middle" font-size="12" fill="#555">списки</text>
     <text x="140" y="149" text-anchor="middle" font-size="12" fill="#555">ASCII-диаграммы</text>
 
     <rect x="340" y="20" width="240" height="160" fill="#fff" stroke="#2d7a3e" stroke-width="2" rx="6"/>
-    <text x="460" y="48" text-anchor="middle" font-size="14" font-weight="600" fill="#1a1a1a">HTML</text>
+    <text x="460" y="48" text-anchor="middle" font-size="14" font-weight="500" fill="#1a1a1a">HTML</text>
     <text x="460" y="70" text-anchor="middle" font-size="11" fill="#555">текст · таблицы · CSS</text>
     <text x="460" y="86" text-anchor="middle" font-size="11" fill="#555">SVG · картинки</text>
     <text x="460" y="102" text-anchor="middle" font-size="11" fill="#555">формы · слайдеры · кнопки</text>
     <text x="460" y="118" text-anchor="middle" font-size="11" fill="#555">live-preview · canvas</text>
     <text x="460" y="134" text-anchor="middle" font-size="11" fill="#555">копи-кнопки → промпт</text>
     <text x="460" y="150" text-anchor="middle" font-size="11" fill="#555">mobile-responsive</text>
-    <text x="460" y="166" text-anchor="middle" font-size="11" fill="#2d7a3e" font-weight="600">+ всё то же из markdown</text>
+    <text x="460" y="166" text-anchor="middle" font-size="11" fill="#2d7a3e" font-weight="500">+ всё то же из markdown</text>
 
     <path d="M 270 100 L 330 100" stroke="#1a1a1a" stroke-width="2" marker-end="url(#mvh-arrow)"/>
     <defs>
@@ -367,9 +367,9 @@ const ARTICLE_CSS = `
 .mvh-page code { font-family: "SF Mono", "Menlo", "Consolas", monospace; font-size: 14px; background: var(--mvh-soft); padding: 2px 6px; border-radius: 3px; }
 .mvh-page table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 15px; }
 .mvh-page th, .mvh-page td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--mvh-border); vertical-align: top; }
-.mvh-page th { background: var(--mvh-soft); font-weight: 600; }
+.mvh-page th { background: var(--mvh-soft); font-weight: 500; }
 .mvh-page .mvh-callout { background: var(--mvh-soft); border: 1px solid var(--mvh-border); border-radius: 6px; padding: 16px 20px; margin: 20px 0; }
-.mvh-page .mvh-callout-title { font-weight: 600; margin-bottom: 6px; color: var(--mvh-accent); }
+.mvh-page .mvh-callout-title { font-weight: 500; margin-bottom: 6px; color: var(--mvh-accent); }
 .mvh-page .mvh-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
 .mvh-page .mvh-pros, .mvh-page .mvh-cons { padding: 16px 20px; border-radius: 6px; background: var(--mvh-soft); }
 .mvh-page .mvh-pros { border: 1px solid rgba(45, 122, 62, 0.26); }
@@ -380,13 +380,13 @@ const ARTICLE_CSS = `
 .mvh-page .mvh-pros ul, .mvh-page .mvh-cons ul { margin: 0; padding-left: 18px; }
 .mvh-page .mvh-pros li, .mvh-page .mvh-cons li { margin: 4px 0; font-size: 15px; }
 .mvh-page .mvh-prompt-box { background: #fff; border: 1px solid var(--mvh-border); border-radius: 6px; padding: 14px 18px; margin: 14px 0; font-size: 15px; }
-.mvh-page .mvh-prompt-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mvh-accent); font-weight: 600; margin-bottom: 6px; }
+.mvh-page .mvh-prompt-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mvh-accent); font-weight: 500; margin-bottom: 6px; }
 .mvh-page .mvh-prompt-box code { background: none; padding: 0; font-style: italic; color: var(--mvh-fg); font-family: inherit; font-size: 15px; }
 .mvh-page ul.mvh-bullets { list-style: none; padding-left: 0; }
 .mvh-page ul.mvh-bullets li { padding-left: 22px; position: relative; margin: 8px 0; }
-.mvh-page ul.mvh-bullets li::before { content: "▪"; position: absolute; left: 4px; color: var(--mvh-accent); font-weight: bold; }
+.mvh-page ul.mvh-bullets li::before { content: "▪"; position: absolute; left: 4px; color: var(--mvh-accent); font-weight: 500; }
 .mvh-page .mvh-toc { background: var(--mvh-soft); border-radius: 6px; padding: 16px 24px; margin: 24px 0 40px; font-size: 15px; }
-.mvh-page .mvh-toc-title { font-weight: 600; margin-bottom: 8px; text-transform: uppercase; font-size: 12px; letter-spacing: 0.1em; color: var(--mvh-muted); }
+.mvh-page .mvh-toc-title { font-weight: 500; margin-bottom: 8px; text-transform: uppercase; font-size: 12px; letter-spacing: 0.1em; color: var(--mvh-muted); }
 .mvh-page .mvh-toc ol { margin: 0; padding-left: 20px; }
 .mvh-page .mvh-toc li { margin: 4px 0; }
 .mvh-page .mvh-toc a { color: var(--mvh-fg); text-decoration: none; }

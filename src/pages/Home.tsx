@@ -29,13 +29,15 @@ export function Home() {
   return (
     <div className="page">
       <header className="page-header">
-        <h1 className="page-header-name">Даниил<br />Охлопков</h1>
-        <div className="page-header-handle">
-          <span className="page-header-dot" />
-          <span className="page-header-mono">@danokhlopkov</span>
-        </div>
+        <h1 className="page-header-name">Даниил Охлопков</h1>
         <p className="page-header-bio">
-          Практика <a href={topicPath('ai-agents')}>AI-агентов</a>: <a href={topicPath('codex')}>Codex</a>, <a href={topicPath('claude-code')}>Claude Code</a>, <a href={topicPath('mcp')}>MCP</a>, <a href={topicPath('gstack')}>GStack</a>, <a href={topicPath('openclaw')}>OpenClaw</a>, <a href={topicPath('hermes-agent')}>Hermes Agent</a>, <a href={topicPath('ton-data')}>TON-данные</a> и <a href={topicPath('telegram-automation')}>Telegram-автоматизация</a>.
+          Я разработчик и аналитик из TON Foundation, работаю на стыке данных,
+          продуктов и Telegram-экосистемы. Сейчас фокусируюсь на
+          <a href={topicPath('ai-agents')}> AI-агентах</a>: Codex, Claude Code,
+          MCP, автоматизации рабочих процессов и инструментах, которые реально
+          помогают командам писать, исследовать и запускать быстрее. Здесь
+          собираю практические заметки про AI, TON-данные и инженерные подходы
+          без маркетинговой магии.
         </p>
       </header>
 
@@ -48,11 +50,11 @@ export function Home() {
               onClick={() => { trackNav(item.path); navigate(item.path) }}
             >
               <div className="nav-row-content">
-                <span className="nav-row-title">{item.title}</span>
+                <span className="nav-row-title">
+                  {item.title}
+                  {item.badge && <span className="nav-row-badge">{item.badge}</span>}
+                </span>
                 <span className="nav-row-subtitle">{item.subtitle}</span>
-              </div>
-              <div className="nav-row-right">
-                {item.badge && <span className="nav-row-badge">{item.badge}</span>}
               </div>
             </button>
             {item.items && (

@@ -4,10 +4,11 @@ import { trackNav } from '../analytics'
 import { absoluteUrl } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 import { englishArticleItems, englishBlogItems } from '../blog'
+import { topicPath } from '../topics'
 
 const navItems = [
   { path: '/en/blog', title: 'Blog', subtitle: 'Notes and working ideas', items: englishBlogItems.slice(0, 3) },
-  { path: '/en/articles', title: 'Articles', subtitle: 'Tutorials, comparisons and explainers', items: englishArticleItems.slice(0, 2) },
+  { path: '/en/articles', title: 'Articles', subtitle: 'Tutorials, comparisons and explainers', badge: 'NEW', items: englishArticleItems.slice(0, 2) },
   { path: '/en/about', title: 'About', subtitle: 'Background, work and links' },
 ]
 
@@ -28,13 +29,14 @@ export function EnglishHome() {
   return (
     <div className="page">
       <header className="page-header">
-        <h1 className="page-header-name">Daniil<br />Okhlopkov</h1>
-        <div className="page-header-handle">
-          <span className="page-header-dot" />
-          <span className="page-header-mono">@danokhlopkov</span>
-        </div>
+        <h1 className="page-header-name">Daniil Okhlopkov</h1>
         <p className="page-header-bio">
-          Head of Analytics @ TON Foundation.<br />I write about AI agents, OpenClaw, Hermes Agent, data, crypto and Telegram.
+          I am a developer and data practitioner from TON Foundation, working
+          across analytics, products and the Telegram ecosystem. My current
+          focus is <a href={topicPath('ai-agents')}>AI agents</a>: Codex,
+          Claude Code, MCP and workflow automation that helps teams research,
+          build and ship faster. This site collects practical notes on AI,
+          TON data and engineering patterns without marketing gloss.
         </p>
       </header>
 
@@ -47,10 +49,12 @@ export function EnglishHome() {
               onClick={() => { trackNav(item.path); navigate(item.path) }}
             >
               <div className="nav-row-content">
-                <span className="nav-row-title">{item.title}</span>
+                <span className="nav-row-title">
+                  {item.title}
+                  {item.badge && <span className="nav-row-badge">{item.badge}</span>}
+                </span>
                 <span className="nav-row-subtitle">{item.subtitle}</span>
               </div>
-              <div className="nav-row-right" />
             </button>
             {item.items && (
               <div className="home-card-list">

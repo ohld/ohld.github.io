@@ -30,7 +30,6 @@ export function BlogCard({
       <div className="blog-card-body">
         <div className="content-card-meta">
           <span>{article.publishedAt}</span>
-          <span className="content-card-dot" />
           <span>{article.readingTime}</span>
         </div>
         <h2>{article.title}</h2>
