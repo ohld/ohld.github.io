@@ -349,6 +349,8 @@ const ARTICLE_CSS = `
   line-height: 1.65;
   font-size: 17px;
 }
+.mvh-page * { box-sizing: border-box; }
+.mvh-page > * { max-width: 100%; }
 .mvh-page h1 { font-size: 38px; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.02em; }
 .mvh-page h2 { font-size: 26px; margin: 48px 0 12px; letter-spacing: -0.01em; border-bottom: 2px solid var(--mvh-border); padding-bottom: 6px; }
 .mvh-page h3 { font-size: 19px; margin: 28px 0 8px; color: var(--mvh-accent); }
@@ -398,7 +400,8 @@ const ARTICLE_CSS = `
   .mvh-page { font-size: 16px; padding: 16px 16px 60px; }
   .mvh-page h1 { font-size: 30px; }
   .mvh-page h2 { font-size: 22px; }
-  .mvh-page table { display: block; overflow-x: auto; white-space: normal; }
+  .mvh-page table { table-layout: fixed; white-space: normal; }
+  .mvh-page th, .mvh-page td { padding: 8px; overflow-wrap: anywhere; }
   .mvh-page .mvh-pros-cons { grid-template-columns: 1fr; }
 }
 `
