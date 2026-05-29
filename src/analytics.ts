@@ -1,9 +1,37 @@
 /** GA4 + Yandex Metrika event helper. */
 
+import { SITE_URL } from './site'
+
 const YM_COUNTER = 46266270
+const SENSITIVE_QUERY_PREFIXES = ['tgWebApp']
+const ATTRIBUTION_QUERY_PREFIXES = ['utm_']
+const ATTRIBUTION_QUERY_NAMES = new Set([
+  'gclid',
+  'dclid',
+  'gbraid',
+  'wbraid',
+  'fbclid',
+  'msclkid',
+  'yclid',
+])
+const CONTENT_QUERY_NAMES = new Set(['q', 's', 'search', 'query', 'keyword'])
+const METRIKA_GOAL_EVENTS = new Set([
+  'telegram_subscribe_click',
+  'social_follow_click',
+  'lead_contact_click',
+  'article_cta_click',
+  'source_link_click',
+  'code_copy',
+])
 
 type EventParamValue = string | number | undefined
 type EventParams = Record<string, EventParamValue>
+type TrackRouteSource = 'inline' | 'react-router' | 'fallback'
+type RouteContext = {
+  pagePath: string
+  routeKey: string
+  pageLocation: string
+}
 
 declare global {
   interface Window {
@@ -12,6 +40,12 @@ declare global {
     __INITIAL_GA_PAGE_VIEW_SENT__?: boolean
     __INITIAL_GA_PAGE_VIEW_PATH__?: string
     __INITIAL_GA_PAGE_VIEW_CONSUMED__?: boolean
+    __INITIAL_METRIKA_HIT_SENT__?: boolean
+    __INITIAL_METRIKA_HIT_PATH__?: string
+    __GA_LAST_PAGE_VIEW_PATH__?: string
+    __GA_LAST_PAGE_VIEW_ROUTE_KEY__?: string
+    __GA_PAGE_VIEW_SENT_PATHS__?: Set<string>
+    __LAST_TRACKED_URL__?: string
   }
 }
 
@@ -22,8 +56,41 @@ function cleanParams(params: EventParams = {}) {
 }
 
 function normalizePath(path = location.pathname) {
+  const pathOnly = path.split('?')[0].split('#')[0] || '/'
   if (path === '/') return '/'
-  return path.endsWith('/') ? path : `${path}/`
+  if (pathOnly === '/') return '/'
+  return pathOnly.endsWith('/') ? pathOnly : `${pathOnly}/`
+}
+
+function allowedSearch(path: string, mode: 'route' | 'location') {
+  const url = new URL(path || '/', location.origin)
+  const params = new URLSearchParams()
+
+  for (const [key, value] of url.searchParams.entries()) {
+    const lower = key.toLowerCase()
+    if (SENSITIVE_QUERY_PREFIXES.some((prefix) => lower.startsWith(prefix.toLowerCase()))) continue
+    const isAttribution =
+      ATTRIBUTION_QUERY_PREFIXES.some((prefix) => lower.startsWith(prefix))
+      || ATTRIBUTION_QUERY_NAMES.has(lower)
+    const isContent = CONTENT_QUERY_NAMES.has(lower)
+    if (mode === 'location' && (isAttribution || isContent)) params.append(key, value)
+    if (mode === 'route' && isContent) params.append(key, value)
+  }
+
+  const search = params.toString()
+  return search ? `?${search}` : ''
+}
+
+function routeContext(path = `${location.pathname}${location.search}`): RouteContext {
+  const url = new URL(path || '/', location.origin)
+  const pagePath = normalizePath(url.pathname)
+  const routeSearch = allowedSearch(url.href, 'route')
+  const locationSearch = allowedSearch(url.href, 'location')
+  return {
+    pagePath,
+    routeKey: `${pagePath}${routeSearch}`,
+    pageLocation: `${SITE_URL}${pagePath}${locationSearch}`,
+  }
 }
 
 function readMeta(property: string) {
@@ -54,16 +121,17 @@ function articleSlug(path = location.pathname) {
 }
 
 function contentContext(path = location.pathname): EventParams {
-  const group = contentGroup(path)
+  const route = routeContext(path)
+  const group = contentGroup(route.pagePath)
   const section = readMeta('article:section')
   const tag = readMeta('article:tag')
   return {
     content_group: group,
     content_type: readMeta('og:type') === 'article' ? 'article' : group,
-    article_slug: articleSlug(path),
+    article_slug: articleSlug(route.pagePath),
     article_topic: section || tag,
     article_lang: document.documentElement.lang || undefined,
-    page_path: normalizePath(path),
+    page_path: route.pagePath,
   }
 }
 
@@ -83,39 +151,82 @@ function isInternalUrl(url: URL) {
   return url.origin === location.origin || ['okhlopkov.com', 'www.okhlopkov.com'].includes(url.hostname)
 }
 
+function rememberRouteView(route: RouteContext) {
+  window.__GA_LAST_PAGE_VIEW_PATH__ = route.pagePath
+  window.__GA_LAST_PAGE_VIEW_ROUTE_KEY__ = route.routeKey
+  window.__LAST_TRACKED_URL__ = route.pageLocation
+  if (!window.__GA_PAGE_VIEW_SENT_PATHS__) window.__GA_PAGE_VIEW_SENT_PATHS__ = new Set<string>()
+  window.__GA_PAGE_VIEW_SENT_PATHS__.add(route.pagePath)
+}
+
+function sendMetrikaHit(route: RouteContext) {
+  if (!window.ym) return
+  const referer = window.__LAST_TRACKED_URL__ || document.referrer || undefined
+  window.ym(YM_COUNTER, 'hit', route.pageLocation, cleanParams({
+    title: document.title,
+    referer,
+  }))
+}
+
+function hasCurrentPageView(path = `${location.pathname}${location.search}`) {
+  return window.__GA_LAST_PAGE_VIEW_ROUTE_KEY__ === routeContext(path).routeKey
+}
+
+function ensurePageViewBeforeEvent(path = `${location.pathname}${location.search}`) {
+  if (!hasCurrentPageView(path)) {
+    trackRouteView(path, { source: 'fallback' })
+  }
+}
+
 function send(event: string, params?: EventParams) {
+  if (event !== 'page_view') ensurePageViewBeforeEvent()
   const payload = cleanParams({ ...contentContext(), ...params })
   if (window.gtag) {
     window.gtag('event', event, payload)
   }
-  if (window.ym) {
+  if (window.ym && METRIKA_GOAL_EVENTS.has(event)) {
     window.ym(YM_COUNTER, 'reachGoal', event, payload)
   }
 }
 
 /** Track SPA page navigation */
-export function trackPageView(path: string) {
-  const pagePath = normalizePath(path)
+export function trackRouteView(
+  path: string,
+  options: { source?: TrackRouteSource } = {},
+) {
+  const route = routeContext(path)
   if (
     window.__INITIAL_GA_PAGE_VIEW_SENT__
     && !window.__INITIAL_GA_PAGE_VIEW_CONSUMED__
-    && window.__INITIAL_GA_PAGE_VIEW_PATH__ === pagePath
+    && window.__INITIAL_GA_PAGE_VIEW_PATH__ === route.pagePath
   ) {
     window.__INITIAL_GA_PAGE_VIEW_CONSUMED__ = true
+    if (!window.__INITIAL_METRIKA_HIT_SENT__ || window.__INITIAL_METRIKA_HIT_PATH__ !== route.pagePath) {
+      sendMetrikaHit(route)
+      window.__INITIAL_METRIKA_HIT_SENT__ = true
+      window.__INITIAL_METRIKA_HIT_PATH__ = route.pagePath
+    }
+    rememberRouteView(route)
     return
   }
 
+  if (window.__GA_LAST_PAGE_VIEW_ROUTE_KEY__ === route.routeKey) return
+
   if (window.gtag) {
     window.gtag('event', 'page_view', {
-      ...cleanParams(contentContext(pagePath)),
-      page_path: pagePath,
-      page_location: location.href,
+      ...cleanParams(contentContext(route.pagePath)),
+      page_path: route.pagePath,
+      page_location: route.pageLocation,
       page_title: document.title,
     })
   }
-  if (window.ym) {
-    window.ym(YM_COUNTER, 'hit', location.href, { title: document.title, referer: document.referrer })
-  }
+  sendMetrikaHit(route)
+  rememberRouteView(route)
+  if (options.source === 'inline') window.__INITIAL_METRIKA_HIT_SENT__ = true
+}
+
+export function trackPageView(path: string) {
+  trackRouteView(path, { source: 'react-router' })
 }
 
 /** Track outbound link click */

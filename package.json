@@ -17,6 +17,7 @@
     "readiness:cutover": "node scripts/cutover-readiness.mjs",
     "smoke:browser": "node scripts/browser-smoke.mjs",
     "smoke:dist": "node scripts/serve-dist-and-smoke.mjs",
+    "verify:analytics-routing": "node scripts/verify-analytics-routing.mjs",
     "verify:hreflang": "node scripts/verify-hreflang.mjs",
     "verify:image-seo": "node scripts/verify-image-seo.mjs",
     "verify:migration": "node scripts/verify-static-migration.mjs",

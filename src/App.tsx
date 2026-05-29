@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-
 import { Home } from './pages/Home'
 import { EnglishHome } from './pages/EnglishHome'
 import { SiteHeader } from './components/SiteHeader'
-import { trackDocumentLinkClick, trackPageView, useScrollDepth } from './analytics'
+import { trackDocumentLinkClick, trackRouteView, useScrollDepth } from './analytics'
 import { enhanceCodeBlocks } from './codeBlocks'
 
 // Routes the bot can deep-link into via t.me/ohldbot/ooo?startapp=<slug>.
@@ -74,12 +74,18 @@ function usePreloadChunks() {
 
 function usePageTracking() {
   const location = useLocation()
-  const getScrollDepth = useMemo(() => useScrollDepth(), [location.pathname])
+  const routePath = `${location.pathname}${location.search || ''}`
+  const getScrollDepth = useMemo(() => useScrollDepth(), [routePath])
 
   useEffect(() => {
-    let pageViewFrame: number | null = null
+    let firstFrame: number | null = null
+    let secondFrame: number | null = null
 
-    pageViewFrame = window.requestAnimationFrame(() => trackPageView(location.pathname))
+    firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        trackRouteView(routePath, { source: 'react-router' })
+      })
+    })
 
     const trackBotPageView = () => {
       const initData = window.Telegram?.WebApp?.initData
@@ -97,11 +103,12 @@ function usePageTracking() {
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('telegram-webapp-ready', onTelegramReady)
     return () => {
-      if (pageViewFrame !== null) window.cancelAnimationFrame(pageViewFrame)
+      if (firstFrame !== null) window.cancelAnimationFrame(firstFrame)
+      if (secondFrame !== null) window.cancelAnimationFrame(secondFrame)
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('telegram-webapp-ready', onTelegramReady)
     }
-  }, [location.pathname, getScrollDepth])
+  }, [location.pathname, location.search, routePath, getScrollDepth])
 }
 
 function useDocumentLinkTracking() {

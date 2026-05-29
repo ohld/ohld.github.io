@@ -80,6 +80,7 @@
       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
       ym(46266270, "init", {
+        defer:true,
         clickmap:true,
         trackLinks:true,
         accurateTrackBounce:true,
@@ -111,8 +112,41 @@
         }
 
         function normalizePath(path) {
-          if (path === '/') return '/';
-          return path.endsWith('/') ? path : path + '/';
+          var pathOnly = (path || '/').split('?')[0].split('#')[0] || '/';
+          if (pathOnly === '/') return '/';
+          return pathOnly.endsWith('/') ? pathOnly : pathOnly + '/';
+        }
+
+        function allowedSearch(url, mode) {
+          var sensitivePrefixes = ['tgWebApp'];
+          var attributionPrefixes = ['utm_'];
+          var attributionNames = ['gclid', 'dclid', 'gbraid', 'wbraid', 'fbclid', 'msclkid', 'yclid'];
+          var contentNames = ['q', 's', 'search', 'query', 'keyword'];
+          var parsed = new URL(url || '/', location.origin);
+          var params = new URLSearchParams();
+
+          parsed.searchParams.forEach(function (value, key) {
+            var lower = key.toLowerCase();
+            if (sensitivePrefixes.some(function (prefix) { return lower.indexOf(prefix.toLowerCase()) === 0; })) return;
+            var isAttribution = attributionPrefixes.some(function (prefix) { return lower.indexOf(prefix) === 0; })
+              || attributionNames.indexOf(lower) >= 0;
+            var isContent = contentNames.indexOf(lower) >= 0;
+            if (mode === 'location' && (isAttribution || isContent)) params.append(key, value);
+            if (mode === 'route' && isContent) params.append(key, value);
+          });
+
+          var search = params.toString();
+          return search ? '?' + search : '';
+        }
+
+        function routeContext(path) {
+          var parsed = new URL(path || '/', location.origin);
+          var pagePath = normalizePath(parsed.pathname);
+          return {
+            pagePath: pagePath,
+            routeKey: pagePath + allowedSearch(parsed.href, 'route'),
+            pageLocation: 'https://okhlopkov.com' + pagePath + allowedSearch(parsed.href, 'location')
+          };
         }
 
         function readMeta(property) {
@@ -143,19 +177,30 @@
           return parts[parts.length - 1];
         }
 
-        var pagePath = normalizePath(location.pathname);
+        var route = routeContext(location.pathname + location.search);
+        var pagePath = route.pagePath;
         var group = contentGroup(pagePath);
         window.__INITIAL_GA_PAGE_VIEW_SENT__ = true;
         window.__INITIAL_GA_PAGE_VIEW_PATH__ = pagePath;
+        window.__INITIAL_METRIKA_HIT_SENT__ = true;
+        window.__INITIAL_METRIKA_HIT_PATH__ = pagePath;
+        window.__GA_LAST_PAGE_VIEW_PATH__ = pagePath;
+        window.__GA_LAST_PAGE_VIEW_ROUTE_KEY__ = route.routeKey;
+        window.__GA_PAGE_VIEW_SENT_PATHS__ = new Set([pagePath]);
+        window.__LAST_TRACKED_URL__ = route.pageLocation;
         gtag('event', 'page_view', cleanParams({
           page_path: pagePath,
-          page_location: location.href,
+          page_location: route.pageLocation,
           page_title: document.title,
           content_group: group,
           content_type: readMeta('og:type') === 'article' ? 'article' : group,
           article_slug: articleSlug(pagePath),
           article_topic: readMeta('article:section') || readMeta('article:tag'),
           article_lang: document.documentElement.lang
+        }));
+        ym(46266270, 'hit', route.pageLocation, cleanParams({
+          title: document.title,
+          referer: document.referrer
         }));
       }());
     </script>
