@@ -1,5 +1,6 @@
 import importedIndex from '../content/articles/imported-index.json'
 import localizedGroups from '../content/articles/localized-groups.json'
+import { getEnhancedArticleDescription } from './articleSeoEnhancements'
 import type { BlogListItem } from './blog'
 
 type ArticleLang = 'ru' | 'en' | 'zh'
@@ -20,7 +21,10 @@ export interface ImportedArticle {
   heroImage: string
 }
 
-const importedArticles = importedIndex as ImportedArticle[]
+const importedArticles = (importedIndex as ImportedArticle[]).map((article) => ({
+  ...article,
+  description: getEnhancedArticleDescription(article.path, article.description),
+}))
 const localizedArticleGroups = localizedGroups as LocalizedArticleGroup[]
 const articleLangs: ArticleLang[] = ['ru', 'en', 'zh']
 

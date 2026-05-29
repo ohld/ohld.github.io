@@ -1,0 +1,82 @@
+{
+  "/cn-second-brain-obsidian-claude-code-assistant/": {
+    "description": "用Obsidian和Claude Code搭一个个人第二大脑：项目、日记、社交链接、CLAUDE.md规则和文件组织方式。重点是让AI代理安全读取上下文、找旧想法、不乱改原始笔记，并长期变成个人工作系统。",
+    "summaryHtml": "<p><strong>快速答案：</strong>这篇文章讲的是把Obsidian vault变成Claude Code可读的长期工作上下文。核心不是模板，而是项目结构、raw notes保护、CLAUDE.md规则和可追溯链接，让AI代理能回答问题、找旧想法、提取任务，但不直接改原始内容。</p><ul><li>适合想把个人知识库接入AI代理的人。</li><li>重点风险是上下文污染和raw notes被误改。</li><li>下一步通常是为每个项目补overview、tasks和ai-docs。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>Obsidian第二大脑一定要很复杂吗？</h3><p>不需要。最小版本是projects、personal diary、tasks和一份清楚的CLAUDE.md。复杂插件不如稳定的文件命名和链接规则重要。</p><h3>AI代理可以直接编辑日记吗？</h3><p>不建议。我的规则是raw内容保持原样，AI只在项目的ai-docs或tasks里写提炼结果，这样以后还能回到原始语境。</p>"
+  },
+  "/cn-fake-claude-code-phishing-site-google/": {
+    "description": "我在Google Ads里发现假冒Claude Code钓鱼站：它复制官网视觉、用base64藏安装脚本、下载可疑二进制。文章拆解识别信号、广告风险和普通用户检查Claude Code官网真伪的方法。",
+    "summaryHtml": "<p><strong>快速答案：</strong>假Claude Code网站最危险的地方不是页面像不像，而是它让用户复制安装命令。检查域名、广告来源、脚本内容和下载文件，比看设计更靠谱。遇到base64、curl pipe shell和未知二进制时，默认先停下来。</p><ul><li>官方工具只从官方域名和文档入口安装。</li><li>不要把广告位等同于可信来源。</li><li>可疑安装脚本先解码、读完，再决定是否运行。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>Google广告里的开发者工具一定安全吗？</h3><p>不一定。广告审核不等于软件供应链审核，尤其是CLI工具和安装脚本，要单独检查域名、发布者和命令内容。</p><h3>看到curl安装脚本该怎么处理？</h3><p>先下载脚本、读内容、确认来源，再运行。不要在终端里盲目执行陌生的curl | sh命令。</p>"
+  },
+  "/cn-claude-codex-dual-review/": {
+    "description": "Claude Code + OpenAI Codex双重审查流程：用两个AI代理交叉检查计划、代码和边界条件。包含MCP连接、review prompt、适用场景、成本取舍和我实际用来减少agent盲点的协议。",
+    "summaryHtml": "<p><strong>快速答案：</strong>Dual Review不是让两个模型互相聊天，而是把一个代理的计划、diff或假设交给另一个代理做独立审查。它最适合架构改动、迁移、SEO页面批量生成和安全敏感任务，可以暴露遗漏、幻觉和过度自信。</p><ul><li>Claude Code适合执行和代码上下文。</li><li>Codex适合独立审查和第二意见。</li><li>关键是让review有具体输入：计划、diff、风险列表。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>Dual Review会不会太慢？</h3><p>小改动不值得。它适合影响面大的任务：迁移、生产部署、内容批量发布、权限和数据处理。</p><h3>两个AI意见冲突怎么办？</h3><p>把冲突变成可验证问题：读代码、跑测试、看日志或缩小实验。不要用“哪个模型更聪明”来拍脑袋。</p>"
+  },
+  "/cn-claude-code-setup-mcp-hooks-skills-2026/": {
+    "description": "我每天怎么用Claude Code：MCP服务器、Hooks、Skills、子代理、$100/月Max订阅、Telegram语音入口和真实工作流。包含CLAUDE.md结构、成本、Claude Code vs Cursor取舍，以及会坏的地方。",
+    "summaryHtml": "<p><strong>快速答案：</strong>我的Claude Code配置围绕三个东西：MCP给代理工具，Skills给代理可复用流程，Hooks把检查和自动化接进工作流。真正提升效率的不是装很多插件，而是让代理每次启动都读到项目规则、凭证边界和完成标准。</p><ul><li>MCP适合接浏览器、部署、Telegram和数据源。</li><li>Skills适合沉淀重复操作，而不是堆prompt。</li><li>Hooks适合检查、提醒和自动提交前的安全网。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>Claude Code Max值得买吗？</h3><p>如果你每天让代理读代码、跑测试、改页面，$100/月很容易回本。偶尔用的话，先从低配开始，看真实用量。</p><h3>Claude Code和Cursor怎么选？</h3><p>我更偏Claude Code，因为CLI更接近真实项目环境。Cursor适合IDE内补全，Claude Code更适合让代理自己读文件、运行命令、完成整块任务。</p>"
+  },
+  "/evaa-strategies-onchain-research/": {
+    "description": "Ончейн-разбор EVAA на TON: какие стратегии используют заемщики, как я считал живых юзеров в Dune/Tonalytica, где ломаются данные и почему это не инвестсовет.",
+    "summaryHtml": "<p><strong>Коротко:</strong> это разбор поведения пользователей EVAA, а не инвестиционная рекомендация. Я смотрел активные кошельки, депозиты, кредиты, LP-позиции и стейкинг, чтобы понять, какие DeFi-стратегии реально встречаются в TON, где данные полезны, а где декодинг может ломаться.</p><ul><li>Главная ценность статьи — методология и ограничения данных.</li><li>Сильные сигналы: stTON/tsTON, LP-позиции, кредиты в TON и stablecoins.</li><li>Все выводы стоит перепроверять на свежих Dune/Tonalytica таблицах.</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>Это финансовый совет?</h3><p>Нет. Это исследование ончейн-поведения пользователей EVAA на исторических данных. Стратегии могли измениться, а протоколы и APY меняются постоянно.</p><h3>Почему важны caveats про данные?</h3><p>В TON-аналитике декодинг контрактов и таблицы провайдеров иногда отстают от реальности. Поэтому в статье важны не только цифры, но и способ проверки.</p>"
+  },
+  "/deploy-meilisearch-with-dokku-for-production/": {
+    "description": "Deploy MeiliSearch with Dokku in production: app setup, domain, master key, persistent storage, Docker deployment, Python indexing example, and security notes.",
+    "summaryHtml": "<p><strong>Quick answer:</strong> MeiliSearch works well on Dokku when you treat it as a stateful service: set a master key, mount persistent storage, put it behind HTTPS, and keep indexing code separate from the public search endpoint. The risky parts are secrets, backups, and accidental open admin APIs.</p><ul><li>Use a strong master key and never expose it to the browser.</li><li>Persist the data directory before importing documents.</li><li>Plan backups before the search index becomes production-critical.</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>Can MeiliSearch run as a simple Dokku app?</h3><p>Yes, but only if you persist the data directory and configure the master key. Otherwise a redeploy or dyno reset can wipe the index.</p><h3>Should the frontend call MeiliSearch directly?</h3><p>Only with a restricted search key. Admin keys and indexing keys should stay server-side.</p>"
+  },
+  "/about-ru/": {
+    "description": "Дан Охлопков: Head of Analytics @ TON Foundation, Forbes 30 under 30, автор про AI-агентов, Telegram, on-chain analytics и личную AI-инфраструктуру в 2026 году.",
+    "summaryHtml": "<p><strong>Коротко:</strong> это старая био-страница Дана Охлопкова. Каноничная версия сейчас живет на странице «Обо мне», но здесь сохранен контекст: TON Foundation, AI-агенты, Telegram, on-chain analytics, старые проекты и публичные ссылки.</p><ul><li>Для актуального профиля лучше идти на /about/.</li><li>Для E-E-A-T важны роли, публичные проекты и ссылки на соцсети.</li><li>Старый тон сохранен, но метаданные теперь нормальные для поиска.</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>Где актуальная страница о Дане?</h3><p>Актуальная версия находится на <a href='/about/'>/about/</a>: там собраны опыт, проекты, ссылки и английская версия.</p><h3>Почему эта страница еще существует?</h3><p>У нее могли быть старые ссылки и история индексации. Проще сохранить ее с нормальным canonical-сигналом, чем ломать маршрут без причины.</p>"
+  },
+  "/cn-ai-tools-march-2026/": {
+    "description": "2026年3月我实测的AI工具清单：paperclip任务追踪、gstack评审提示词、conductor.build IDE、x402付费API、agent-browser和Chrome debug port。不是新闻汇总，而是用完后的取舍、坑和下一步判断。",
+    "summaryHtml": "<p><strong>快速答案：</strong>这不是AI工具新闻列表，而是我把几个工具放进真实工作流后的记录：哪些值得继续试，哪些只是demo好看，哪些能变成agent infrastructure。判断标准是能否节省时间、能否接进Codex/Claude Code、能否在项目里复用。</p><ul><li>paperclip适合任务追踪和agent可见状态。</li><li>gstack更像评审/office-hours工作流。</li><li>agent-browser和debug port对真实网页测试更有价值。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>这篇适合谁看？</h3><p>适合已经在用Claude Code、Codex、Cursor或其他AI coding agent的人。重点不是“哪个工具最火”，而是哪些能进入日常工作流。</p><h3>为什么要写取舍？</h3><p>AI工具太多，单纯罗列没有用。真正有价值的是保留、丢弃和下一步验证的理由。</p>"
+  },
+  "/cn-ai-agents-claude-code-voice-commands/": {
+    "description": "AI代理实战指南：我如何用Claude Code写代码、用Telegram语音命令下任务、管理上下文和检查结果。包含agent loop、计划模式、项目规范、真实案例、成本和不该盲信AI的地方。",
+    "summaryHtml": "<p><strong>快速答案：</strong>AI代理不是Copilot式补全，而是能读文件、运行命令、改代码、检查结果的执行循环。我的工作流是先用自然语言描述任务，再让代理读项目、制定计划、执行、跑检查，最后由我review diff和边界条件。</p><ul><li>语音入口适合快速描述任务，不适合跳过审查。</li><li>项目规范比长聊天更稳定。</li><li>真正的技能从写代码转向描述目标和审查结果。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>AI代理会完全替代开发者吗？</h3><p>不会。它替代大量样板和重复劳动，但你仍然要理解需求、读diff、看测试结果，并判断架构取舍。</p><h3>为什么要用Telegram语音？</h3><p>因为很多任务从一句自然语言开始。语音能降低记录成本，但最后仍然要落到项目文件、测试和review。</p>"
+  },
+  "/cn-21-questions-ai-agent/": {
+    "description": "给Claude Code、Codex等AI编程代理的21个尖锐问题：检查它是否懂你的项目、目标、限制、部署流程和历史决策。每个答案都能暴露上下文盲区，并变成下一步补文档的TODO。",
+    "summaryHtml": "<p><strong>快速答案：</strong>这21个问题的目的不是考倒AI代理，而是找出它不知道什么。代理答不上来的地方，通常就是项目文档、任务描述、部署说明或业务目标里的洞。把这些洞补进CLAUDE.md、README或ai-docs，下一次质量会更高。</p><ul><li>问题覆盖目标、用户、数据、风险和部署。</li><li>好答案应该引用项目事实，而不是泛泛而谈。</li><li>答不出来的点要转成文档或任务。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>什么时候问这21个问题？</h3><p>适合在新项目启动、接手旧仓库、长会话质量下降或准备让代理做大改动前使用。</p><h3>代理答错了怎么办？</h3><p>先别骂模型。把正确事实写进项目文档或memory，再让代理复述，直到它能稳定引用。</p>"
+  },
+  "/cn-best-skills-mcp-claude-code-agent-browser/": {
+    "description": "Claude Code实用Skills和MCP服务器推荐：agent-browser做网页测试、coolify-mcp管理Hetzner部署、Telegram/Browser/GBrain扩展工作流。讲清每个工具解决什么问题、适合谁、风险在哪。",
+    "summaryHtml": "<p><strong>快速答案：</strong>Claude Code的能力来自工具边界。Skills负责复用流程，MCP负责连接外部系统。最值得先接的是浏览器测试、部署、Telegram消息和项目知识库，因为它们直接减少人工切换和上下文丢失。</p><ul><li>agent-browser适合真实网页点击、截图和QA。</li><li>Coolify/Hermes类工具适合部署和服务器操作。</li><li>GBrain/Obsidian适合长期项目记忆和检索。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>应该先装很多MCP吗？</h3><p>不应该。先装能解决当前痛点的两个：浏览器测试和部署/知识库。工具太多会增加权限和调试成本。</p><h3>Skill和MCP有什么区别？</h3><p>Skill是给代理的流程说明，MCP是代理能调用的外部工具。一个教它怎么做，一个给它手和眼睛。</p>"
+  },
+  "/cn-telegram-mini-app-llms-txt-claude-code-stream/": {
+    "description": "从零构建Telegram Mini App的实战记录：llms.txt如何帮Claude Code理解文档、Vercel如何自动部署、直播中如何生成多个variant、测试和取舍。适合用AI代理快速做TMA原型的人。",
+    "summaryHtml": "<p><strong>快速答案：</strong>Telegram Mini App适合用AI代理快速原型，但前提是给代理可读文档、明确入口和验收标准。llms.txt的价值在于把文档变成模型容易抓取的路线图，让Claude Code少迷路、多写可运行代码。</p><ul><li>先准备Telegram WebApp文档和部署目标。</li><li>让代理生成多个variant，再人工挑方向。</li><li>直播式开发很快，但必须有测试和回滚。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>llms.txt会直接提升排名吗？</h3><p>它不是排名魔法。它帮助AI工具和部分爬虫更快理解站点和文档，对agent-ready体验更有价值。</p><h3>Telegram Mini App最容易坏在哪里？</h3><p>初始化、移动端布局、授权数据校验和部署环境变量。AI代理能写代码，但这些边界要明确告诉它。</p>"
+  },
+  "/telegram-mcp-server-kak-sdelat/": {
+    "description": "Как я собрал Telegram MCP Server на Python, Telethon и FastMCP для Claude Code: архитектура, 92 метода, async-паттерны, userbot-риски и server-agent use case.",
+    "summaryHtml": "<p><strong>Коротко:</strong> Telegram MCP Server превращает Telegram в интерфейс для AI-агента: агент может читать чаты, отправлять сообщения и работать с контекстом через Telethon. Главный tradeoff — это userbot-доступ: мощнее Bot API, но требует аккуратной безопасности и понятных границ.</p><ul><li>FastMCP дает удобную обвязку для методов.</li><li>Telethon открывает доступ к userbot-сценариям.</li><li>Для продакшена нужны лимиты, allowlist и логирование действий.</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>Почему не обычный Telegram Bot API?</h3><p>Bot API безопаснее и проще, но он видит только то, куда добавлен бот. Userbot через Telethon может работать шире, поэтому требует большей осторожности.</p><h3>Что самое важное для безопасности?</h3><p>Не давать агенту бесконтрольную отправку сообщений. Нужны allowlist чатов, dry-run для опасных действий и понятный audit log.</p>"
+  },
+  "/cn-beads-gastown-framework-ai-agents/": {
+    "description": "Beads vs Gastown：我为什么 осторожно отношусь к внешним фреймворкам для AI代理任务管理和编排。Разбор任务追踪、上下文、lock-in、first-party工具价值和什么时候自建 проще.",
+    "summaryHtml": "<p><strong>快速答案：</strong>外部agent framework有用，但它会把任务管理、上下文和执行方式带进自己的抽象里。我更喜欢先用first-party工具和简单文件协议，只有当复杂度真的出现时，再引入Beads、Gastown或类似编排层。</p><ul><li>框架能帮团队同步状态。</li><li>但也会增加lock-in和调试层。</li><li>单人或小项目通常先用简单tasks.md更快。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>什么时候该用agent framework？</h3><p>当多个代理、多人协作和长任务状态已经难以靠文件维护时，再考虑。不要为了“看起来专业”先上框架。</p><h3>为什么first-party工具更重要？</h3><p>模型厂商的CLI和官方能力通常最先支持新模型特性，少一层抽象，代理也更容易理解真实项目。</p>"
+  },
+  "/cn-183-ai-bots-telegram/": {
+    "description": "我统计了Telegram上183个AI机器人和4430万月活用户：BotFather两个月翻倍到730万，TON接入x402、EIP-8004、A2A等代理经济协议。适合判断Telegram为什么会变成AI产品默认入口。",
+    "summaryHtml": "<p><strong>快速答案：</strong>Telegram已经不只是聊天工具，它正在变成AI产品的默认入口之一。183个AI机器人合计4430万MAU、BotFather快速增长，再叠加支付和agent协议，说明分发、身份和交互都在同一个界面里汇合。</p><ul><li>数据重点是MAU、BotFather增长和AI bot类别。</li><li>产品机会在轻量入口、支付和自动化。</li><li>限制是样本定义和Bot API公开数据并不完美。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>为什么Telegram适合AI产品？</h3><p>因为用户已经在聊天，bot有成熟入口，分享和支付路径都短。对轻量AI工具来说，少做一个app就是优势。</p><h3>这些数字能直接代表市场规模吗？</h3><p>不能直接等同收入或留存，但它们是判断分发势能和用户习惯变化的强信号。</p>"
+  },
+  "/cn-telegram-ads-61k-search-queries-analysis/": {
+    "description": "基于61000个Telegram Ads搜索查询和3100+广告商的关键词分析：塔罗、约会、VPN等类目最热，长尾意图暴露Telegram流量市场的真实需求。适合做内容选题、SaaS验证和关键词扩展。",
+    "summaryHtml": "<p><strong>快速答案：</strong>Telegram Ads搜索查询像一张需求地图：广告商愿意出钱买的词，往往比普通关键词工具更接近商业意图。61K查询和3100+广告商显示，塔罗、约会、VPN等类别很热，但真正机会在长尾组合和可验证的用户需求。</p><ul><li>这份数据适合选题、广告测试和SaaS idea验证。</li><li>不要只看大词，要看长尾意图。</li><li>下一步是把关键词变成页面、广告或小工具实验。</li></ul>",
+    "faqHtml": "<h2>FAQ</h2><h3>Telegram Ads关键词和SEO关键词有什么区别？</h3><p>Ads关键词更接近广告商愿意购买的需求，SEO关键词更接近用户搜索行为。两者结合能更好判断内容和产品机会。</p><h3>为什么长尾重要？</h3><p>长尾词竞争更小，意图更清楚，也更容易变成具体页面、bot功能或广告实验。</p>"
+  }
+}

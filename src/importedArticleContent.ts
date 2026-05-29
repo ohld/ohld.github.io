@@ -1,5 +1,6 @@
 import importedContent from '../content/articles/imported-content.json'
 import importedIndex from '../content/articles/imported-index.json'
+import { applyArticleSeoEnhancement, getEnhancedArticleDescription } from './articleSeoEnhancements'
 
 interface ImportedArticleContent {
   path: string
@@ -72,6 +73,7 @@ function canonicalPath(pathname: string) {
 export function getImportedArticleBody(pathname: string) {
   const current = canonicalPath(pathname)
   const meta = importedMeta.find((article) => article.path === current)
-  const fallbackAlt = meta?.title || meta?.description || 'Daniil Okhlopkov article image'
-  return normalizeImportedArticleHtml(importedBodies.find((article) => article.path === current)?.bodyHtml || '', fallbackAlt)
+  const fallbackAlt = meta?.title || getEnhancedArticleDescription(current, meta?.description || '') || 'Daniil Okhlopkov article image'
+  const html = normalizeImportedArticleHtml(importedBodies.find((article) => article.path === current)?.bodyHtml || '', fallbackAlt)
+  return applyArticleSeoEnhancement(current, html)
 }

@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Content usage policy for crawlers that honor Content-Signal.
+Content-Signal: ai-input=yes
+Content-Signal: ai-train=no
+
 Sitemap: https://okhlopkov.com/sitemap.xml

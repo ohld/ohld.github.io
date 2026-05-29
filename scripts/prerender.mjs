@@ -24,6 +24,15 @@ const SEO_ARTICLES_DIR = path.join('content', 'seo-articles')
 const IMPORTED_ARTICLES_INDEX = path.join('content', 'articles', 'imported-index.json')
 const IMPORTED_ARTICLES_CONTENT = path.join('content', 'articles', 'imported-content.json')
 const LOCALIZED_GROUPS_PATH = path.join('content', 'articles', 'localized-groups.json')
+const ARTICLE_SEO_ENHANCEMENTS_PATH = path.join('content', 'articles', 'seo-enhancements.json')
+const LEGACY_REDIRECTS_PATH = path.join('content', 'articles', 'legacy-redirects.json')
+
+function readJsonFile(filePath, fallback) {
+  return fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : fallback
+}
+
+const ARTICLE_SEO_ENHANCEMENTS = readJsonFile(ARTICLE_SEO_ENHANCEMENTS_PATH, {})
+const LEGACY_REDIRECTS = readJsonFile(LEGACY_REDIRECTS_PATH, [])
 
 const NAV_LINKS_BY_SHELL_LANG = {
   ru: [
@@ -71,6 +80,23 @@ const LOCALIZED_GROUPS = JSON.parse(fs.readFileSync(LOCALIZED_GROUPS_PATH, 'utf8
 function canonicalPathname(pathname) {
   if (!pathname || pathname === '/') return '/'
   return pathname.endsWith('/') ? pathname : `${pathname}/`
+}
+
+function getArticleSeoEnhancement(pathname) {
+  return ARTICLE_SEO_ENHANCEMENTS[canonicalPathname(pathname)] || null
+}
+
+function applyArticleSeoEnhancement(pathname, html = '') {
+  if (!html || html.includes('data-seo-enhancement=')) return html
+  const enhancement = getArticleSeoEnhancement(pathname)
+  if (!enhancement) return html
+  const summary = enhancement.summaryHtml
+    ? `<section class="article-callout article-seo-summary" data-seo-enhancement="summary">${enhancement.summaryHtml}</section>`
+    : ''
+  const faq = enhancement.faqHtml
+    ? `<section class="article-faq" data-seo-enhancement="faq">${enhancement.faqHtml}</section>`
+    : ''
+  return `${summary}${html}${faq}`
 }
 
 function normalizeImportedArticleHtml(html = '') {
@@ -340,10 +366,19 @@ function loadImportedArticleRows() {
   const index = JSON.parse(fs.readFileSync(IMPORTED_ARTICLES_INDEX, 'utf8'))
   const content = JSON.parse(fs.readFileSync(IMPORTED_ARTICLES_CONTENT, 'utf8'))
   const bodyByPath = new Map(content.map((article) => [article.path, normalizeImportedArticleHtml(article.bodyHtml || '')]))
-  return index.map((article) => ({
-    ...article,
-    bodyHtml: addMissingImageAlts(bodyByPath.get(article.path) || '', article.title || article.description || 'Daniil Okhlopkov article image'),
-  }))
+  return index.map((article) => {
+    const enhancement = getArticleSeoEnhancement(article.path)
+    const description = enhancement?.description || article.description || ''
+    const bodyHtml = addMissingImageAlts(
+      bodyByPath.get(article.path) || '',
+      article.title || description || 'Daniil Okhlopkov article image',
+    )
+    return {
+      ...article,
+      description,
+      bodyHtml: applyArticleSeoEnhancement(article.path, bodyHtml),
+    }
+  })
 }
 
 const IMPORTED_ARTICLES = loadImportedArticleRows()
@@ -1139,6 +1174,9 @@ function rewrite(html, route) {
   const image = route.image || 'https://github.com/ohld.png'
   const imageAlt = route.imageAlt || route.title || 'Даниил Охлопков'
   const twitterCard = route.heroImage ? 'summary_large_image' : 'summary'
+  const escapedTitle = escape(title)
+  const escapedDescription = escape(description)
+  const escapedImageAlt = escape(imageAlt)
   const mdBody = getRouteMd(route)
   const fallback = route.kind === 'article-page'
     ? buildArticleFallback(route)
@@ -1147,22 +1185,22 @@ function rewrite(html, route) {
       : mdBody ? buildFallback(title, mdBody, articleRoute, lang) : buildFallback(title, '', articleRoute, lang)
   let out = applySiteUrl(html)
     .replace(/<html lang="[^"]+">/, `<html lang="${lang}">`)
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${escape(title)}</title>`)
-    .replace(/(<meta name="description" content=")[^"]*(")/, `$1${escape(description)}$2`)
+    .replace(/<title>[\s\S]*?<\/title>/, () => `<title>${escapedTitle}</title>`)
+    .replace(/(<meta name="description" content=")[^"]*(")/, (_match, open, close) => `${open}${escapedDescription}${close}`)
     .replace(/(<meta name="robots" content=")[^"]*(")/, `$1${route.robots || 'index, follow'}$2`)
-    .replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${escape(title)}$2`)
-    .replace(/(<meta property="og:description" content=")[^"]*(")/, `$1${escape(description)}$2`)
+    .replace(/(<meta property="og:title" content=")[^"]*(")/, (_match, open, close) => `${open}${escapedTitle}${close}`)
+    .replace(/(<meta property="og:description" content=")[^"]*(")/, (_match, open, close) => `${open}${escapedDescription}${close}`)
     .replace(/(<meta property="og:type" content=")[^"]*(")/, `$1${ogType}$2`)
     .replace(/(<meta property="og:url" content=")[^"]*(")/, `$1${url}$2`)
     .replace(/(<meta property="og:locale" content=")[^"]*(")/, `$1${ogLocale}$2`)
     .replace(/(<meta property="og:image" content=")[^"]*(")/, `$1${image}$2`)
-    .replace(/(<meta property="og:image:alt" content=")[^"]*(")/, `$1${escape(imageAlt)}$2`)
+    .replace(/(<meta property="og:image:alt" content=")[^"]*(")/, (_match, open, close) => `${open}${escapedImageAlt}${close}`)
     .replace(/(<meta property="og:image:alt" content="[^"]*" \/>\n)/, `$1${ogImageStructuredMeta(route)}`)
     .replace(/(<meta name="twitter:card" content=")[^"]*(")/, `$1${twitterCard}$2`)
-    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, `$1${escape(title)}$2`)
-    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${escape(description)}$2`)
+    .replace(/(<meta name="twitter:title" content=")[^"]*(")/, (_match, open, close) => `${open}${escapedTitle}${close}`)
+    .replace(/(<meta name="twitter:description" content=")[^"]*(")/, (_match, open, close) => `${open}${escapedDescription}${close}`)
     .replace(/(<meta name="twitter:image" content=")[^"]*(")/, `$1${image}$2`)
-    .replace(/(<meta name="twitter:image:alt" content=")[^"]*(")/, `$1${escape(imageAlt)}$2`)
+    .replace(/(<meta name="twitter:image:alt" content=")[^"]*(")/, (_match, open, close) => `${open}${escapedImageAlt}${close}`)
     .replace(/(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`)
     .replace(/<link rel="alternate" hreflang="[^"]+" href="[^"]+" \/>\n?    /g, '')
     .replace('    <link rel="alternate" type="text/markdown"', `${buildHreflang(route, url)}    <link rel="alternate" type="text/markdown"`)
@@ -1291,6 +1329,16 @@ const REDIRECTS = [
   { from: '/my-tg-bots', fromSlug: 'my-tg-bots', to: '/about/', toSlug: 'about' },
   { from: '/vibe-coding-guide-2026', fromSlug: 'vibe-coding-guide-2026', to: '/articles/', toSlug: 'articles' },
 ]
+for (const redirect of LEGACY_REDIRECTS) {
+  const from = redirect.from.replace(/\/+$/, '')
+  const to = redirect.to.endsWith('/') ? redirect.to : `${redirect.to}/`
+  REDIRECTS.push({
+    from,
+    fromSlug: from.replace(/^\/+/, '').replace(/\/+/g, '-'),
+    to,
+    toSlug: to.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '-') || 'home',
+  })
+}
 let redirectCount = 0
 for (const r of REDIRECTS) {
   const targetUrl = `${SITE_URL}${r.to}`
@@ -1320,21 +1368,12 @@ for (const r of REDIRECTS) {
 }
 
 // ---- llms-full.txt — concatenated bundle of all .md files ----
-const BUNDLE_SLUGS = [
-  'en',
-  'en-about',
-  'about',
-  'blog',
-  'en-blog',
-  'articles',
-  'en-articles',
-  'articles-ai-tools-for-designers-design-engineering-agents',
-  'markdown-vs-html',
-  'privacy',
-  ...GENERATED_BLOG_POSTS.map((post) => `blog-${post.slug}`),
-  ...GENERATED_SEO_ARTICLES.map((article) => `article-${article.slug}`),
-  ...TOPIC_PAGES.map(([slug]) => `topic-${slug}`),
-]
+const BUNDLE_SLUGS = [...new Set(
+  ROUTES
+    .filter((route) => !route.robots?.startsWith('noindex'))
+    .map((route) => route.slug)
+    .filter((slug) => fs.existsSync(path.join(dist, `${slug}.md`))),
+)]
 const bundleHeader = `# Daniil Okhlopkov — Full Content Bundle
 
 > Combined Markdown of all pages on okhlopkov.com. For AI crawlers that prefer one-shot fetch.
@@ -1353,6 +1392,10 @@ if (fs.existsSync(llmsPath)) {
 
 fs.writeFileSync(path.join(dist, 'robots.txt'), `User-agent: *
 Allow: /
+
+# Content usage policy for crawlers that honor Content-Signal.
+Content-Signal: ai-input=yes
+Content-Signal: ai-train=no
 
 Sitemap: ${SITE_URL}/sitemap.xml
 `)
@@ -1415,7 +1458,7 @@ for (const [slug] of TOPIC_PAGES) {
   addSitemapUrl(`/topics/${slug}/`)
 }
 for (const article of IMPORTED_ARTICLES) {
-  if (article.path) addSitemapUrl(article.path)
+  if (article.path) addSitemapUrl(article.path, article.updatedAt || STATIC_UPDATED_DATE)
 }
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

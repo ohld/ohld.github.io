@@ -1,0 +1,62 @@
+[
+  {
+    "from": "/cn-claude-code-creator-tips-git-worktrees/",
+    "to": "/en-claude-code-creator-tips-git-worktrees/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved English Claude Code creator tips article."
+  },
+  {
+    "from": "/cn-ai-agent-forum-telegram-chat/",
+    "to": "/en-ai-agent-forum-telegram-chat/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved English AI Agent Forum article."
+  },
+  {
+    "from": "/cn-write-claude-code-skills-7-mistakes/",
+    "to": "/en-write-claude-code-skills-7-mistakes/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved English Claude Code skills article."
+  },
+  {
+    "from": "/cn-5-prompts-improved-ai-agent-workflow-claude-code/",
+    "to": "/en-5-prompts-improved-ai-agent-workflow-claude-code/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved English AI agent prompts article."
+  },
+  {
+    "from": "/cn-predictions-local-llm-apple-chips-lan-parties/",
+    "to": "/predskazaniya-lokalnye-llm-apple-lan-party/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved Russian local LLM predictions article."
+  },
+  {
+    "from": "/cn-legal-ai-setup-claude-codex-crontab/",
+    "to": "/legalnyj-ai-setup-claude-codex-crontab/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved Russian legal AI setup article."
+  },
+  {
+    "from": "/cn-vibe-analytics-claude-code-remotion-video/",
+    "to": "/articles/",
+    "note": "Old Chinese URL has no preserved article body; redirect to the maintained Articles collection."
+  },
+  {
+    "from": "/cn-find-saas-ideas-acquire-com-ai-validation/",
+    "to": "/en-find-saas-ideas-acquire-com-ai-validation/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved English SaaS idea validation article."
+  },
+  {
+    "from": "/cn-evolution-computer-work-code-specs-ai-agents/",
+    "to": "/claude-code-workflow-2026/",
+    "note": "Old Chinese URL has no preserved article body; redirect to the closest Claude Code workflow article."
+  },
+  {
+    "from": "/cn-automated-ton-data-analysis-ai-agent-habr/",
+    "to": "/en-automated-ton-data-analysis-ai-agent-habr/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved English TON data automation article."
+  },
+  {
+    "from": "/cn-botfather-mau-43-percent-growth-telegram-ai/",
+    "to": "/en-botfather-mau-43-percent-growth-telegram-ai/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved English BotFather MAU article."
+  },
+  {
+    "from": "/cn-ton-analyst-open-source-ai-skill-dune/",
+    "to": "/en-ton-analyst-open-source-ai-skill-dune/",
+    "note": "Old Chinese URL is not maintained; redirect to the preserved English ton-analyst skill article."
+  }
+]

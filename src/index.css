@@ -1002,6 +1002,20 @@ button:focus-visible,
   border-color: var(--border-light);
 }
 
+.article-seo-summary {
+  margin-bottom: 18px;
+}
+
+.article-faq {
+  margin-top: 34px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border-light);
+}
+
+.article-faq h3 {
+  margin-top: 18px;
+}
+
 .article-table-wrap {
   margin: 20px 0;
   overflow-x: auto;

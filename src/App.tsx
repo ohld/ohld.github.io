@@ -188,6 +188,7 @@ function App() {
           <Route path="/ai-course" element={<Navigate to="/articles" replace />} />
           <Route path="/private-channel" element={<ClosedChannel />} />
           <Route path="/closed" element={<Navigate to="/private-channel" replace />} />
+          <Route path="/author/okhlopkov" element={<Navigate to="/about/" replace />} />
           <Route path="/projects" element={<Navigate to="/about" replace />} />
           <Route path="/work-together" element={<Navigate to="/about" replace />} />
           <Route path="/about" element={<About />} />

@@ -32,7 +32,7 @@ const requiredPackageScripts = [
 ]
 
 const EXPECTED_IMPORTED_ARTICLES = 88
-const EXPECTED_REDIRECTS = 26
+const EXPECTED_REDIRECTS = 38
 const BASE_STATIC_PATHS = [
   '/',
   '/en/',

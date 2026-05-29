@@ -5,6 +5,7 @@ const baseUrl = (process.env.VERIFY_BASE_URL || 'http://127.0.0.1:4174').replace
 const siteUrl = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/, '')
 const importedArticlesPath = process.env.VERIFY_IMPORTED_ARTICLES || 'content/articles/imported-index.json'
 const importedArticleContentPath = process.env.VERIFY_IMPORTED_ARTICLE_CONTENT || 'content/articles/imported-content.json'
+const legacyRedirectsPath = process.env.VERIFY_LEGACY_REDIRECTS || 'content/articles/legacy-redirects.json'
 const migrationMapPath = process.env.VERIFY_MIGRATION_MAP || 'migration/url-map.csv'
 const backlinkCriticalPath = process.env.VERIFY_BACKLINK_CRITICAL || 'migration/backlink-critical-urls.csv'
 const blogPostsPath = process.env.VERIFY_BLOG_POSTS || 'content/blog-posts'
@@ -226,6 +227,12 @@ const redirects = [
   ['/my-tg-bots/', '/about/'],
   ['/vibe-coding-guide-2026/', '/articles/'],
 ]
+for (const redirect of loadLegacyRedirects()) {
+  redirects.push([
+    redirect.from.endsWith('/') ? redirect.from : `${redirect.from}/`,
+    redirect.to.endsWith('/') ? redirect.to : `${redirect.to}/`,
+  ])
+}
 
 const noindexPages = [
   '/private-channel/',
@@ -291,6 +298,11 @@ function loadImportedArticles() {
 function loadImportedArticleContent() {
   if (!fs.existsSync(importedArticleContentPath)) return []
   return JSON.parse(fs.readFileSync(importedArticleContentPath, 'utf8'))
+}
+
+function loadLegacyRedirects() {
+  if (!fs.existsSync(legacyRedirectsPath)) return []
+  return JSON.parse(fs.readFileSync(legacyRedirectsPath, 'utf8'))
 }
 
 function loadBacklinkCriticalRows() {
@@ -846,6 +858,7 @@ async function verifySitemap(migrationRows) {
     [
       ...generatedBlogPosts.map((post) => [canonicalUrl(`/blog/${post.slug}/`), post.updatedAt || post.publishedAt || expectedSitemapLastmod]),
       ...generatedSeoArticles.map((article) => [canonicalUrl(generatedArticlePath(article)), article.updatedAt || article.publishedAt || expectedSitemapLastmod]),
+      ...loadImportedArticles().map((article) => [canonicalUrl(article.path), article.updatedAt || article.publishedAt || expectedSitemapLastmod]),
     ]
   )
   const expectedLocs = new Set(

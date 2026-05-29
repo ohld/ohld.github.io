@@ -5,11 +5,14 @@ import {
   getImportedArticleByPath,
   importedArticleAlternates,
 } from '../importedArticles'
+import { getLegacyRedirect } from '../legacyRedirects'
 
 export function ImportedArticle() {
   const location = useLocation()
   const article = getImportedArticleByPath(location.pathname)
+  const legacyRedirect = getLegacyRedirect(location.pathname)
 
+  if (legacyRedirect) return <Navigate to={legacyRedirect} replace />
   if (!article) return <Navigate to="/" replace />
 
   const bodyHtml = getImportedArticleBody(article.path)

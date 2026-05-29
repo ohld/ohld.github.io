@@ -4,6 +4,7 @@ import path from 'node:path'
 
 const SITE_URL = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/, '')
 const importedArticlesPath = path.join('content', 'articles', 'imported-index.json')
+const legacyRedirectsPath = path.join('content', 'articles', 'legacy-redirects.json')
 const blogPostsPath = path.join('content', 'blog-posts')
 const seoArticlesPath = path.join('content', 'seo-articles')
 const outPath = path.join('migration', 'url-map.csv')
@@ -192,6 +193,19 @@ const redirects = [
     note: 'SEO-generated comparison moved from Blog to Articles to keep Blog reserved for Dan-authored channel posts.',
   },
 ]
+
+if (fs.existsSync(legacyRedirectsPath)) {
+  const legacyRedirects = JSON.parse(fs.readFileSync(legacyRedirectsPath, 'utf8'))
+  for (const redirect of legacyRedirects) {
+    redirects.push({
+      old_path: redirect.from.endsWith('/') ? redirect.from : `${redirect.from}/`,
+      new_path: redirect.to.endsWith('/') ? redirect.to : `${redirect.to}/`,
+      action: '308_redirect',
+      source: 'legacy_cn_url',
+      note: redirect.note || 'Old URL redirects to the closest maintained canonical article.',
+    })
+  }
+}
 
 const newStaticPages = [
   ['/', 'new_static_page', 'ru', 'Canonical Russian homepage'],
