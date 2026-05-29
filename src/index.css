@@ -833,18 +833,16 @@ button:focus-visible,
 
 .article-hero-image {
   margin: 0;
-  border: 1px solid var(--border);
   border-radius: 4px;
   overflow: hidden;
-  background: var(--white-overlay);
+  background: transparent;
 }
 
 .article-hero-image img {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: contain;
+  border-radius: inherit;
 }
 
 .article-body {
