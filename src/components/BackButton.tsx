@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeftIcon } from './Icons'
+import { ChevronLeftIcon } from './Icons'
 
 interface BackButtonProps {
   to?: string
@@ -49,7 +49,7 @@ export function BackButton({ to = '/', label }: BackButtonProps = {}) {
 
   return (
     <button className="back-nav" onClick={goBack}>
-      <ArrowLeftIcon size={18} />
+      <ChevronLeftIcon size={18} />
       <span>{visibleLabel}</span>
     </button>
   )

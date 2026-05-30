@@ -35,9 +35,7 @@ export function PostCard({ title, date, views, fwd, link, tags, subtitle }: Post
     <div className="post-item" onClick={() => openUrl(link, 'post', title)} role="link">
       <div className="post-item-meta">
         <span>{date}</span>
-        <span className="post-item-dot" />
         <span>👁 {formatNumber(views)}</span>
-        <span className="post-item-dot" />
         <span>↗ {fwd}</span>
         {displayTags.slice(0, 2).map((t) => (
           <span key={t}>#{t}</span>

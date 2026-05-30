@@ -30,6 +30,14 @@ export function ArrowLeftIcon({ size = 20, style }: IconProps) {
   )
 }
 
+export function ChevronLeftIcon({ size = 20, style }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" style={style}>
+      <path d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z" />
+    </svg>
+  )
+}
+
 export function TelegramIcon({ size = 24 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">

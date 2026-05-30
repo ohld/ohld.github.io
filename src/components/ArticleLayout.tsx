@@ -94,7 +94,6 @@ export function ArticleLayout({
           <BackButton to={backTo} />
           <div className="blog-article-meta">
             <span>{date}</span>
-            <span className="content-card-dot" />
             <span>{readingTime}</span>
           </div>
           <h1 className="subpage-title">{title}</h1>

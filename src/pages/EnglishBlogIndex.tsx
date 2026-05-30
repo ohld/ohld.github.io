@@ -1,5 +1,5 @@
 import { BackButton } from '../components/BackButton'
-import { BlogCard } from '../components/BlogCard'
+import { ArticlePreviewCard } from '../components/ArticlePreviewCard'
 import { Footer } from '../components/Footer'
 import { englishBlogItems } from '../blog'
 import { absoluteUrl } from '../site'
@@ -28,9 +28,9 @@ export function EnglishBlogIndex() {
         </p>
       </div>
 
-      <main className="blog-list" aria-label="English blog articles">
+      <main className="blog-list blog-preview-grid" aria-label="English blog articles">
         {englishBlogItems.map((article) => (
-          <BlogCard article={article} ctaLabel="Read" tagsLabel="Tags" key={article.path} />
+          <ArticlePreviewCard article={article} tagsLabel="Tags" key={article.path} />
         ))}
       </main>
 
