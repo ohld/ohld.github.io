@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronLeftIcon } from './Icons'
+import { trackBackNavigation } from '../analytics'
 
 interface BackButtonProps {
   to?: string
@@ -22,7 +23,11 @@ export function BackButton({ to = '/', label }: BackButtonProps = {}) {
       hasSameOriginReferrer = false
     }
 
-    if ((typeof historyState?.idx === 'number' && historyState.idx > 0) || hasSameOriginReferrer) {
+    const shouldUseHistory = (typeof historyState?.idx === 'number' && historyState.idx > 0) || hasSameOriginReferrer
+    const mode = window.__IS_TMA__ ? 'telegram' : shouldUseHistory ? 'history' : 'fallback'
+    trackBackNavigation(to, mode)
+
+    if (shouldUseHistory) {
       navigate(-1)
       return
     }

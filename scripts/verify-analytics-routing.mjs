@@ -124,6 +124,9 @@ async function installAnalyticsMocks(context) {
   await context.route(/https:\/\/(?:www|region1)\.google-analytics\.com\/g\/collect.*/, async (route) => {
     await route.fulfill({ status: 204, body: '' })
   })
+  await context.route(/https:\/\/t\.me\/.*/, async (route) => {
+    await route.fulfill({ status: 204, contentType: 'text/plain; charset=utf-8', body: '' })
+  })
 
   await context.addInitScript(() => {
     const gaCalls = []
@@ -188,6 +191,18 @@ function ymInitCalls(calls) {
     .map((call) => call[2] || {})
 }
 
+function gaEventPayloads(calls, eventName) {
+  return calls.ga
+    .filter((call) => call[0] === 'event' && call[1] === eventName)
+    .map((call) => call[2] || {})
+}
+
+function ymGoalPayloads(calls, eventName) {
+  return calls.ym
+    .filter((call) => call[1] === 'reachGoal' && call[2] === eventName)
+    .map((call) => call[3] || {})
+}
+
 async function waitForPageView(page, pagePath, count = 1) {
   await page.waitForFunction(
     ({ expectedPath, expectedCount }) => {
@@ -219,6 +234,20 @@ async function waitForMetrikaHit(page, pagePath, count = 1) {
       }).length >= expectedCount
     },
     { expectedPath: pagePath, expectedCount: count },
+    { timeout: 5000 },
+  )
+}
+
+async function waitForAnalyticsEvent(page, eventName, count = 1) {
+  await page.waitForFunction(
+    ({ expectedEvent, expectedCount }) => {
+      const gaCalls = window.__GA_TEST_CALLS__ || []
+      const ymCalls = window.__YM_TEST_CALLS__ || []
+      const gaCount = gaCalls.filter((call) => call[0] === 'event' && call[1] === expectedEvent).length
+      const ymCount = ymCalls.filter((call) => call[1] === 'reachGoal' && call[2] === expectedEvent).length
+      return gaCount >= expectedCount && ymCount >= expectedCount
+    },
+    { expectedEvent: eventName, expectedCount: count },
     { timeout: 5000 },
   )
 }
@@ -261,6 +290,69 @@ function assertSafeLocation(view, expectedPath) {
   assert(view.page_location?.startsWith(`${siteUrl}${expectedPath}`), `${expectedPath}: bad page_location ${view.page_location}`)
   assert(!view.page_location.includes('tgWebApp'), `${expectedPath}: page_location leaked Telegram launch params`)
   assert(!view.page_location.includes('#'), `${expectedPath}: page_location should not include hash`)
+}
+
+function assertSharedEventPayload(payload, eventName, expected) {
+  for (const [key, value] of Object.entries(expected)) {
+    assert(payload[key] === value, `${eventName}: expected ${key}=${value}, got ${payload[key]}`)
+  }
+}
+
+async function assertHeaderCtaTracking(page) {
+  const href = await page.locator('.site-header-cta').first().getAttribute('href')
+  assert(href === 'https://t.me/danokhlopkov?direct', `header CTA href mismatch: ${href}`)
+
+  const popup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
+  await page.locator('.site-header-cta').first().click({ noWaitAfter: true })
+  const openedPopup = await popup
+  if (openedPopup) await openedPopup.close()
+  await waitForAnalyticsEvent(page, 'lead_contact_click')
+
+  const calls = await getAnalyticsCalls(page)
+  const expected = {
+    event_category: 'about_header',
+    event_label: 'telegram_direct',
+    click_text: 'telegram_direct',
+    cta_id: 'telegram_direct',
+    link_url: 'https://t.me/danokhlopkov?direct',
+    link_domain: 't.me',
+  }
+  const gaPayload = gaEventPayloads(calls, 'lead_contact_click').at(-1)
+  const ymPayload = ymGoalPayloads(calls, 'lead_contact_click').at(-1)
+  assert(gaPayload, 'header CTA: missing GA4 lead_contact_click')
+  assert(ymPayload, 'header CTA: missing Metrika lead_contact_click goal')
+  assertSharedEventPayload(gaPayload, 'GA4 lead_contact_click', expected)
+  assertSharedEventPayload(ymPayload, 'Metrika lead_contact_click', expected)
+}
+
+async function assertBackButtonTracking(context, baseUrl) {
+  const page = await context.newPage({ viewport: { width: 390, height: 844 } })
+  try {
+    await page.goto(`${baseUrl}/articles/hermes-agent-vs-openclaw/`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 15000,
+    })
+    await page.locator('.back-nav').first().click()
+    await waitForAnalyticsEvent(page, 'navigation_back_click')
+    await page.waitForFunction(() => window.location.pathname === '/articles/', null, { timeout: 5000 })
+
+    const calls = await getAnalyticsCalls(page)
+    const expected = {
+      event_category: 'navigation',
+      event_label: 'back',
+      click_text: 'back',
+      destination: '/articles/',
+      navigation_mode: 'fallback',
+    }
+    const gaPayload = gaEventPayloads(calls, 'navigation_back_click').at(-1)
+    const ymPayload = ymGoalPayloads(calls, 'navigation_back_click').at(-1)
+    assert(gaPayload, 'back button: missing GA4 navigation_back_click')
+    assert(ymPayload, 'back button: missing Metrika navigation_back_click goal')
+    assertSharedEventPayload(gaPayload, 'GA4 navigation_back_click', expected)
+    assertSharedEventPayload(ymPayload, 'Metrika navigation_back_click', expected)
+  } finally {
+    await page.close()
+  }
 }
 
 async function run(baseUrl) {
@@ -308,8 +400,11 @@ async function run(baseUrl) {
     assert(hit.options.title && hit.options.title.trim(), `Metrika hit missing title for ${hit.url}`)
   }
 
+  await assertHeaderCtaTracking(page)
+  await assertBackButtonTracking(context, baseUrl)
+
   await browser.close()
-  console.log(`✓ analytics routing (${expectedPaths.join(', ')})`)
+  console.log(`✓ analytics routing and click goals (${expectedPaths.join(', ')})`)
 }
 
 async function main() {

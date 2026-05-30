@@ -538,12 +538,13 @@ async function verifyAnalyticsEventBundle() {
     'telegram_subscribe_click',
     'social_follow_click',
     'lead_contact_click',
+    'navigation_back_click',
     'code_copy',
   ]) {
     assert(bundle.includes(eventName), `analytics bundle: missing ${eventName}`)
   }
 
-  for (const paramName of ['content_group', 'article_slug', 'article_topic', 'link_domain', 'scroll_threshold']) {
+  for (const paramName of ['content_group', 'article_slug', 'article_topic', 'link_domain', 'scroll_threshold', 'navigation_mode']) {
     assert(bundle.includes(paramName), `analytics bundle: missing ${paramName}`)
   }
 

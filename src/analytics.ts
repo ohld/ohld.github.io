@@ -22,6 +22,7 @@ const METRIKA_GOAL_EVENTS = new Set([
   'article_cta_click',
   'source_link_click',
   'code_copy',
+  'navigation_back_click',
 ])
 
 type EventParamValue = string | number | undefined
@@ -262,6 +263,17 @@ export function trackNav(destination: string) {
     event_category: 'navigation',
     event_label: destination,
     destination: normalizePath(destination),
+  })
+}
+
+/** Track explicit back navigation controls. */
+export function trackBackNavigation(destination: string, mode: 'history' | 'fallback' | 'telegram') {
+  send('navigation_back_click', {
+    event_category: 'navigation',
+    event_label: 'back',
+    click_text: 'back',
+    destination: normalizePath(destination),
+    navigation_mode: mode,
   })
 }
 
