@@ -259,9 +259,9 @@ const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
 Start with [my Claude Code setup](/claude-code-setup-mcp-hooks-skills-2026/):
 MCP servers, hooks, skills, subagents and project rules that survived months of
 daily work. If the agent starts losing context, read the
-[Claude Code compaction notes](/claude-code-compaction-kak-rabotaet/). If you
+[Claude Code compaction notes](/claude-code-compaction-explained/). If you
 need to choose between Codex and Claude Code, use the
-[Codex migration write-up](/blog/claude-code-vs-codex-perehod/).
+[dual-review write-up](/en-claude-codex-dual-review/).
 
 The working split is simple: \`AGENTS.md\` or \`CLAUDE.md\` stores project
 invariants, skills store repeatable procedures, MCP connects live data and
@@ -271,11 +271,11 @@ the main editing context.
 ## Practical entry points
 
 - [Web scraping AI agents](/web-scraping-ai-agents-2026/) — when a browser agent beats an old parser.
-- [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — how to store raw notes, decisions and project memory.
-- [Claude Code skills and MCP](/luchshie-skills-mcp-claude-code-agent-browser/) — what to install, and what not to over-engineer.
-- [AI tools for designers](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering without generic UI-slop.
-- [Hermes Agent vs OpenClaw](/articles/hermes-agent-vs-openclaw/) — Russian comparison of self-hosted AI agents for Telegram and VPS workflows.
-- [GStack, goal and office hours](/blog/gstack-goal-office-hours-ai-workflow/) — how to keep a long agent task moving until it ships.
+- [Second brain + Obsidian](/en-second-brain-obsidian-claude-code-assistant/) — how to store raw notes, decisions and project memory.
+- [Claude Code skills and MCP](/en-best-skills-mcp-claude-code-agent-browser/) — what to install, and what not to over-engineer.
+- [AI agents in practice](/en-ai-agents-practice-claude-code-voice-commands/) — voice commands, Telegram workflows and Claude Code.
+- [Always-on AI agent](/always-on-ai-agent-server-setup/) — running Claude Code on a VPS for real workflows.
+- [Claude Code workflow](/claude-code-workflow-2026/) — how to keep a long agent task moving until it ships.
 
 ## Agent terms without marketing
 

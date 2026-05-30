@@ -4,7 +4,6 @@ import { trackNav } from '../analytics'
 import { absoluteUrl } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 import { englishArticleItems, englishBlogItems } from '../blog'
-import { topicPath } from '../topics'
 
 const navItems = [
   { path: '/en/blog', title: 'Blog', subtitle: 'Notes and working ideas', items: englishBlogItems.slice(0, 3) },
@@ -33,7 +32,7 @@ export function EnglishHome() {
         <p className="page-header-bio">
           I am a developer and data practitioner from TON Foundation, working
           across analytics, products and the Telegram ecosystem. My current
-          focus is <a href={topicPath('ai-agents')}>AI agents</a>: Codex,
+          focus is <a href="/en/articles/">AI agents</a>: Codex,
           Claude Code, MCP and workflow automation that helps teams research,
           build and ship faster. This site collects practical notes on AI,
           TON data and engineering patterns without marketing gloss.
@@ -75,9 +74,9 @@ export function EnglishHome() {
           Start with <a href="/claude-code-setup-mcp-hooks-skills-2026/">my Claude Code setup</a>:
           MCP servers, hooks, skills, subagents and project rules that survived
           months of daily work. If the agent starts losing context, read the
-          <a href="/claude-code-compaction-kak-rabotaet/">Claude Code compaction notes</a>.
+          <a href="/claude-code-compaction-explained/">Claude Code compaction notes</a>.
           If you need to choose between Codex and Claude Code, use the
-          <a href="/blog/claude-code-vs-codex-perehod/">Codex migration write-up</a>.
+          <a href="/en-claude-codex-dual-review/">dual-review write-up</a>.
         </p>
         <p>
           The working split is simple: <code>AGENTS.md</code> or <code>CLAUDE.md</code>
@@ -91,11 +90,11 @@ export function EnglishHome() {
         <h2 id="home-practical">Practical entry points</h2>
         <ul className="home-detail-list">
           <li><a href="/web-scraping-ai-agents-2026/">Web scraping AI agents</a> — when a browser agent beats an old parser.</li>
-          <li><a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">Second brain + Obsidian</a> — how to store raw notes, decisions and project memory.</li>
-          <li><a href="/luchshie-skills-mcp-claude-code-agent-browser/">Claude Code skills and MCP</a> — what to install, and what not to over-engineer.</li>
-          <li><a href="/articles/ai-tools-for-designers-design-engineering-agents/">AI tools for designers</a> — design engineering without generic UI-slop.</li>
-          <li><a href="/articles/hermes-agent-vs-openclaw/">Hermes Agent vs OpenClaw</a> — Russian comparison of self-hosted AI agents for Telegram and VPS workflows.</li>
-          <li><a href="/blog/gstack-goal-office-hours-ai-workflow/">GStack, goal and office hours</a> — how to keep a long agent task moving until it ships.</li>
+          <li><a href="/en-second-brain-obsidian-claude-code-assistant/">Second brain + Obsidian</a> — how to store raw notes, decisions and project memory.</li>
+          <li><a href="/en-best-skills-mcp-claude-code-agent-browser/">Claude Code skills and MCP</a> — what to install, and what not to over-engineer.</li>
+          <li><a href="/en-ai-agents-practice-claude-code-voice-commands/">AI agents in practice</a> — voice commands, Telegram workflows and Claude Code.</li>
+          <li><a href="/always-on-ai-agent-server-setup/">Always-on AI agent</a> — running Claude Code on a VPS for real workflows.</li>
+          <li><a href="/claude-code-workflow-2026/">Claude Code workflow</a> — how to keep a long agent task moving until it ships.</li>
         </ul>
       </section>
 

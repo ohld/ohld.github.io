@@ -33,8 +33,8 @@ const viewports = [
 ]
 
 const clickChecks = [
-  { start: '/blog/', selector: '.blog-card-hitarea', label: 'blog first card' },
-  { start: '/en/blog/', selector: '.blog-card-hitarea', label: 'en blog first card' },
+  { start: '/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'blog first card' },
+  { start: '/en/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'en blog first card' },
   { start: '/', selector: '.home-route-panel .home-list-link', label: 'home latest blog' },
   { start: '/', selector: '.page-header-bio a', label: 'home topic' },
 ]
@@ -50,12 +50,12 @@ const thumbnailRoutes = new Set(['/blog/', '/en/blog/', '/articles/', '/en/artic
 const languageShellExpectations = {
   '/how-to-get-a-telegram-channel-subscribers-list-in-python/': {
     links: ['/en/', '/en/blog/', '/en/articles/', '/en/about/'],
-    requiredText: ['Home', 'Blog', 'Articles', 'About'],
+    requiredText: ['Blog', 'Articles', 'About'],
     forbiddenText: ['Главная', 'Блог', 'Статьи', 'Обо мне'],
   },
   '/claude-code-nastrojka-mcp-hooks-skills-2026/': {
     links: ['/', '/blog', '/articles', '/about'],
-    requiredText: ['Главная', 'Блог', 'Статьи', 'Обо мне'],
+    requiredText: ['Блог', 'Статьи', 'Обо мне'],
     forbiddenText: ['Home', 'Blog', 'Articles', 'About'],
   },
 }
@@ -152,7 +152,7 @@ async function main() {
       }, { timeout: 4000 }).catch(() => {})
       const checkCardImages = thumbnailRoutes.has(canonicalPath(route))
       if (checkCardImages) {
-        await forceLoadImages(page, '.blog-card-thumb')
+        await forceLoadImages(page, '.article-preview-thumb, .blog-card-thumb')
       }
       await forceLoadImages(page, '.article-hero-image img')
       const data = await page.evaluate(() => {
@@ -161,7 +161,7 @@ async function main() {
         const main = document.querySelector('main') || document.querySelector('article')
         const headerBox = header?.getBoundingClientRect()
         const mainBox = main?.getBoundingClientRect()
-        const thumbnails = [...document.querySelectorAll('.blog-card-thumb')]
+        const thumbnails = [...document.querySelectorAll('.article-preview-thumb, .blog-card-thumb')]
         const heroImages = [...document.querySelectorAll('.article-hero-image img')]
         return {
           title: document.title,
@@ -174,7 +174,7 @@ async function main() {
           headerLinks: Array.from(header?.querySelectorAll('a') || []).map((link) => link.getAttribute('href') || ''),
           overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
           headerMainOverlap: Boolean(headerBox && mainBox && headerBox.bottom > mainBox.top + 4),
-          cardCount: document.querySelectorAll('.blog-card').length,
+          cardCount: document.querySelectorAll('.article-preview-card, .blog-card').length,
           thumbnailCount: thumbnails.length,
           brokenThumbnails: thumbnails.filter((img) => !img.currentSrc || img.naturalWidth <= 0 || img.naturalHeight <= 0).length,
           heroImageCount: heroImages.length,

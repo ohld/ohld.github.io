@@ -41,7 +41,7 @@ export function SiteHeader() {
             EN
           </Link>
         </nav>
-        <a className="site-header-cta" href="https://t.me/okhlopkov" target="_blank" rel="noopener noreferrer">
+        <a className="site-header-cta" href="https://t.me/danokhlopkov" target="_blank" rel="noopener noreferrer">
           {isEnglish ? 'Message me' : 'Написать'}
         </a>
       </div>
