@@ -12,9 +12,9 @@ export function EnglishBlogIndex() {
     canonical: absoluteUrl('/en/blog/'),
     lang: 'en',
     alternates: {
-      ru: absoluteUrl('/blog/'),
+      ru: absoluteUrl('/ru/blog/'),
       en: absoluteUrl('/en/blog/'),
-      'x-default': absoluteUrl('/blog/'),
+      'x-default': absoluteUrl('/ru/blog/'),
     },
   })
 

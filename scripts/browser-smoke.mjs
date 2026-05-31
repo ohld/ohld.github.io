@@ -9,14 +9,14 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/en/blog/',
   '/en/articles/',
   '/en/about/',
-  '/blog/',
-  '/blog/ai-agents-s-chego-nachat/',
-  '/blog/claude-code-vs-codex-perehod/',
-  '/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/',
-  '/articles/',
-  '/articles/hermes-agent-vs-openclaw/',
-  '/articles/ai-reels-seo-pipeline-telegram-claude-code/',
-  '/articles/ai-tools-for-designers-design-engineering-agents/',
+  '/ru/blog/',
+  '/ru/blog/ai-agents-s-chego-nachat/',
+  '/ru/blog/claude-code-vs-codex-perehod/',
+  '/ru/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/',
+  '/ru/articles/',
+  '/ru/articles/hermes-agent-vs-openclaw/',
+  '/ru/articles/ai-reels-seo-pipeline-telegram-claude-code/',
+  '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
   '/how-to-get-a-telegram-channel-subscribers-list-in-python/',
   '/claude-code-nastrojka-mcp-hooks-skills-2026/',
@@ -33,7 +33,7 @@ const viewports = [
 ]
 
 const clickChecks = [
-  { start: '/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'blog first card' },
+  { start: '/ru/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'blog first card' },
   { start: '/en/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'en blog first card' },
   { start: '/', selector: '.home-route-panel .home-list-link', label: 'home latest blog' },
   { start: '/', selector: '.page-header-bio a', label: 'home topic' },
@@ -41,11 +41,11 @@ const clickChecks = [
 
 const codeBlockChecks = [
   { route: '/claude-code-setup-mcp-hooks-skills-2026/', min: 1, label: 'imported article code blocks' },
-  { route: '/articles/ai-tools-for-designers-design-engineering-agents/', min: 1, label: 'article prompt code block' },
-  { route: '/blog/improve-codebase-architecture-prompt/', min: 1, label: 'generated blog code block' },
+  { route: '/ru/articles/ai-tools-for-designers-design-engineering-agents/', min: 1, label: 'article prompt code block' },
+  { route: '/ru/blog/improve-codebase-architecture-prompt/', min: 1, label: 'generated blog code block' },
 ]
 
-const thumbnailRoutes = new Set(['/blog/', '/en/blog/', '/articles/', '/en/articles/'])
+const thumbnailRoutes = new Set(['/ru/blog/', '/en/blog/', '/ru/articles/', '/en/articles/'])
 
 const languageShellExpectations = {
   '/how-to-get-a-telegram-channel-subscribers-list-in-python/': {
@@ -54,7 +54,7 @@ const languageShellExpectations = {
     forbiddenText: ['Главная', 'Блог', 'Статьи', 'Обо мне'],
   },
   '/claude-code-nastrojka-mcp-hooks-skills-2026/': {
-    links: ['/', '/blog', '/articles', '/about'],
+    links: ['/ru/', '/ru/blog/', '/ru/articles/', '/about'],
     requiredText: ['Блог', 'Статьи', 'Обо мне'],
     forbiddenText: ['Home', 'Blog', 'Articles', 'About'],
   },

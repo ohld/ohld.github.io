@@ -78,7 +78,7 @@ export function Home() {
           пережили несколько месяцев ежедневной работы. Если агент начинает
           забывать контекст, откройте разбор <a href="/claude-code-compaction-kak-rabotaet/">Claude Code compaction</a>.
           Если нужно понять, когда брать Codex, а когда Claude Code, смотрите
-          <a href="/blog/claude-code-vs-codex-perehod/">переход на Codex</a>.
+          <a href="/ru/blog/claude-code-vs-codex-perehod/">переход на Codex</a>.
         </p>
         <p>
           Рабочая схема простая: <code>AGENTS.md</code> или <code>CLAUDE.md</code> держит
@@ -96,9 +96,9 @@ export function Home() {
           <li><a href="/web-scraping-ai-agents-2026/">Web scraping AI agents</a> — когда браузерный агент лучше старого парсера.</li>
           <li><a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">Second brain + Obsidian</a> — как хранить сырьё, решения и память проекта.</li>
           <li><a href="/luchshie-skills-mcp-claude-code-agent-browser/">Skills и MCP для Claude Code</a> — что ставить, а что не усложнять.</li>
-          <li><a href="/articles/ai-tools-for-designers-design-engineering-agents/">AI-инструменты для дизайнеров</a> — design engineering без generic UI-slop.</li>
-          <li><a href="/articles/hermes-agent-vs-openclaw/">Hermes Agent vs OpenClaw</a> — какой self-hosted AI agent выбрать после демо.</li>
-          <li><a href="/blog/gstack-goal-office-hours-ai-workflow/">GStack, goal и office hours</a> — как вести длинную agent-задачу до результата.</li>
+          <li><a href="/ru/articles/ai-tools-for-designers-design-engineering-agents/">AI-инструменты для дизайнеров</a> — design engineering без generic UI-slop.</li>
+          <li><a href="/en/articles/hermes-agent-vs-openclaw/">Hermes Agent vs OpenClaw</a> — какой self-hosted AI agent выбрать после демо.</li>
+          <li><a href="/ru/blog/gstack-goal-office-hours-ai-workflow/">GStack, goal и office hours</a> — как вести длинную agent-задачу до результата.</li>
         </ul>
       </section>
 

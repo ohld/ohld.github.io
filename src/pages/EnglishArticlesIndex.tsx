@@ -12,9 +12,9 @@ export function EnglishArticlesIndex() {
     canonical: absoluteUrl('/en/articles/'),
     lang: 'en',
     alternates: {
-      ru: absoluteUrl('/articles/'),
+      ru: absoluteUrl('/ru/articles/'),
       en: absoluteUrl('/en/articles/'),
-      'x-default': absoluteUrl('/articles/'),
+      'x-default': absoluteUrl('/ru/articles/'),
     },
   })
 

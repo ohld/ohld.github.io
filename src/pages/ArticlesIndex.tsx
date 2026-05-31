@@ -9,12 +9,12 @@ export function ArticlesIndex() {
   useDocumentMeta({
     title: 'Статьи — Даниил Охлопков',
     description: 'Гайды и сравнения Даниила Охлопкова про AI-агентов, OpenClaw, Hermes Agent, Claude Code, Codex, MCP, design engineering и Telegram workflows.',
-    canonical: absoluteUrl('/articles/'),
+    canonical: absoluteUrl('/ru/articles/'),
     lang: 'ru',
     alternates: {
-      ru: absoluteUrl('/articles/'),
+      ru: absoluteUrl('/ru/articles/'),
       en: absoluteUrl('/en/articles/'),
-      'x-default': absoluteUrl('/articles/'),
+      'x-default': absoluteUrl('/ru/articles/'),
     },
   })
 

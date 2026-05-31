@@ -99,7 +99,7 @@ export const generatedArticlePosts = articleSources
   .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
 
 export const generatedBlogItems: BlogListItem[] = generatedBlogPosts.map((post) => ({
-  path: `/blog/${post.slug}/`,
+  path: generatedBlogPath(post.slug, post.lang),
   title: post.title,
   description: post.description,
   publishedAt: post.publishedAt,
@@ -111,7 +111,7 @@ export const generatedBlogItems: BlogListItem[] = generatedBlogPosts.map((post) 
 export const generatedEnglishBlogItems: BlogListItem[] = generatedBlogPosts
   .filter((post) => post.lang === 'en')
   .map((post) => ({
-    path: `/blog/${post.slug}/`,
+    path: generatedBlogPath(post.slug, post.lang),
     title: post.title,
     description: post.description,
     publishedAt: post.publishedAt,
@@ -123,7 +123,7 @@ export const generatedEnglishBlogItems: BlogListItem[] = generatedBlogPosts
 export const generatedRussianBlogItems: BlogListItem[] = generatedBlogPosts
   .filter((post) => post.lang !== 'en')
   .map((post) => ({
-    path: `/blog/${post.slug}/`,
+    path: generatedBlogPath(post.slug, post.lang),
     title: post.title,
     description: post.description,
     publishedAt: post.publishedAt,
@@ -134,6 +134,10 @@ export const generatedRussianBlogItems: BlogListItem[] = generatedBlogPosts
 
 export function getGeneratedBlogPost(slug: string | undefined) {
   return generatedBlogPosts.find((post) => post.slug === slug)
+}
+
+export function generatedBlogPath(slug: string, lang = 'ru') {
+  return lang === 'en' ? `/en/blog/${slug}/` : `/ru/blog/${slug}/`
 }
 
 export const generatedEnglishArticleItems: BlogListItem[] = generatedArticlePosts
@@ -165,5 +169,5 @@ export function getGeneratedArticlePost(slug: string | undefined) {
 }
 
 export function generatedArticlePath(slug: string, lang = 'ru') {
-  return lang === 'en' ? `/en/articles/${slug}/` : `/articles/${slug}/`
+  return lang === 'en' ? `/en/articles/${slug}/` : `/ru/articles/${slug}/`
 }

@@ -7,7 +7,7 @@ const TELEGRAM_DIRECT_URL = 'https://t.me/danokhlopkov?direct'
 export function SiteHeader() {
   const location = useLocation()
   const isEnglish = shellLangForPath(location.pathname) === 'en'
-  const homePath = isEnglish ? '/en/' : '/'
+  const homePath = isEnglish ? '/en/' : '/ru/'
 
   return (
     <header className="site-header">

@@ -8,11 +8,11 @@ const distDir = path.resolve(process.env.DIST_DIR || 'dist')
 const contentSets = [
   {
     dir: path.join('content', 'blog-posts'),
-    route: (meta) => `/blog/${meta.slug}/`,
+    route: (meta) => meta.lang === 'en' ? `/en/blog/${meta.slug}/` : `/ru/blog/${meta.slug}/`,
   },
   {
     dir: path.join('content', 'seo-articles'),
-    route: (meta) => meta.lang === 'en' ? `/en/articles/${meta.slug}/` : `/articles/${meta.slug}/`,
+    route: (meta) => meta.lang === 'en' ? `/en/articles/${meta.slug}/` : `/ru/articles/${meta.slug}/`,
   },
 ]
 

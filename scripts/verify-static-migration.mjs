@@ -86,7 +86,11 @@ const generatedBlogPosts = loadGeneratedBlogPosts()
 const generatedSeoArticles = loadGeneratedSeoArticles()
 
 function generatedArticlePath(article) {
-  return article.lang === 'en' ? `/en/articles/${article.slug}/` : `/articles/${article.slug}/`
+  return article.lang === 'en' ? `/en/articles/${article.slug}/` : `/ru/articles/${article.slug}/`
+}
+
+function generatedBlogPath(post) {
+  return (post.lang || 'ru') === 'en' ? `/en/blog/${post.slug}/` : `/ru/blog/${post.slug}/`
 }
 
 const topicPages = [
@@ -136,21 +140,21 @@ const staticPages = [
     hreflangs: ['ru', 'en', 'x-default'],
   },
   {
-    path: '/blog/',
+    path: '/ru/blog/',
     title: 'Блог — Даниил Охлопков',
     lang: 'ru',
     ogLocale: 'ru_RU',
     hreflangs: ['ru', 'en', 'x-default'],
   },
   {
-    path: '/articles/',
+    path: '/ru/articles/',
     title: 'Статьи — Даниил Охлопков',
     lang: 'ru',
     ogLocale: 'ru_RU',
     hreflangs: ['ru', 'en', 'x-default'],
   },
   {
-    path: '/articles/ai-tools-for-designers-design-engineering-agents/',
+    path: '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
     title: 'AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code',
     lang: 'ru',
     ogLocale: 'ru_RU',
@@ -180,7 +184,7 @@ const staticPages = [
   ...generatedBlogPosts.map((post) => {
     const lang = post.lang || 'ru'
     return {
-      path: `/blog/${post.slug}/`,
+      path: generatedBlogPath(post),
       title: post.title,
       lang,
       ogLocale: lang === 'en' ? 'en_US' : 'ru_RU',
@@ -200,15 +204,17 @@ const staticPages = [
 ]
 
 const redirects = [
-  ['/ru/', '/'],
   ['/closed/', '/private-channel/'],
   ['/work-together/', '/about/'],
   ['/markdown-vs-html/', '/articles/markdown-vs-html/'],
-  ['/posts/', '/blog/'],
-  ['/ai-agents/', '/articles/'],
-  ['/ai-course/', '/articles/'],
-  ['/blog/ai-tools-for-designers-design-engineering-agents/', '/articles/ai-tools-for-designers-design-engineering-agents/'],
-  ['/blog/hermes-agent-vs-openclaw/', '/articles/hermes-agent-vs-openclaw/'],
+  ['/posts/', '/ru/blog/'],
+  ['/ai-agents/', '/ru/articles/'],
+  ['/ai-course/', '/ru/articles/'],
+  ['/blog/', '/ru/blog/'],
+  ['/articles/', '/ru/articles/'],
+  ['/blog/ai-tools-for-designers-design-engineering-agents/', '/ru/articles/ai-tools-for-designers-design-engineering-agents/'],
+  ['/articles/ai-tools-for-designers-design-engineering-agents/', '/ru/articles/ai-tools-for-designers-design-engineering-agents/'],
+  ['/blog/hermes-agent-vs-openclaw/', '/ru/articles/hermes-agent-vs-openclaw/'],
   ['/author/okhlopkov/', '/about/'],
   ['/projects/', '/about/'],
   ['/tag/second-brain/', '/vtoroj-mozg-ai-assistent-obsidian-claude-code/'],
@@ -240,7 +246,7 @@ const noindexPages = [
 
 const blogArticleChecks = [
   {
-    path: '/articles/ai-tools-for-designers-design-engineering-agents/',
+    path: '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
     cover: 'https://okhlopkov.com/assets/articles/ai-tools-for-designers-design-engineering-agents/design-engineering-cover.webp',
     thumbnail: 'https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg',
     youtubeUrl: 'https://www.youtube.com/watch?v=fIEMOzz0_AI',
@@ -255,7 +261,7 @@ const blogArticleChecks = [
 const generatedBlogChecks = generatedBlogPosts.map((post) => {
   const lang = post.lang || 'ru'
   return {
-    path: `/blog/${post.slug}/`,
+    path: generatedBlogPath(post),
     title: post.title,
     requiredText: lang === 'en'
       ? ['Short version:', 'Read next']
@@ -275,18 +281,19 @@ const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
 
 const migrationMapStaticPaths = [
   '/',
+  '/ru/',
+  '/ru/blog/',
+  '/ru/articles/',
   '/en/',
   '/en/blog/',
   '/en/articles/',
   '/en/about/',
   '/about/',
-  '/blog/',
-  '/articles/',
-  '/articles/ai-tools-for-designers-design-engineering-agents/',
+  '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
   ...topicPages.map(([path]) => path),
   '/privacy/',
-  ...generatedBlogPosts.map((post) => `/blog/${post.slug}/`),
+  ...generatedBlogPosts.map((post) => generatedBlogPath(post)),
   ...generatedSeoArticles.map((article) => generatedArticlePath(article)),
 ]
 
@@ -653,8 +660,8 @@ function verifyImportedArticleShell(html, path, lang) {
     return
   }
 
-  assert(html.includes('<a href="/blog/">Блог</a>'), `${path}: imported RU page should link to Russian blog`)
-  assert(html.includes('<a href="/articles/">Статьи</a>'), `${path}: imported RU page should link to Russian articles`)
+  assert(html.includes('<a href="/ru/blog/">Блог</a>'), `${path}: imported RU page should link to Russian blog`)
+  assert(html.includes('<a href="/ru/articles/">Статьи</a>'), `${path}: imported RU page should link to Russian articles`)
   assert(!html.includes('<a href="/en/blog/">Blog</a>'), `${path}: imported RU page leaked English blog nav`)
 }
 
@@ -710,7 +717,7 @@ async function verifyBlogArticle({ path, cover, thumbnail, youtubeUrl, requiredT
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
-  assert(html.includes('"@type": "BlogPosting"'), `${path}: missing BlogPosting JSON-LD`)
+  assert(/"@type": "(?:BlogPosting|Article)"/.test(html), `${path}: missing article JSON-LD`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assert(html.includes('"@type": "VideoObject"'), `${path}: missing VideoObject JSON-LD`)
   assert(html.includes('"dateModified": "2026-05-28"'), `${path}: missing article dateModified`)
@@ -757,7 +764,7 @@ async function verifyGeneratedSeoArticle({ path, requiredText }) {
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
-  assert(html.includes('"@type": "BlogPosting"'), `${path}: missing article JSON-LD`)
+  assert(/"@type": "(?:BlogPosting|Article)"/.test(html), `${path}: missing article JSON-LD`)
   assert(/"articleSection": "(Articles|Статьи)"/.test(html), `${path}: articleSection should be Articles/Статьи`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assert(readMeta(html, 'canonical') === canonicalUrl(path), `${path}: canonical mismatch`)
@@ -857,7 +864,7 @@ async function verifySitemap(migrationRows) {
   const lastmodByLoc = new Map(sitemapRows.map((row) => [row.loc, row.lastmod]))
   const expectedLastmodByLoc = new Map(
     [
-      ...generatedBlogPosts.map((post) => [canonicalUrl(`/blog/${post.slug}/`), post.updatedAt || post.publishedAt || expectedSitemapLastmod]),
+      ...generatedBlogPosts.map((post) => [canonicalUrl(generatedBlogPath(post)), post.updatedAt || post.publishedAt || expectedSitemapLastmod]),
       ...generatedSeoArticles.map((article) => [canonicalUrl(generatedArticlePath(article)), article.updatedAt || article.publishedAt || expectedSitemapLastmod]),
       ...loadImportedArticles().map((article) => [canonicalUrl(article.path), article.updatedAt || article.publishedAt || expectedSitemapLastmod]),
     ]
@@ -903,7 +910,7 @@ async function verifyCrawlerFiles() {
   assert(bundleRes.status === 200, `/llms-full.txt: expected 200, got ${bundleRes.status}`)
   const bundle = await bundleRes.text()
   assert(bundle.includes('## Source: /about.md'), '/llms-full.txt: missing about bundle source')
-  assert(bundle.includes('## Source: /articles.md'), '/llms-full.txt: missing articles bundle source')
+  assert(bundle.includes('## Source: /ru-articles.md'), '/llms-full.txt: missing articles bundle source')
   assert(bundle.includes('## Source: /blog-ai-agents-s-chego-nachat.md'), '/llms-full.txt: missing generated blog bundle source')
   assert(bundle.includes('## Source: /privacy.md'), '/llms-full.txt: missing privacy bundle source')
   verifyPublicCopyBoundaries(bundle, '/llms-full.txt', { html: false })

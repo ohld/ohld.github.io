@@ -219,7 +219,7 @@ const ARTICLE_HTML = `
 
 <h3>Дизайн и прототипы</h3>
 
-<p>HTML невероятно выразителен для дизайна — даже если финальный таргет не веб. Claude может набросать дизайн в HTML, а потом перевести его в React/Swift/whatever. И главное — можно прототипировать <em>интеракции</em> вместе со статикой. Про связку design engineering, Figma-to-code и агентов я отдельно писал в <a href="/articles/ai-tools-for-designers-design-engineering-agents/">разборе AI-инструментов для дизайнеров</a>.</p>
+<p>HTML невероятно выразителен для дизайна — даже если финальный таргет не веб. Claude может набросать дизайн в HTML, а потом перевести его в React/Swift/whatever. И главное — можно прототипировать <em>интеракции</em> вместе со статикой. Про связку design engineering, Figma-to-code и агентов я отдельно писал в <a href="/ru/articles/ai-tools-for-designers-design-engineering-agents/">разборе AI-инструментов для дизайнеров</a>.</p>
 
 <div class="mvh-prompt-box">
   <div class="mvh-prompt-label">Промпт-пример</div>
@@ -237,7 +237,7 @@ const ARTICLE_HTML = `
 
 <h3>Кастомные одноразовые редакторы</h3>
 
-<p>Самый мощный, на мой взгляд, юзкейс. Когда задачу тяжело описать словами в текстбоксе — Claude собирает <strong>throwaway-редактор</strong> под неё. Один HTML-файл, который ты выкинешь после использования. Это хорошо ложится на мой текущий цикл с <a href="/blog/gstack-goal-office-hours-ai-workflow/">GStack, goal и office hours</a>: агент делает механику, человек остаётся в loop'е через понятный артефакт.</p>
+<p>Самый мощный, на мой взгляд, юзкейс. Когда задачу тяжело описать словами в текстбоксе — Claude собирает <strong>throwaway-редактор</strong> под неё. Один HTML-файл, который ты выкинешь после использования. Это хорошо ложится на мой текущий цикл с <a href="/ru/blog/gstack-goal-office-hours-ai-workflow/">GStack, goal и office hours</a>: агент делает механику, человек остаётся в loop'е через понятный артефакт.</p>
 
 <p>Финальный аккорд всегда один: кнопка export — <code>Copy as JSON</code>, <code>Copy as Markdown</code>, <code>Copy as Prompt</code> — которая превращает результат твоих кликов обратно в текст для Claude.</p>
 

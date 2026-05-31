@@ -42,7 +42,7 @@ export function BlogArticle() {
         publishedAt={generatedArticle.publishedAt}
         updatedAt={generatedArticle.updatedAt}
         readingTime={generatedArticle.readingTime}
-        backTo={generatedArticle.lang === 'en' ? '/en/articles/' : '/articles/'}
+        backTo={generatedArticle.lang === 'en' ? '/en/articles/' : '/ru/articles/'}
         heroImage={generatedArticle.coverImage}
         heroAlt={generatedArticle.coverAlt}
         tags={generatedArticle.tags}
@@ -57,7 +57,7 @@ export function BlogArticle() {
     )
   }
 
-  if (!article) return <Navigate to="/articles/" replace />
+  if (!article) return <Navigate to="/ru/articles/" replace />
   const youtubeThumbnail = article.youtube?.thumbnail
 
   return (
@@ -69,7 +69,7 @@ export function BlogArticle() {
       publishedAt={article.publishedAt}
       updatedAt={article.updatedAt}
       readingTime={article.readingTime}
-      backTo="/articles/"
+      backTo="/ru/articles/"
       heroImage={article.coverImage}
       heroAlt={article.coverAlt}
       schemaImage={article.coverImage || youtubeThumbnail}
@@ -156,7 +156,7 @@ export function BlogArticle() {
                   <td>Можно скопировать паттерн без понимания контекста.</td>
                 </tr>
                 <tr>
-                  <td><Link to="/blog/claude-code-vs-codex-perehod/">Codex / Claude Code</Link></td>
+                  <td><Link to="/ru/blog/claude-code-vs-codex-perehod/">Codex / Claude Code</Link></td>
                   <td>Сборка route, ревью, перенос UI в код, работа с существующим проектом.</td>
                   <td>Без дизайн-системы быстро скатываются в generic UI.</td>
                 </tr>
@@ -197,8 +197,8 @@ export function BlogArticle() {
 
         <section className="related-links">
           <h2>Читать ещё</h2>
-          <Link to="/articles/">Все статьи</Link>
-          <Link to="/blog/">Блог</Link>
+          <Link to="/ru/articles/">Все статьи</Link>
+          <Link to="/ru/blog/">Блог</Link>
           <a href="/claude-code-nastrojka-mcp-hooks-skills-2026/">Мой сетап Claude Code 2026</a>
           <a href="/luchshie-skills-mcp-claude-code-agent-browser/">Лучшие skills и MCP для Claude Code</a>
         </section>

@@ -9,12 +9,12 @@ export function BlogIndex() {
   useDocumentMeta({
     title: 'Блог — Даниил Охлопков',
     description: 'Рабочие заметки Даниила Охлопкова про AI-агентов, Claude Code, Codex, MCP, GBrain, Telegram-автоматизацию и реальные agent workflows.',
-    canonical: absoluteUrl('/blog/'),
+    canonical: absoluteUrl('/ru/blog/'),
     lang: 'ru',
     alternates: {
-      ru: absoluteUrl('/blog/'),
+      ru: absoluteUrl('/ru/blog/'),
       en: absoluteUrl('/en/blog/'),
-      'x-default': absoluteUrl('/blog/'),
+      'x-default': absoluteUrl('/ru/blog/'),
     },
   })
 
