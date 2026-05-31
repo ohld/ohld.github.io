@@ -21,7 +21,9 @@ const IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
   '/assets/blog/business-on-ai-agent-claude-code-paperclip-gstack/business-agents-cover.webp': { width: 1280, height: 720 },
   '/assets/blog/claude-code-vs-codex-perehod/telegram-cover.webp': { width: 1280, height: 720 },
   '/assets/blog/gstack-goal-office-hours-ai-workflow/telegram-cover.webp': { width: 1280, height: 720 },
-  '/assets/blog/improve-codebase-architecture-prompt/architecture-prompt-cover.webp': { width: 1280, height: 720 },
+  '/assets/blog/improve-codebase-architecture-prompt/architecture-prompt-cover.webp': { width: 1376, height: 768 },
+  '/assets/blog/improve-codebase-architecture-prompt/ne-prosi-sdelay-luchshe.webp': { width: 1376, height: 768 },
+  '/assets/blog/improve-codebase-architecture-prompt/safe-first-pr.webp': { width: 1376, height: 768 },
   '/assets/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/phone-agent-meme.webp': { width: 1280, height: 720 },
   '/assets/blog/vibecoding-telegram-mini-app-claude-code/tma-llms-cover.webp': { width: 1280, height: 720 },
 }
