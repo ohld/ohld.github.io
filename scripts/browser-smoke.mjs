@@ -35,8 +35,9 @@ const viewports = [
 const clickChecks = [
   { start: '/ru/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'blog first card' },
   { start: '/en/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'en blog first card' },
-  { start: '/', selector: '.home-route-panel .home-list-link', label: 'home latest blog' },
-  { start: '/', selector: '.page-header-bio a', label: 'home topic' },
+  { start: '/', selector: '.home-latest-section .article-preview-hitarea', label: 'home latest card' },
+  { start: '/en/', selector: '.home-latest-section .article-preview-hitarea', label: 'en home latest card' },
+  { start: '/', selector: '.page-header-bio a', label: 'home about link' },
 ]
 
 const codeBlockChecks = [
@@ -45,7 +46,7 @@ const codeBlockChecks = [
   { route: '/ru/blog/improve-codebase-architecture-prompt/', min: 1, label: 'generated blog code block' },
 ]
 
-const thumbnailRoutes = new Set(['/ru/blog/', '/en/blog/', '/ru/articles/', '/en/articles/'])
+const thumbnailRoutes = new Set(['/', '/en/', '/ru/blog/', '/en/blog/', '/ru/articles/', '/en/articles/'])
 
 const languageShellExpectations = {
   '/how-to-get-a-telegram-channel-subscribers-list-in-python/': {

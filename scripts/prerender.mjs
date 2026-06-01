@@ -36,7 +36,6 @@ const LEGACY_REDIRECTS = readJsonFile(LEGACY_REDIRECTS_PATH, [])
 
 const NAV_LINKS_BY_SHELL_LANG = {
   ru: [
-    ['/ru/', 'Главная'],
     ['/ru/blog/', 'Блог'],
     ['/ru/articles/', 'Статьи'],
     ['/about/', 'Обо мне'],
@@ -44,7 +43,6 @@ const NAV_LINKS_BY_SHELL_LANG = {
     ['/privacy/', 'Privacy'],
   ],
   en: [
-    ['/en/', 'Home'],
     ['/en/blog/', 'Blog'],
     ['/en/articles/', 'Articles'],
     ['/en/about/', 'About'],
@@ -163,162 +161,116 @@ function importedArticleAlternates(pathname, lang) {
 
 const HOME_FALLBACK_MD = `# Даниил Охлопков
 
-> Практика [AI-агентов](/topics/ai-agents/): [Codex](/topics/codex/), [Claude Code](/topics/claude-code/), [MCP](/topics/mcp/), [GStack](/topics/gstack/), [OpenClaw](/topics/openclaw/), [Hermes Agent](/topics/hermes-agent/), [TON-данные](/topics/ton-data/) и [Telegram-автоматизация](/topics/telegram-automation/).
+> AI-native аналитика, on-chain данные, Telegram и агентские workflow. Здесь свежие тексты про инструменты, эксперименты и рабочие схемы. Бэкграунд, опыт и ссылки — на странице [обо мне](/about/).
 
-## Разделы
+## Блог
 
-- [Блог](/ru/blog/) — записи и рабочие заметки.
-  - [AI-трансформация в компании: общий контекст, skills и GBrain](/ru/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/)
-  - [GStack, /goal и office hours: рабочий цикл для AI-агента](/ru/blog/gstack-goal-office-hours-ai-workflow/)
-  - [Claude Code vs Codex: почему я на две недели перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
-- [Статьи](/ru/articles/) — гайды, сравнения, туториалы и материалы из собранных источников.
-  - [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/ru/articles/ai-tools-for-designers-design-engineering-agents/)
-  - [Markdown vs HTML для AI-агентов](/articles/markdown-vs-html/)
-- [Обо мне](/about/) — бэкграунд, опыт и ссылки.
+Свежие рабочие заметки: что пробую, что ломается, что оставляю в сетапе.
 
-## Если вы настраиваете AI-агентов
+![Мой AI-сетап 2026](/assets/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/phone-agent-meme.webp)
 
-Начните с [моего Claude Code setup](/claude-code-nastrojka-mcp-hooks-skills-2026/):
-там собраны MCP-серверы, hooks, skills, subagents и правила, которые пережили
-несколько месяцев ежедневной работы. Если агент начинает забывать контекст,
-откройте разбор [Claude Code compaction](/claude-code-compaction-kak-rabotaet/).
-Если нужно понять, когда брать Codex, а когда Claude Code, смотрите
-[переход на Codex](/ru/blog/claude-code-vs-codex-perehod/).
+- [Мой AI-сетап 2026: Claude Code, Cursor, Ghostty, Spokenly и база всех чатов](/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/)
+- [Telegram Mini App с Claude Code: llms.txt, крестики-нолики и деплой без чтения доков](/ru/blog/vibecoding-telegram-mini-app-claude-code/)
+- [AI-агенты ведут проект, пока я в отпуске: Claude Code, Paperclip и GStack без магии](/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/)
 
-Рабочая схема простая: \`AGENTS.md\` или \`CLAUDE.md\` держит постоянные правила
-проекта, skills хранят повторяемые процедуры, MCP подключает живые данные и
-внешние инструменты, hooks ловят опасные действия, subagents выносят ресёрч и
-ревью в отдельный контекст. Всё остальное обычно превращается в длинный промпт,
-который агент всё равно забудет.
+[Все записи](/ru/blog/)
 
-## Практические входы
+## Статьи
 
-- [Web scraping AI agents](/web-scraping-ai-agents-2026/) — когда браузерный агент лучше старого парсера.
-- [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — как хранить сырьё, решения и память проекта.
-- [Skills и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/) — что ставить, а что не усложнять.
-- [AI-инструменты для дизайнеров](/ru/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering без generic UI-slop.
-- [Hermes Agent vs OpenClaw](/ru/articles/hermes-agent-vs-openclaw/) — какой self-hosted AI agent выбрать после демо.
-- [GStack, goal и office hours](/ru/blog/gstack-goal-office-hours-ai-workflow/) — как вести длинную agent-задачу до результата.
+Более плотные разборы: источники, таблицы, сравнения, промпты и выводы.
 
-## Карта терминов без маркетинга
+![Hermes Agent vs OpenClaw](/assets/articles/hermes-agent-vs-openclaw/hermes-openclaw-cover.webp)
 
-- **Project rules** — инварианты репозитория: стиль, запреты, команды проверки, где лежат данные.
-- **Skills** — короткие воспроизводимые процедуры: audit, ship, review, scrape, deploy.
-- **MCP** — доступ к живым системам: браузер, GBrain, GitHub, аналитика, документы, внешние API.
-- **Hooks** — автоматические стопперы перед опасными командами, секретами и случайным деплоем.
-- **Subagents** — отдельный контекст для ресёрча, QA и независимого ревью, чтобы не засорять основную задачу.
+- [Hermes Agent vs OpenClaw: что выбрать для AI-агента](/ru/articles/hermes-agent-vs-openclaw/)
+- [AI-рилзы для SEO: как собрать video pipeline из Telegram-трендов](/ru/articles/ai-reels-seo-pipeline-telegram-claude-code/)
+- [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/ru/articles/ai-tools-for-designers-design-engineering-agents/)
 
-## Когда брать какой инструмент
+[Все статьи](/ru/articles/)
 
-Codex удобен, когда нужно спокойно пройти по репозиторию, внести правки,
-проверить diff и довести задачу до деплоя. Claude Code чаще беру для быстрых
-исследовательских сессий, работы с длинным контекстом и экспериментов с MCP.
-GStack полезен как рабочая обвязка: browser smoke, goal, QA, review, deploy и
-память между длинными задачами.
+## Что здесь читать
 
-## Где агенты реально помогают
+Главная — это карта свежих материалов, а не ещё одна версия резюме. Я оставляю здесь тексты, которые помогают быстро понять, какие инструменты и подходы сейчас проходят проверку практикой: AI-агенты, рабочие процессы вокруг Codex и Claude Code, on-chain аналитика, Telegram-автоматизация и личные системы для памяти проекта.
 
-- Ревью больших diff: найти риск, проверить границы изменений и попросить второй взгляд.
-- Миграции: пройти старые URL, sitemap, redirects, canonical и smoke-тесты без ручного чеклиста.
-- Исследование инструментов: собрать источники, сравнить ограничения и оставить воспроизводимый вывод.
-- Работа с данными: быстро собрать запрос, проверить странные строки и превратить вывод в решение.
-- Личные системы: Obsidian, GBrain и проектные notes, где агент помнит решения лучше человека.
+Короткие наблюдения, дневники сетапа и заметки из текущей работы попадают в блог. Более плотные разборы, где нужны источники, сравнения, таблицы, промпты и выводы, лежат в статьях. Бэкграунд, опыт, контакты и социальные ссылки вынесены на страницу обо мне, чтобы главная не превращалась в длинный профиль.
 
-## Минимальный стек
+## Основные темы
 
-- Один понятный instruction file в репозитории: правила, команды проверки и границы задачи.
-- Браузерный smoke-тест для важных экранов, особенно после правок навигации и статических страниц.
-- Память в GBrain или Obsidian: решения, грабли, ссылки на исходники и следующий шаг.
-- Отдельное ревью перед merge: свежий контекст часто ловит то, что пропустил основной агент.
+- [AI-агенты](/topics/ai-agents/) — практические сценарии, где агент не просто отвечает в чате, а читает контекст, работает с файлами, проверяет себя и доводит задачу до результата.
+- [Claude Code](/topics/claude-code/) и [Codex](/topics/codex/) — настройки, skills, MCP, hooks, browser smoke, ревью diff и длинные задачи, которые нужно держать в управляемом цикле.
+- [TON-данные](/topics/ton-data/) — on-chain аналитика, Dune, исследовательские запросы, метрики и способы превратить сырые данные в решение для продукта или команды.
+- [Telegram-автоматизация](/topics/telegram-automation/) — mini apps, боты, контентные пайплайны, каналы и рабочие интерфейсы, где Telegram становится частью операционной системы.
+- [Second brain](/topics/second-brain/) — Obsidian, GBrain, проектная память, raw notes и правила, которые помогают не терять решения после длинных agent-сессий.
 
-## Мой чеклист перед тем, как доверять агенту
+## Как пользоваться сайтом
 
-- Дать агенту реальные файлы проекта, а не пересказ архитектуры.
-- Разделить задачу: ресёрч отдельно, правки отдельно, ревью отдельно.
-- Запустить build, typecheck, smoke-тест и mobile viewport до деплоя.
-- Проверить, что агент не трогал чужие изменения и не унёс секреты.
-- Сохранить выводы в GBrain/Obsidian, если это повторится в будущем.
+Если вы пришли из поиска на конкретную статью, лучше продолжать на языке этой страницы: русские материалы живут в разделе [Блог](/ru/blog/) и [Статьи](/ru/articles/), английские — в [Blog](/en/blog/) и [Articles](/en/articles/). Переключатель RU/EN в шапке не прячет страницы за автопереездом, поэтому поисковики и люди видят стабильные адреса.
 
-Здесь собраны рабочие паттерны для разработки, аналитики, Telegram-автоматизации,
-design engineering и on-chain данных. Главный критерий один: можно ли повторить
-подход на реальном проекте без магии и лишней веры в модель.
+Я стараюсь писать не обзор ради обзора, а рабочие заметки после реального теста: что ускорило задачу, где инструмент сломался, какие настройки стоит повторить и какие выводы лучше сохранить в проектной памяти. Поэтому главная показывает последние материалы с картинками, а полный архив остаётся в разделах.
+
+## Язык и маршрутизация
+
+Для многоязычного сайта важнее не угадать язык любой ценой, а сохранить понятные адреса. Поэтому русская версия живёт на [/ru/](/ru/), английская — на [/en/](/en/), а отдельные статьи могут иметь свои стабильные URL и hreflang-связки. Если человек пришёл из Google на русскую статью, сайт не должен внезапно отправлять его на английскую главную только из-за настроек браузера.
+
+Такой подход лучше подходит для личного блога и лендинга: поисковик индексирует каждую языковую страницу отдельно, пользователь может явно переключить язык в шапке, а главный домен остаётся аккуратной точкой входа. Дальше можно запоминать выбранный язык для интерфейса, но публичные URL и canonical-адреса должны оставаться стабильными.
+
+Практический компромисс простой: язык можно подсказывать интерфейсом, но не стоит ломать путь, по которому человек уже пришёл. Если материал найден по русскому запросу, русская страница должна открываться как самостоятельный результат; если по английскому — английская должна иметь такую же самостоятельную жизнь.
 `
 
 const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
 
-> Practical notes on AI agents, Codex, Claude Code, MCP, OpenClaw, Hermes Agent, TON analytics and Telegram automation.
+> AI-native analytics, on-chain data, Telegram and agent workflows. This page is for fresh writing and practical notes from the tools I actually test. Background, work history and links live on [About](/en/about/).
 
-## Sections
+## Blog
 
-- [Blog](/en/blog/) — notes and working ideas.
-- [Articles](/en/articles/) — tutorials, comparisons and explainers.
-- [About](/en/about/) — background, work and links.
+Fresh notes, tool diaries and field reports from the current workflow.
 
-## If you are setting up AI agents
+![My Claude Code setup](/assets/site/article-fallback.webp)
 
-Start with [my Claude Code setup](/claude-code-setup-mcp-hooks-skills-2026/):
-MCP servers, hooks, skills, subagents and project rules that survived months of
-daily work. If the agent starts losing context, read the
-[Claude Code compaction notes](/claude-code-compaction-explained/). If you
-need to choose between Codex and Claude Code, use the
-[dual-review write-up](/en-claude-codex-dual-review/).
+- [My Claude Code Setup: MCP Servers, Hooks, Skills and Agents (2026)](/claude-code-setup-mcp-hooks-skills-2026/)
+- [Second Brain + Obsidian + Claude Code: My AI Assistant Setup](/en-second-brain-obsidian-claude-code-assistant/)
+- [Web Scraping AI Agents: What Actually Works in 2026](/web-scraping-ai-agents-2026/)
 
-The working split is simple: \`AGENTS.md\` or \`CLAUDE.md\` stores project
-invariants, skills store repeatable procedures, MCP connects live data and
-tools, hooks catch risky actions, and subagents isolate research or review from
-the main editing context.
+[All posts](/en/blog/)
 
-## Practical entry points
+## Articles
 
-- [Web scraping AI agents](/web-scraping-ai-agents-2026/) — when a browser agent beats an old parser.
-- [Second brain + Obsidian](/en-second-brain-obsidian-claude-code-assistant/) — how to store raw notes, decisions and project memory.
-- [Claude Code skills and MCP](/en-best-skills-mcp-claude-code-agent-browser/) — what to install, and what not to over-engineer.
-- [AI agents in practice](/en-ai-agents-practice-claude-code-voice-commands/) — voice commands, Telegram workflows and Claude Code.
-- [Always-on AI agent](/always-on-ai-agent-server-setup/) — running Claude Code on a VPS for real workflows.
-- [Claude Code workflow](/claude-code-workflow-2026/) — how to keep a long agent task moving until it ships.
+Denser explainers with sources, comparisons, prompts and practical takeaways.
 
-## Agent terms without marketing
+![Web scraping AI agents](/assets/articles/web-scraping-ai-agents-2026/bot-check-cloudflare-later.webp)
 
-- **Project rules** — repository invariants: style, safety limits, validation commands and data locations.
-- **Skills** — repeatable procedures such as audit, ship, review, scrape and deploy.
-- **MCP** — live tool access: browser, GBrain, GitHub, analytics, documents and external APIs.
-- **Hooks** — automatic checks before risky commands, leaked secrets or accidental deploys.
-- **Subagents** — isolated context for research, QA and independent review.
+- [Web Scraping AI Agents: What Actually Works in 2026](/web-scraping-ai-agents-2026/)
+- [Best Claude Code Skills and MCP Servers for Agent Workflows](/en-best-skills-mcp-claude-code-agent-browser/)
+- [Claude Code Compaction Explained](/claude-code-compaction-explained/)
 
-## When I use each tool
+[All articles](/en/articles/)
 
-Codex is useful when I need to move through a repository, make scoped edits,
-inspect the diff and ship the change. Claude Code is still strong for quick
-research sessions, long context and MCP experiments. GStack is the operational
-layer around the work: browser smoke, goal, QA, review, deploy and memory across
-long tasks.
+## What to Read Here
 
-## Where agents actually help
+The homepage is a map of recent writing, not another copy of my resume. I keep it focused on tools and workflows that are being tested in actual work: AI agents, Codex and Claude Code operating loops, on-chain analytics, Telegram automation and personal systems for project memory.
 
-- Reviewing large diffs: finding risk, checking boundaries and getting a second pass.
-- Migrations: old URLs, sitemaps, redirects, canonicals and smoke tests without a manual checklist.
-- Tool research: gather sources, compare limits and leave a reproducible conclusion.
-- Data work: draft a query, inspect strange rows and turn the output into a decision.
-- Personal systems: Obsidian, GBrain and project notes where the agent remembers decisions.
+Short notes, setup diaries and observations from the current week go to the blog. Denser pieces with sources, comparisons, prompts, tables and takeaways go to articles. Background, work history, contacts and social links live on the About page, so this page can stay useful as a reading index instead of becoming a long profile.
 
-## Minimal stack
+## Main Topics
 
-- One clear instruction file in the repository: rules, validation commands and task boundaries.
-- Browser smoke tests for important screens, especially after navigation and static page changes.
-- Memory in GBrain or Obsidian: decisions, mistakes, source links and the next step.
-- A separate review before merge: fresh context often catches what the main agent missed.
+- [AI agents](/topics/ai-agents/) — practical workflows where an agent reads context, works with files, checks its own output and carries a task through to a concrete result.
+- [Claude Code](/topics/claude-code/) and [Codex](/topics/codex/) — skills, MCP, hooks, browser smoke checks, diff review and long tasks that need a controlled operating loop.
+- [TON data](/topics/ton-data/) — on-chain analytics, Dune, research queries, product metrics and ways to turn raw blockchain data into a decision a team can use.
+- [Telegram automation](/topics/telegram-automation/) — mini apps, bots, content pipelines, channels and operational interfaces where Telegram becomes part of the work system.
+- [Second brain](/topics/second-brain/) — Obsidian, GBrain, project memory, raw notes and rules that keep decisions available after long agent sessions.
 
-## My checklist before trusting an agent
+## How to Use the Site
 
-- Give the agent real project files, not a hand-written architecture summary.
-- Separate the task: research first, edits second, review after the diff exists.
-- Run build, typecheck, smoke tests and mobile viewport checks before deploy.
-- Check that the agent did not touch unrelated changes or expose credentials.
-- Save durable lessons to GBrain or Obsidian when the pattern will repeat.
+If you arrive from search on a specific article, the best next step is usually to stay with that page language: Russian material lives in [Blog](/ru/blog/) and [Articles](/ru/articles/), English material lives in [Blog](/en/blog/) and [Articles](/en/articles/). The RU/EN switcher keeps those addresses stable instead of hiding them behind a forced redirect, which is better for readers and search crawlers.
 
-These are working patterns for engineering, analytics, Telegram automation,
-design engineering and on-chain data. The useful test is simple: can the same
-approach survive a real project without magic or blind trust in the model?
+I try to publish notes after real use rather than writing abstract tool roundups: what sped up the task, where the tool broke, which settings are worth copying and which conclusions should be saved in project memory. That is why the homepage highlights the newest pieces with images, while the full archive stays in the section pages.
+
+## Language and Routing
+
+For a multilingual site, stable addresses matter more than guessing the language at any cost. The Russian version lives at [/ru/](/ru/), the English version lives at [/en/](/en/), and individual articles can keep their own stable URLs with hreflang links. If someone arrives from Google on a Russian article, the site should not suddenly send them to the English homepage only because of browser settings.
+
+This is the cleaner pattern for a personal blog and landing page: crawlers can index each language page separately, readers can switch language explicitly in the header, and the root domain remains a simple entry point. A later interface preference can remember the chosen language, but public URLs and canonical addresses should stay predictable.
+
+The practical compromise is simple: the interface can suggest a language, but it should not break the path someone already used. If a page was found through a Russian query, the Russian page should stand as its own result; if it was found in English, the English page should have the same independent life.
 `
 
 function parseFrontmatter(raw, filename = 'markdown file') {

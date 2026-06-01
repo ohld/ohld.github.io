@@ -10,7 +10,7 @@ in residence and Forbes 30 Under 30 Russia.
 
 ## Experience
 
-### Analytics Team Lead — TON Foundation
+### Head of Analytics — TON Foundation
 
 Sep 2025 — now · London, Remote
 

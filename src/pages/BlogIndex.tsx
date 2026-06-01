@@ -24,7 +24,7 @@ export function BlogIndex() {
         <BackButton />
         <h1 className="subpage-title">Блог</h1>
         <p className="subpage-subtitle">
-          Мои записи и рабочие заметки про AI-агентов, инструменты, контекст и практику разработки.
+          Мои записи и рабочие заметки про AI-агентов, инструменты, контекст и рабочие флоу.
         </p>
       </div>
 

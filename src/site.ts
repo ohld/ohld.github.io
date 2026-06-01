@@ -26,6 +26,8 @@ export const navLinks = [
   { path: '/about', enPath: '/en/about/', ru: 'Обо мне', en: 'About' },
 ]
 
+export const sectionNavLinks = navLinks.filter((link) => link.path !== '/ru/' && link.path !== '/')
+
 type LocalizedArticleGroup = Partial<Record<'ru' | 'en' | 'zh', string>>
 type PageLang = 'ru' | 'en' | 'zh'
 type ImportedArticleLanguage = { path: string; lang: PageLang }

@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { trackClick, trackNav } from '../analytics'
-import { localizedPath, navLinks, shellLangForPath } from '../site'
+import { localizedPath, sectionNavLinks, shellLangForPath } from '../site'
 
 const TELEGRAM_DIRECT_URL = 'https://t.me/danokhlopkov?direct'
 
@@ -15,7 +15,7 @@ export function SiteHeader() {
         <span>okhlopkov.com</span>
       </Link>
       <nav className="site-header-nav" aria-label={isEnglish ? 'Primary navigation' : 'Основная навигация'}>
-        {navLinks.filter((item) => item.path !== '/').map((item) => (
+        {sectionNavLinks.map((item) => (
           <Link
             key={item.path}
             className="site-header-link"
