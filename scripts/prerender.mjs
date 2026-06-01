@@ -40,14 +40,12 @@ const NAV_LINKS_BY_SHELL_LANG = {
     ['/ru/articles/', 'Статьи'],
     ['/about/', 'Обо мне'],
     ['/en/', 'English'],
-    ['/privacy/', 'Privacy'],
   ],
   en: [
     ['/en/blog/', 'Blog'],
     ['/en/articles/', 'Articles'],
     ['/en/about/', 'About'],
     ['/', 'RU'],
-    ['/privacy/', 'Privacy'],
   ],
 }
 
@@ -165,8 +163,6 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 ## Свежие материалы
 
-Один общий фид из блога и статей: новые тексты без повторов и ручного разделения на главной.
-
 ![Мой AI-сетап 2026](/assets/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/phone-agent-meme.webp)
 
 - [Hermes Agent vs OpenClaw: что выбрать для AI-агента](/ru/articles/hermes-agent-vs-openclaw/)
@@ -182,9 +178,15 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 Главная — это карта свежих материалов, а не ещё одна версия резюме. Я оставляю здесь тексты, которые помогают быстро понять, какие инструменты и подходы сейчас проходят проверку практикой: AI-агенты, рабочие процессы вокруг Codex и Claude Code, on-chain аналитика, Telegram-автоматизация и личные системы для памяти проекта.
 
-В блог попадают тексты, которые выросли из моих Telegram-постов: исходная мысль остаётся узнаваемой, а вокруг неё добавляются контекст, ссылки, примеры и заметки из других источников. В статьи уходят отдельные поисковые темы, где нужен плотный гайд, сравнение, таблицы, промпты и выводы. На главной эти два потока смешиваются только как единая лента последних публикаций, без дублей.
+В блог попадают тексты, которые выросли из моих Telegram-постов: исходная мысль остаётся узнаваемой, а вокруг неё добавляются контекст, ссылки, примеры и заметки из других источников. В статьи уходят отдельные поисковые темы, где нужен плотный гайд, сравнение, таблицы, промпты и выводы. Оба формата нужны: короткие посты дают контекст, длинные статьи помогают разобраться глубже.
+
+Часть заметок короткая и полезна как быстрый ориентир перед решением похожей задачи. Часть материалов длиннее: там я разбираю контекст, ограничения, альтернативы и практический результат. Общая идея простая: сайт должен быть не витриной, а рабочим архивом проверенных находок, к которым можно вернуться через неделю или отправить ссылку человеку с похожим вопросом. Всё это пишется для практики, а не отчётности.
 
 ## Основные темы
+
+Если вы впервые на сайте, начните с материалов про мой AI-сетап, практику работы с агентами и разборы инструментов, которые уже прошли через реальные задачи. Я стараюсь оставлять не абстрактные впечатления, а конкретику: что ускорило работу, где пришлось менять процесс, какие настройки можно повторить и какие выводы лучше сохранить для следующего проекта.
+
+Дальше удобно идти по темам: AI-агенты для рабочих задач, Codex и Claude Code для разработки, TON-данные для исследований, Telegram-автоматизация для продуктов и каналов, second brain для личной памяти. Хороший материал здесь должен помогать сделать следующий шаг: проверить гипотезу, собрать прототип, настроить workflow или не повторить уже найденную ошибку.
 
 - [AI-агенты](/topics/ai-agents/) — практические сценарии, где агент не просто отвечает в чате, а читает контекст, работает с файлами, проверяет себя и доводит задачу до результата.
 - [Claude Code](/topics/claude-code/) и [Codex](/topics/codex/) — настройки, skills, MCP, hooks, browser smoke, ревью diff и длинные задачи, которые нужно держать в управляемом цикле.
@@ -197,14 +199,6 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 Если вы пришли из поиска на конкретную статью, лучше продолжать на языке этой страницы: русские материалы живут в разделе [Блог](/ru/blog/) и [Статьи](/ru/articles/), английские — в [Blog](/en/blog/) и [Articles](/en/articles/). Переключатель RU/EN в шапке не прячет страницы за автопереездом, поэтому поисковики и люди видят стабильные адреса.
 
 Я стараюсь писать не обзор ради обзора, а рабочие заметки после реального теста: что ускорило задачу, где инструмент сломался, какие настройки стоит повторить и какие выводы лучше сохранить в проектной памяти. Поэтому главная показывает последние материалы с картинками, а полный архив остаётся в разделах.
-
-## Язык и маршрутизация
-
-Для многоязычного сайта важнее не угадать язык любой ценой, а сохранить понятные адреса. Поэтому русская версия живёт на [/ru/](/ru/), английская — на [/en/](/en/), а отдельные статьи могут иметь свои стабильные URL и hreflang-связки. Если человек пришёл из Google на русскую статью, сайт не должен внезапно отправлять его на английскую главную только из-за настроек браузера.
-
-Такой подход лучше подходит для личного блога и лендинга: поисковик индексирует каждую языковую страницу отдельно, пользователь может явно переключить язык в шапке, а главный домен остаётся аккуратной точкой входа. Дальше можно запоминать выбранный язык для интерфейса, но публичные URL и canonical-адреса должны оставаться стабильными.
-
-Практический компромисс простой: язык можно подсказывать интерфейсом, но не стоит ломать путь, по которому человек уже пришёл. Если материал найден по русскому запросу, русская страница должна открываться как самостоятельный результат; если по английскому — английская должна иметь такую же самостоятельную жизнь.
 `
 
 const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
@@ -212,8 +206,6 @@ const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
 > AI-native analytics, on-chain data, Telegram and agent workflows. This page is for fresh writing and practical notes from the tools I actually test. Background, work history and links live on [About](/en/about/).
 
 ## Latest Writing
-
-One shared feed from blog posts and articles: new writing without repeated cards on the homepage.
 
 ![My Claude Code setup](/assets/site/article-fallback.webp)
 
@@ -230,9 +222,15 @@ One shared feed from blog posts and articles: new writing without repeated cards
 
 The homepage is a map of recent writing, not another copy of my resume. I keep it focused on tools and workflows that are being tested in actual work: AI agents, Codex and Claude Code operating loops, on-chain analytics, Telegram automation and personal systems for project memory.
 
-Blog posts are pieces that grew out of my Telegram writing: the original idea stays recognizable, then gets enriched with context, links, examples and notes from other sources. Articles are separate search-driven topics that need a denser guide, comparison, tables, prompts and takeaways. The homepage mixes those two streams only as one latest-writing feed, without duplicate cards.
+Blog posts are pieces that grew out of my Telegram writing: the original idea stays recognizable, then gets enriched with context, links, examples and notes from other sources. Articles are separate search-driven topics that need a denser guide, comparison, tables, prompts and takeaways. Both formats matter: shorter posts provide context, longer articles help unpack the subject in more depth.
+
+Some notes are short and useful as a quick reference before solving a similar task. Other pieces are longer: they unpack context, constraints, alternatives and the practical result. The simple idea is that the site should work as a useful archive of tested findings, not a display case, so a link is worth revisiting a week later or sending to someone with the same question. Everything is written for practice, not reporting.
 
 ## Main Topics
+
+If this is your first visit, start with the pieces about my AI setup, agent workflows and tool reviews that already went through real work. I try to write down concrete takeaways rather than abstract impressions: what made the work faster, where the process had to change, which settings are worth copying and which lessons should be kept for the next project.
+
+From there, it is easiest to follow the topic pages: AI agents for practical work, Codex and Claude Code for development, TON data for research, Telegram automation for products and channels, second brain systems for personal memory. A useful article here should help with a next step: test a hypothesis, build a prototype, tune a workflow or avoid a mistake that already showed up in practice.
 
 - [AI agents](/topics/ai-agents/) — practical workflows where an agent reads context, works with files, checks its own output and carries a task through to a concrete result.
 - [Claude Code](/topics/claude-code/) and [Codex](/topics/codex/) — skills, MCP, hooks, browser smoke checks, diff review and long tasks that need a controlled operating loop.
@@ -245,14 +243,6 @@ Blog posts are pieces that grew out of my Telegram writing: the original idea st
 If you arrive from search on a specific article, the best next step is usually to stay with that page language: Russian material lives in [Blog](/ru/blog/) and [Articles](/ru/articles/), English material lives in [Blog](/en/blog/) and [Articles](/en/articles/). The RU/EN switcher keeps those addresses stable instead of hiding them behind a forced redirect, which is better for readers and search crawlers.
 
 I try to publish notes after real use rather than writing abstract tool roundups: what sped up the task, where the tool broke, which settings are worth copying and which conclusions should be saved in project memory. That is why the homepage highlights the newest pieces with images, while the full archive stays in the section pages.
-
-## Language and Routing
-
-For a multilingual site, stable addresses matter more than guessing the language at any cost. The Russian version lives at [/ru/](/ru/), the English version lives at [/en/](/en/), and individual articles can keep their own stable URLs with hreflang links. If someone arrives from Google on a Russian article, the site should not suddenly send them to the English homepage only because of browser settings.
-
-This is the cleaner pattern for a personal blog and landing page: crawlers can index each language page separately, readers can switch language explicitly in the header, and the root domain remains a simple entry point. A later interface preference can remember the chosen language, but public URLs and canonical addresses should stay predictable.
-
-The practical compromise is simple: the interface can suggest a language, but it should not break the path someone already used. If a page was found through a Russian query, the Russian page should stand as its own result; if it was found in English, the English page should have the same independent life.
 `
 
 function parseFrontmatter(raw, filename = 'markdown file') {

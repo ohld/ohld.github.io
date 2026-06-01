@@ -36,7 +36,6 @@ export function Footer() {
             {isEnglish ? link.en : link.ru}
           </Link>
         ))}
-        <Link to="/privacy">Privacy</Link>
       </nav>
       <div className="footer-socials">
         {socialLinks.map((s) => (

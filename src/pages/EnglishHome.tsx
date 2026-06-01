@@ -36,7 +36,6 @@ export function EnglishHome() {
           <div className="home-section-heading">
             <div>
               <h2 id="home-latest">Latest Writing</h2>
-              <p>One shared feed from blog posts and articles: new writing without repeated cards on the homepage.</p>
             </div>
             <div className="home-section-actions">
               <a className="home-section-link" href="/en/blog/">Blog</a>
@@ -64,13 +63,38 @@ export function EnglishHome() {
             original idea stays recognizable, then gets enriched with context,
             links, examples and notes from other sources. Articles are separate
             search-driven topics that need a denser guide, comparison, tables,
-            prompts and takeaways. The homepage mixes those two streams only as
-            one latest-writing feed, without duplicate cards.
+            prompts and takeaways. Both formats matter: shorter posts provide
+            context, longer articles help unpack the subject in more depth.
+          </p>
+          <p>
+            Some notes are short and useful as a quick reference before solving
+            a similar task. Other pieces are longer: they unpack context,
+            constraints, alternatives and the practical result. The simple idea
+            is that the site should work as a useful archive of tested findings,
+            not a display case, so a link is worth revisiting a week later or
+            sending to someone with the same question. Everything is written for
+            practice, not reporting.
           </p>
         </section>
 
         <section className="home-section home-detail-section" aria-labelledby="home-topics">
           <h2 id="home-topics">Main Topics</h2>
+          <p>
+            If this is your first visit, start with the pieces about my AI
+            setup, agent workflows and tool reviews that already went through
+            real work. I try to write down concrete takeaways rather than
+            abstract impressions: what made the work faster, where the process
+            had to change, which settings are worth copying and which lessons
+            should be kept for the next project.
+          </p>
+          <p>
+            From there, it is easiest to follow the topic pages: AI agents for
+            practical work, Codex and Claude Code for development, TON data for
+            research, Telegram automation for products and channels, second
+            brain systems for personal memory. A useful article here should help
+            with a next step: test a hypothesis, build a prototype, tune a
+            workflow or avoid a mistake that already showed up in practice.
+          </p>
           <ul className="home-detail-list">
             <li>
               <a href="/topics/ai-agents/">AI agents</a> — practical workflows
@@ -120,34 +144,6 @@ export function EnglishHome() {
             project memory. That is why the homepage highlights the newest
             pieces with images, while the full archive stays in the section
             pages.
-          </p>
-        </section>
-
-        <section className="home-section home-detail-section" aria-labelledby="home-language">
-          <h2 id="home-language">Language and Routing</h2>
-          <p>
-            For a multilingual site, stable addresses matter more than guessing
-            the language at any cost. The Russian version lives at
-            <a href="/ru/"> /ru/</a>, the English version lives at
-            <a href="/en/"> /en/</a>, and individual articles can keep their
-            own stable URLs with hreflang links. If someone arrives from Google
-            on a Russian article, the site should not suddenly send them to the
-            English homepage only because of browser settings.
-          </p>
-          <p>
-            This is the cleaner pattern for a personal blog and landing page:
-            crawlers can index each language page separately, readers can switch
-            language explicitly in the header, and the root domain remains a
-            simple entry point. A later interface preference can remember the
-            chosen language, but public URLs and canonical addresses should stay
-            predictable.
-          </p>
-          <p>
-            The practical compromise is simple: the interface can suggest a
-            language, but it should not break the path someone already used. If
-            a page was found through a Russian query, the Russian page should
-            stand as its own result; if it was found in English, the English
-            page should have the same independent life.
           </p>
         </section>
       </main>
