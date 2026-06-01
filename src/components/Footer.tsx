@@ -3,7 +3,7 @@ import type { ReactElement } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { TelegramIcon, TwitterXIcon, YoutubeIcon, GithubIcon, LinkedinIcon, InstagramIcon } from './Icons'
 import { openUrl } from '../openUrl'
-import { navLinks, shellLangForPath, socialLinks } from '../site'
+import { sectionNavLinks, shellLangForPath, socialLinks } from '../site'
 
 const iconByLabel: Record<string, ReactElement> = {
   Telegram: <TelegramIcon />,
@@ -31,7 +31,7 @@ export function Footer() {
       <nav className="footer-links" aria-label={isEnglish ? 'Site sections' : 'Разделы сайта'}>
         <Link to="/">RU</Link>
         <Link to="/en/">EN</Link>
-        {navLinks.filter((link) => link.path !== '/').map((link) => (
+        {sectionNavLinks.map((link) => (
           <Link key={link.path} to={isEnglish ? link.enPath || link.path : link.path}>
             {isEnglish ? link.en : link.ru}
           </Link>

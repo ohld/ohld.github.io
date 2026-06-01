@@ -7,7 +7,7 @@ import { useDocumentMeta } from '../useDocumentMeta'
 
 const experience = [
   {
-    title: 'Analytics Team Lead',
+    title: 'Head of Analytics',
     company: 'TON Foundation',
     period: 'Sep 2025 — now',
     location: 'London, Remote',

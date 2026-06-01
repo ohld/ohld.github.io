@@ -1,18 +1,13 @@
-import { useNavigate } from 'react-router-dom'
+import { ArticlePreviewCard } from '../components/ArticlePreviewCard'
 import { Footer } from '../components/Footer'
-import { trackNav } from '../analytics'
 import { absoluteUrl } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 import { englishArticleItems, englishBlogItems } from '../blog'
 
-const navItems = [
-  { path: '/en/blog', title: 'Blog', subtitle: 'Notes and working ideas', items: englishBlogItems.slice(0, 3) },
-  { path: '/en/articles', title: 'Articles', subtitle: 'Tutorials, comparisons and explainers', badge: 'NEW', items: englishArticleItems.slice(0, 2) },
-  { path: '/en/about', title: 'About', subtitle: 'Background, work and links' },
-]
+const latestBlogItems = englishBlogItems.slice(0, 3)
+const latestArticleItems = englishArticleItems.slice(0, 3)
 
 export function EnglishHome() {
-  const navigate = useNavigate()
   useDocumentMeta({
     title: 'Daniil Okhlopkov — AI agents, data, TON and Telegram',
     description: 'Practical notes on AI agents, OpenClaw, Hermes Agent, Codex, Claude Code, MCP, TON analytics and Telegram automation by Daniil Okhlopkov.',
@@ -30,133 +25,144 @@ export function EnglishHome() {
       <header className="page-header">
         <h1 className="page-header-name">Daniil Okhlopkov</h1>
         <p className="page-header-bio">
-          I am a developer and data practitioner from TON Foundation, working
-          across analytics, products and the Telegram ecosystem. My current
-          focus is <a href="/en/articles/">AI agents</a>: Codex,
-          Claude Code, MCP and workflow automation that helps teams research,
-          build and ship faster. This site collects practical notes on AI,
-          TON data and engineering patterns without marketing gloss.
+          AI-native analytics, on-chain data, Telegram and agent workflows.
+          This page is for fresh writing and practical notes from the tools I
+          actually test. Background, work history and links live on
+          <a href="/en/about/"> About</a>.
         </p>
       </header>
 
-      <main className="home-sections" aria-label="Main sections">
-        {navItems.map((item) => (
-          <section className="home-route-panel" key={item.path}>
-            <button
-              type="button"
-              className="nav-row"
-              onClick={() => { trackNav(item.path); navigate(item.path) }}
-            >
-              <div className="nav-row-content">
-                <span className="nav-row-title">
-                  {item.title}
-                  {item.badge && <span className="nav-row-badge">{item.badge}</span>}
-                </span>
-                <span className="nav-row-subtitle">{item.subtitle}</span>
-              </div>
-            </button>
-            {item.items && (
-              <div className="home-card-list">
-                {item.items.map((entry) => (
-                  <a className="home-list-link" href={entry.path} key={entry.path}>
-                    <span>{entry.title}</span>
-                  </a>
-                ))}
-              </div>
-            )}
-          </section>
-        ))}
+      <main className="home-latest" aria-label="Latest writing">
+        <section className="home-section home-latest-section" aria-labelledby="home-blog">
+          <div className="home-section-heading">
+            <div>
+              <h2 id="home-blog">Blog</h2>
+              <p>Fresh notes, tool diaries and field reports from the current workflow.</p>
+            </div>
+            <a className="home-section-link" href="/en/blog/">All posts</a>
+          </div>
+          <div className="blog-preview-grid">
+            {latestBlogItems.map((article) => (
+              <ArticlePreviewCard article={article} imageLoading="eager" tagsLabel="Tags" key={article.path} />
+            ))}
+          </div>
+        </section>
+
+        <section className="home-section home-latest-section" aria-labelledby="home-articles">
+          <div className="home-section-heading">
+            <div>
+              <h2 id="home-articles">Articles</h2>
+              <p>Denser explainers with sources, comparisons, prompts and practical takeaways.</p>
+            </div>
+            <a className="home-section-link" href="/en/articles/">All articles</a>
+          </div>
+          <div className="blog-preview-grid">
+            {latestArticleItems.map((article) => (
+              <ArticlePreviewCard article={article} imageLoading="eager" tagsLabel="Tags" key={article.path} />
+            ))}
+          </div>
+        </section>
+
+        <section className="home-section home-detail-section" aria-labelledby="home-guide">
+          <h2 id="home-guide">What to Read Here</h2>
+          <p>
+            The homepage is a map of recent writing, not another copy of my
+            resume. I keep it focused on tools and workflows that are being
+            tested in actual work: AI agents, Codex and Claude Code operating
+            loops, on-chain analytics, Telegram automation and personal systems
+            for project memory.
+          </p>
+          <p>
+            Short notes, setup diaries and observations from the current week go
+            to the blog. Denser pieces with sources, comparisons, prompts,
+            tables and takeaways go to articles. Background, work history,
+            contacts and social links live on the About page, so this page can
+            stay useful as a reading index instead of becoming a long profile.
+          </p>
+        </section>
+
+        <section className="home-section home-detail-section" aria-labelledby="home-topics">
+          <h2 id="home-topics">Main Topics</h2>
+          <ul className="home-detail-list">
+            <li>
+              <a href="/topics/ai-agents/">AI agents</a> — practical workflows
+              where an agent reads context, works with files, checks its own
+              output and carries a task through to a concrete result.
+            </li>
+            <li>
+              <a href="/topics/claude-code/">Claude Code</a> and
+              <a href="/topics/codex/"> Codex</a> — skills, MCP, hooks, browser
+              smoke checks, diff review and long tasks that need a controlled
+              operating loop.
+            </li>
+            <li>
+              <a href="/topics/ton-data/">TON data</a> — on-chain analytics,
+              Dune, research queries, product metrics and ways to turn raw
+              blockchain data into a decision a team can use.
+            </li>
+            <li>
+              <a href="/topics/telegram-automation/">Telegram automation</a> —
+              mini apps, bots, content pipelines, channels and operational
+              interfaces where Telegram becomes part of the work system.
+            </li>
+            <li>
+              <a href="/topics/second-brain/">Second brain</a> — Obsidian,
+              GBrain, project memory, raw notes and rules that keep decisions
+              available after long agent sessions.
+            </li>
+          </ul>
+        </section>
+
+        <section className="home-section home-detail-section" aria-labelledby="home-route">
+          <h2 id="home-route">How to Use the Site</h2>
+          <p>
+            If you arrive from search on a specific article, the best next step
+            is usually to stay with that page language: Russian material lives
+            in <a href="/ru/blog/">Blog</a> and
+            <a href="/ru/articles/"> Articles</a>, English material lives in
+            <a href="/en/blog/"> Blog</a> and
+            <a href="/en/articles/"> Articles</a>. The RU/EN switcher keeps
+            those addresses stable instead of hiding them behind a forced
+            redirect, which is better for readers and search crawlers.
+          </p>
+          <p>
+            I try to publish notes after real use rather than writing abstract
+            tool roundups: what sped up the task, where the tool broke, which
+            settings are worth copying and which conclusions should be saved in
+            project memory. That is why the homepage highlights the newest
+            pieces with images, while the full archive stays in the section
+            pages.
+          </p>
+        </section>
+
+        <section className="home-section home-detail-section" aria-labelledby="home-language">
+          <h2 id="home-language">Language and Routing</h2>
+          <p>
+            For a multilingual site, stable addresses matter more than guessing
+            the language at any cost. The Russian version lives at
+            <a href="/ru/"> /ru/</a>, the English version lives at
+            <a href="/en/"> /en/</a>, and individual articles can keep their
+            own stable URLs with hreflang links. If someone arrives from Google
+            on a Russian article, the site should not suddenly send them to the
+            English homepage only because of browser settings.
+          </p>
+          <p>
+            This is the cleaner pattern for a personal blog and landing page:
+            crawlers can index each language page separately, readers can switch
+            language explicitly in the header, and the root domain remains a
+            simple entry point. A later interface preference can remember the
+            chosen language, but public URLs and canonical addresses should stay
+            predictable.
+          </p>
+          <p>
+            The practical compromise is simple: the interface can suggest a
+            language, but it should not break the path someone already used. If
+            a page was found through a Russian query, the Russian page should
+            stand as its own result; if it was found in English, the English
+            page should have the same independent life.
+          </p>
+        </section>
       </main>
-
-      <section className="home-section home-detail-section" aria-labelledby="home-start">
-        <h2 id="home-start">If you are setting up AI agents</h2>
-        <p>
-          Start with <a href="/claude-code-setup-mcp-hooks-skills-2026/">my Claude Code setup</a>:
-          MCP servers, hooks, skills, subagents and project rules that survived
-          months of daily work. If the agent starts losing context, read the
-          <a href="/claude-code-compaction-explained/">Claude Code compaction notes</a>.
-          If you need to choose between Codex and Claude Code, use the
-          <a href="/en-claude-codex-dual-review/">dual-review write-up</a>.
-        </p>
-        <p>
-          The working split is simple: <code>AGENTS.md</code> or <code>CLAUDE.md</code>
-          stores project invariants, skills store repeatable procedures, MCP
-          connects live data and tools, hooks catch risky actions, and subagents
-          isolate research or review from the main editing context.
-        </p>
-      </section>
-
-      <section className="home-section home-detail-section" aria-labelledby="home-practical">
-        <h2 id="home-practical">Practical entry points</h2>
-        <ul className="home-detail-list">
-          <li><a href="/web-scraping-ai-agents-2026/">Web scraping AI agents</a> — when a browser agent beats an old parser.</li>
-          <li><a href="/en-second-brain-obsidian-claude-code-assistant/">Second brain + Obsidian</a> — how to store raw notes, decisions and project memory.</li>
-          <li><a href="/en-best-skills-mcp-claude-code-agent-browser/">Claude Code skills and MCP</a> — what to install, and what not to over-engineer.</li>
-          <li><a href="/en-ai-agents-practice-claude-code-voice-commands/">AI agents in practice</a> — voice commands, Telegram workflows and Claude Code.</li>
-          <li><a href="/always-on-ai-agent-server-setup/">Always-on AI agent</a> — running Claude Code on a VPS for real workflows.</li>
-          <li><a href="/claude-code-workflow-2026/">Claude Code workflow</a> — how to keep a long agent task moving until it ships.</li>
-        </ul>
-      </section>
-
-      <section className="home-section home-detail-section" aria-labelledby="home-map">
-        <h2 id="home-map">Agent terms without marketing</h2>
-        <ul className="home-detail-list">
-          <li><strong>Project rules</strong> — repository invariants: style, safety limits, validation commands and data locations.</li>
-          <li><strong>Skills</strong> — repeatable procedures such as audit, ship, review, scrape and deploy.</li>
-          <li><strong>MCP</strong> — live tool access: browser, GBrain, GitHub, analytics, documents and external APIs.</li>
-          <li><strong>Hooks</strong> — automatic checks before risky commands, leaked secrets or accidental deploys.</li>
-          <li><strong>Subagents</strong> — isolated context for research, QA and independent review.</li>
-        </ul>
-      </section>
-
-      <section className="home-section home-detail-section" aria-labelledby="home-tool-choice">
-        <h2 id="home-tool-choice">When I use each tool</h2>
-        <p>
-          Codex is useful when I need to move through a repository, make scoped
-          edits, inspect the diff and ship the change. Claude Code is still
-          strong for quick research sessions, long context and MCP experiments.
-          GStack is the operational layer around the work: browser smoke, goal,
-          QA, review, deploy and memory across long tasks.
-        </p>
-      </section>
-
-      <section className="home-section home-detail-section" aria-labelledby="home-use-cases">
-        <h2 id="home-use-cases">Where agents actually help</h2>
-        <ul className="home-detail-list">
-          <li>Reviewing large diffs: finding risk, checking boundaries and getting a second pass.</li>
-          <li>Migrations: old URLs, sitemaps, redirects, canonicals and smoke tests without a manual checklist.</li>
-          <li>Tool research: gather sources, compare limits and leave a reproducible conclusion.</li>
-          <li>Data work: draft a query, inspect strange rows and turn the output into a decision.</li>
-          <li>Personal systems: Obsidian, GBrain and project notes where the agent remembers decisions.</li>
-        </ul>
-      </section>
-
-      <section className="home-section home-detail-section" aria-labelledby="home-stack">
-        <h2 id="home-stack">Minimal stack</h2>
-        <ul className="home-detail-list">
-          <li>One clear instruction file in the repository: rules, validation commands and task boundaries.</li>
-          <li>Browser smoke tests for important screens, especially after navigation and static page changes.</li>
-          <li>Memory in GBrain or Obsidian: decisions, mistakes, source links and the next step.</li>
-          <li>A separate review before merge: fresh context often catches what the main agent missed.</li>
-        </ul>
-      </section>
-
-      <section className="home-section home-detail-section" aria-labelledby="home-checklist">
-        <h2 id="home-checklist">My checklist before trusting an agent</h2>
-        <ul className="home-detail-list">
-          <li>Give the agent real project files, not a hand-written architecture summary.</li>
-          <li>Separate the task: research first, edits second, review after the diff exists.</li>
-          <li>Run build, typecheck, smoke tests and mobile viewport checks before deploy.</li>
-          <li>Check that the agent did not touch unrelated changes or expose credentials.</li>
-          <li>Save durable lessons to GBrain or Obsidian when the pattern will repeat.</li>
-        </ul>
-        <p>
-          These are working patterns for engineering, analytics, Telegram
-          automation, design engineering and on-chain data. The useful test is
-          simple: can the same approach survive a real project without magic or
-          blind trust in the model?
-        </p>
-      </section>
 
       <Footer />
     </div>

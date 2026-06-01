@@ -17,7 +17,7 @@ interface Role {
 
 const experience: Role[] = [
   {
-    title: 'Analytics Team Lead',
+    title: 'Head of Analytics',
     company: 'TON Foundation',
     period: 'Sep 2025 — now',
     location: 'London, Remote',

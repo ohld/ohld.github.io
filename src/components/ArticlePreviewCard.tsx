@@ -4,9 +4,11 @@ import { SITE_THUMBNAIL } from '../site'
 
 export function ArticlePreviewCard({
   article,
+  imageLoading = 'lazy',
   tagsLabel,
 }: {
   article: BlogListItem
+  imageLoading?: 'eager' | 'lazy'
   tagsLabel?: string
 }) {
   const thumbnail = article.thumbnail || SITE_THUMBNAIL
@@ -15,7 +17,7 @@ export function ArticlePreviewCard({
     <article className="article-preview-card">
       <a className="article-preview-hitarea" href={article.path} aria-label={article.title} />
       <div className="article-preview-media">
-        <img className="article-preview-thumb" src={thumbnail} alt={article.title} loading="lazy" />
+        <img className="article-preview-thumb" src={thumbnail} alt={article.title} loading={imageLoading} />
       </div>
       <div className="article-preview-body">
         <div className="content-card-meta">

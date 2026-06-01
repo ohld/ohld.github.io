@@ -8,7 +8,7 @@ Head of Analytics @ TON Foundation. До этого — CTO стартапа с 
 
 ## Опыт
 
-### Analytics Team Lead — TON Foundation
+### Head of Analytics — TON Foundation
 **Sep 2025 — now** · London, Remote
 Строю аналитику для TON Blockchain. Dune, on-chain research, контесты для аналитиков.
 Dune dashboard: https://dune.com/blockchains/ton
