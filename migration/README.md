@@ -75,7 +75,7 @@ shape, GitHub environment configuration and rollback steps.
 
 Do not point the main domain at this container until `npm run preflight:okhlopkov`
 passes in CI and `npm run verify:migration` passes against the deployed preview
-URL. The verifier checks the public IA (`/`, `/blog/`, `/articles/`, `/about/`
+URL. The verifier checks the public IA (`/`, `/ru/blog/`, `/ru/articles/`, `/about/`
 and EN equivalents), all saved legacy pages from
 `content/legacy-pages/pages.json`, service-page redirects, backlink-critical
 URLs, legacy internal links, analytics snippets, crawler files and sitemap
@@ -157,7 +157,7 @@ default.
 
 ## Future content formatting
 
-Future `/blog/` posts and `/articles/` SEO pages should follow
+Future `/ru/blog/` posts, `/ru/articles/` SEO pages, and English `/en/...` equivalents should follow
 `migration/article-components.md`.
 Important defaults:
 
@@ -216,8 +216,8 @@ Ghost service pages are excluded from snapshot content and redirected instead:
 
 - `/author/okhlopkov/` → `/about/`
 - `/tag/second-brain/` → `/vtoroj-mozg-ai-assistent-obsidian-claude-code/`
-- `/tag/ai-agents/` → `/articles/`
-- `/tag/telegram/` → `/blog/`
+- `/tag/ai-agents/` → `/ru/articles/`
+- `/tag/telegram/` → `/ru/blog/`
 - `/cn/` → `/en/`
 
 Additional legacy tag URLs found inside preserved articles also redirect instead
@@ -227,8 +227,8 @@ of becoming 404s: `/tag/ai/`, `/tag/analytics/`, `/tag/claude-code/`,
 
 Static cleanup redirects also collapse old duplicated mini-app surfaces:
 
-- `/posts/` → `/blog/`
-- `/ai-agents/` → `/articles/`
-- `/ai-course/` → `/articles/`
+- `/posts/` → `/ru/blog/`
+- `/ai-agents/` → `/ru/articles/`
+- `/ai-course/` → `/ru/articles/`
 - `/blog/ai-tools-for-designers-design-engineering-agents/` →
-  `/articles/ai-tools-for-designers-design-engineering-agents/`
+  `/ru/articles/ai-tools-for-designers-design-engineering-agents/`

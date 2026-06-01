@@ -27,7 +27,7 @@ export function ImportedArticle() {
       publishedAt={article.publishedAt}
       updatedAt={article.updatedAt}
       readingTime={article.readingTime}
-      backTo={article.lang === 'en' ? '/en/blog/' : '/blog/'}
+      backTo={article.lang === 'en' ? '/en/blog/' : '/ru/blog/'}
       heroImage={article.heroImage}
       tags={article.tags}
       section={article.lang === 'en' ? 'Blog' : 'Блог'}

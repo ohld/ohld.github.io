@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Footer } from '../components/Footer'
 import { trackNav } from '../analytics'
 import { absoluteUrl, SITE_DESCRIPTION } from '../site'
@@ -7,20 +7,22 @@ import { russianArticleItems, russianBlogItems } from '../blog'
 import { topicPath } from '../topics'
 
 const navItems = [
-  { path: '/blog', title: 'Блог', subtitle: 'Записи и рабочие заметки', items: russianBlogItems.slice(0, 3) },
-  { path: '/articles', title: 'Статьи', subtitle: 'Гайды, сравнения и туториалы', badge: 'NEW', items: russianArticleItems.slice(0, 2) },
+  { path: '/ru/blog/', title: 'Блог', subtitle: 'Записи и рабочие заметки', items: russianBlogItems.slice(0, 3) },
+  { path: '/ru/articles/', title: 'Статьи', subtitle: 'Гайды, сравнения и туториалы', badge: 'NEW', items: russianArticleItems.slice(0, 2) },
   { path: '/about', title: 'Обо мне', subtitle: 'Бэкграунд, опыт и ссылки' },
 ]
 
 export function Home() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const canonicalPath = location.pathname.startsWith('/ru') ? '/ru/' : '/'
   useDocumentMeta({
     title: 'Даниил Охлопков — AI-агенты, данные, TON и Telegram',
     description: SITE_DESCRIPTION,
-    canonical: absoluteUrl('/'),
+    canonical: absoluteUrl(canonicalPath),
     lang: 'ru',
     alternates: {
-      ru: absoluteUrl('/'),
+      ru: absoluteUrl('/ru/'),
       en: absoluteUrl('/en/'),
       'x-default': absoluteUrl('/'),
     },
@@ -97,7 +99,7 @@ export function Home() {
           <li><a href="/vtoroj-mozg-ai-assistent-obsidian-claude-code/">Second brain + Obsidian</a> — как хранить сырьё, решения и память проекта.</li>
           <li><a href="/luchshie-skills-mcp-claude-code-agent-browser/">Skills и MCP для Claude Code</a> — что ставить, а что не усложнять.</li>
           <li><a href="/ru/articles/ai-tools-for-designers-design-engineering-agents/">AI-инструменты для дизайнеров</a> — design engineering без generic UI-slop.</li>
-          <li><a href="/en/articles/hermes-agent-vs-openclaw/">Hermes Agent vs OpenClaw</a> — какой self-hosted AI agent выбрать после демо.</li>
+          <li><a href="/ru/articles/hermes-agent-vs-openclaw/">Hermes Agent vs OpenClaw</a> — какой self-hosted AI agent выбрать после демо.</li>
           <li><a href="/ru/blog/gstack-goal-office-hours-ai-workflow/">GStack, goal и office hours</a> — как вести длинную agent-задачу до результата.</li>
         </ul>
       </section>

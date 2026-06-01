@@ -25,7 +25,7 @@ reactions: 31
 
 **Я в отпуск — AI агенты работают за меня**
 
-Рассказал, как засетапил [GStack](/blog/gstack-goal-office-hours-ai-workflow/) + Paperclip. Застримил без купюр, как юзаю и дебажу этот AI-сетап.
+Рассказал, как засетапил [GStack](/ru/blog/gstack-goal-office-hours-ai-workflow/) + Paperclip. Застримил без купюр, как юзаю и дебажу этот AI-сетап.
 
 Видео: [youtu.be/E3P0a03mN8A](https://youtu.be/E3P0a03mN8A)
 
@@ -111,7 +111,7 @@ GStack полезен не потому, что “еще один агент”
 - что считать прогрессом;
 - где хранить результат.
 
-Именно поэтому связка с [office hours и goal loop](/blog/gstack-goal-office-hours-ai-workflow/) важнее очередного промпта “сделай лучше”.
+Именно поэтому связка с [office hours и goal loop](/ru/blog/gstack-goal-office-hours-ai-workflow/) важнее очередного промпта “сделай лучше”.
 
 ## Карта интентов
 
@@ -143,7 +143,7 @@ GStack полезен не потому, что “еще один агент”
 
 ## Читать ещё
 
-- [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
-- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
-- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
-- [Что попросить AI-агента сделать, когда очевидные задачи закончились](/blog/improve-codebase-architecture-prompt/)
+- [GStack, /goal и office hours: рабочий цикл для AI-агента](/ru/blog/gstack-goal-office-hours-ai-workflow/)
+- [AI-агенты: с чего начать в 2026](/ru/blog/ai-agents-s-chego-nachat/)
+- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
+- [Что попросить AI-агента сделать, когда очевидные задачи закончились](/ru/blog/improve-codebase-architecture-prompt/)

@@ -35,7 +35,7 @@ reactions: 49
 
 - [Claude Code: пост, с которого у меня начался кринжовый e/acc период](/claude-code-nastrojka-mcp-hooks-skills-2026/)
 - Флоу работы с AI coding agent: идея → спека → plan mode → новый чат без context rot
-- [Что кидать агенту, когда очевидные таски закончились: “почисти код, сделай лучше”](/blog/improve-codebase-architecture-prompt/)
+- [Что кидать агенту, когда очевидные таски закончились: “почисти код, сделай лучше”](/ru/blog/improve-codebase-architecture-prompt/)
 - [Промпты, которые улучшили мой опыт работы с AI агентами](/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/)
 - 21 неудобный вопрос для агента — проверка мышления поверх скорости кодинга
 - [Claude Code + Obsidian + голосовой ввод — всё, я в 2030](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
@@ -50,7 +50,7 @@ reactions: 49
 - [Self-hosted AI с @technotears: приватность, локальные модели и Doom голосом](https://www.youtube.com/watch?v=Fxw6IQuL36o)
 
 Если нужен самый короткий маршрут, я бы шел так:
-[Claude Code](/claude-code-nastrojka-mcp-hooks-skills-2026/) → рабочий флоу → [промпты для докрутки проекта](/blog/improve-codebase-architecture-prompt/) → [видос с реальным сетапом](https://youtu.be/E3P0a03mN8A).
+[Claude Code](/claude-code-nastrojka-mcp-hooks-skills-2026/) → рабочий флоу → [промпты для докрутки проекта](/ru/blog/improve-codebase-architecture-prompt/) → [видос с реальным сетапом](https://youtu.be/E3P0a03mN8A).
 
 О чем еще написать? Где больше всего непонятно: с чего начать, как промптить, как сетапить, как не утонуть в инструментах или как применять это в работе?
 
@@ -72,7 +72,7 @@ reactions: 49
 
 В чате также всплывает сильный practical angle: многие уже используют Claude Code, Codex, Cursor и локальные заметки, но знания остаются на уровне личных привычек. Один человек нашел удачную команду, второй собрал skill, третий понял, как экономить контекст, но все это быстро тонет в ленте. Поэтому сайт должен превращать такие находки в долговечные страницы и связывать их внутренними ссылками.
 
-Для этой страницы роль такая: входная развилка. Если человеку нужен setup, он идет в материалы про Claude Code. Если нужен выбор инструмента, идет в сравнение [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/). Если хочется улучшить уже собранный проект, идет в пост про [improve-codebase-architecture](/blog/improve-codebase-architecture-prompt/).
+Для этой страницы роль такая: входная развилка. Если человеку нужен setup, он идет в материалы про Claude Code. Если нужен выбор инструмента, идет в сравнение [Claude Code vs Codex](/ru/blog/claude-code-vs-codex-perehod/). Если хочется улучшить уже собранный проект, идет в пост про [improve-codebase-architecture](/ru/blog/improve-codebase-architecture-prompt/).
 
 ## Какие вопросы закрывает эта карта
 
@@ -87,8 +87,8 @@ reactions: 49
 
 ## Читать ещё
 
-- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
-- [Что попросить AI-агента сделать, когда задачи закончились](/blog/improve-codebase-architecture-prompt/)
+- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
+- [Что попросить AI-агента сделать, когда задачи закончились](/ru/blog/improve-codebase-architecture-prompt/)
 - [Второй мозг: Obsidian и Claude Code](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
 - [Промпты, которые улучшили опыт работы с AI-агентами](/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/)
-- [AI-инструменты для дизайнеров: design engineering и агенты](/articles/ai-tools-for-designers-design-engineering-agents/)
+- [AI-инструменты для дизайнеров: design engineering и агенты](/ru/articles/ai-tools-for-designers-design-engineering-agents/)

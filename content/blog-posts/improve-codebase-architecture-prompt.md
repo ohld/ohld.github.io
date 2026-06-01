@@ -56,7 +56,7 @@ AI-агент без рамки выбирает самое доступное: 
 4. Выбрать один маленький первый шаг.
 5. После правки прогнать тесты, сборку и отдельное ревью свежим агентом.
 
-Это тот же принцип, что в моем цикле [GStack, `/goal` и office hours](/blog/gstack-goal-office-hours-ai-workflow/): сначала сузить задачу, потом выполнять, потом ревьюить. Если смешать всё в один чат, агент быстро начинает рационализировать собственный diff.
+Это тот же принцип, что в моем цикле [GStack, `/goal` и office hours](/ru/blog/gstack-goal-office-hours-ai-workflow/): сначала сузить задачу, потом выполнять, потом ревьюить. Если смешать всё в один чат, агент быстро начинает рационализировать собственный diff.
 
 ## Более сильный промпт
 
@@ -103,7 +103,7 @@ AI-агент без рамки выбирает самое доступное: 
 - опасные flows закрывать тестами;
 - решения и ограничения сохранять в памяти проекта, а не в бесконечной переписке.
 
-Я про это же писал в статье про [AI-сетап 2026](/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/): нормальный агентский workflow — это не “один суперпромпт”, а петля “контекст → действие → проверка → память”. А в разборе про [AI-агентов на проекте во время отпуска](/blog/business-on-ai-agent-claude-code-paperclip-gstack/) главный вывод был ещё проще: автономность без ревью быстро превращается в “починил баг, создал новый баг”.
+Я про это же писал в статье про [AI-сетап 2026](/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/): нормальный агентский workflow — это не “один суперпромпт”, а петля “контекст → действие → проверка → память”. А в разборе про [AI-агентов на проекте во время отпуска](/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/) главный вывод был ещё проще: автономность без ревью быстро превращается в “починил баг, создал новый баг”.
 
 Для `okhlopkov.com` это особенно чувствительно. Если агент просто начнет генерировать страницы, сайт быстро станет мусоркой. Поэтому перед масштабированием нужны ревью-циклы: где `blog`, где `articles`, где canonical URL, где internal links, где sitemap, где noindex.
 
@@ -120,10 +120,10 @@ AI-агент без рамки выбирает самое доступное: 
 
 ## Читать ещё
 
-- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
-- [Мой AI-сетап 2026: Claude Code, Cursor, Ghostty, Spokenly и база всех чатов](/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/)
-- [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
+- [AI-агенты: с чего начать в 2026](/ru/blog/ai-agents-s-chego-nachat/)
+- [Мой AI-сетап 2026: Claude Code, Cursor, Ghostty, Spokenly и база всех чатов](/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/)
+- [GStack, /goal и office hours: рабочий цикл для AI-агента](/ru/blog/gstack-goal-office-hours-ai-workflow/)
 - [Claude Code + Codex: двойное ревью AI-агентов](/claude-codex-dual-review/)
 - [Мой сетап Claude Code после 4 месяцев ежедневной работы](/claude-code-nastrojka-mcp-hooks-skills-2026/)
 - [Лучшие skills и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/)
-- [AI-инструменты для дизайнеров: design engineering и агенты](/articles/ai-tools-for-designers-design-engineering-agents/)
+- [AI-инструменты для дизайнеров: design engineering и агенты](/ru/articles/ai-tools-for-designers-design-engineering-agents/)

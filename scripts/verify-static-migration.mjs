@@ -218,12 +218,12 @@ const redirects = [
   ['/author/okhlopkov/', '/about/'],
   ['/projects/', '/about/'],
   ['/tag/second-brain/', '/vtoroj-mozg-ai-assistent-obsidian-claude-code/'],
-  ['/tag/ai-agents/', '/articles/'],
-  ['/tag/telegram/', '/blog/'],
-  ['/tag/ai/', '/articles/'],
-  ['/tag/analytics/', '/blog/'],
-  ['/tag/claude-code/', '/articles/'],
-  ['/tag/crypto/', '/blog/'],
+  ['/tag/ai-agents/', '/ru/articles/'],
+  ['/tag/telegram/', '/ru/blog/'],
+  ['/tag/ai/', '/ru/articles/'],
+  ['/tag/analytics/', '/ru/blog/'],
+  ['/tag/claude-code/', '/ru/articles/'],
+  ['/tag/crypto/', '/ru/blog/'],
   ['/tag/dokku/', '/cloudflare-certificates-dokku/'],
   ['/tag/parsing/', '/how-to-get-a-telegram-channel-subscribers-list-in-python/'],
   ['/tag/telegram-cn/', '/en/'],
@@ -231,7 +231,7 @@ const redirects = [
   ['/tag/web-scraping/', '/web-scraping-ai-agents-2026/'],
   ['/cn/', '/en/'],
   ['/my-tg-bots/', '/about/'],
-  ['/vibe-coding-guide-2026/', '/articles/'],
+  ['/vibe-coding-guide-2026/', '/ru/articles/'],
 ]
 for (const redirect of loadLegacyRedirects()) {
   redirects.push([
@@ -902,7 +902,8 @@ async function verifyCrawlerFiles() {
   const llms = await llmsRes.text()
   assert(llms.includes(siteUrl), '/llms.txt: missing canonical site URL')
   assert(llms.includes('## Контент'), '/llms.txt: missing content section')
-  assert(llms.includes(`${siteUrl}/blog.md`), '/llms.txt: missing blog markdown link')
+  assert(llms.includes(`${siteUrl}/ru-blog.md`), '/llms.txt: missing RU blog markdown link')
+  assert(llms.includes(`${siteUrl}/ru-articles.md`), '/llms.txt: missing RU articles markdown link')
   assert(llms.includes(`${siteUrl}/blog-ai-agents-s-chego-nachat.md`), '/llms.txt: missing generated blog markdown link')
   assert(llms.includes(`${siteUrl}/privacy.md`), '/llms.txt: missing privacy markdown link')
 

@@ -147,7 +147,7 @@ Telegram Mini App — идеальный маленький полигон:
 
 ## Читать ещё
 
-- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
-- [Мой AI-сетап 2026: Claude Code, Cursor, Ghostty, Spokenly](/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/)
-- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
-- [Что попросить AI-агента сделать, когда очевидные задачи закончились](/blog/improve-codebase-architecture-prompt/)
+- [AI-агенты: с чего начать в 2026](/ru/blog/ai-agents-s-chego-nachat/)
+- [Мой AI-сетап 2026: Claude Code, Cursor, Ghostty, Spokenly](/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/)
+- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
+- [Что попросить AI-агента сделать, когда очевидные задачи закончились](/ru/blog/improve-codebase-architecture-prompt/)

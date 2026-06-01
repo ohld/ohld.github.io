@@ -112,7 +112,7 @@ export const englishBlogItems: BlogListItem[] = [
 ]
 
 export function blogPath(slug: string) {
-  return `/blog/${slug}/`
+  return `/ru/blog/${slug}/`
 }
 
 export function articlePath(slug: string, lang = 'ru') {
