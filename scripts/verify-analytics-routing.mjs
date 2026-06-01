@@ -364,7 +364,7 @@ async function run(baseUrl) {
   await installAnalyticsMocks(context)
 
   const page = await context.newPage()
-  const expectedPaths = ['/', '/blog/', '/articles/', '/about/']
+  const expectedPaths = ['/', '/ru/blog/', '/ru/articles/', '/about/']
 
   await page.goto(`${baseUrl}/?utm_source=codex&tgWebAppData=secret#tgWebAppData=secret`, {
     waitUntil: 'domcontentloaded',
@@ -373,8 +373,8 @@ async function run(baseUrl) {
   await waitForPageView(page, '/')
   await waitForMetrikaHit(page, '/')
 
-  await clickHeaderLink(page, '/blog', '/blog')
-  await clickHeaderLink(page, '/articles', '/articles')
+  await clickHeaderLink(page, '/ru/blog/', '/ru/blog/')
+  await clickHeaderLink(page, '/ru/articles/', '/ru/articles/')
   await clickHeaderLink(page, '/about', '/about')
   await page.waitForTimeout(250)
 
