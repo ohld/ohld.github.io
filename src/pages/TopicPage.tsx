@@ -11,7 +11,7 @@ export function TopicPage() {
   const topic = getTopic(slug)
   const items = getTopicItems(slug)
 
-  if (!topic) return <Navigate to="/articles/" replace />
+  if (!topic) return <Navigate to="/ru/articles/" replace />
 
   useDocumentMeta({
     title: `${topic.title} — Даниил Охлопков`,
@@ -35,7 +35,7 @@ export function TopicPage() {
       <main className="blog-list" aria-label={`Материалы по теме ${topic.title}`}>
         {!items.length && (
           <article className="blog-card blog-card-no-thumb">
-            <a className="blog-card-hitarea" href="/articles/" aria-label="Статьи и туториалы" />
+            <a className="blog-card-hitarea" href="/ru/articles/" aria-label="Статьи и туториалы" />
             <div className="blog-card-body">
               <h2>Статьи и туториалы</h2>
               <p>Пока отдельного хаба нет, ближайшие материалы лежат в общем разделе статей.</p>

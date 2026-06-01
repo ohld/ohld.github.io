@@ -1,7 +1,7 @@
 # Article Components And Blog Formatting
 
-This is the first formatting contract for future `/blog/` posts and
-`/articles/` SEO pages on `okhlopkov.com`.
+This is the formatting contract for future language-prefixed blog posts and
+SEO pages on `okhlopkov.com`.
 
 ## Goals
 
@@ -13,9 +13,9 @@ This is the first formatting contract for future `/blog/` posts and
 
 ## URL Shape
 
-- Telegram-derived posts: `/blog/<semantic-slug>/`
-- SEO tutorials/comparisons/source-pack pages: `/articles/<semantic-slug>/`
-- English index pages: `/en/blog/`, `/en/articles/`
+- Russian Telegram-derived posts: `/ru/blog/<semantic-slug>/`
+- Russian SEO tutorials/comparisons/source-pack pages: `/ru/articles/<semantic-slug>/`
+- English equivalents: `/en/blog/<semantic-slug>/`, `/en/articles/<semantic-slug>/`
 - Do not create source-based URL buckets like `/video/`, `/telegram/`, `/notes/`.
   Source type belongs in metadata, not in the URL architecture.
 - Content is RU-first. Translate only selected winning pages when there is a real
@@ -31,7 +31,7 @@ This is the first formatting contract for future `/blog/` posts and
 5. Main body with semantic `<h2>`/`<h3>` sections.
 6. Source pack section: YouTube, Telegram posts, transcripts, docs, tools.
 7. Optional community insights section from Telegram chat discussion.
-8. Related internal links: `/articles/`, tool pages, comparisons, blog posts.
+8. Related internal links: `/ru/articles/`, tool pages, comparisons, blog posts.
 9. FAQ/AEO block when the query has clear direct questions.
 
 ## Telegram Post Preservation

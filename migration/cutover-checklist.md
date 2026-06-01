@@ -52,9 +52,9 @@ This is the operational checklist for replacing the current Ghost/Coolify
    - `/en/blog/`
    - `/en/articles/`
    - `/en/about/`
-   - `/blog/`
-   - `/articles/`
-   - `/articles/ai-tools-for-designers-design-engineering-agents/`
+   - `/ru/blog/`
+   - `/ru/articles/`
+   - `/ru/articles/ai-tools-for-designers-design-engineering-agents/`
    - `/articles/markdown-vs-html/`
    - `/about/`
 5. Every URL in `migration/backlink-critical-urls.csv` returns the same URL with

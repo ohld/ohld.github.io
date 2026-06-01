@@ -23,9 +23,9 @@ reactions: 58
 
 ## Что я вижу в компаниях
 
-Как приехал в Москву, стал нетворкать с несколькими большими IT компаниями о том, как там проходит «[AI трансформация](/blog/ai-agents-s-chego-nachat/)».
+Как приехал в Москву, стал нетворкать с несколькими большими IT компаниями о том, как там проходит «[AI трансформация](/ru/blog/ai-agents-s-chego-nachat/)».
 
-Сотрудникам рефандят траты на клод [(!)](/blog/claude-code-vs-codex-perehod/). Лучшие сотрудники оцифровывают себя в скилы, но весь их контекст находятся локально на компах. И каждому приходится Баден-Баден объяснять одно и то же.
+Сотрудникам рефандят траты на клод [(!)](/ru/blog/claude-code-vs-codex-perehod/). Лучшие сотрудники оцифровывают себя в скилы, но весь их контекст находятся локально на компах. И каждому приходится Баден-Баден объяснять одно и то же.
 
 Чей-то перформанс вырос, чей-то нет. Опытные вайбкодеры уже понимают, что если AI нагенерил не то — проблема в тебе.
 
@@ -92,7 +92,7 @@ reactions: 58
 
 ## Читать ещё
 
-- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
-- [Claude Code vs Codex: почему я перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
-- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
+- [AI-агенты: с чего начать в 2026](/ru/blog/ai-agents-s-chego-nachat/)
+- [Claude Code vs Codex: почему я перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
+- [GStack, /goal и office hours](/ru/blog/gstack-goal-office-hours-ai-workflow/)
 - [Второй мозг: Obsidian и Claude Code](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)

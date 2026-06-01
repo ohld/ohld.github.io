@@ -3,6 +3,7 @@ import {
   generatedEnglishBlogItems,
   generatedRussianArticleItems,
   generatedRussianBlogItems,
+  generatedArticlePath,
 } from './generatedBlogPosts'
 import { importedArticleListItems } from './importedArticles'
 
@@ -111,11 +112,11 @@ export const englishBlogItems: BlogListItem[] = [
 ]
 
 export function blogPath(slug: string) {
-  return `/blog/${slug}/`
+  return `/ru/blog/${slug}/`
 }
 
 export function articlePath(slug: string, lang = 'ru') {
-  return lang === 'en' ? `/en/articles/${slug}/` : `/articles/${slug}/`
+  return generatedArticlePath(slug, lang)
 }
 
 export function getBlogArticle(slug: string | undefined) {

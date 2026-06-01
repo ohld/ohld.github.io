@@ -36,9 +36,9 @@ const LEGACY_REDIRECTS = readJsonFile(LEGACY_REDIRECTS_PATH, [])
 
 const NAV_LINKS_BY_SHELL_LANG = {
   ru: [
-    ['/', 'Главная'],
-    ['/blog/', 'Блог'],
-    ['/articles/', 'Статьи'],
+    ['/ru/', 'Главная'],
+    ['/ru/blog/', 'Блог'],
+    ['/ru/articles/', 'Статьи'],
     ['/about/', 'Обо мне'],
     ['/en/', 'English'],
     ['/privacy/', 'Privacy'],
@@ -167,12 +167,12 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 ## Разделы
 
-- [Блог](/blog/) — записи и рабочие заметки.
-  - [AI-трансформация в компании: общий контекст, skills и GBrain](/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/)
-  - [GStack, /goal и office hours: рабочий цикл для AI-агента](/blog/gstack-goal-office-hours-ai-workflow/)
-  - [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
-- [Статьи](/articles/) — гайды, сравнения, туториалы и материалы из собранных источников.
-  - [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/articles/ai-tools-for-designers-design-engineering-agents/)
+- [Блог](/ru/blog/) — записи и рабочие заметки.
+  - [AI-трансформация в компании: общий контекст, skills и GBrain](/ru/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/)
+  - [GStack, /goal и office hours: рабочий цикл для AI-агента](/ru/blog/gstack-goal-office-hours-ai-workflow/)
+  - [Claude Code vs Codex: почему я на две недели перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
+- [Статьи](/ru/articles/) — гайды, сравнения, туториалы и материалы из собранных источников.
+  - [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/ru/articles/ai-tools-for-designers-design-engineering-agents/)
   - [Markdown vs HTML для AI-агентов](/articles/markdown-vs-html/)
 - [Обо мне](/about/) — бэкграунд, опыт и ссылки.
 
@@ -183,7 +183,7 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 несколько месяцев ежедневной работы. Если агент начинает забывать контекст,
 откройте разбор [Claude Code compaction](/claude-code-compaction-kak-rabotaet/).
 Если нужно понять, когда брать Codex, а когда Claude Code, смотрите
-[переход на Codex](/blog/claude-code-vs-codex-perehod/).
+[переход на Codex](/ru/blog/claude-code-vs-codex-perehod/).
 
 Рабочая схема простая: \`AGENTS.md\` или \`CLAUDE.md\` держит постоянные правила
 проекта, skills хранят повторяемые процедуры, MCP подключает живые данные и
@@ -196,9 +196,9 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 - [Web scraping AI agents](/web-scraping-ai-agents-2026/) — когда браузерный агент лучше старого парсера.
 - [Second brain + Obsidian](/vtoroj-mozg-ai-assistent-obsidian-claude-code/) — как хранить сырьё, решения и память проекта.
 - [Skills и MCP для Claude Code](/luchshie-skills-mcp-claude-code-agent-browser/) — что ставить, а что не усложнять.
-- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering без generic UI-slop.
-- [Hermes Agent vs OpenClaw](/articles/hermes-agent-vs-openclaw/) — какой self-hosted AI agent выбрать после демо.
-- [GStack, goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/) — как вести длинную agent-задачу до результата.
+- [AI-инструменты для дизайнеров](/ru/articles/ai-tools-for-designers-design-engineering-agents/) — design engineering без generic UI-slop.
+- [Hermes Agent vs OpenClaw](/ru/articles/hermes-agent-vs-openclaw/) — какой self-hosted AI agent выбрать после демо.
+- [GStack, goal и office hours](/ru/blog/gstack-goal-office-hours-ai-workflow/) — как вести длинную agent-задачу до результата.
 
 ## Карта терминов без маркетинга
 
@@ -357,8 +357,12 @@ function loadGeneratedMarkdownEntries(dir) {
 const GENERATED_BLOG_POSTS = loadGeneratedMarkdownEntries(BLOG_POSTS_DIR)
 const GENERATED_SEO_ARTICLES = loadGeneratedMarkdownEntries(SEO_ARTICLES_DIR)
 
+function generatedBlogPath(post) {
+  return post.lang === 'en' ? `/en/blog/${post.slug}` : `/ru/blog/${post.slug}`
+}
+
 function generatedArticlePath(article) {
-  return article.lang === 'en' ? `/en/articles/${article.slug}` : `/articles/${article.slug}`
+  return article.lang === 'en' ? `/en/articles/${article.slug}` : `/ru/articles/${article.slug}`
 }
 
 function loadImportedArticleRows() {
@@ -412,13 +416,13 @@ function topicMarkdown(title, description) {
 
 ## Материалы
 
-- [Блог](/blog/) — записи и рабочие заметки.
-- [Статьи](/articles/) — гайды, сравнения и туториалы.
-- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
-- [GStack, /goal и office hours](/blog/gstack-goal-office-hours-ai-workflow/)
-- [Claude Code vs Codex](/blog/claude-code-vs-codex-perehod/)
-- [Hermes Agent vs OpenClaw](/articles/hermes-agent-vs-openclaw/)
-- [AI-инструменты для дизайнеров](/articles/ai-tools-for-designers-design-engineering-agents/)
+- [Блог](/ru/blog/) — записи и рабочие заметки.
+- [Статьи](/ru/articles/) — гайды, сравнения и туториалы.
+- [AI-агенты: с чего начать в 2026](/ru/blog/ai-agents-s-chego-nachat/)
+- [GStack, /goal и office hours](/ru/blog/gstack-goal-office-hours-ai-workflow/)
+- [Claude Code vs Codex](/ru/blog/claude-code-vs-codex-perehod/)
+- [Hermes Agent vs OpenClaw](/ru/articles/hermes-agent-vs-openclaw/)
+- [AI-инструменты для дизайнеров](/ru/articles/ai-tools-for-designers-design-engineering-agents/)
 
 ## Смежные темы
 
@@ -428,13 +432,37 @@ function topicMarkdown(title, description) {
 
 const ROUTES = [
   {
+    path: '/',
+    slug: 'home',
+    title: 'Даниил Охлопков — AI-агенты, данные, TON и Telegram',
+    description: 'Практические разборы AI-агентов, Claude Code, Codex, MCP, TON-аналитики и Telegram-автоматизаций от Даниила Охлопкова.',
+    alternates: {
+      ru: `${SITE_URL}/ru/`,
+      en: `${SITE_URL}/en/`,
+      'x-default': `${SITE_URL}/`,
+    },
+    markdown: HOME_FALLBACK_MD,
+  },
+  {
+    path: '/ru',
+    slug: 'ru',
+    title: 'Даниил Охлопков — AI-агенты, данные, TON и Telegram',
+    description: 'Практические разборы AI-агентов, Claude Code, Codex, MCP, TON-аналитики и Telegram-автоматизаций от Даниила Охлопкова.',
+    alternates: {
+      ru: `${SITE_URL}/ru/`,
+      en: `${SITE_URL}/en/`,
+      'x-default': `${SITE_URL}/`,
+    },
+    markdown: HOME_FALLBACK_MD,
+  },
+  {
     path: '/en',
     slug: 'en',
     title: 'Daniil Okhlopkov — AI agents, data, TON and Telegram',
     description: 'Practical notes on AI agents, Codex, Claude Code, MCP, TON analytics and Telegram automation by Daniil Okhlopkov.',
     lang: 'en',
     alternates: {
-      ru: `${SITE_URL}/`,
+      ru: `${SITE_URL}/ru/`,
       en: `${SITE_URL}/en/`,
       'x-default': `${SITE_URL}/`,
     },
@@ -470,20 +498,20 @@ const ROUTES = [
     description: 'English blog posts and preserved notes by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP, data and Telegram.',
     lang: 'en',
     alternates: {
-      ru: `${SITE_URL}/blog/`,
+      ru: `${SITE_URL}/ru/blog/`,
       en: `${SITE_URL}/en/blog/`,
-      'x-default': `${SITE_URL}/blog/`,
+      'x-default': `${SITE_URL}/ru/blog/`,
     },
   },
   {
-    path: '/blog',
-    slug: 'blog',
+    path: '/ru/blog',
+    slug: 'ru-blog',
     title: 'Блог — Даниил Охлопков',
     description: 'Рабочие заметки Даниила Охлопкова про AI-агентов, Claude Code, Codex, MCP, GBrain, Telegram-автоматизацию и реальные agent workflows.',
     alternates: {
-      ru: `${SITE_URL}/blog/`,
+      ru: `${SITE_URL}/ru/blog/`,
       en: `${SITE_URL}/en/blog/`,
-      'x-default': `${SITE_URL}/blog/`,
+      'x-default': `${SITE_URL}/ru/blog/`,
     },
   },
   {
@@ -493,25 +521,25 @@ const ROUTES = [
     description: 'English tutorials and evergreen explainers by Daniil Okhlopkov about AI agents, Claude Code, Codex, MCP and automation.',
     lang: 'en',
     alternates: {
-      ru: `${SITE_URL}/articles/`,
+      ru: `${SITE_URL}/ru/articles/`,
       en: `${SITE_URL}/en/articles/`,
-      'x-default': `${SITE_URL}/articles/`,
+      'x-default': `${SITE_URL}/ru/articles/`,
     },
   },
   {
-    path: '/articles',
-    slug: 'articles',
+    path: '/ru/articles',
+    slug: 'ru-articles',
     title: 'Статьи — Даниил Охлопков',
     description: 'Гайды и сравнения Даниила Охлопкова про AI-агентов, OpenClaw, Hermes Agent, Claude Code, Codex, MCP, design engineering и Telegram workflows.',
     alternates: {
-      ru: `${SITE_URL}/articles/`,
+      ru: `${SITE_URL}/ru/articles/`,
       en: `${SITE_URL}/en/articles/`,
-      'x-default': `${SITE_URL}/articles/`,
+      'x-default': `${SITE_URL}/ru/articles/`,
     },
   },
   {
-    path: '/articles/ai-tools-for-designers-design-engineering-agents',
-    slug: 'articles-ai-tools-for-designers-design-engineering-agents',
+    path: '/ru/articles/ai-tools-for-designers-design-engineering-agents',
+    slug: 'ru-articles-ai-tools-for-designers-design-engineering-agents',
     title: 'AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code',
     description: 'Разбор стрима про design engineering: как дизайнерам работать с AI-агентами, почему появляется AI-slop, зачем нужны design tokens, Paper, Mobbin MCP и хороший контекст для Codex/Claude Code.',
     publishedAt: '2026-05-25',
@@ -560,14 +588,14 @@ const ROUTES = [
 for (const post of GENERATED_BLOG_POSTS) {
   const postLang = post.lang || 'ru'
   ROUTES.push({
-    path: `/blog/${post.slug}`,
+    path: generatedBlogPath(post),
     slug: `blog-${post.slug}`,
     title: post.title,
     description: post.description,
     lang: postLang,
     alternates: {
-      [postLang]: `${SITE_URL}/blog/${post.slug}/`,
-      'x-default': `${SITE_URL}/blog/${post.slug}/`,
+      [postLang]: `${SITE_URL}${generatedBlogPath(post)}/`,
+      'x-default': `${SITE_URL}${generatedBlogPath(post)}/`,
     },
     kind: 'generated-blog-post',
     publishedAt: post.publishedAt,
@@ -756,6 +784,7 @@ function isArticleRoute(route) {
     || route.kind === 'article-page'
     || route.slug === 'markdown-vs-html'
     || route.slug === 'articles-ai-tools-for-designers-design-engineering-agents'
+    || route.slug === 'ru-articles-ai-tools-for-designers-design-engineering-agents'
 }
 
 function routeArticleText(route) {
@@ -1034,12 +1063,12 @@ const SCHEMA_BY_SLUG = {
     url: `${SITE_URL}/en/about/`,
     inLanguage: 'en',
   }),
-  blog: (r) => ({
+  'ru-blog': (r) => ({
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Блог — Даниил Охлопков',
     description: r.description,
-    url: `${SITE_URL}/blog/`,
+    url: `${SITE_URL}/ru/blog/`,
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: ['AI agents', 'Design engineering', 'Claude Code', 'Codex', 'MCP'],
     inLanguage: 'ru',
@@ -1054,12 +1083,12 @@ const SCHEMA_BY_SLUG = {
     about: ['AI agents', 'Claude Code', 'Codex', 'MCP', 'Telegram'],
     inLanguage: 'en',
   }),
-  articles: (r) => ({
+  'ru-articles': (r) => ({
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Статьи — Даниил Охлопков',
     description: r.description,
-    url: `${SITE_URL}/articles/`,
+    url: `${SITE_URL}/ru/articles/`,
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: ['AI agents', 'Claude Code', 'Codex', 'OpenClaw', 'MCP', 'AI tools'],
     inLanguage: 'ru',
@@ -1075,6 +1104,16 @@ const SCHEMA_BY_SLUG = {
     inLanguage: 'en',
   }),
   'articles-ai-tools-for-designers-design-engineering-agents': (r) => articleSchema(r, {
+    video: {
+      '@type': 'VideoObject',
+      name: 'ИИ не вывозит норм дизайн или это skill issue? | Подкаст «Мой AI сетап»',
+      thumbnailUrl: ['https://i.ytimg.com/vi/fIEMOzz0_AI/maxresdefault.jpg'],
+      uploadDate: '2026-05-21',
+      embedUrl: 'https://www.youtube.com/embed/fIEMOzz0_AI',
+      url: 'https://www.youtube.com/watch?v=fIEMOzz0_AI',
+    },
+  }),
+  'ru-articles-ai-tools-for-designers-design-engineering-agents': (r) => articleSchema(r, {
     video: {
       '@type': 'VideoObject',
       name: 'ИИ не вывозит норм дизайн или это skill issue? | Подкаст «Мой AI сетап»',
@@ -1115,9 +1154,10 @@ const BREADCRUMBS_BY_SLUG = {
   'en-articles': [['Home', `${SITE_URL}/en/`], ['Articles', `${SITE_URL}/en/articles/`]],
   'en-about': [['Home', `${SITE_URL}/en/`], ['About', `${SITE_URL}/en/about/`]],
   'about': [['Главная', `${SITE_URL}/`], ['Обо мне', `${SITE_URL}/about/`]],
-  'blog': [['Главная', `${SITE_URL}/`], ['Блог', `${SITE_URL}/blog/`]],
-  'articles': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`]],
+  'ru-blog': [['Главная', `${SITE_URL}/ru/`], ['Блог', `${SITE_URL}/ru/blog/`]],
+  'ru-articles': [['Главная', `${SITE_URL}/ru/`], ['Статьи', `${SITE_URL}/ru/articles/`]],
   'articles-ai-tools-for-designers-design-engineering-agents': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['AI-инструменты для дизайнеров', `${SITE_URL}/articles/ai-tools-for-designers-design-engineering-agents/`]],
+  'ru-articles-ai-tools-for-designers-design-engineering-agents': [['Главная', `${SITE_URL}/ru/`], ['Статьи', `${SITE_URL}/ru/articles/`], ['AI-инструменты для дизайнеров', `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`]],
   'private-channel': [['Главная', `${SITE_URL}/`], ['Закрытый канал', `${SITE_URL}/private-channel/`]],
   'markdown-vs-html': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['Markdown vs HTML', `${SITE_URL}/articles/markdown-vs-html/`]],
   'privacy': [['Home', `${SITE_URL}/`], ['Privacy Policy', `${SITE_URL}/privacy/`]],
@@ -1125,13 +1165,13 @@ const BREADCRUMBS_BY_SLUG = {
 
 function buildBreadcrumb(route) {
   const items = route.kind === 'generated-blog-post'
-    ? [['Главная', `${SITE_URL}/`], ['Блог', `${SITE_URL}/blog/`], [route.title, `${SITE_URL}${route.path}/`]]
+    ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/ru/'}`], [route.lang === 'en' ? 'Blog' : 'Блог', `${SITE_URL}${route.lang === 'en' ? '/en/blog/' : '/ru/blog/'}`], [route.title, `${SITE_URL}${route.path}/`]]
     : route.kind === 'generated-article-post'
-      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
+      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/ru/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/ru/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
     : route.kind === 'article-page'
-      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
+      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/ru/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/ru/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
     : route.kind === 'topic-page'
-      ? [['Главная', `${SITE_URL}/`], ['Темы', `${SITE_URL}/articles/`], [route.topicTitle || route.title, `${SITE_URL}${route.path}/`]]
+      ? [['Главная', `${SITE_URL}/ru/`], ['Темы', `${SITE_URL}/ru/articles/`], [route.topicTitle || route.title, `${SITE_URL}${route.path}/`]]
     : BREADCRUMBS_BY_SLUG[route.slug]
   if (!items) return null
   return {
@@ -1168,7 +1208,7 @@ function rewrite(html, route) {
   const { path: routePath, slug, title, description } = route
   // Trailing slash = canonical form on GitHub Pages (served as 200 directly;
   // non-slash variant 301-redirects). Must match sitemap.xml.
-  const url = `${SITE_URL}${routePath}/`
+  const url = routePath === '/' ? `${SITE_URL}/` : `${SITE_URL}${routePath}/`
   const mdHref = `/${slug}.md`
   const isNoindex = route.robots?.startsWith('noindex')
   const lang = route.lang || 'ru'
@@ -1307,23 +1347,22 @@ for (const route of ROUTES) {
 // SPA-side React Router also handles these via <Navigate> for in-app nav.
 const REDIRECTS = [
   { from: '/closed', fromSlug: 'closed', to: '/private-channel/', toSlug: 'private-channel' },
-  { from: '/ru', fromSlug: 'ru', to: '/', toSlug: 'home' },
   { from: '/work-together', fromSlug: 'work-together', to: '/about/', toSlug: 'about' },
   { from: '/markdown-vs-html', fromSlug: 'markdown-vs-html-old', to: '/articles/markdown-vs-html/', toSlug: 'markdown-vs-html' },
-  { from: '/posts', fromSlug: 'posts', to: '/blog/', toSlug: 'blog' },
-  { from: '/ai-agents', fromSlug: 'ai-agents', to: '/articles/', toSlug: 'articles' },
-  { from: '/ai-course', fromSlug: 'ai-course', to: '/articles/', toSlug: 'articles' },
-  { from: '/blog/ai-tools-for-designers-design-engineering-agents', fromSlug: 'blog-ai-tools-for-designers-design-engineering-agents', to: '/articles/ai-tools-for-designers-design-engineering-agents/', toSlug: 'articles-ai-tools-for-designers-design-engineering-agents' },
-  { from: '/blog/hermes-agent-vs-openclaw', fromSlug: 'blog-hermes-agent-vs-openclaw', to: '/articles/hermes-agent-vs-openclaw/', toSlug: 'article-hermes-agent-vs-openclaw' },
+  { from: '/posts', fromSlug: 'posts', to: '/ru/blog/', toSlug: 'ru-blog' },
+  { from: '/ai-agents', fromSlug: 'ai-agents', to: '/ru/articles/', toSlug: 'ru-articles' },
+  { from: '/ai-course', fromSlug: 'ai-course', to: '/ru/articles/', toSlug: 'ru-articles' },
+  { from: '/blog/ai-tools-for-designers-design-engineering-agents', fromSlug: 'blog-ai-tools-for-designers-design-engineering-agents', to: '/ru/articles/ai-tools-for-designers-design-engineering-agents/', toSlug: 'ru-articles-ai-tools-for-designers-design-engineering-agents' },
+  { from: '/blog/hermes-agent-vs-openclaw', fromSlug: 'blog-hermes-agent-vs-openclaw', to: '/ru/articles/hermes-agent-vs-openclaw/', toSlug: 'article-hermes-agent-vs-openclaw' },
   { from: '/author/okhlopkov', fromSlug: 'author-okhlopkov', to: '/about/', toSlug: 'about' },
   { from: '/projects', fromSlug: 'projects', to: '/about/', toSlug: 'about' },
   { from: '/tag/second-brain', fromSlug: 'tag-second-brain', to: '/vtoroj-mozg-ai-assistent-obsidian-claude-code/', toSlug: 'vtoroj-mozg-ai-assistent-obsidian-claude-code' },
-  { from: '/tag/ai-agents', fromSlug: 'tag-ai-agents', to: '/articles/', toSlug: 'articles' },
-  { from: '/tag/telegram', fromSlug: 'tag-telegram', to: '/blog/', toSlug: 'blog' },
-  { from: '/tag/ai', fromSlug: 'tag-ai', to: '/articles/', toSlug: 'articles' },
-  { from: '/tag/analytics', fromSlug: 'tag-analytics', to: '/blog/', toSlug: 'blog' },
-  { from: '/tag/claude-code', fromSlug: 'tag-claude-code', to: '/articles/', toSlug: 'articles' },
-  { from: '/tag/crypto', fromSlug: 'tag-crypto', to: '/blog/', toSlug: 'blog' },
+  { from: '/tag/ai-agents', fromSlug: 'tag-ai-agents', to: '/ru/articles/', toSlug: 'ru-articles' },
+  { from: '/tag/telegram', fromSlug: 'tag-telegram', to: '/ru/blog/', toSlug: 'ru-blog' },
+  { from: '/tag/ai', fromSlug: 'tag-ai', to: '/ru/articles/', toSlug: 'ru-articles' },
+  { from: '/tag/analytics', fromSlug: 'tag-analytics', to: '/ru/blog/', toSlug: 'ru-blog' },
+  { from: '/tag/claude-code', fromSlug: 'tag-claude-code', to: '/ru/articles/', toSlug: 'ru-articles' },
+  { from: '/tag/crypto', fromSlug: 'tag-crypto', to: '/ru/blog/', toSlug: 'ru-blog' },
   { from: '/tag/dokku', fromSlug: 'tag-dokku', to: '/cloudflare-certificates-dokku/', toSlug: 'cloudflare-certificates-dokku' },
   { from: '/tag/parsing', fromSlug: 'tag-parsing', to: '/how-to-get-a-telegram-channel-subscribers-list-in-python/', toSlug: 'how-to-get-a-telegram-channel-subscribers-list-in-python' },
   { from: '/tag/telegram-cn', fromSlug: 'tag-telegram-cn', to: '/en/', toSlug: 'en' },
@@ -1331,8 +1370,38 @@ const REDIRECTS = [
   { from: '/tag/web-scraping', fromSlug: 'tag-web-scraping', to: '/web-scraping-ai-agents-2026/', toSlug: 'web-scraping-ai-agents-2026' },
   { from: '/cn', fromSlug: 'cn', to: '/en/', toSlug: 'en' },
   { from: '/my-tg-bots', fromSlug: 'my-tg-bots', to: '/about/', toSlug: 'about' },
-  { from: '/vibe-coding-guide-2026', fromSlug: 'vibe-coding-guide-2026', to: '/articles/', toSlug: 'articles' },
+  { from: '/vibe-coding-guide-2026', fromSlug: 'vibe-coding-guide-2026', to: '/ru/articles/', toSlug: 'ru-articles' },
 ]
+for (const post of GENERATED_BLOG_POSTS) {
+  const to = `${generatedBlogPath(post)}/`
+  const from = `/blog/${post.slug}`
+  if (from !== to.replace(/\/+$/, '')) {
+    REDIRECTS.push({
+      from,
+      fromSlug: `blog-${post.slug}-old`,
+      to,
+      toSlug: `blog-${post.slug}`,
+    })
+  }
+}
+for (const article of GENERATED_SEO_ARTICLES) {
+  const to = `${generatedArticlePath(article)}/`
+  const from = article.lang === 'en' ? `/articles/${article.slug}` : `/articles/${article.slug}`
+  if (from !== to.replace(/\/+$/, '')) {
+    REDIRECTS.push({
+      from,
+      fromSlug: `articles-${article.slug}-old`,
+      to,
+      toSlug: `article-${article.slug}`,
+    })
+  }
+}
+REDIRECTS.push(
+  { from: '/blog', fromSlug: 'blog-old-index', to: '/ru/blog/', toSlug: 'ru-blog' },
+  { from: '/articles', fromSlug: 'articles-old-index', to: '/ru/articles/', toSlug: 'ru-articles' },
+  { from: '/articles/ai-tools-for-designers-design-engineering-agents', fromSlug: 'articles-ai-tools-for-designers-design-engineering-agents-old', to: '/ru/articles/ai-tools-for-designers-design-engineering-agents/', toSlug: 'ru-articles-ai-tools-for-designers-design-engineering-agents' },
+)
+
 for (const redirect of LEGACY_REDIRECTS) {
   const from = redirect.from.replace(/\/+$/, '')
   const to = redirect.to.endsWith('/') ? redirect.to : `${redirect.to}/`
@@ -1410,11 +1479,12 @@ const SITEMAP_URLS = [
   `${SITE_URL}/en/`,
   `${SITE_URL}/about/`,
   `${SITE_URL}/en/about/`,
-  `${SITE_URL}/blog/`,
+  `${SITE_URL}/ru/`,
+  `${SITE_URL}/ru/blog/`,
   `${SITE_URL}/en/blog/`,
-  `${SITE_URL}/articles/`,
+  `${SITE_URL}/ru/articles/`,
   `${SITE_URL}/en/articles/`,
-  `${SITE_URL}/articles/ai-tools-for-designers-design-engineering-agents/`,
+  `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`,
   `${SITE_URL}/articles/markdown-vs-html/`,
   `${SITE_URL}/privacy/`,
 ].map((loc) => ({
@@ -1453,7 +1523,7 @@ ${stripTags(body)}
 }
 
 for (const post of GENERATED_BLOG_POSTS) {
-  addSitemapUrl(`/blog/${post.slug}/`, post.updatedAt || STATIC_UPDATED_DATE)
+  addSitemapUrl(`${generatedBlogPath(post)}/`, post.updatedAt || STATIC_UPDATED_DATE)
 }
 for (const article of GENERATED_SEO_ARTICLES) {
   addSitemapUrl(`${generatedArticlePath(article)}/`, article.updatedAt || STATIC_UPDATED_DATE)

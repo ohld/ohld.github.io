@@ -29,7 +29,7 @@ reactions: 48
   - прожарка любой идеи;
   - вопросы “нафига” и “зачем” до того, как агент начнет писать код.
 
-- **[/improve-codebase-architecture](/blog/improve-codebase-architecture-prompt/)**
+- **[/improve-codebase-architecture](/ru/blog/improve-codebase-architecture-prompt/)**
   - повышает шанс, что вайбкод проживет дольше одного вечера;
   - заставляет смотреть на границы, дублирование и будущую стоимость изменений.
 
@@ -44,7 +44,7 @@ reactions: 48
   - что еще не чекнул;
   - какая визуализация лучше подходит задаче.
 
-Мой следующий шаг - понять, как неслопно задизайнить что угодно. [Разбирал это отдельно в статье про design engineering и AI-агентов](/articles/ai-tools-for-designers-design-engineering-agents/).
+Мой следующий шаг - понять, как неслопно задизайнить что угодно. [Разбирал это отдельно в статье про design engineering и AI-агентов](/ru/articles/ai-tools-for-designers-design-engineering-agents/).
 
 ## Рабочий цикл
 
@@ -86,7 +86,7 @@ HTML-progress возвращает контроль. Нормальный progre
 
 ## Читать ещё
 
-- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
-- [Что попросить AI-агента сделать, когда задачи закончились](/blog/improve-codebase-architecture-prompt/)
-- [AI-инструменты для дизайнеров: design engineering и агенты](/articles/ai-tools-for-designers-design-engineering-agents/)
+- [AI-агенты: с чего начать в 2026](/ru/blog/ai-agents-s-chego-nachat/)
+- [Что попросить AI-агента сделать, когда задачи закончились](/ru/blog/improve-codebase-architecture-prompt/)
+- [AI-инструменты для дизайнеров: design engineering и агенты](/ru/articles/ai-tools-for-designers-design-engineering-agents/)
 - [Markdown vs HTML для AI-агентов](/articles/markdown-vs-html/)

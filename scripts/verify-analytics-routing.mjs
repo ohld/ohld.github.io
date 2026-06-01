@@ -328,20 +328,20 @@ async function assertHeaderCtaTracking(page) {
 async function assertBackButtonTracking(context, baseUrl) {
   const page = await context.newPage({ viewport: { width: 390, height: 844 } })
   try {
-    await page.goto(`${baseUrl}/articles/hermes-agent-vs-openclaw/`, {
+    await page.goto(`${baseUrl}/ru/articles/hermes-agent-vs-openclaw/`, {
       waitUntil: 'domcontentloaded',
       timeout: 15000,
     })
     await page.locator('.back-nav').first().click()
     await waitForAnalyticsEvent(page, 'navigation_back_click')
-    await page.waitForFunction(() => window.location.pathname === '/articles/', null, { timeout: 5000 })
+    await page.waitForFunction(() => window.location.pathname === '/ru/articles/', null, { timeout: 5000 })
 
     const calls = await getAnalyticsCalls(page)
     const expected = {
       event_category: 'navigation',
       event_label: 'back',
       click_text: 'back',
-      destination: '/articles/',
+      destination: '/ru/articles/',
       navigation_mode: 'fallback',
     }
     const gaPayload = gaEventPayloads(calls, 'navigation_back_click').at(-1)
@@ -364,7 +364,7 @@ async function run(baseUrl) {
   await installAnalyticsMocks(context)
 
   const page = await context.newPage()
-  const expectedPaths = ['/', '/blog/', '/articles/', '/about/']
+  const expectedPaths = ['/', '/ru/blog/', '/ru/articles/', '/about/']
 
   await page.goto(`${baseUrl}/?utm_source=codex&tgWebAppData=secret#tgWebAppData=secret`, {
     waitUntil: 'domcontentloaded',
@@ -373,8 +373,8 @@ async function run(baseUrl) {
   await waitForPageView(page, '/')
   await waitForMetrikaHit(page, '/')
 
-  await clickHeaderLink(page, '/blog', '/blog')
-  await clickHeaderLink(page, '/articles', '/articles')
+  await clickHeaderLink(page, '/ru/blog/', '/ru/blog/')
+  await clickHeaderLink(page, '/ru/articles/', '/ru/articles/')
   await clickHeaderLink(page, '/about', '/about')
   await page.waitForTimeout(250)
 

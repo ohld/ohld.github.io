@@ -33,42 +33,42 @@ const redirects = [
   },
   {
     old_path: '/tag/ai-agents/',
-    new_path: '/articles/',
+    new_path: '/ru/articles/',
     action: '308_redirect',
     source: 'ghost_service_page',
     note: 'Tag page redirects to the new Articles index.',
   },
   {
     old_path: '/tag/telegram/',
-    new_path: '/blog/',
+    new_path: '/ru/blog/',
     action: '308_redirect',
     source: 'ghost_service_page',
     note: 'Tag page redirects to the blog collection.',
   },
   {
     old_path: '/tag/ai/',
-    new_path: '/articles/',
+    new_path: '/ru/articles/',
     action: '308_redirect',
     source: 'old_internal_link',
     note: 'Old AI tag appears in imported articles; redirect to the Articles index.',
   },
   {
     old_path: '/tag/analytics/',
-    new_path: '/blog/',
+    new_path: '/ru/blog/',
     action: '308_redirect',
     source: 'old_internal_link',
     note: 'Old analytics tag appears in imported articles; redirect to the blog index.',
   },
   {
     old_path: '/tag/claude-code/',
-    new_path: '/articles/',
+    new_path: '/ru/articles/',
     action: '308_redirect',
     source: 'old_internal_link',
     note: 'Old Claude Code tag appears in imported articles; redirect to the Articles index.',
   },
   {
     old_path: '/tag/crypto/',
-    new_path: '/blog/',
+    new_path: '/ru/blog/',
     action: '308_redirect',
     source: 'old_internal_link',
     note: 'Old crypto tag appears in imported articles; redirect to the blog index.',
@@ -124,17 +124,10 @@ const redirects = [
   },
   {
     old_path: '/vibe-coding-guide-2026/',
-    new_path: '/articles/',
+    new_path: '/ru/articles/',
     action: '308_redirect',
     source: 'old_internal_link',
     note: 'Old vibe-coding guide link redirects to the maintained Articles collection.',
-  },
-  {
-    old_path: '/ru/',
-    new_path: '/',
-    action: '308_redirect',
-    source: 'language_policy',
-    note: 'Russian homepage is canonical at root.',
   },
   {
     old_path: '/closed/',
@@ -159,35 +152,56 @@ const redirects = [
   },
   {
     old_path: '/posts/',
-    new_path: '/blog/',
+    new_path: '/ru/blog/',
     action: '308_redirect',
     source: 'static_ia_cleanup',
     note: 'Old mini-app posts index now collapses into the blog surface.',
   },
   {
+    old_path: '/blog/',
+    new_path: '/ru/blog/',
+    action: '308_redirect',
+    source: 'ru_prefix_migration',
+    note: 'Flat Russian blog index moved under /ru/ for language-prefixed IA.',
+  },
+  {
+    old_path: '/articles/',
+    new_path: '/ru/articles/',
+    action: '308_redirect',
+    source: 'ru_prefix_migration',
+    note: 'Flat Russian articles index moved under /ru/ for language-prefixed IA.',
+  },
+  {
     old_path: '/ai-agents/',
-    new_path: '/articles/',
+    new_path: '/ru/articles/',
     action: '308_redirect',
     source: 'static_ia_cleanup',
     note: 'Old AI Agents hub now collapses into the Articles surface.',
   },
   {
     old_path: '/ai-course/',
-    new_path: '/articles/',
+    new_path: '/ru/articles/',
     action: '308_redirect',
     source: 'static_ia_cleanup',
     note: 'Old AI course route is no longer a primary public surface.',
   },
   {
     old_path: '/blog/ai-tools-for-designers-design-engineering-agents/',
-    new_path: '/articles/ai-tools-for-designers-design-engineering-agents/',
+    new_path: '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
     action: '308_redirect',
     source: 'static_ia_cleanup',
     note: 'The design engineering piece belongs in Articles, not in the personal blog feed.',
   },
   {
+    old_path: '/articles/ai-tools-for-designers-design-engineering-agents/',
+    new_path: '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
+    action: '308_redirect',
+    source: 'ru_prefix_migration',
+    note: 'New Russian static article moved under /ru/ before accumulating meaningful SEO signals.',
+  },
+  {
     old_path: '/blog/hermes-agent-vs-openclaw/',
-    new_path: '/articles/hermes-agent-vs-openclaw/',
+    new_path: '/ru/articles/hermes-agent-vs-openclaw/',
     action: '308_redirect',
     source: 'static_ia_cleanup',
     note: 'SEO-generated comparison moved from Blog to Articles to keep Blog reserved for Dan-authored channel posts.',
@@ -209,14 +223,15 @@ if (fs.existsSync(legacyRedirectsPath)) {
 
 const newStaticPages = [
   ['/', 'new_static_page', 'ru', 'Canonical Russian homepage'],
+  ['/ru/', 'new_static_page', 'ru', 'Russian homepage'],
   ['/en/', 'new_static_page', 'en', 'English homepage'],
   ['/en/blog/', 'new_static_page', 'en', 'English-only blog index'],
   ['/en/articles/', 'new_static_page', 'en', 'English-only article index'],
   ['/en/about/', 'new_static_page', 'en', 'English about page'],
   ['/about/', 'new_static_page', 'ru', 'About page'],
-  ['/blog/', 'new_static_page', 'ru', 'Indexable blog for Dan-authored posts'],
-  ['/articles/', 'new_static_page', 'ru', 'Article index'],
-  ['/articles/ai-tools-for-designers-design-engineering-agents/', 'new_static_page', 'ru', 'First YouTube-derived article with component examples'],
+  ['/ru/blog/', 'new_static_page', 'ru', 'Indexable blog for Dan-authored posts'],
+  ['/ru/articles/', 'new_static_page', 'ru', 'Article index'],
+  ['/ru/articles/ai-tools-for-designers-design-engineering-agents/', 'new_static_page', 'ru', 'First YouTube-derived article with component examples'],
   ['/articles/markdown-vs-html/', 'new_static_page', 'ru', 'Existing static article route moved under Articles'],
   ['/topics/ai-agents/', 'new_static_page', 'ru', 'Topic collection for AI agents internal linking'],
   ['/topics/claude-code/', 'new_static_page', 'ru', 'Topic collection for Claude Code internal linking'],
@@ -263,7 +278,11 @@ function readGeneratedSeoArticles() {
 }
 
 function generatedArticlePath(article) {
-  return article.lang === 'en' ? `/en/articles/${article.slug}/` : `/articles/${article.slug}/`
+  return article.lang === 'en' ? `/en/articles/${article.slug}/` : `/ru/articles/${article.slug}/`
+}
+
+function generatedBlogPath(post) {
+  return (post.lang || 'ru') === 'en' ? `/en/blog/${post.slug}/` : `/ru/blog/${post.slug}/`
 }
 
 function readGeneratedMarkdownEntries(dir) {
@@ -355,7 +374,7 @@ for (const [pagePath, action, lang, note] of newStaticPages) {
 }
 
 for (const post of readGeneratedBlogPosts()) {
-  const pagePath = `/blog/${post.slug}/`
+  const pagePath = generatedBlogPath(post)
   lines.push(row([
     '',
     '',
@@ -364,7 +383,7 @@ for (const post of readGeneratedBlogPosts()) {
     pagePath,
     '200',
     'index, follow',
-    'ru',
+    post.lang || 'ru',
     post.title || '',
     'dan_authored_blog_post',
     'Native blog article written in Dan voice for okhlopkov.com.',

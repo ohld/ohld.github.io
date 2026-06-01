@@ -12,10 +12,11 @@ const VALID_START_PARAMS = new Set([
   'about', 'posts', 'blog', 'ai-agents', 'ai-course', 'private-channel', 'closed', 'work-together', 'markdown-vs-html',
 ])
 const START_PARAM_REDIRECTS: Record<string, string> = {
-  'ai-agents': 'articles',
-  'ai-course': 'articles',
-  posts: 'blog',
-  closed: 'private-channel',
+  'ai-agents': '/ru/articles/',
+  'ai-course': '/ru/articles/',
+  posts: '/ru/blog/',
+  blog: '/ru/blog/',
+  closed: '/private-channel/',
 }
 
 const blogIndexImport = () => import('./pages/BlogIndex').then(m => ({ default: m.BlogIndex }))
@@ -147,8 +148,8 @@ function useStartParamNavigation() {
     const maybeNavigate = () => {
       const startParam = window.Telegram?.WebApp?.initDataUnsafe?.start_param
       if (startParam && VALID_START_PARAMS.has(startParam) && location.pathname === '/') {
-        const target = START_PARAM_REDIRECTS[startParam] || startParam
-        navigate('/' + target, { replace: true })
+        const target = START_PARAM_REDIRECTS[startParam] || `/${startParam}`
+        navigate(target, { replace: true })
       }
     }
     maybeNavigate()
@@ -170,18 +171,23 @@ function App() {
       <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/ru" element={<Navigate to="/" replace />} />
+          <Route path="/ru" element={<Home />} />
           <Route path="/en" element={<EnglishHome />} />
           <Route path="/en/blog" element={<EnglishBlogIndex />} />
+          <Route path="/en/blog/:slug" element={<GeneratedBlogPost />} />
           <Route path="/en/articles" element={<EnglishArticlesIndex />} />
           <Route path="/en/articles/:slug" element={<ArticlePage />} />
           <Route path="/en/about" element={<EnglishAbout />} />
-          <Route path="/posts" element={<Navigate to="/blog" replace />} />
-          <Route path="/blog" element={<BlogIndex />} />
-          <Route path="/blog/hermes-agent-vs-openclaw" element={<Navigate to="/articles/hermes-agent-vs-openclaw" replace />} />
-          <Route path="/blog/ai-tools-for-designers-design-engineering-agents" element={<Navigate to="/articles/ai-tools-for-designers-design-engineering-agents" replace />} />
+          <Route path="/posts" element={<Navigate to="/ru/blog" replace />} />
+          <Route path="/ru/blog" element={<BlogIndex />} />
+          <Route path="/ru/blog/:slug" element={<GeneratedBlogPost />} />
+          <Route path="/ru/articles" element={<ArticlesIndex />} />
+          <Route path="/ru/articles/:slug" element={<ArticlePage />} />
+          <Route path="/blog" element={<Navigate to="/ru/blog" replace />} />
+          <Route path="/blog/hermes-agent-vs-openclaw" element={<Navigate to="/ru/articles/hermes-agent-vs-openclaw" replace />} />
+          <Route path="/blog/ai-tools-for-designers-design-engineering-agents" element={<Navigate to="/ru/articles/ai-tools-for-designers-design-engineering-agents" replace />} />
           <Route path="/blog/:slug" element={<GeneratedBlogPost />} />
-          <Route path="/articles" element={<ArticlesIndex />} />
+          <Route path="/articles" element={<Navigate to="/ru/articles" replace />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
           <Route path="/topics/:slug" element={<TopicPage />} />
           <Route path="/ai-agents" element={<Navigate to="/articles" replace />} />

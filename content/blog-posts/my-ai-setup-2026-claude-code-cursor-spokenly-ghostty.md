@@ -130,7 +130,7 @@ Ghostty не делает AI умнее. Он просто убирает тер
 
 ## Читать ещё
 
-- [AI-агенты: с чего начать в 2026](/blog/ai-agents-s-chego-nachat/)
-- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/blog/claude-code-vs-codex-perehod/)
+- [AI-агенты: с чего начать в 2026](/ru/blog/ai-agents-s-chego-nachat/)
+- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
 - [Второй мозг: Obsidian и Claude Code](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
-- [Что попросить AI-агента сделать, когда очевидные задачи закончились](/blog/improve-codebase-architecture-prompt/)
+- [Что попросить AI-агента сделать, когда очевидные задачи закончились](/ru/blog/improve-codebase-architecture-prompt/)
