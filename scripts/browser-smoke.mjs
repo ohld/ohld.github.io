@@ -164,6 +164,10 @@ async function main() {
         const mainBox = main?.getBoundingClientRect()
         const thumbnails = [...document.querySelectorAll('.article-preview-thumb, .blog-card-thumb')]
         const heroImages = [...document.querySelectorAll('.article-hero-image img')]
+        const homeLatestHrefs = [...document.querySelectorAll('.home-latest-section .article-preview-hitarea')]
+          .map((link) => link.getAttribute('href') || '')
+          .filter(Boolean)
+        const duplicateHomeLatestHrefs = homeLatestHrefs.filter((href, index) => homeLatestHrefs.indexOf(href) !== index)
         return {
           title: document.title,
           canonical: document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '',
@@ -178,6 +182,8 @@ async function main() {
           cardCount: document.querySelectorAll('.article-preview-card, .blog-card').length,
           thumbnailCount: thumbnails.length,
           brokenThumbnails: thumbnails.filter((img) => !img.currentSrc || img.naturalWidth <= 0 || img.naturalHeight <= 0).length,
+          homeLatestCount: homeLatestHrefs.length,
+          duplicateHomeLatestHrefs,
           heroImageCount: heroImages.length,
           brokenHeroImages: heroImages.filter((img) => !img.currentSrc || img.naturalWidth <= 0 || img.naturalHeight <= 0).length,
         }
@@ -270,6 +276,10 @@ async function main() {
       if (result.cardCount < 1) issues.push('missing cards')
       if (result.thumbnailCount !== result.cardCount) issues.push(`thumbnails ${result.thumbnailCount} != cards ${result.cardCount}`)
       if (result.brokenThumbnails) issues.push(`broken thumbnails ${result.brokenThumbnails}`)
+    }
+    if (['/', '/en/'].includes(canonicalPath(result.route))) {
+      if (result.homeLatestCount !== 6) issues.push(`home latest cards ${result.homeLatestCount} != 6`)
+      if (result.duplicateHomeLatestHrefs?.length) issues.push(`duplicate home latest hrefs ${result.duplicateHomeLatestHrefs.join(', ')}`)
     }
     if (result.heroImageCount && result.brokenHeroImages) issues.push(`broken hero images ${result.brokenHeroImages}`)
     if (result.expectedCodeBlocks && result.codeBlocks < result.expectedCodeBlocks) issues.push(`code blocks ${result.codeBlocks || 0} < ${result.expectedCodeBlocks}`)

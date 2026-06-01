@@ -437,6 +437,13 @@ button:focus-visible,
   border-bottom: 1px solid currentColor;
 }
 
+.home-section-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-self: start;
+}
+
 .home-list-link:active {
   transform: translateX(2px) scale(0.995);
 }
@@ -2107,6 +2114,9 @@ html, body {
   .home-section-heading {
     grid-template-columns: 1fr auto;
     align-items: start;
+  }
+  .home-section-actions {
+    justify-self: end;
   }
   .home-focus-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .blog-preview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

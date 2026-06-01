@@ -163,35 +163,26 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 > AI-native аналитика, on-chain данные, Telegram и агентские workflow. Здесь свежие тексты про инструменты, эксперименты и рабочие схемы. Бэкграунд, опыт и ссылки — на странице [обо мне](/about/).
 
-## Блог
+## Свежие материалы
 
-Свежие рабочие заметки: что пробую, что ломается, что оставляю в сетапе.
+Один общий фид из блога и статей: новые тексты без повторов и ручного разделения на главной.
 
 ![Мой AI-сетап 2026](/assets/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/phone-agent-meme.webp)
 
+- [Hermes Agent vs OpenClaw: что выбрать для AI-агента](/ru/articles/hermes-agent-vs-openclaw/)
+- [AI-рилзы для SEO: как собрать video pipeline из Telegram-трендов](/ru/articles/ai-reels-seo-pipeline-telegram-claude-code/)
 - [Мой AI-сетап 2026: Claude Code, Cursor, Ghostty, Spokenly и база всех чатов](/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/)
 - [Telegram Mini App с Claude Code: llms.txt, крестики-нолики и деплой без чтения доков](/ru/blog/vibecoding-telegram-mini-app-claude-code/)
 - [AI-агенты ведут проект, пока я в отпуске: Claude Code, Paperclip и GStack без магии](/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/)
-
-[Все записи](/ru/blog/)
-
-## Статьи
-
-Более плотные разборы: источники, таблицы, сравнения, промпты и выводы.
-
-![Hermes Agent vs OpenClaw](/assets/articles/hermes-agent-vs-openclaw/hermes-openclaw-cover.webp)
-
-- [Hermes Agent vs OpenClaw: что выбрать для AI-агента](/ru/articles/hermes-agent-vs-openclaw/)
-- [AI-рилзы для SEO: как собрать video pipeline из Telegram-трендов](/ru/articles/ai-reels-seo-pipeline-telegram-claude-code/)
 - [AI-инструменты для дизайнеров: design engineering, агенты и Figma-to-code](/ru/articles/ai-tools-for-designers-design-engineering-agents/)
 
-[Все статьи](/ru/articles/)
+[Блог](/ru/blog/) · [Статьи](/ru/articles/)
 
 ## Что здесь читать
 
 Главная — это карта свежих материалов, а не ещё одна версия резюме. Я оставляю здесь тексты, которые помогают быстро понять, какие инструменты и подходы сейчас проходят проверку практикой: AI-агенты, рабочие процессы вокруг Codex и Claude Code, on-chain аналитика, Telegram-автоматизация и личные системы для памяти проекта.
 
-Короткие наблюдения, дневники сетапа и заметки из текущей работы попадают в блог. Более плотные разборы, где нужны источники, сравнения, таблицы, промпты и выводы, лежат в статьях. Бэкграунд, опыт, контакты и социальные ссылки вынесены на страницу обо мне, чтобы главная не превращалась в длинный профиль.
+В блог попадают тексты, которые выросли из моих Telegram-постов: исходная мысль остаётся узнаваемой, а вокруг неё добавляются контекст, ссылки, примеры и заметки из других источников. В статьи уходят отдельные поисковые темы, где нужен плотный гайд, сравнение, таблицы, промпты и выводы. На главной эти два потока смешиваются только как единая лента последних публикаций, без дублей.
 
 ## Основные темы
 
@@ -220,35 +211,26 @@ const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
 
 > AI-native analytics, on-chain data, Telegram and agent workflows. This page is for fresh writing and practical notes from the tools I actually test. Background, work history and links live on [About](/en/about/).
 
-## Blog
+## Latest Writing
 
-Fresh notes, tool diaries and field reports from the current workflow.
+One shared feed from blog posts and articles: new writing without repeated cards on the homepage.
 
 ![My Claude Code setup](/assets/site/article-fallback.webp)
 
+- [Claude Code /compact: Context Compression, Compaction Prompts, What Survives](/claude-code-compaction-explained/)
 - [My Claude Code Setup: MCP Servers, Hooks, Skills and Agents (2026)](/claude-code-setup-mcp-hooks-skills-2026/)
-- [Second Brain + Obsidian + Claude Code: My AI Assistant Setup](/en-second-brain-obsidian-claude-code-assistant/)
 - [Web Scraping AI Agents: What Actually Works in 2026](/web-scraping-ai-agents-2026/)
-
-[All posts](/en/blog/)
-
-## Articles
-
-Denser explainers with sources, comparisons, prompts and practical takeaways.
-
-![Web scraping AI agents](/assets/articles/web-scraping-ai-agents-2026/bot-check-cloudflare-later.webp)
-
-- [Web Scraping AI Agents: What Actually Works in 2026](/web-scraping-ai-agents-2026/)
+- [My AI Dev Tools in 2026: What I Actually Use Daily](/ai-tools-setup-january-2026/)
 - [Best Claude Code Skills and MCP Servers for Agent Workflows](/en-best-skills-mcp-claude-code-agent-browser/)
-- [Claude Code Compaction Explained](/claude-code-compaction-explained/)
+- [Show Me Your AI Setup #1: Ghostty, ownyourchat, Descript, Spokenly](/en-show-me-ai-setup-ghostty-ownyourchat-descript/)
 
-[All articles](/en/articles/)
+[Blog](/en/blog/) · [Articles](/en/articles/)
 
 ## What to Read Here
 
 The homepage is a map of recent writing, not another copy of my resume. I keep it focused on tools and workflows that are being tested in actual work: AI agents, Codex and Claude Code operating loops, on-chain analytics, Telegram automation and personal systems for project memory.
 
-Short notes, setup diaries and observations from the current week go to the blog. Denser pieces with sources, comparisons, prompts, tables and takeaways go to articles. Background, work history, contacts and social links live on the About page, so this page can stay useful as a reading index instead of becoming a long profile.
+Blog posts are pieces that grew out of my Telegram writing: the original idea stays recognizable, then gets enriched with context, links, examples and notes from other sources. Articles are separate search-driven topics that need a denser guide, comparison, tables, prompts and takeaways. The homepage mixes those two streams only as one latest-writing feed, without duplicate cards.
 
 ## Main Topics
 

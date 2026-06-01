@@ -3,10 +3,9 @@ import { ArticlePreviewCard } from '../components/ArticlePreviewCard'
 import { Footer } from '../components/Footer'
 import { absoluteUrl, SITE_DESCRIPTION } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
-import { russianArticleItems, russianBlogItems } from '../blog'
+import { latestUniqueItems, russianArticleItems, russianBlogItems } from '../blog'
 
-const latestBlogItems = russianBlogItems.slice(0, 3)
-const latestArticleItems = russianArticleItems.slice(0, 3)
+const latestWritingItems = latestUniqueItems([...russianBlogItems, ...russianArticleItems], 6)
 
 export function Home() {
   const location = useLocation()
@@ -36,31 +35,19 @@ export function Home() {
       </header>
 
       <main className="home-latest" aria-label="Свежие материалы">
-        <section className="home-section home-latest-section" aria-labelledby="home-blog">
+        <section className="home-section home-latest-section" aria-labelledby="home-latest">
           <div className="home-section-heading">
             <div>
-              <h2 id="home-blog">Блог</h2>
-              <p>Свежие рабочие заметки: что пробую, что ломается, что оставляю в сетапе.</p>
+              <h2 id="home-latest">Свежие материалы</h2>
+              <p>Один общий фид из блога и статей: новые тексты без повторов и ручного разделения на главной.</p>
             </div>
-            <a className="home-section-link" href="/ru/blog/">Все записи</a>
+            <div className="home-section-actions">
+              <a className="home-section-link" href="/ru/blog/">Блог</a>
+              <a className="home-section-link" href="/ru/articles/">Статьи</a>
+            </div>
           </div>
           <div className="blog-preview-grid">
-            {latestBlogItems.map((article) => (
-              <ArticlePreviewCard article={article} imageLoading="eager" key={article.path} />
-            ))}
-          </div>
-        </section>
-
-        <section className="home-section home-latest-section" aria-labelledby="home-articles">
-          <div className="home-section-heading">
-            <div>
-              <h2 id="home-articles">Статьи</h2>
-              <p>Более плотные разборы: источники, таблицы, сравнения, промпты и выводы.</p>
-            </div>
-            <a className="home-section-link" href="/ru/articles/">Все статьи</a>
-          </div>
-          <div className="blog-preview-grid">
-            {latestArticleItems.map((article) => (
+            {latestWritingItems.map((article) => (
               <ArticlePreviewCard article={article} imageLoading="eager" key={article.path} />
             ))}
           </div>
@@ -76,11 +63,12 @@ export function Home() {
             Telegram-автоматизация и личные системы для памяти проекта.
           </p>
           <p>
-            Короткие наблюдения, дневники сетапа и заметки из текущей работы
-            попадают в блог. Более плотные разборы, где нужны источники,
-            сравнения, таблицы, промпты и выводы, лежат в статьях. Бэкграунд,
-            опыт, контакты и социальные ссылки вынесены на страницу обо мне,
-            чтобы главная не превращалась в длинный профиль.
+            В блог попадают тексты, которые выросли из моих Telegram-постов:
+            исходная мысль остаётся узнаваемой, а вокруг неё добавляются
+            контекст, ссылки, примеры и заметки из других источников. В статьи
+            уходят отдельные поисковые темы, где нужен плотный гайд, сравнение,
+            таблицы, промпты и выводы. На главной эти два потока смешиваются
+            только как единая лента последних публикаций, без дублей.
           </p>
         </section>
 

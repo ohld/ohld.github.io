@@ -2,10 +2,9 @@ import { ArticlePreviewCard } from '../components/ArticlePreviewCard'
 import { Footer } from '../components/Footer'
 import { absoluteUrl } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
-import { englishArticleItems, englishBlogItems } from '../blog'
+import { englishArticleItems, englishBlogItems, latestUniqueItems } from '../blog'
 
-const latestBlogItems = englishBlogItems.slice(0, 3)
-const latestArticleItems = englishArticleItems.slice(0, 3)
+const latestWritingItems = latestUniqueItems([...englishBlogItems, ...englishArticleItems], 6)
 
 export function EnglishHome() {
   useDocumentMeta({
@@ -33,31 +32,19 @@ export function EnglishHome() {
       </header>
 
       <main className="home-latest" aria-label="Latest writing">
-        <section className="home-section home-latest-section" aria-labelledby="home-blog">
+        <section className="home-section home-latest-section" aria-labelledby="home-latest">
           <div className="home-section-heading">
             <div>
-              <h2 id="home-blog">Blog</h2>
-              <p>Fresh notes, tool diaries and field reports from the current workflow.</p>
+              <h2 id="home-latest">Latest Writing</h2>
+              <p>One shared feed from blog posts and articles: new writing without repeated cards on the homepage.</p>
             </div>
-            <a className="home-section-link" href="/en/blog/">All posts</a>
+            <div className="home-section-actions">
+              <a className="home-section-link" href="/en/blog/">Blog</a>
+              <a className="home-section-link" href="/en/articles/">Articles</a>
+            </div>
           </div>
           <div className="blog-preview-grid">
-            {latestBlogItems.map((article) => (
-              <ArticlePreviewCard article={article} imageLoading="eager" tagsLabel="Tags" key={article.path} />
-            ))}
-          </div>
-        </section>
-
-        <section className="home-section home-latest-section" aria-labelledby="home-articles">
-          <div className="home-section-heading">
-            <div>
-              <h2 id="home-articles">Articles</h2>
-              <p>Denser explainers with sources, comparisons, prompts and practical takeaways.</p>
-            </div>
-            <a className="home-section-link" href="/en/articles/">All articles</a>
-          </div>
-          <div className="blog-preview-grid">
-            {latestArticleItems.map((article) => (
+            {latestWritingItems.map((article) => (
               <ArticlePreviewCard article={article} imageLoading="eager" tagsLabel="Tags" key={article.path} />
             ))}
           </div>
@@ -73,11 +60,12 @@ export function EnglishHome() {
             for project memory.
           </p>
           <p>
-            Short notes, setup diaries and observations from the current week go
-            to the blog. Denser pieces with sources, comparisons, prompts,
-            tables and takeaways go to articles. Background, work history,
-            contacts and social links live on the About page, so this page can
-            stay useful as a reading index instead of becoming a long profile.
+            Blog posts are pieces that grew out of my Telegram writing: the
+            original idea stays recognizable, then gets enriched with context,
+            links, examples and notes from other sources. Articles are separate
+            search-driven topics that need a denser guide, comparison, tables,
+            prompts and takeaways. The homepage mixes those two streams only as
+            one latest-writing feed, without duplicate cards.
           </p>
         </section>
 

@@ -35,6 +35,34 @@ export interface BlogListItem {
   thumbnail?: string
 }
 
+function listItemKey(path: string) {
+  return path.replace(/\/+$/, '') || '/'
+}
+
+export function latestUniqueItems(items: BlogListItem[], limit: number): BlogListItem[] {
+  const byPath = new Map<string, { item: BlogListItem; index: number }>()
+
+  items.forEach((item, index) => {
+    const key = listItemKey(item.path)
+    if (!byPath.has(key)) {
+      byPath.set(key, { item, index })
+    }
+  })
+
+  return [...byPath.values()]
+    .sort((a, b) => {
+      const byDate = b.item.publishedAt.localeCompare(a.item.publishedAt)
+      return byDate || a.index - b.index
+    })
+    .slice(0, limit)
+    .map(({ item }) => item)
+}
+
+function withoutItemPaths(items: BlogListItem[], excludedItems: BlogListItem[]): BlogListItem[] {
+  const excluded = new Set(excludedItems.map((item) => listItemKey(item.path)))
+  return items.filter((item) => !excluded.has(listItemKey(item.path)))
+}
+
 export const russianBlogItems: BlogListItem[] = [
   ...generatedRussianBlogItems,
   ...importedArticleListItems([
@@ -99,7 +127,7 @@ export const englishArticleItems: BlogListItem[] = [
   ]),
 ]
 
-export const englishBlogItems: BlogListItem[] = [
+export const englishBlogItems: BlogListItem[] = withoutItemPaths([
   ...generatedEnglishBlogItems,
   ...importedArticleListItems([
     '/claude-code-setup-mcp-hooks-skills-2026/',
@@ -109,7 +137,7 @@ export const englishBlogItems: BlogListItem[] = [
     '/en-show-me-ai-setup-ghostty-ownyourchat-descript/',
     '/ai-tools-setup-january-2026/',
   ]),
-]
+], englishArticleItems)
 
 export function blogPath(slug: string) {
   return `/ru/blog/${slug}/`
