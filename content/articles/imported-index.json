@@ -165,7 +165,7 @@
     "tags": [
       "Telegram"
     ],
-    "heroImage": "/content/images/2026/03/claude-code-compaction-explained.png"
+    "heroImage": "/assets/articles/claude-code-compaction-explained/hero.webp"
   },
   {
     "path": "/claude-code-compaction-kak-rabotaet/",
@@ -711,7 +711,7 @@
     "tags": [
       "Telegram"
     ],
-    "heroImage": "/content/images/2026/02/en-best-skills-mcp-claude-code-agent-browser-1.png"
+    "heroImage": "/assets/articles/en-best-skills-mcp-claude-code-agent-browser/hero.webp"
   },
   {
     "path": "/cn-best-skills-mcp-claude-code-agent-browser/",

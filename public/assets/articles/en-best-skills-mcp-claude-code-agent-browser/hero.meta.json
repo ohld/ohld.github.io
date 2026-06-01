@@ -1,0 +1,20 @@
+{
+  "source": "ai_reference_edit",
+  "model": "nano-banana-2",
+  "provider": "cheapaiapi",
+  "reference": "Dan Pinterest board reference ref_01; private reference, not public source asset",
+  "prompt_text": "CLAUDE TOOLBOX / agent-browser / coolify-mcp / skills / MCP",
+  "purpose": "hero image and social preview for /en-best-skills-mcp-claude-code-agent-browser/",
+  "generation": {
+    "job_id": "a53a7e3a-5aa0-4845-9b23-d9d877ec40b9",
+    "generated_at": "2026-06-01",
+    "notes": "Reference-preserving Pinterest/glitch edit replacing old text-only black hero with a low-fi curated toolbox meme."
+  },
+  "web_asset": {
+    "path": "/assets/articles/en-best-skills-mcp-claude-code-agent-browser/hero.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82,
+    "bytes": 153220
+  }
+}

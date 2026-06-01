@@ -1,0 +1,20 @@
+{
+  "source": "ai_reference_edit",
+  "model": "nano-banana-2",
+  "provider": "cheapaiapi",
+  "reference": "Dan Pinterest board reference ref_26; private reference, not public source asset",
+  "prompt_text": "WHAT SURVIVES /compact? / context compressed",
+  "purpose": "hero image and social preview for /claude-code-compaction-explained/",
+  "generation": {
+    "job_id": "08c0004d-5591-48ec-875f-19dd461e15bf",
+    "generated_at": "2026-06-01",
+    "notes": "Reference-preserving Pinterest meme edit replacing old text-only black hero with a low-fi context-compression visual."
+  },
+  "web_asset": {
+    "path": "/assets/articles/claude-code-compaction-explained/hero.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82,
+    "bytes": 149244
+  }
+}
