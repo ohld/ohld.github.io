@@ -751,7 +751,7 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)
   assert(!html.includes('>Коротко<'), `${path}: leaked generic summary heading`)
   assert(!html.includes('Эта страница не про'), `${path}: leaked AI-tell contrast construction`)
-  assert(/"dateModified": "2026-05-(25|26|27)"/.test(html), `${path}: missing generated post dateModified`)
+  assert(/"dateModified": "2026-05-(25|26|27|31)"/.test(html), `${path}: missing generated post dateModified`)
   assert(html.includes('/blog/'), `${path}: missing internal blog links`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   for (const text of requiredText) {

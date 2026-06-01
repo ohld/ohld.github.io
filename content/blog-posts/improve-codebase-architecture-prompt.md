@@ -3,7 +3,7 @@ slug: improve-codebase-architecture-prompt
 title: Claude Code skills для рефакторинга: что дать AI-агенту, когда задачи закончились
 description: Два сильных skill для Claude Code и Cursor: improve-codebase-architecture и Thermo-Nuclear Code Quality Review. Как заставить агента искать архитектурный долг, а не косметический cleanup.
 publishedAt: 2026-05-01
-updatedAt: 2026-05-27
+updatedAt: 2026-05-31
 readingTime: 5 мин
 tags: AI Agents, Refactoring, Skills
 coverImage: /assets/blog/improve-codebase-architecture-prompt/architecture-prompt-cover.webp
@@ -44,6 +44,10 @@ reactions: 72
 
 AI-агент без рамки выбирает самое доступное: переименовать переменные, вынести пару функций, добавить комментарии. Иногда это полезно. Часто это просто шум в diff.
 
+![Old-web меню плохого рефакторинга: cleanup, refactor, сломать prod или спросить зачем](/assets/blog/improve-codebase-architecture-prompt/ne-prosi-sdelay-luchshe.webp)
+
+*Если задача звучит как настроение, агент выбирает самый дешёвый diff.*
+
 ## Минимальный workflow
 
 Я бы не запускал такой рефакторинг сразу в режиме “иди и меняй”.
@@ -57,6 +61,10 @@ AI-агент без рамки выбирает самое доступное: 
 5. После правки прогнать тесты, сборку и отдельное ревью свежим агентом.
 
 Это тот же принцип, что в моем цикле [GStack, `/goal` и office hours](/ru/blog/gstack-goal-office-hours-ai-workflow/): сначала сузить задачу, потом выполнять, потом ревьюить. Если смешать всё в один чат, агент быстро начинает рационализировать собственный diff.
+
+![Человек с табличкой: сначала review, потом PR](/assets/blog/improve-codebase-architecture-prompt/safe-first-pr.webp)
+
+*Read-only review дешевле, чем большой cleanup-PR, который потом страшно мержить.*
 
 ## Более сильный промпт
 
