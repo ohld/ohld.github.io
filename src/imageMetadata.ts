@@ -18,7 +18,7 @@ const IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
   '/assets/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/u-kazhdogo-svoya-karta.webp': { width: 1280, height: 720 },
   '/assets/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/repo-wiki-pr-review.webp': { width: 1376, height: 768 },
   '/assets/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/pamyat-kak-infra.webp': { width: 1376, height: 768 },
-  '/assets/blog/business-on-ai-agent-claude-code-paperclip-gstack/business-agents-cover.webp': { width: 1280, height: 720 },
+  '/assets/blog/business-on-ai-agent-claude-code-paperclip-gstack/business-agents-cover.webp': { width: 1376, height: 768 },
   '/assets/blog/claude-code-vs-codex-perehod/telegram-cover.webp': { width: 1280, height: 720 },
   '/assets/blog/gstack-goal-office-hours-ai-workflow/telegram-cover.webp': { width: 1280, height: 720 },
   '/assets/blog/improve-codebase-architecture-prompt/architecture-prompt-cover.webp': { width: 1376, height: 768 },

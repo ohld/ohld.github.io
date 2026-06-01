@@ -3,11 +3,11 @@ slug: business-on-ai-agent-claude-code-paperclip-gstack
 title: AI-агенты ведут проект, пока я в отпуске: Claude Code, Paperclip и GStack без магии
 description: Как я настроил AI-агентов на проект, что сработало во время отпуска, что сломалось и какой workflow нужен, чтобы агент не просто менял код туда-сюда.
 publishedAt: 2026-05-26
-updatedAt: 2026-05-26
+updatedAt: 2026-06-01
 readingTime: 10 мин
 tags: AI Agents, GStack, Claude Code
 coverImage: /assets/blog/business-on-ai-agent-claude-code-paperclip-gstack/business-agents-cover.webp
-coverAlt: Мем-обложка про бизнес на AI-агентах, пока автор не у ноутбука
+coverAlt: Мем-обложка про Sentry, фикс и ревью, пока автор в отпуске
 sourceTelegramId: 1654
 primaryKeyword: ai coding agent workflow
 secondaryKeywords: ai агенты; claude code; gstack; paperclip ai; agent workflow; ai agent 24/7

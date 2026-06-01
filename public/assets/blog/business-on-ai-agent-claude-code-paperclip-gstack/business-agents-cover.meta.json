@@ -1,14 +1,20 @@
 {
-  "source": "ai",
-  "model": "nano-banana-pro",
+  "source": "ai_reference_edit",
+  "model": "nano-banana-2",
   "provider": "cheapaiapi",
-  "reference": "private local Pinterest-style reference, not public source asset",
-  "prompt_text": "бизнес на AI-агентах / пока я не у ноутбука",
+  "reference": "Dan Pinterest board reference ref_18; private reference, not public source asset",
+  "prompt_text": "ПОКА Я В ОТПУСКЕ / SENTRY / ФИКС / РЕВЬЮ",
   "purpose": "coverImage and social preview for /blog/business-on-ai-agent-claude-code-paperclip-gstack/",
+  "generation": {
+    "job_id": "11481706-1562-464d-ac2b-cd3a3a3b2cd3",
+    "generated_at": "2026-06-01",
+    "notes": "Reference-preserving Pinterest meme edit; replaces the older polished vacation illustration with a low-fi workflow meme matching the article thesis."
+  },
   "web_asset": {
     "path": "/assets/blog/business-on-ai-agent-claude-code-paperclip-gstack/business-agents-cover.webp",
-    "width": 1280,
-    "height": 720,
-    "quality": 82
+    "width": 1376,
+    "height": 768,
+    "quality": 82,
+    "bytes": 74652
   }
 }
