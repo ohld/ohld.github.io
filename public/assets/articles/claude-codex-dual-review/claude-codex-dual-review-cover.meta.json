@@ -1,0 +1,20 @@
+{
+  "source": "ai_reference_edit",
+  "model": "nano-banana-2",
+  "provider": "cheapaiapi",
+  "reference": "private local Pinterest reference, used as edit base and not published as source asset",
+  "reference_path": "/Users/ohld/Documents/exDesktop/pinterest4content/e5d972109cdbbd3ec04184d3643717ee.jpg",
+  "prompt_text": "CLAUDE + CODEX / ДВОЙНОЕ РЕВЬЮ",
+  "purpose": "coverImage and social preview for /claude-codex-dual-review/",
+  "generation": {
+    "job_id": "1d465147-294f-4c1a-9474-a97b47e30b5d",
+    "generated_at": "2026-06-02",
+    "notes": "Reference-preserving Pinterest edit; final headline text was added locally for readable social previews."
+  },
+  "web_asset": {
+    "path": "/assets/articles/claude-codex-dual-review/claude-codex-dual-review-cover.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82
+  }
+}

@@ -9,6 +9,7 @@ const IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
   '/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/shadow-account-meme.webp': { width: 736, height: 808 },
   '/assets/articles/ai-tools-for-designers-design-engineering-agents/design-engineering-cover.webp': { width: 1200, height: 675 },
   '/assets/articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok/claude-code-skills-cover.webp': { width: 1376, height: 768 },
+  '/assets/articles/claude-codex-dual-review/claude-codex-dual-review-cover.webp': { width: 1376, height: 768 },
   '/assets/articles/markdown-vs-html/html-vs-markdown-cover.webp': { width: 1280, height: 720 },
   '/assets/articles/hermes-agent-vs-openclaw/hermes-openclaw-cover.webp': { width: 1280, height: 720 },
   '/assets/articles/hermes-agent-vs-openclaw/security-allowlist.webp': { width: 1376, height: 768 },
