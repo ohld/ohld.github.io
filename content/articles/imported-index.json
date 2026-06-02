@@ -310,14 +310,17 @@
   {
     "path": "/claude-codex-dual-review/",
     "slug": "claude-codex-dual-review",
-    "title": "Связка Claude Code + Codex: как два AI агента проверяют план друг друга",
-    "description": "Как настроить кросс-проверку планов между Claude Code и OpenAI Codex через MCP. Пошаговый протокол Dual Review с примерами промптов.",
+    "title": "Claude Code + Codex: двойное ревью AI-агентов через MCP",
+    "description": "Как я настраиваю двойное ревью Claude Code + Codex: что поставить, как подключить MCP, какой промпт добавить в CLAUDE.md и где этот флоу полезен.",
     "lang": "ru",
     "publishedAt": "2026-02-19",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
+    "updatedAt": "2026-06-02",
+    "readingTime": "5 мин",
     "tags": [
-      "Telegram"
+      "AI Agents",
+      "Claude Code",
+      "Codex",
+      "MCP"
     ],
     "heroImage": "/content/images/2026/02/claude-codex-dual-review-2.png"
   },
