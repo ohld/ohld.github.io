@@ -1,0 +1,21 @@
+{
+  "source": "ai_reference_edit",
+  "model": "nano-banana-2",
+  "provider": "cheapaiapi",
+  "reference": "private local Pinterest reference, used as edit base and not published as source asset",
+  "reference_path": "/Users/ohld/Desktop/pinterest4content/17bbf7c78f54d567c1ee43823974d53c.jpg",
+  "prompt_text": "SKILL.md / NOT PROMPT SOUP",
+  "purpose": "coverImage and social preview for /ru/articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok/",
+  "generation": {
+    "job_id": "d828ad38-ed73-48e9-b4e6-307c6b86cd00",
+    "generated_at": "2026-06-02",
+    "notes": "Reference-preserving Pinterest poster edit; uses a fresh large-typography reference after user feedback to avoid reusing the Peach/DJ image and to make cover text readable."
+  },
+  "web_asset": {
+    "path": "/assets/articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok/claude-code-skills-cover.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82,
+    "bytes": 69188
+  }
+}

@@ -309,6 +309,10 @@ function readImportedArticles() {
   return JSON.parse(fs.readFileSync(importedArticlesPath, 'utf8'))
 }
 
+function normalizePathname(value) {
+  return value.endsWith('/') ? value : `${value}/`
+}
+
 const headers = [
   'old_url',
   'old_path',
@@ -325,7 +329,11 @@ const headers = [
 
 const lines = [row(headers)]
 
+const redirectedOldPaths = new Set(redirects.map((redirect) => normalizePathname(redirect.old_path)))
+
 for (const article of readImportedArticles()) {
+  if (redirectedOldPaths.has(normalizePathname(article.path))) continue
+
   lines.push(row([
     `${SITE_URL}${article.path}`,
     article.path,

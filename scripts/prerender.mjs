@@ -78,6 +78,8 @@ function canonicalPathname(pathname) {
   return pathname.endsWith('/') ? pathname : `${pathname}/`
 }
 
+const LEGACY_REDIRECT_FROM_PATHS = new Set(LEGACY_REDIRECTS.map((redirect) => canonicalPathname(redirect.from)))
+
 function getArticleSeoEnhancement(pathname) {
   return ARTICLE_SEO_ENHANCEMENTS[canonicalPathname(pathname)] || null
 }
@@ -294,19 +296,21 @@ function loadImportedArticleRows() {
   const index = JSON.parse(fs.readFileSync(IMPORTED_ARTICLES_INDEX, 'utf8'))
   const content = JSON.parse(fs.readFileSync(IMPORTED_ARTICLES_CONTENT, 'utf8'))
   const bodyByPath = new Map(content.map((article) => [article.path, normalizeImportedArticleHtml(article.bodyHtml || '')]))
-  return index.map((article) => {
-    const enhancement = getArticleSeoEnhancement(article.path)
-    const description = enhancement?.description || article.description || ''
-    const bodyHtml = addMissingImageAlts(
-      bodyByPath.get(article.path) || '',
-      article.title || description || 'Daniil Okhlopkov article image',
-    )
-    return {
-      ...article,
-      description,
-      bodyHtml: applyArticleSeoEnhancement(article.path, bodyHtml),
-    }
-  })
+  return index
+    .filter((article) => !LEGACY_REDIRECT_FROM_PATHS.has(canonicalPathname(article.path)))
+    .map((article) => {
+      const enhancement = getArticleSeoEnhancement(article.path)
+      const description = enhancement?.description || article.description || ''
+      const bodyHtml = addMissingImageAlts(
+        bodyByPath.get(article.path) || '',
+        article.title || description || 'Daniil Okhlopkov article image',
+      )
+      return {
+        ...article,
+        description,
+        bodyHtml: applyArticleSeoEnhancement(article.path, bodyHtml),
+      }
+    })
 }
 
 const IMPORTED_ARTICLES = loadImportedArticleRows()
