@@ -46,11 +46,11 @@ reactions: 49
 **смотреть**
 
 - [AI-сетап с @og_mishgun: какие инструменты реально используем](https://www.youtube.com/watch?v=yJuzI2u-AnM)
-- [AI-агенты ведут проект, пока я в отпуске: Claude Code, Paperclip, GStack](https://youtu.be/E3P0a03mN8A)
+- [AI-агенты ведут проект, пока я в отпуске: Claude Code, Paperclip, GStack](https://www.youtube.com/watch?v=E3P0a03mN8A)
 - [Self-hosted AI с @technotears: приватность, локальные модели и Doom голосом](https://www.youtube.com/watch?v=Fxw6IQuL36o)
 
 Если нужен самый короткий маршрут, я бы шел так:
-[Claude Code](/claude-code-nastrojka-mcp-hooks-skills-2026/) → рабочий флоу → [промпты для докрутки проекта](/ru/blog/improve-codebase-architecture-prompt/) → [видос с реальным сетапом](https://youtu.be/E3P0a03mN8A).
+[Claude Code](/claude-code-nastrojka-mcp-hooks-skills-2026/) → рабочий флоу → [промпты для докрутки проекта](/ru/blog/improve-codebase-architecture-prompt/) → [видос с реальным сетапом](https://www.youtube.com/watch?v=E3P0a03mN8A).
 
 О чем еще написать? Где больше всего непонятно: с чего начать, как промптить, как сетапить, как не утонуть в инструментах или как применять это в работе?
 

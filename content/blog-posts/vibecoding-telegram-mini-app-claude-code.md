@@ -19,7 +19,7 @@ reactions: 36
 
 Короткая версия: чтобы AI-агент нормально собрал Telegram Mini App, ему нужен не “сделай миниаппку”, а компактный source pack: официальные доки, SDK, ограничения Telegram WebView, init data, деплой и примеры. Для этого я собрал [tma-llms-txt](https://github.com/ohld/tma-llms-txt), а потом на стриме сделал простые крестики-нолики.
 
-Запись стрима: [youtu.be/s92JCCQB9fk](https://youtu.be/s92JCCQB9fk).
+Запись стрима: [youtu.be/s92JCCQB9fk](https://www.youtube.com/watch?v=s92JCCQB9fk).
 
 ## С чего всё началось
 
@@ -33,7 +33,7 @@ reactions: 36
 
 - app: [t.me/gtrendbot](https://t.me/gtrendbot)
 - code: [github.com/ohld/tic-tac-tma](https://github.com/ohld/tic-tac-tma)
-- video: [youtu.be/s92JCCQB9fk](https://youtu.be/s92JCCQB9fk)
+- video: [youtu.be/s92JCCQB9fk](https://www.youtube.com/watch?v=s92JCCQB9fk)
 
 Обсудили генерацию TMA не глядя в код, автодеплой на Vercel и дизайн через Variant.
 

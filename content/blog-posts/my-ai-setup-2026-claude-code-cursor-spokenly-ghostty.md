@@ -19,7 +19,7 @@ reactions: 46
 
 Короткая версия: нормальный AI-сетап в 2026 — это не список из 40 тулз, а петля “голосом сформулировал → агент сделал → контекст сохранился → результат можно найти и переиспользовать”. В моем стеке эту петлю закрывают Claude Code/Codex/Cursor, Ghostty, [Spokenly](https://spokenly.app/okhlopkov), OwnYourChat и Descript.
 
-Это продолжение стрима “[Покажи мне свой AI setup #1](https://youtu.be/yJuzI2u-AnM)” с @og_mishgun. Ниже не обзор ради обзора, а что именно оставить в рабочем дне.
+Это продолжение стрима “[Покажи мне свой AI setup #1](https://www.youtube.com/watch?v=yJuzI2u-AnM)” с @og_mishgun. Ниже не обзор ради обзора, а что именно оставить в рабочем дне.
 
 ## Что вошло в сетап
 
@@ -32,7 +32,7 @@ reactions: 46
 - [Descript](https://help.descript.com/hc/en-us/articles/10601763396493-Get-started-with-Descript) — монтаж видео через редактирование текста.
 - [Spokenly](https://spokenly.app/okhlopkov) — голос в текст в любом приложении. Нажал хоткей, сказал, получил промпт.
 
-Потом вышла запись стрима: [youtu.be/yJuzI2u-AnM](https://youtu.be/yJuzI2u-AnM).
+Потом вышла запись стрима: [youtu.be/yJuzI2u-AnM](https://www.youtube.com/watch?v=yJuzI2u-AnM).
 
 ## Что реально делает сетап
 
