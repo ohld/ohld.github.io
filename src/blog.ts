@@ -4,7 +4,7 @@ import {
   generatedRussianArticleItems,
   generatedRussianBlogItems,
   generatedArticlePath,
-} from './generatedBlogPosts'
+} from './generatedBlogMetadata'
 import { importedArticleListItems } from './importedArticles'
 
 export interface BlogArticle {

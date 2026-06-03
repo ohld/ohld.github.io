@@ -17,7 +17,14 @@ export function ArticlePreviewCard({
     <article className="article-preview-card">
       <a className="article-preview-hitarea" href={article.path} aria-label={article.title} />
       <div className="article-preview-media">
-        <img className="article-preview-thumb" src={thumbnail} alt={article.title} loading={imageLoading} />
+        <img
+          className="article-preview-thumb"
+          src={thumbnail}
+          alt={article.title}
+          loading={imageLoading}
+          fetchPriority={imageLoading === 'eager' ? 'high' : undefined}
+          decoding="async"
+        />
       </div>
       <div className="article-preview-body">
         <div className="content-card-meta">

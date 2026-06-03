@@ -43,8 +43,13 @@ export function EnglishHome() {
             </div>
           </div>
           <div className="blog-preview-grid">
-            {latestWritingItems.map((article) => (
-              <ArticlePreviewCard article={article} imageLoading="eager" tagsLabel="Tags" key={article.path} />
+            {latestWritingItems.map((article, index) => (
+              <ArticlePreviewCard
+                article={article}
+                imageLoading={index === 0 ? 'eager' : 'lazy'}
+                tagsLabel="Tags"
+                key={article.path}
+              />
             ))}
           </div>
         </section>

@@ -424,12 +424,14 @@ button:focus-visible,
 }
 
 .home-section-link {
+  min-width: 44px;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   justify-self: start;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--accent);
@@ -634,14 +636,16 @@ button:focus-visible,
 
 .blog-card-tags a,
 .blog-card-tags span {
+  min-width: 44px;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   border: 1px solid var(--border-light);
   border-radius: 3px;
   padding: 6px 10px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -673,7 +677,7 @@ button:focus-visible,
   gap: 6px;
   min-height: 28px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--accent);
@@ -784,7 +788,7 @@ button:focus-visible,
 
 .blog-article-meta span {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -796,8 +800,8 @@ button:focus-visible,
 }
 
 .blog-article > .subpage-header .back-nav {
-  width: 36px;
-  min-height: 36px;
+  width: 44px;
+  min-height: 44px;
   justify-content: center;
   padding: 0;
   margin-bottom: 18px;
@@ -1541,7 +1545,7 @@ button:focus-visible,
 
 .content-card-meta span {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--accent);
 }
 
@@ -1933,7 +1937,9 @@ button:focus-visible,
 }
 
 .footer-links a {
+  min-width: 44px;
   min-height: 44px;
+  justify-content: center;
 }
 
 .footer-socials {
@@ -1963,7 +1969,7 @@ button:focus-visible,
 
 .footer-copy {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.1em;

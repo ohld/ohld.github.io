@@ -20,6 +20,7 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="preload" as="image" href="/assets/articles/gde-deshevle-kupit-telegram-stars/telegram-stars-cover-card.webp" fetchpriority="high" />
     <link rel="alternate" type="text/markdown" href="/llms.txt" /><!-- alternate-md -->
     <meta property="og:title" content="Даниил Охлопков — AI-агенты, данные, TON и Telegram" />
     <meta property="og:description" content="Практические разборы AI-агентов, Claude Code, Codex, MCP, TON-аналитики и Telegram-автоматизаций от Даниила Охлопкова." />
@@ -67,25 +68,41 @@
       }
     }
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-9Z5T725JJD', { send_page_view: false });
-    </script>
-    <script>
-      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-      m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
+      window.ym = window.ym || function(){(window.ym.a=window.ym.a||[]).push(arguments)};
+      window.ym.l = window.ym.l || 1 * new Date();
       ym(46266270, "init", {
         defer:true,
-        clickmap:true,
+        clickmap:false,
         trackLinks:true,
         accurateTrackBounce:true,
-        webvisor:true
+        webvisor:false
       });
+
+      (function () {
+        var loaded = false;
+
+        function loadScript(src) {
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = src;
+          document.head.appendChild(script);
+        }
+
+        function loadAnalytics() {
+          if (loaded) return;
+          loaded = true;
+          loadScript('https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD');
+          loadScript('https://mc.yandex.ru/metrika/tag.js');
+        }
+
+        window.setTimeout(loadAnalytics, 3500);
+      }());
     </script>
     <script>
       // SPA GitHub Pages decode — paired with public/404.html (rafgraph/spa-github-pages)
@@ -207,7 +224,6 @@
 
   </head>
   <body>
-    <noscript><div><img src="https://mc.yandex.ru/watch/46266270" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <div id="root"><!-- body-fallback --></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

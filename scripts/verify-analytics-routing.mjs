@@ -381,6 +381,8 @@ async function run(baseUrl) {
   const calls = await getAnalyticsCalls(page)
   const initCalls = ymInitCalls(calls)
   assert(initCalls.some((init) => init.defer === true), 'Metrika init should use defer:true for SPA manual hits')
+  assert(initCalls.some((init) => init.clickmap === false), 'Metrika clickmap should stay disabled for Core Web Vitals')
+  assert(initCalls.some((init) => init.webvisor === false), 'Metrika Webvisor should stay disabled for Core Web Vitals')
 
   assertPageViewCounts(calls, expectedPaths)
   assertMetrikaHitCounts(calls, expectedPaths)

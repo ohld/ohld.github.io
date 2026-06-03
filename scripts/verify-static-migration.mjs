@@ -517,8 +517,10 @@ function verifyAnalyticsSnippet(html, path) {
   assert(new RegExp(`ym\\(\\s*${escapeRegExp(yandexMetrikaId)}\\s*,\\s*['"]hit['"]`).test(html), `${path}: missing inline Yandex Metrika hit`)
   assert(html.includes('__INITIAL_METRIKA_HIT_SENT__'), `${path}: missing inline Metrika hit state flag`)
   assert(html.includes('trackLinks:true'), `${path}: missing Yandex trackLinks option`)
-  assert(html.includes('webvisor:true'), `${path}: missing Yandex Webvisor option`)
-  assert(html.includes(`https://mc.yandex.ru/watch/${yandexMetrikaId}`), `${path}: missing Yandex Metrika noscript pixel`)
+  assert(html.includes('clickmap:false'), `${path}: Yandex clickmap should stay disabled for Core Web Vitals`)
+  assert(html.includes('webvisor:false'), `${path}: Yandex Webvisor should stay disabled for Core Web Vitals`)
+  assert(html.includes('setTimeout(loadAnalytics, 3500)'), `${path}: analytics loaders should stay out of the early critical path`)
+  assert(!html.includes(`https://mc.yandex.ru/watch/${yandexMetrikaId}`), `${path}: Yandex noscript pixel should not create empty-alt image noise`)
 }
 
 function verifyImageAltText(html, path) {
