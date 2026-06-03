@@ -9,6 +9,7 @@ import vacationAgentsFromTelegram from '../content/blog-posts/business-on-ai-age
 import aiReelsSeoPipelineArticle from '../content/seo-articles/ai-reels-seo-pipeline-telegram-claude-code.md?raw'
 import claudeCodeSkillsArticle from '../content/seo-articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok.md?raw'
 import hermesVsOpenClawArticle from '../content/seo-articles/hermes-agent-vs-openclaw.md?raw'
+import telegramStarsArticle from '../content/seo-articles/gde-deshevle-kupit-telegram-stars.md?raw'
 
 interface BlogListItem {
   path: string
@@ -56,6 +57,7 @@ const articleSources = [
   aiReelsSeoPipelineArticle,
   claudeCodeSkillsArticle,
   hermesVsOpenClawArticle,
+  telegramStarsArticle,
 ]
 
 function parseFrontmatter(raw: string): GeneratedBlogPost {
