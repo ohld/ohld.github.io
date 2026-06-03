@@ -1,0 +1,24 @@
+{
+  "article_slug": "gde-deshevle-kupit-telegram-stars",
+  "asset": "/assets/articles/gde-deshevle-kupit-telegram-stars/telegram-stars-cover.webp",
+  "alt": "Мемная обложка к сравнению сервисов, где дешевле купить Telegram Stars через СБП, карты и крипту",
+  "width": 1600,
+  "height": 900,
+  "bytes": 146666,
+  "source_kind": "stablestudio-reference-edit-with-local-text-overlay",
+  "reference_path": "/Users/ohld/Documents/exDesktop/pinterest4content/662cf09f1dcd497631fddf1f4906f04e.jpg",
+  "reference_blob_url": "https://wgunica1uhl5nijm.public.blob.vercel-storage.com/uploads/29c1bdc1-6f00-44a4-9113-d5f2dd0739c3/telegram-stars-reference.jpg",
+  "model": "gpt-image-2-edit",
+  "job_id": "cmpy4thfz000104l2eug79yk1",
+  "generated_image_url": "https://wgunica1uhl5nijm.public.blob.vercel-storage.com/generated/1eb57174-fa1d-4861-b21d-e0459de4e49c.webp",
+  "generated_at": "2026-06-03T14:01:06.414625+00:00",
+  "paid_generation_usd": 0.04,
+  "paid_upload_usd": 0.01,
+  "failed_cheapaiapi_job_ids": [
+    "fda76485-f6ba-48a0-a89d-2aac53d0051d",
+    "c8e14d6c-8dc9-4ba6-819a-5ccba4cdc319",
+    "5275aba1-f193-485d-bcd1-4c1f343db66c"
+  ],
+  "prompt_summary": "StableStudio GPT Image 2 reference edit of a fresh Pinterest-style kitchen scene; Russian title overlaid locally for readability.",
+  "local_overlay_note": "Recomposed overlay to avoid missing glyph boxes: used руб. text and vector star accents."
+}

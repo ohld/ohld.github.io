@@ -7,8 +7,8 @@ publishedAt: 2026-06-03
 updatedAt: 2026-06-03
 readingTime: 10 мин
 tags: Telegram Stars, Telegram, TON, Fragment, SEO
-coverImage: /assets/site/article-fallback.webp
-coverAlt: Сравнение где дешевле купить Telegram Stars через СБП, карты и крипту
+coverImage: /assets/articles/gde-deshevle-kupit-telegram-stars/telegram-stars-cover.webp
+coverAlt: Мемная обложка к сравнению сервисов, где дешевле купить Telegram Stars через СБП, карты и крипту
 sourceTelegramId: 0
 primaryKeyword: купить звезды телеграм
 secondaryKeywords: где дешевле купить Telegram Stars; купить звезды телеграм через СБП; купить Telegram Stars картой; дешевые звезды в телеграм; Telegram Stars Fragment
@@ -97,16 +97,6 @@ Telegram в документации пишет, что пользователь
 
 По гайду TON, Premium через Fragment можно покупать/дарить через TON или Stars; там же указаны Star-пакеты для Premium gifts: 3 месяца - 1000 Stars, 6 месяцев - 1500 Stars, 12 месяцев - 2500 Stars.
 
-## Что еще стоит добить в следующем обновлении
-
-Не хватает трех вещей:
-
-1. [BuynStars](https://buyns.t.me/?start=ref-hpkxi1gf10t1) - понять, 69 ₽ за 50 Stars это обычная цена, промо или скидка, и снять точные способы оплаты.
-2. [Split.tg](https://split.tg/?ref=UQCSQzpXbL5WxNzIbZS0l6LPGKm6qcgoP-oo6kPrPCXP7Sk2) - зафиксировать способ оплаты и финальную комиссию для 100 Stars = 129.21 ₽.
-3. [stars_mint](https://t.me/stars_mint_bot?start=ref_49820636) - открыть "Условия программы", чтобы подтвердить "до 65%" по рефке.
-
-Еще хорошо бы приложить 2-3 скрина: сетку цен [StarsZakupBot](https://t.me/StarsZakupBot?start=ref_r_c0eb69b81a), экран оплаты [Split.tg](https://split.tg/?ref=UQCSQzpXbL5WxNzIbZS0l6LPGKm6qcgoP-oo6kPrPCXP7Sk2), реферальную программу [Starfall](https://t.me/starss?start=eyJyZWYiOiAxNzQzMTkzfQ). Для SEO и доверия это будет сильнее, чем просто текст "я проверил".
-
 ## FAQ
 
 ### Где дешевле купить Telegram Stars?
@@ -134,9 +124,5 @@ Fragment - официальный внешний способ купить Teleg
 Если нужна самая низкая цена из проверенного среза, я бы сначала смотрел [StarsZakupBot](https://t.me/StarsZakupBot?start=ref_r_c0eb69b81a) и [Split.tg](https://split.tg/?ref=UQCSQzpXbL5WxNzIbZS0l6LPGKm6qcgoP-oo6kPrPCXP7Sk2). Если нужна оплата СБП/картой без крипто-головной боли - [StarsZakupBot](https://t.me/StarsZakupBot?start=ref_r_c0eb69b81a), [STARSEi](https://t.me/starseibot?start=r49820636) и [BuynStars](https://buyns.t.me/?start=ref-hpkxi1gf10t1) выглядят полезнее. Если нужны зарубежные карты или больше способов оплаты - [StarsBoost](https://t.me/kupit_zvezdyBot?start=w1WgefBsiTM4R4Pb7GLt9ENs) дороже, но закрывает больше вариантов.
 
 Главное: сравнивайте не "бот дешевле Fragment", а финальную цену за 1000 Stars после комиссии оплаты. И сохраняйте скрин до оплаты: цены у таких сервисов живут, а статья без даты проверки быстро превращается в слоп.
-
-## Источники и метод
-
-Ручной срез цен и рефок: Telegram-боты и Mini Apps, 3 июня 2026. Публичные источники: Telegram Stars API, Telegram Bot Payments, Telegram Stars Terms, TON Fragment guide, Apple App Review Guidelines. Поисковый спрос проверял отдельно, чтобы статья не была просто списком ссылок.
 
 См. также на okhlopkov.com: [Telegram automation](https://okhlopkov.com/topics/telegram-automation/), [TON data](https://okhlopkov.com/topics/ton-data/), [AI reels SEO pipeline](https://okhlopkov.com/ru/articles/ai-reels-seo-pipeline-telegram-claude-code/).
