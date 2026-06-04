@@ -650,7 +650,7 @@ async function verifyImportedArticle({ path, title, lang = 'ru' }) {
   assert(!html.includes('Оригинал:'), `${path}: public page leaked original post label`)
   assert(!html.includes('Continue reading'), `${path}: public page leaked old continue-reading footer`)
   assert(!html.includes('Читайте также'), `${path}: public page leaked old continue-reading footer`)
-  assert(/"dateModified": "2026-(05-(25|26|27)|06-02)T00:00:00\+03:00"/.test(html), `${path}: missing JSON-LD dateModified`)
+  assert(/"dateModified": "2026-(05-(25|26|27)|06-(02|04))T00:00:00\+03:00"/.test(html), `${path}: missing JSON-LD dateModified`)
   assert(!path.startsWith('/author/') && !path.startsWith('/tag/') && path !== '/cn/', `${path}: service page leaked into imported articles`)
   if (path === '/en-beads-gastown-framework-ai-agents/' || path === '/beads-gastown-framework-ai-agenty/') {
     assert(html.includes('https://x.com/trq212/status/2014480496013803643'), `${path}: missing X source link`)

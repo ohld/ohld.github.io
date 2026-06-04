@@ -160,7 +160,7 @@
     "description": "How Claude Code /compact works: context compression, what survives compaction, prompt caching cost, PreCompact/PostCompact hooks, and practical recovery tips.",
     "lang": "en",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-26",
+    "updatedAt": "2026-06-04",
     "readingTime": "11 min",
     "tags": [
       "Telegram"
@@ -244,7 +244,7 @@
     "description": "My daily Claude Code setup: CLAUDE.md, MCP servers, hooks, skills, subagents, troubleshooting, and the choices that actually matter in 2026.",
     "lang": "en",
     "publishedAt": "2026-02-23",
-    "updatedAt": "2026-05-26",
+    "updatedAt": "2026-06-04",
     "readingTime": "14 min",
     "tags": [
       "Claude Code"
@@ -709,7 +709,7 @@
     "description": "Curated list of useful skills and MCP servers for Claude Code: agent-browser for headless testing, coolify-mcp for Hetzner deployments.",
     "lang": "en",
     "publishedAt": "2026-01-31",
-    "updatedAt": "2026-05-25",
+    "updatedAt": "2026-06-04",
     "readingTime": "1 min",
     "tags": [
       "Telegram"

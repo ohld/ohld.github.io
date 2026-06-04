@@ -759,7 +759,43 @@ function articleSchema(route, overrides = {}) {
   return schema
 }
 
+function faqItemsFromHtml(html = '') {
+  const sections = [...html.matchAll(/<section\b[^>]*class=(["'])[^"']*\barticle-faq\b[^"']*\1[^>]*>([\s\S]*?)<\/section>/gi)]
+    .map((match) => match[2])
+  const items = []
+
+  for (const section of sections) {
+    const parts = section.split(/<h3\b[^>]*>([\s\S]*?)<\/h3>/gi)
+    for (let i = 1; i < parts.length; i += 2) {
+      const question = stripTags(parts[i])
+      const answer = stripTags((parts[i + 1] || '').split(/<h[23]\b/i)[0] || '')
+      if (question && answer) {
+        items.push({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: answer,
+          },
+        })
+      }
+    }
+  }
+
+  return items
+}
+
 function faqSchema(route) {
+  const htmlItems = faqItemsFromHtml(route.bodyHtml || '')
+  if (htmlItems.length) {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      '@id': `${SITE_URL}${route.path}/#faq`,
+      mainEntity: htmlItems,
+    }
+  }
+
   const markdown = route.markdown || getRouteMd(route) || ''
   if (!markdown) return null
 
