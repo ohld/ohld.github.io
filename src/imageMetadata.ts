@@ -14,6 +14,8 @@ const IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
   '/assets/articles/hermes-agent-vs-openclaw/hermes-openclaw-cover.webp': { width: 1280, height: 720 },
   '/assets/articles/hermes-agent-vs-openclaw/security-allowlist.webp': { width: 1376, height: 768 },
   '/assets/articles/claude-code-compaction-explained/hero.webp': { width: 1376, height: 768 },
+  '/assets/articles/claude-code-nastrojka-mcp-hooks-skills-2026/context-skills.webp': { width: 1376, height: 768 },
+  '/assets/articles/claude-code-nastrojka-mcp-hooks-skills-2026/hero.webp': { width: 1376, height: 768 },
   '/assets/articles/en-best-skills-mcp-claude-code-agent-browser/hero.webp': { width: 1376, height: 768 },
   '/assets/articles/hermes-agent-vs-openclaw/setup-cron-home.webp': { width: 1376, height: 768 },
   '/assets/articles/hermes-agent-vs-openclaw/telegram-remote-control.webp': { width: 1376, height: 768 },

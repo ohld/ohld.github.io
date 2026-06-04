@@ -254,16 +254,20 @@
   {
     "path": "/claude-code-nastrojka-mcp-hooks-skills-2026/",
     "slug": "claude-code-nastrojka-mcp-hooks-skills-2026",
-    "title": "Мой сетап Claude Code после 4 месяцев ежедневной работы",
-    "description": "Реальный конфиг Claude Code: MCP-серверы, хуки, скиллы, субагенты и сколько это стоит. Рабочий сетап, не пересказ документации.",
+    "title": "Claude Code: настройка MCP, Hooks и Skills в 2026 — мой рабочий сетап",
+    "description": "Как я настроил Claude Code в 2026: MCP-серверы, hooks, skills, CLAUDE.md, субагенты, стоимость и реальные сценарии ежедневной работы.",
     "lang": "ru",
     "publishedAt": "2026-02-23",
-    "updatedAt": "2026-05-25",
-    "readingTime": "7 мин",
+    "updatedAt": "2026-06-04",
+    "readingTime": "9 мин",
     "tags": [
-      "Telegram"
+      "Telegram",
+      "Claude Code",
+      "MCP",
+      "Skills",
+      "AI agents"
     ],
-    "heroImage": "/content/images/2026/02/claude-code-nastrojka-mcp-hooks-skills-2026.png"
+    "heroImage": "/assets/articles/claude-code-nastrojka-mcp-hooks-skills-2026/hero.webp"
   },
   {
     "path": "/en-claude-codex-dual-review/",
