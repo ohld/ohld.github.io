@@ -2,8 +2,7 @@
 
 ## Current production
 
-`okhlopkov.com` is a Coolify service running `ghost:latest` with MySQL and a
-persistent Ghost content volume. Do not replace that service directly.
+`okhlopkov.com` is served from this repository through GitHub Pages.
 
 ## Target rollout
 
@@ -14,8 +13,8 @@ persistent Ghost content volume. Do not replace that service directly.
 3. Before Ghost freeze/cutover, check that the saved legacy snapshot still
    matches live Ghost with `npm run check:legacy-drift`.
 4. Build this app as a Docker image or static `dist/`.
-5. Deploy it as a new Coolify/VPS application on a temporary host.
-6. Run `VERIFY_BASE_URL=https://preview-host npm run verify:migration`.
+5. Deploy through the GitHub Pages workflow in `.github/workflows/deploy.yml`.
+6. Run `SITE_URL=https://okhlopkov.com npm run verify:dist`.
 7. Verify analytics, page speed and RU/non-RU access manually.
 8. Switch `okhlopkov.com` routing only after redirects are ready.
 
@@ -38,13 +37,13 @@ four `A` records to `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and
 Pages redirects it to the configured apex domain. Keep Cloudflare proxy disabled
 for these records.
 
-For the future `okhlopkov.com` origin, use the Docker path:
+Historical Docker/VPS files remain in the repository as migration context, but
+the active production deploy path is GitHub Pages:
 
 - `Dockerfile` builds the static site and serves `dist/` with Nginx;
 - `nginx.conf` owns real permanent redirects for legacy Ghost service and tag
   URLs;
 - `compose.yaml` runs the container on `127.0.0.1:${OKHLOPKOV_PORT:-8080}`;
-- `.github/workflows/deploy-vps.yml` is manual-only and deploys to a VPS via SSH.
 - `npm run build:okhlopkov` is the root-domain build and keeps canonical URLs on
   `https://okhlopkov.com`.
 - `npm run preflight:okhlopkov` is the pre-deploy gate: root-domain build, URL
@@ -52,30 +51,7 @@ For the future `okhlopkov.com` origin, use the Docker path:
   browser smoke against the built `dist/`.
 - `npm run verify:migration` also checks GA4, Yandex Metrika,
   `yandex-verification` meta, `robots.txt`, `llms.txt` and `llms-full.txt`.
-- The manual VPS workflow also starts the Docker image in CI and runs the
-  verifier with `VERIFY_REQUIRE_REAL_REDIRECTS=1`, so server-side `308`
-  redirects are required before deploy can continue. It also sets
-  `VERIFY_REQUIRE_ORIGIN_HEADERS=1`, so the Nginx origin must return short cache
-  headers for HTML/crawler files and immutable cache headers for assets.
-
-Required GitHub secrets for manual VPS deploy:
-
-- `OKHLOPKOV_VPS_HOST`;
-- `OKHLOPKOV_VPS_USER`;
-- `OKHLOPKOV_VPS_SSH_KEY`;
-- `OKHLOPKOV_VPS_PATH`.
-
-Optional GitHub environment variable:
-
-- `OKHLOPKOV_PORT` (defaults to `8080`).
-- `OKHLOPKOV_SITE_URL` (defaults to `https://okhlopkov.com`).
-
-See `migration/vps-deploy.md` for the server spec, setup commands, reverse proxy
-shape, GitHub environment configuration and rollback steps.
-
-Do not point the main domain at this container until `npm run preflight:okhlopkov`
-passes in CI and `npm run verify:migration` passes against the deployed preview
-URL. The verifier checks the public IA (`/`, `/ru/blog/`, `/ru/articles/`, `/about/`
+The verifier checks the public IA (`/`, `/ru/blog/`, `/ru/articles/`, `/about/`
 and EN equivalents), all saved legacy pages from
 `content/legacy-pages/pages.json`, service-page redirects, backlink-critical
 URLs, legacy internal links, analytics snippets, crawler files and sitemap

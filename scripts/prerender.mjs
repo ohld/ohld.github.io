@@ -1329,6 +1329,9 @@ const REDIRECTS = [
   { from: '/tag/crypto', fromSlug: 'tag-crypto', to: '/ru/blog/', toSlug: 'ru-blog' },
   { from: '/tag/dokku', fromSlug: 'tag-dokku', to: '/cloudflare-certificates-dokku/', toSlug: 'cloudflare-certificates-dokku' },
   { from: '/tag/parsing', fromSlug: 'tag-parsing', to: '/how-to-get-a-telegram-channel-subscribers-list-in-python/', toSlug: 'how-to-get-a-telegram-channel-subscribers-list-in-python' },
+  { from: '/tag/workflow', fromSlug: 'tag-workflow', to: '/topics/workflow/', toSlug: 'topic-workflow' },
+  { from: '/tag/tutorial', fromSlug: 'tag-tutorial', to: '/en/articles/', toSlug: 'en-articles' },
+  { from: '/tag/telegram-bot', fromSlug: 'tag-telegram-bot', to: '/topics/telegram-automation/', toSlug: 'topic-telegram-automation' },
   { from: '/tag/telegram-cn', fromSlug: 'tag-telegram-cn', to: '/en/', toSlug: 'en' },
   { from: '/tag/telegram-en', fromSlug: 'tag-telegram-en', to: '/en/', toSlug: 'en' },
   { from: '/tag/web-scraping', fromSlug: 'tag-web-scraping', to: '/web-scraping-ai-agents-2026/', toSlug: 'web-scraping-ai-agents-2026' },
@@ -1379,11 +1382,13 @@ for (const redirect of LEGACY_REDIRECTS) {
 let redirectCount = 0
 for (const r of REDIRECTS) {
   const targetUrl = `${SITE_URL}${r.to}`
+  const redirectDescription = `Legacy okhlopkov.com URL moved to ${targetUrl}.`
   const stub = `<!doctype html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
   <title>Redirecting…</title>
+  <meta name="description" content="${escape(redirectDescription)}" />
   <link rel="canonical" href="${targetUrl}" />
   <meta name="robots" content="noindex, follow" />
   <meta http-equiv="refresh" content="0; url=${r.to}" />
@@ -1429,6 +1434,7 @@ if (fs.existsSync(llmsPath)) {
 
 fs.writeFileSync(path.join(dist, 'robots.txt'), `User-agent: *
 Allow: /
+Disallow: /*.md$
 
 # Content usage policy for crawlers that honor Content-Signal.
 Content-Signal: ai-input=yes

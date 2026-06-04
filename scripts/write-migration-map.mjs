@@ -88,6 +88,27 @@ const redirects = [
     note: 'Old parsing tag appears in imported articles; redirect to the strongest imported parsing article.',
   },
   {
+    old_path: '/tag/workflow/',
+    new_path: '/topics/workflow/',
+    action: '308_redirect',
+    source: 'yandex_webmaster_example',
+    note: 'Old workflow tag surfaced in Yandex Webmaster; redirect to the maintained workflow topic page.',
+  },
+  {
+    old_path: '/tag/tutorial/',
+    new_path: '/en/articles/',
+    action: '308_redirect',
+    source: 'yandex_webmaster_example',
+    note: 'Old tutorial tag surfaced in Yandex Webmaster; redirect to the maintained English articles collection.',
+  },
+  {
+    old_path: '/tag/telegram-bot/',
+    new_path: '/topics/telegram-automation/',
+    action: '308_redirect',
+    source: 'yandex_webmaster_example',
+    note: 'Old Telegram bot tag surfaced in Yandex Webmaster; redirect to the maintained Telegram automation topic page.',
+  },
+  {
     old_path: '/tag/telegram-cn/',
     new_path: '/en/',
     action: '308_redirect',

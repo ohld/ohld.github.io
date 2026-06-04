@@ -8,7 +8,6 @@ const runPreviewChecks = process.env.CUTOVER_RUN_PREVIEW_CHECKS === '1' && previ
 const requirePreview = process.env.CUTOVER_REQUIRE_PREVIEW === '1'
 
 const requiredFiles = [
-  '.github/workflows/deploy-vps.yml',
   'Dockerfile',
   'compose.yaml',
   'nginx.conf',
@@ -16,7 +15,6 @@ const requiredFiles = [
   'content/articles/imported-content.json',
   'migration/backlink-critical-urls.csv',
   'migration/cutover-checklist.md',
-  'migration/vps-deploy.md',
   'scripts/verify-static-migration.mjs',
   'scripts/browser-smoke.mjs',
 ]
@@ -32,7 +30,8 @@ const requiredPackageScripts = [
 ]
 
 const EXPECTED_IMPORTED_ARTICLES = 88
-const EXPECTED_REDIRECTS = 40
+const EXPECTED_PRESERVED_ARTICLES = 87
+const EXPECTED_REDIRECTS = 44
 const BASE_STATIC_PATHS = [
   '/',
   '/ru/',
@@ -215,9 +214,9 @@ if (fs.existsSync('migration/url-map.csv')) {
   const preserved = rows.filter((row) => row.action === 'preserve_same_path')
   const redirects = rows.filter((row) => row.expected_status === '308')
   const staticPages = rows.filter((row) => row.action === 'new_static_page')
-  const expectedRows = EXPECTED_IMPORTED_ARTICLES + EXPECTED_REDIRECTS + REQUIRED_STATIC_PATHS.length
+  const expectedRows = EXPECTED_PRESERVED_ARTICLES + EXPECTED_REDIRECTS + REQUIRED_STATIC_PATHS.length
   check(rows.length === expectedRows, `migration URL map has ${expectedRows} rows`, `migration URL map has ${rows.length} rows, expected ${expectedRows}`)
-  check(preserved.length === EXPECTED_IMPORTED_ARTICLES, `migration URL map preserves ${EXPECTED_IMPORTED_ARTICLES} imported articles`, `migration URL map preserves ${preserved.length} imported articles, expected ${EXPECTED_IMPORTED_ARTICLES}`)
+  check(preserved.length === EXPECTED_PRESERVED_ARTICLES, `migration URL map preserves ${EXPECTED_PRESERVED_ARTICLES} imported articles`, `migration URL map preserves ${preserved.length} imported articles, expected ${EXPECTED_PRESERVED_ARTICLES}`)
   check(redirects.length === EXPECTED_REDIRECTS, `migration URL map has ${EXPECTED_REDIRECTS} redirects`, `migration URL map has ${redirects.length} redirects, expected ${EXPECTED_REDIRECTS}`)
   check(staticPages.length === REQUIRED_STATIC_PATHS.length, `migration URL map has ${REQUIRED_STATIC_PATHS.length} new static pages`, `migration URL map has ${staticPages.length} new static pages, expected ${REQUIRED_STATIC_PATHS.length}`)
   for (const requiredPath of REQUIRED_STATIC_PATHS) {
@@ -230,14 +229,6 @@ if (fs.existsSync('migration/backlink-critical-urls.csv')) {
   const rows = parseCsv(read('migration/backlink-critical-urls.csv'))
   check(rows.length >= 9, `backlink-critical inventory has ${rows.length} rows`, `backlink-critical inventory has ${rows.length} rows, expected at least 9`)
   check(rows.some((row) => row.old_path === '/claude-code-compaction-explained/' && row.expected_status === '200'), 'backlink-critical preserves Claude Code compaction URL')
-}
-
-if (fs.existsSync('.github/workflows/deploy-vps.yml')) {
-  const workflow = read('.github/workflows/deploy-vps.yml')
-  check(workflow.includes('VERIFY_REQUIRE_REAL_REDIRECTS=1'), 'VPS workflow requires real redirects')
-  check(workflow.includes('VERIFY_REQUIRE_ORIGIN_HEADERS=1'), 'VPS workflow requires origin cache headers')
-  check(workflow.includes('npm run smoke:browser'), 'VPS workflow runs browser smoke')
-  check(workflow.includes('for attempt in'), 'VPS workflow waits for health checks with retries')
 }
 
 if (fs.existsSync('package.json')) {

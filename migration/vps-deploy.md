@@ -1,4 +1,8 @@
-# VPS Deploy Runbook
+# Historical VPS Deploy Runbook
+
+This path is not wired to GitHub Actions anymore. Production deploys through
+GitHub Pages in `.github/workflows/deploy.yml`; use this file only as migration
+context if a separate VPS origin is revived later.
 
 This runbook is for deploying the static `okhlopkov.com` container to a new
 RU-accessible origin without touching the current Ghost service first.
@@ -67,12 +71,13 @@ The edge/proxy must also permanently redirect `http://okhlopkov.com/` to
 
 ## Preview Deploy
 
-Use the manual GitHub workflow:
+The old manual GitHub workflow has been removed. If the VPS path is revived,
+recreate deployment automation from the current GitHub Pages workflow and this
+historical outline:
 
-1. Run `Deploy static site to VPS`.
-2. Pick the branch/ref that contains the static migration.
-3. Wait for the `verify` job to pass.
-4. The deploy job syncs the repo, builds the container on the VPS, starts it,
+1. Pick the branch/ref that contains the static site.
+2. Run the current preflight checks locally or in CI.
+3. Sync the repo, build the container on the VPS, start it,
    then verifies the app through an SSH tunnel.
 
 The workflow verifies:

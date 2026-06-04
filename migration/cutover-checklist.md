@@ -1,11 +1,11 @@
 # Ghost To Static Cutover Checklist
 
-This is the operational checklist for replacing the current Ghost/Coolify
-`okhlopkov.com` origin with the static site from this repository.
+Historical operational checklist for the Ghost/Coolify to static-site cutover.
+The live production path is now GitHub Pages through `.github/workflows/deploy.yml`.
 
 ## Current State
 
-- Live `okhlopkov.com` is still Ghost behind Cloudflare/Coolify.
+- Live `okhlopkov.com` is served from this repository through GitHub Pages.
 - The static migration branch preserves 88 indexed content URLs as static HTML.
 - Ghost service pages are redirected by Nginx: `/author/`, selected `/tag/`,
   `/cn/`, `/ru/` and `/closed/`.
@@ -69,9 +69,9 @@ This is the operational checklist for replacing the current Ghost/Coolify
    cache headers.
 10. The preview origin is reachable from Russia and non-Russia networks.
 
-See `migration/vps-deploy.md` for VPS setup, GitHub environment variables,
-reverse proxy shape and rollback notes. See `migration/live-cutover-runbook.md`
-for the post-DNS verification and failure triage.
+`migration/vps-deploy.md` is historical context for the abandoned VPS path. See
+`migration/live-cutover-runbook.md` for post-DNS verification and failure triage
+notes.
 
 ## Ghost Freeze
 

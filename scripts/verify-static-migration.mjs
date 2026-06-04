@@ -226,6 +226,9 @@ const redirects = [
   ['/tag/crypto/', '/ru/blog/'],
   ['/tag/dokku/', '/cloudflare-certificates-dokku/'],
   ['/tag/parsing/', '/how-to-get-a-telegram-channel-subscribers-list-in-python/'],
+  ['/tag/workflow/', '/topics/workflow/'],
+  ['/tag/tutorial/', '/en/articles/'],
+  ['/tag/telegram-bot/', '/topics/telegram-automation/'],
   ['/tag/telegram-cn/', '/en/'],
   ['/tag/telegram-en/', '/en/'],
   ['/tag/web-scraping/', '/web-scraping-ai-agents-2026/'],
@@ -805,6 +808,7 @@ async function verifyRedirect([from, to]) {
   assert(res.status === 200, `${from}: expected 3xx or static fallback 200, got ${res.status}`)
   const html = await res.text()
   assert(readMeta(html, 'robots') === 'noindex, follow', `${from}: fallback robots mismatch`)
+  assert(readMeta(html, 'description'), `${from}: fallback missing description`)
   assert(readMeta(html, 'canonical') === canonicalUrl(to), `${from}: fallback canonical mismatch`)
   assert(html.includes(`url=${to}`), `${from}: fallback refresh target mismatch`)
   console.log(`✓ redirect fallback ${from} -> ${to}`)
@@ -907,8 +911,9 @@ async function verifyCrawlerFiles() {
   const robots = await robotsRes.text()
   assert(robots.includes('User-agent: *'), '/robots.txt: missing wildcard user-agent')
   assert(robots.includes('Allow: /'), '/robots.txt: missing Allow: /')
+  assert(robots.includes('Disallow: /*.md$'), '/robots.txt: missing markdown disallow')
   assert(robots.includes(`Sitemap: ${siteUrl}/sitemap.xml`), '/robots.txt: sitemap host mismatch')
-  assert(!robots.includes('Disallow: /'), '/robots.txt: blocks crawling')
+  assert(!/^Disallow:\s*\/\s*$/m.test(robots), '/robots.txt: blocks crawling')
 
   const llmsRes = await fetchManual('/llms.txt')
   assert(llmsRes.status === 200, `/llms.txt: expected 200, got ${llmsRes.status}`)

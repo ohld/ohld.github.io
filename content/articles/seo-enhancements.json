@@ -78,5 +78,35 @@
     "description": "基于61000个Telegram Ads搜索查询和3100+广告商的关键词分析：塔罗、约会、VPN等类目最热，长尾意图暴露Telegram流量市场的真实需求。适合做内容选题、SaaS验证和关键词扩展。",
     "summaryHtml": "<p><strong>快速答案：</strong>Telegram Ads搜索查询像一张需求地图：广告商愿意出钱买的词，往往比普通关键词工具更接近商业意图。61K查询和3100+广告商显示，塔罗、约会、VPN等类别很热，但真正机会在长尾组合和可验证的用户需求。</p><ul><li>这份数据适合选题、广告测试和SaaS idea验证。</li><li>不要只看大词，要看长尾意图。</li><li>下一步是把关键词变成页面、广告或小工具实验。</li></ul>",
     "faqHtml": "<h2>FAQ</h2><h3>Telegram Ads关键词和SEO关键词有什么区别？</h3><p>Ads关键词更接近广告商愿意购买的需求，SEO关键词更接近用户搜索行为。两者结合能更好判断内容和产品机会。</p><h3>为什么长尾重要？</h3><p>长尾词竞争更小，意图更清楚，也更容易变成具体页面、bot功能或广告实验。</p>"
+  },
+  "/deploy-celery-flower-dokku/": {
+    "description": "Deploy Celery Flower with Dokku: create the app, connect Redis or RabbitMQ, set Flower auth, expose the domain and keep Celery queues visible in production."
+  },
+  "/deploy-elasticsearch-kibana-with-dokku/": {
+    "description": "Deploy Elasticsearch and Kibana on a Dokku server: install plugins, create services, link apps, expose Kibana and handle production setup details."
+  },
+  "/dokku-github-actions-deploy-app-with-push-to-repo/": {
+    "description": "Connect GitHub Actions to Dokku so every push can deploy a Python or Node.js app: SSH setup, workflow file, Dokku repo update and rebuild trigger."
+  },
+  "/how-to-deploy-your-backend-to-production-with-dokku/": {
+    "description": "Step-by-step Dokku backend deployment for Node.js, FastAPI, Django or similar apps: server setup, SSH keys, domains, env vars and GitHub Actions CI/CD."
+  },
+  "/how-to-find-all-blockchain-startups/": {
+    "description": "How to find blockchain startups with public LinkedIn data: build a training set, inspect company metadata, search similar profiles and map web3 trends."
+  },
+  "/how-to-get-a-telegram-channel-subscribers-list-in-python/": {
+    "description": "Python and Telethon approach for discovering Telegram channel subscribers through search queries, with limits, caveats and practical automation notes."
+  },
+  "/how-to-watch-telegram-stories-from-python/": {
+    "description": "Python and Telethon guide to Telegram story viewing automation: find chats, detect users with stories, watch them from a script and understand the limits."
+  },
+  "/integrate-amplitude-with-telegram-bot/": {
+    "description": "Add Amplitude analytics to a Telegram bot to track users, events, DAU, retention and funnels when Telegram itself gives almost no bot usage stats."
+  },
+  "/kaggle-tricks-from-grandmaster-hft-quant/": {
+    "description": "Notes from a Kaggle Grandmaster and HFT quant talk: unusual ML competition tricks, validation ideas, leakage checks and techniques for stronger models."
+  },
+  "/my-job-hunt-journey-in-london-2023/": {
+    "description": "Personal story of failing to find a London tech job in 2023 after founder and data roles: visa constraints, interviews, mistakes and what I learned."
   }
 }
