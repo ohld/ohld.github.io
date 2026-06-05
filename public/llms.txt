@@ -31,6 +31,7 @@
 - [Second brain + Obsidian + Claude Code](https://okhlopkov.com/article-vtoroj-mozg-ai-assistent-obsidian-claude-code.md): как хранить проектный контекст для AI-агентов
 - [Claude Code setup: MCP, Hooks, Skills](https://okhlopkov.com/article-claude-code-nastrojka-mcp-hooks-skills-2026.md): практический сетап Claude Code
 - [Claude Code + Codex dual review](https://okhlopkov.com/article-claude-codex-dual-review.md): cross-check workflow для двух coding agents
+- [Web Scraping AI Agents](https://okhlopkov.com/article-web-scraping-ai-agents-2026.md): API/XHR, browser agents and LLM extraction in 2026
 - [Telegram MCP Server](https://okhlopkov.com/article-telegram-mcp-server-kak-sdelat.md): Python, Telethon, FastMCP и Telegram как agent UI
 - [183 AI bots on Telegram](https://okhlopkov.com/article-183-ai-bots-telegram-research.md): датасет и выводы по Telegram AI bot market
 - [Telegram Ads 61K queries](https://okhlopkov.com/article-cn-telegram-ads-61k-search-queries-analysis.md): demand map по Telegram Ads queries

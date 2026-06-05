@@ -32,6 +32,17 @@ export function TopicPage() {
         <p className="subpage-subtitle">{topic.description}</p>
       </div>
 
+      {Boolean(topic.featuredLinks?.length) && (
+        <nav className="topic-featured-links" aria-label={`Связанные материалы по теме ${topic.title}`}>
+          {topic.featuredLinks?.map((link) => (
+            <a className="topic-featured-link" href={link.href} key={link.href}>
+              <span>{link.label}</span>
+              <small>{link.description}</small>
+            </a>
+          ))}
+        </nav>
+      )}
+
       <main className="blog-list" aria-label={`Материалы по теме ${topic.title}`}>
         {!items.length && (
           <article className="blog-card blog-card-no-thumb">

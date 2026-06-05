@@ -8,6 +8,11 @@ export interface TopicDefinition {
   title: string
   description: string
   aliases: string[]
+  featuredLinks?: Array<{
+    href: string
+    label: string
+    description: string
+  }>
   extraItems?: BlogListItem[]
 }
 
@@ -18,6 +23,14 @@ export const topicDefinitions: TopicDefinition[] = [
     title: 'AI-агенты',
     description: 'Практические материалы про агентные флоу, Claude Code, Codex, skills, ревью и рабочий контекст.',
     aliases: ['ai agents', 'agents', 'ai coding'],
+    featuredLinks: [
+      {
+        href: '/web-scraping-ai-agents-2026/',
+        label: 'AI agents for web scraping',
+        description: 'Когда агенту хватит API/XHR, а когда нужен Playwright или browser agent.',
+      },
+    ],
+    extraItems: importedArticleListItems(['/web-scraping-ai-agents-2026/']),
   },
   {
     slug: 'claude-code',
@@ -25,9 +38,17 @@ export const topicDefinitions: TopicDefinition[] = [
     title: 'Claude Code',
     description: 'Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code.',
     aliases: ['claude code', 'skills'],
+    featuredLinks: [
+      {
+        href: '/web-scraping-ai-agents-2026/',
+        label: 'browser agents for data extraction',
+        description: 'Практический пример, где Claude Code выбирает между API, XHR и browser automation.',
+      },
+    ],
     extraItems: importedArticleListItems([
       '/claude-code-nastrojka-mcp-hooks-skills-2026/',
       '/vtoroj-mozg-ai-assistent-obsidian-claude-code/',
+      '/web-scraping-ai-agents-2026/',
     ]),
   },
   {
@@ -44,7 +65,17 @@ export const topicDefinitions: TopicDefinition[] = [
     title: 'MCP',
     description: 'MCP-серверы, agent-browser, Telegram/Coolify интеграции и практическое расширение агентных инструментов.',
     aliases: ['mcp'],
-    extraItems: importedArticleListItems(['/luchshie-skills-mcp-claude-code-agent-browser/']),
+    featuredLinks: [
+      {
+        href: '/web-scraping-ai-agents-2026/',
+        label: 'AI agents for web scraping',
+        description: 'Где agent-browser помогает, а где лучше оставить прямой JSON/API слой.',
+      },
+    ],
+    extraItems: importedArticleListItems([
+      '/luchshie-skills-mcp-claude-code-agent-browser/',
+      '/web-scraping-ai-agents-2026/',
+    ]),
   },
   {
     slug: 'gstack',
@@ -115,6 +146,14 @@ export const topicDefinitions: TopicDefinition[] = [
     title: 'Web scraping',
     description: 'Browser automation, agent-browser и новые способы доставать данные из сайтов.',
     aliases: ['web scraping', 'browser automation'],
+    featuredLinks: [
+      {
+        href: '/web-scraping-ai-agents-2026/',
+        label: 'AI agents for web scraping',
+        description: 'Обновленная 2026-иерархия: API/XHR, embedded JSON, Playwright/browser agent, LLM extraction.',
+      },
+    ],
+    extraItems: importedArticleListItems(['/web-scraping-ai-agents-2026/']),
   },
   {
     slug: 'frameworks',
@@ -168,9 +207,17 @@ export const topicDefinitions: TopicDefinition[] = [
     title: 'Telegram-автоматизация',
     description: 'Telegram bots, Mini Apps, voice workflows, AI-агенты в чатах и автоматизация через Telegram.',
     aliases: ['telegram', 'community'],
+    featuredLinks: [
+      {
+        href: '/web-scraping-ai-agents-2026/',
+        label: 'browser agents for data extraction',
+        description: 'Что делать, когда Telegram-задача упирается в данные с внешнего сайта.',
+      },
+    ],
     extraItems: importedArticleListItems([
       '/telegram-mini-app-llms-txt-claude-code-stream/',
       '/ai-agent-forum-telegram-chat-agenty/',
+      '/web-scraping-ai-agents-2026/',
     ]),
   },
 ]

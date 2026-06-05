@@ -12,7 +12,7 @@ const VALID_START_PARAMS = new Set([
   'about', 'posts', 'blog', 'ai-agents', 'ai-course', 'private-channel', 'closed', 'work-together', 'markdown-vs-html',
 ])
 const START_PARAM_REDIRECTS: Record<string, string> = {
-  'ai-agents': '/ru/articles/',
+  'ai-agents': '/topics/ai-agents/',
   'ai-course': '/ru/articles/',
   posts: '/ru/blog/',
   blog: '/ru/blog/',
@@ -190,7 +190,7 @@ function App() {
           <Route path="/articles" element={<Navigate to="/ru/articles" replace />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
           <Route path="/topics/:slug" element={<TopicPage />} />
-          <Route path="/ai-agents" element={<Navigate to="/articles" replace />} />
+          <Route path="/ai-agents" element={<Navigate to="/topics/ai-agents" replace />} />
           <Route path="/ai-course" element={<Navigate to="/articles" replace />} />
           <Route path="/private-channel" element={<ClosedChannel />} />
           <Route path="/closed" element={<Navigate to="/private-channel" replace />} />

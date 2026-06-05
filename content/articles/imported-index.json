@@ -485,11 +485,11 @@
   {
     "path": "/web-scraping-ai-agents-2026/",
     "slug": "web-scraping-ai-agents-2026",
-    "title": "Web Scraping with AI Agents: What Replaced Manual Parsers in 2026",
-    "description": "How AI agents changed web scraping: when to use browser agents, when to write parsers, and how I split one-off extraction from production data pipelines.",
+    "title": "Web Scraping AI Agents: What Actually Works in 2026",
+    "description": "Is web scraping dead in 2026? Not exactly. Use AI agents to choose API/XHR, Playwright/browser flows or LLM extraction without hallucinated selectors.",
     "lang": "en",
     "publishedAt": "2026-02-11",
-    "updatedAt": "2026-05-26",
+    "updatedAt": "2026-06-05",
     "readingTime": "10 min",
     "tags": [
       "Web Scraping"

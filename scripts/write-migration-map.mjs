@@ -33,10 +33,10 @@ const redirects = [
   },
   {
     old_path: '/tag/ai-agents/',
-    new_path: '/ru/articles/',
+    new_path: '/topics/ai-agents/',
     action: '308_redirect',
     source: 'ghost_service_page',
-    note: 'Tag page redirects to the new Articles index.',
+    note: 'Tag page redirects to the maintained AI agents topic page.',
   },
   {
     old_path: '/tag/telegram/',
@@ -194,10 +194,10 @@ const redirects = [
   },
   {
     old_path: '/ai-agents/',
-    new_path: '/ru/articles/',
+    new_path: '/topics/ai-agents/',
     action: '308_redirect',
     source: 'static_ia_cleanup',
-    note: 'Old AI Agents hub now collapses into the Articles surface.',
+    note: 'Old AI Agents hub now points to the maintained topic page.',
   },
   {
     old_path: '/ai-course/',

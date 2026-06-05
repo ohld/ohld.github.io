@@ -46,7 +46,7 @@ const topImportedSmokePages = [
   },
   {
     path: '/web-scraping-ai-agents-2026/',
-    title: 'Web Scraping Is Dead: What AI Agents Replaced It With',
+    title: 'Web Scraping AI Agents: What Actually Works in 2026',
   },
   {
     path: '/how-to-get-a-telegram-channel-subscribers-list-in-python/',
@@ -208,7 +208,7 @@ const redirects = [
   ['/work-together/', '/about/'],
   ['/markdown-vs-html/', '/articles/markdown-vs-html/'],
   ['/posts/', '/ru/blog/'],
-  ['/ai-agents/', '/ru/articles/'],
+  ['/ai-agents/', '/topics/ai-agents/'],
   ['/ai-course/', '/ru/articles/'],
   ['/blog/', '/ru/blog/'],
   ['/articles/', '/ru/articles/'],
@@ -218,7 +218,7 @@ const redirects = [
   ['/author/okhlopkov/', '/about/'],
   ['/projects/', '/about/'],
   ['/tag/second-brain/', '/vtoroj-mozg-ai-assistent-obsidian-claude-code/'],
-  ['/tag/ai-agents/', '/ru/articles/'],
+  ['/tag/ai-agents/', '/topics/ai-agents/'],
   ['/tag/telegram/', '/ru/blog/'],
   ['/tag/ai/', '/ru/articles/'],
   ['/tag/analytics/', '/ru/blog/'],
@@ -653,7 +653,7 @@ async function verifyImportedArticle({ path, title, lang = 'ru' }) {
   assert(!html.includes('Оригинал:'), `${path}: public page leaked original post label`)
   assert(!html.includes('Continue reading'), `${path}: public page leaked old continue-reading footer`)
   assert(!html.includes('Читайте также'), `${path}: public page leaked old continue-reading footer`)
-  assert(/"dateModified": "2026-(05-(25|26|27)|06-(02|04))T00:00:00\+03:00"/.test(html), `${path}: missing JSON-LD dateModified`)
+  assert(/"dateModified": "2026-(05-(25|26|27)|06-(02|04|05))T00:00:00\+03:00"/.test(html), `${path}: missing JSON-LD dateModified`)
   assert(!path.startsWith('/author/') && !path.startsWith('/tag/') && path !== '/cn/', `${path}: service page leaked into imported articles`)
   if (path === '/en-beads-gastown-framework-ai-agents/' || path === '/beads-gastown-framework-ai-agenty/') {
     assert(html.includes('https://x.com/trq212/status/2014480496013803643'), `${path}: missing X source link`)

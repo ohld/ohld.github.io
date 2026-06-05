@@ -3,6 +3,7 @@ import seoEnhancements from '../content/articles/seo-enhancements.json'
 interface ArticleSeoEnhancement {
   description?: string
   summaryHtml?: string
+  relatedHtml?: string
   faqHtml?: string
 }
 
@@ -33,6 +34,9 @@ export function applyArticleSeoEnhancement(pathname: string, html: string) {
   const faq = enhancement.faqHtml
     ? `<section class="article-faq" data-seo-enhancement="faq">${enhancement.faqHtml}</section>`
     : ''
+  const related = enhancement.relatedHtml
+    ? `<section class="article-callout article-related" data-seo-enhancement="related">${enhancement.relatedHtml}</section>`
+    : ''
 
-  return `${summary}${html}${faq}`
+  return `${summary}${html}${related}${faq}`
 }

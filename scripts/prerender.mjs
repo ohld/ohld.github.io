@@ -94,7 +94,10 @@ function applyArticleSeoEnhancement(pathname, html = '') {
   const faq = enhancement.faqHtml
     ? `<section class="article-faq" data-seo-enhancement="faq">${enhancement.faqHtml}</section>`
     : ''
-  return `${summary}${html}${faq}`
+  const related = enhancement.relatedHtml
+    ? `<section class="article-callout article-related" data-seo-enhancement="related">${enhancement.relatedHtml}</section>`
+    : ''
+  return `${summary}${html}${related}${faq}`
 }
 
 function normalizeImportedArticleHtml(html = '') {
@@ -339,8 +342,31 @@ const TOPIC_PAGES = [
   ['telegram-automation', 'Telegram-автоматизация', 'Telegram bots, Mini Apps, voice workflows, AI-агенты в чатах и автоматизация через Telegram.'],
 ]
 
-function topicMarkdown(title, description) {
-  return `${description}
+const TOPIC_FEATURED_LINKS = new Map([
+  ['ai-agents', [
+    ['AI agents for web scraping', '/web-scraping-ai-agents-2026/', 'Когда агенту хватит API/XHR, а когда нужен Playwright или browser agent.'],
+  ]],
+  ['claude-code', [
+    ['browser agents for data extraction', '/web-scraping-ai-agents-2026/', 'Практический пример, где Claude Code выбирает между API, XHR и browser automation.'],
+  ]],
+  ['mcp', [
+    ['AI agents for web scraping', '/web-scraping-ai-agents-2026/', 'Где agent-browser помогает, а где лучше оставить прямой JSON/API слой.'],
+  ]],
+  ['web-scraping', [
+    ['AI agents for web scraping', '/web-scraping-ai-agents-2026/', 'Обновленная 2026-иерархия: API/XHR, embedded JSON, Playwright/browser agent, LLM extraction.'],
+  ]],
+  ['telegram-automation', [
+    ['browser agents for data extraction', '/web-scraping-ai-agents-2026/', 'Что делать, когда Telegram-задача упирается в данные с внешнего сайта.'],
+  ]],
+])
+
+function topicMarkdown(slug, title, description) {
+  const featuredLinks = TOPIC_FEATURED_LINKS.get(slug) || []
+  const featuredMarkdown = featuredLinks.length
+    ? `\n\n## Featured links\n\n${featuredLinks.map(([label, href, note]) => `- [${label}](${href}) — ${note}`).join('\n')}`
+    : ''
+
+  return `${description}${featuredMarkdown}
 
 ## Материалы
 
@@ -590,7 +616,7 @@ for (const [slug, title, description] of TOPIC_PAGES) {
     },
     kind: 'topic-page',
     topicTitle: title,
-    markdown: topicMarkdown(title, description),
+    markdown: topicMarkdown(slug, title, description),
   })
 }
 
@@ -1314,14 +1340,14 @@ const REDIRECTS = [
   { from: '/work-together', fromSlug: 'work-together', to: '/about/', toSlug: 'about' },
   { from: '/markdown-vs-html', fromSlug: 'markdown-vs-html-old', to: '/articles/markdown-vs-html/', toSlug: 'markdown-vs-html' },
   { from: '/posts', fromSlug: 'posts', to: '/ru/blog/', toSlug: 'ru-blog' },
-  { from: '/ai-agents', fromSlug: 'ai-agents', to: '/ru/articles/', toSlug: 'ru-articles' },
+  { from: '/ai-agents', fromSlug: 'ai-agents', to: '/topics/ai-agents/', toSlug: 'topic-ai-agents' },
   { from: '/ai-course', fromSlug: 'ai-course', to: '/ru/articles/', toSlug: 'ru-articles' },
   { from: '/blog/ai-tools-for-designers-design-engineering-agents', fromSlug: 'blog-ai-tools-for-designers-design-engineering-agents', to: '/ru/articles/ai-tools-for-designers-design-engineering-agents/', toSlug: 'ru-articles-ai-tools-for-designers-design-engineering-agents' },
   { from: '/blog/hermes-agent-vs-openclaw', fromSlug: 'blog-hermes-agent-vs-openclaw', to: '/ru/articles/hermes-agent-vs-openclaw/', toSlug: 'article-hermes-agent-vs-openclaw' },
   { from: '/author/okhlopkov', fromSlug: 'author-okhlopkov', to: '/about/', toSlug: 'about' },
   { from: '/projects', fromSlug: 'projects', to: '/about/', toSlug: 'about' },
   { from: '/tag/second-brain', fromSlug: 'tag-second-brain', to: '/vtoroj-mozg-ai-assistent-obsidian-claude-code/', toSlug: 'vtoroj-mozg-ai-assistent-obsidian-claude-code' },
-  { from: '/tag/ai-agents', fromSlug: 'tag-ai-agents', to: '/ru/articles/', toSlug: 'ru-articles' },
+  { from: '/tag/ai-agents', fromSlug: 'tag-ai-agents', to: '/topics/ai-agents/', toSlug: 'topic-ai-agents' },
   { from: '/tag/telegram', fromSlug: 'tag-telegram', to: '/ru/blog/', toSlug: 'ru-blog' },
   { from: '/tag/ai', fromSlug: 'tag-ai', to: '/ru/articles/', toSlug: 'ru-articles' },
   { from: '/tag/analytics', fromSlug: 'tag-analytics', to: '/ru/blog/', toSlug: 'ru-blog' },
