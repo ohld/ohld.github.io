@@ -171,15 +171,17 @@
     "path": "/claude-code-compaction-kak-rabotaet/",
     "slug": "claude-code-compaction-kak-rabotaet",
     "title": "/compact в Claude Code: как работает сжатие контекста",
-    "description": "Как использовать /compact в Claude Code: что переживает compaction, что теряется, как сохранить CLAUDE.md, skills и важный контекст.",
+    "description": "Что делает /compact в Claude Code: как сжимается контекст, что переживает compaction, что теряется, когда запускать вручную и как страховаться через CLAUDE.md, skills и hooks.",
     "lang": "ru",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-26",
-    "readingTime": "9 мин",
+    "updatedAt": "2026-06-05",
+    "readingTime": "10 мин",
     "tags": [
-      "Telegram"
+      "Claude Code",
+      "AI Agents",
+      "Context Engineering"
     ],
-    "heroImage": "/content/images/2026/03/claude-code-compaction-kak-rabotaet.png"
+    "heroImage": "/assets/articles/claude-code-compaction-kak-rabotaet/hero.webp"
   },
   {
     "path": "/decentralized-ai-compute-cocoon-bittensor-gonka/",

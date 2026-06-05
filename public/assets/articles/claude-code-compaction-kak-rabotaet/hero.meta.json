@@ -1,0 +1,21 @@
+{
+  "source": "ai_reference_edit",
+  "model": "nano-banana-pro",
+  "provider": "cheapaiapi",
+  "reference": "Pinterest board random page 3/5 candidate 03; private reference, not public source asset",
+  "reference_url": "https://i.pinimg.com/originals/ec/e4/01/ece401f86e8b610c0a2821e8ead49c58.jpg",
+  "prompt_text": "ПОСЛЕ /compact / что выжило?",
+  "purpose": "hero image and social preview for /claude-code-compaction-kak-rabotaet/",
+  "generation": {
+    "job_id": "50e8bdd4-1c43-4e28-aad6-dd11b1c86f4e",
+    "generated_at": "2026-06-05",
+    "notes": "Reference-preserving Pinterest edit selected from a random non-first board page; dark anxious character composition preserved and adapted to 16:9."
+  },
+  "web_asset": {
+    "path": "/assets/articles/claude-code-compaction-kak-rabotaet/hero.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82,
+    "bytes": 38960
+  }
+}

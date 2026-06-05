@@ -1,0 +1,21 @@
+{
+  "source": "ai_reference_edit",
+  "model": "nano-banana-pro",
+  "provider": "cheapaiapi",
+  "reference": "Pinterest board random page 3/5 candidate 12; private reference, not public source asset",
+  "reference_url": "https://i.pinimg.com/474x/41/0a/c8/410ac8757fd5e39648db6e8f1eb0e467.jpg",
+  "prompt_text": "ПОСЛЕ СЖАТИЯ / summary вместо лога",
+  "purpose": "mid-article visualization for /claude-code-compaction-kak-rabotaet/",
+  "generation": {
+    "job_id": "9c4a3cf9-0134-43e2-8375-e303ebf7ef13",
+    "generated_at": "2026-06-05",
+    "notes": "Reference-preserving Pinterest edit selected from a random non-first board page; CCTV grid metaphor preserved for compacted-summary explanation with mobile-safe text margins."
+  },
+  "web_asset": {
+    "path": "/assets/articles/claude-code-compaction-kak-rabotaet/summary-grid.webp",
+    "width": 1376,
+    "height": 768,
+    "quality": 82,
+    "bytes": 224146
+  }
+}
