@@ -767,7 +767,7 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)
   assert(!html.includes('>Коротко<'), `${path}: leaked generic summary heading`)
   assert(!html.includes('Эта страница не про'), `${path}: leaked AI-tell contrast construction`)
-  assert(/"dateModified": "2026-(05-(25|26|27|31)|06-01)"/.test(html), `${path}: missing generated post dateModified`)
+  assert(/"dateModified": "2026-(05-(25|26|27|31)|06-(01|06))"/.test(html), `${path}: missing generated post dateModified`)
   assert(html.includes('/blog/'), `${path}: missing internal blog links`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   for (const text of requiredText) {
@@ -787,7 +787,7 @@ async function verifyGeneratedSeoArticle({ path, requiredText }) {
   assert(!html.includes('/blog/hermes-agent-vs-openclaw/'), `${path}: should not link to old Blog URL`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   assert(html.includes('/blog/'), `${path}: missing related blog links`)
-  assert(/"dateModified": "2026-(05-(25|26|27|28)|06-(02|03))"/.test(html), `${path}: missing generated article dateModified`)
+  assert(/"dateModified": "2026-(05-(25|26|27|28)|06-(02|03|06))"/.test(html), `${path}: missing generated article dateModified`)
   for (const text of requiredText) {
     assert(html.includes(text), `${path}: missing required text "${text}"`)
   }
