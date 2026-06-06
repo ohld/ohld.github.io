@@ -3,8 +3,8 @@ slug: gstack-goal-office-hours-ai-workflow
 title: GStack, /goal и office hours: рабочий цикл для AI-агента без бесконечной простыни текста
 description: Как связать office-hours, improve-codebase-architecture, Codex /goal и HTML-progress в нормальный цикл работы с AI-агентом.
 publishedAt: 2026-05-21
-updatedAt: 2026-05-26
-readingTime: 6 мин
+updatedAt: 2026-06-06
+readingTime: 7 мин
 tags: GStack, Codex, Claude Code
 coverImage: /assets/blog/gstack-goal-office-hours-ai-workflow/telegram-cover.webp
 coverAlt: Скриншот из Telegram-поста про GStack, /goal и office hours
@@ -19,7 +19,7 @@ reactions: 48
 
 Одна из главных ошибок в работе с AI-агентами: просить “сделай проект” и потом читать километровую простыню. Нормальный флоу выглядит как цикл: прожарить идею, зафиксировать цель, дать агенту автономный ран, заставить его показывать прогресс в удобной форме и отдельно ревьюить архитектуру.
 
-Я использую GStack как guardrail для этого цикла: агент меньше соглашается с мутной идеей и чаще показывает, где принял решение сам.
+Я использую GStack как guardrail для этого цикла: агент меньше соглашается с мутной идеей и чаще показывает, где принял решение сам. Похожую петлю я показывал в видео [AI-агенты ведут проект, пока я в отпуске](https://www.youtube.com/watch?v=E3P0a03mN8A): там важен не “умный чат”, а связка цель → автономный ран → артефакт прогресса → ревью.
 
 ## Мой текущий loop
 
@@ -90,3 +90,4 @@ HTML-progress возвращает контроль. Нормальный progre
 - [Что попросить AI-агента сделать, когда задачи закончились](/ru/blog/improve-codebase-architecture-prompt/)
 - [AI-инструменты для дизайнеров: design engineering и агенты](/ru/articles/ai-tools-for-designers-design-engineering-agents/)
 - [Markdown vs HTML для AI-агентов](/articles/markdown-vs-html/)
+- [Claude Code vs Codex: где агент, где ревьюер, где контекст](/ru/blog/claude-code-vs-codex-perehod/)

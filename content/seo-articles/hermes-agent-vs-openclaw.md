@@ -4,8 +4,8 @@ lang: ru
 title: Hermes Agent vs OpenClaw: что выбрать для AI-агента
 description: Практическое сравнение Hermes Agent и OpenClaw: Telegram, установка, память, skills, MCP, cron, безопасность, токены и сценарии для self-hosted AI-агента.
 publishedAt: 2026-05-28
-updatedAt: 2026-05-28
-readingTime: 14 мин
+updatedAt: 2026-06-06
+readingTime: 15 мин
 tags: AI Agents, Hermes Agent, OpenClaw, Telegram Automation, MCP
 coverImage: /assets/articles/hermes-agent-vs-openclaw/hermes-openclaw-cover.webp
 coverAlt: Мем-обложка Hermes vs OpenClaw про day-30 тест AI-агента
@@ -21,6 +21,10 @@ reactions: 0
 Коротко: **OpenClaw я бы брал как self-hosted gateway для разных каналов, а Hermes Agent как личного ops-агента, который живет в Telegram, помнит рабочий контекст и со временем обрастает skills.**
 
 У них пересекаются фичи: Telegram, память, tools, cron, выполнение кода, работа с файлами, web search, skills. Но выбирать только по таблице функций странно. Настоящий тест начинается не на установке, а на day-30: что происходит с токенами, памятью, безопасностью, cron-задачами, allowlist, браузером и задачами, которые прилетают с телефона голосом.
+
+## Видео и живой контекст
+
+Эта статья — не только по документации. Контекст лучше смотреть вместе с двумя русскими видео: [AI-сетап с Claude Code/Cursor и базой чатов](https://www.youtube.com/watch?v=yJuzI2u-AnM) и [AI-агенты ведут проект, пока я в отпуске](https://www.youtube.com/watch?v=E3P0a03mN8A). Там видно, зачем вообще нужен слой “агент живет дольше одного чата”: Telegram, память, фоновые задачи, ревью и переносимость контекста.
 
 ## Короткий вывод
 
@@ -211,3 +215,5 @@ Hermes чаще разумнее ставить через WSL2. OpenClaw бли
 - [GBrain](/topics/gbrain/)
 - [AI-агент на сервере 24/7](/ai-agent-na-servere-24-7/)
 - [Мой Claude Code setup](/claude-code-nastrojka-mcp-hooks-skills-2026/)
+- [Claude Code vs Codex: почему я на две недели перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
+- [Видео: AI-агенты ведут проект, пока я в отпуске](https://www.youtube.com/watch?v=E3P0a03mN8A)

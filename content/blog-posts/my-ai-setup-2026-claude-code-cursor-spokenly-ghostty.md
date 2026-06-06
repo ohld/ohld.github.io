@@ -3,8 +3,8 @@ slug: my-ai-setup-2026-claude-code-cursor-spokenly-ghostty
 title: Мой AI-сетап 2026: Claude Code, Cursor, Ghostty, Spokenly и база всех чатов
 description: Практический AI setup из стрима с @og_mishgun: что реально ускоряет работу, зачем Ghostty, Spokenly, OwnYourChat и Descript, и как не утонуть в инструментах.
 publishedAt: 2026-05-26
-updatedAt: 2026-05-26
-readingTime: 8 мин
+updatedAt: 2026-06-06
+readingTime: 9 мин
 tags: AI Tools, Claude Code, Productivity
 coverImage: /assets/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/phone-agent-meme.webp
 coverAlt: Мем-картинка про общение с AI-агентом с телефона
@@ -33,6 +33,12 @@ reactions: 46
 - [Spokenly](https://spokenly.app/okhlopkov) — голос в текст в любом приложении. Нажал хоткей, сказал, получил промпт.
 
 Потом вышла запись стрима: [youtu.be/yJuzI2u-AnM](https://www.youtube.com/watch?v=yJuzI2u-AnM).
+
+## Короткий ответ: Claude Code или Cursor?
+
+Если выбирать “Claude Code или Cursor”, я бы не выбирал одно вместо другого. Cursor — это IDE и ручной слой, где удобно видеть проект, быстро править и держать навигацию. Claude Code/Codex — это agentic CLI/исполнитель, которому можно дать задачу, файлы, критерий готовности и отдельный review loop. В нормальном сетапе Cursor помогает думать глазами, а агент делает длинный diff в репозитории.
+
+Для будущего сравнения `Claude Code vs Cursor / GPT-5.5 vs Opus 4.8` важнее не “какая модель победила”, а роли: планирование, исполнение, ревью, контекст и память между сессиями.
 
 ## Что реально делает сетап
 
@@ -132,5 +138,6 @@ Ghostty не делает AI умнее. Он просто убирает тер
 
 - [AI-агенты: с чего начать в 2026](/ru/blog/ai-agents-s-chego-nachat/)
 - [Claude Code vs Codex: почему я на две недели перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
+- [AI-агенты ведут проект, пока я в отпуске: Claude Code, Paperclip и GStack](/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/)
 - [Второй мозг: Obsidian и Claude Code](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
 - [Что попросить AI-агента сделать, когда очевидные задачи закончились](/ru/blog/improve-codebase-architecture-prompt/)

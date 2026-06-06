@@ -3,8 +3,8 @@ slug: ai-agents-s-chego-nachat
 title: AI-агенты: с чего начать в 2026 — карта материалов, Claude Code, Codex и живые кейсы
 description: Маршрут по материалам Дана Охлопкова про AI-агентов: Claude Code, Codex, промпты, Obsidian, Paperclip, реальные стримы и что читать первым.
 publishedAt: 2026-05-05
-updatedAt: 2026-05-26
-readingTime: 9 мин
+updatedAt: 2026-06-06
+readingTime: 10 мин
 tags: AI Agents, Claude Code, Codex
 coverImage: /assets/blog/ai-agents-s-chego-nachat/ai-agents-playlist-meme.webp
 coverAlt: Мем-картинка про плейлист AI-агентов
@@ -50,7 +50,9 @@ reactions: 49
 - [Self-hosted AI с @technotears: приватность, локальные модели и Doom голосом](https://www.youtube.com/watch?v=Fxw6IQuL36o)
 
 Если нужен самый короткий маршрут, я бы шел так:
-[Claude Code](/claude-code-nastrojka-mcp-hooks-skills-2026/) → рабочий флоу → [промпты для докрутки проекта](/ru/blog/improve-codebase-architecture-prompt/) → [видос с реальным сетапом](https://www.youtube.com/watch?v=E3P0a03mN8A).
+[Claude Code](/claude-code-nastrojka-mcp-hooks-skills-2026/) → рабочий флоу → [Claude Code vs Codex](/ru/blog/claude-code-vs-codex-perehod/) → [промпты для докрутки проекта](/ru/blog/improve-codebase-architecture-prompt/) → [видос с реальным сетапом](https://www.youtube.com/watch?v=E3P0a03mN8A).
+
+Если вы уже пользуетесь Claude, следующий полезный вопрос не “переходить ли на Cursor”, а “какую роль отдать каждому инструменту”: Claude Code/Codex — агенту в репозитории, Cursor — ручному IDE-слою, GPT/Opus — планированию и ревью.
 
 О чем еще написать? Где больше всего непонятно: с чего начать, как промптить, как сетапить, как не утонуть в инструментах или как применять это в работе?
 
@@ -82,6 +84,7 @@ reactions: 49
 | --- | --- |
 | “AI-агенты с чего начать” | Маршрут чтения и первый рабочий флоу |
 | “Claude Code или Codex” | Честное сравнение на базе опыта, без README-таблицы |
+| “Claude Code или Cursor” | Разделение ролей: агент в терминале против IDE-слоя и ручного контроля |
 | “Claude Code skills” | Примеры skills и зачем они нужны |
 | “AI coding agent workflow” | Как вести задачу: спека, plan mode, отдельный чат, ревью |
 
