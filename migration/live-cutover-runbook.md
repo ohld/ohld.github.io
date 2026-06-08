@@ -40,6 +40,8 @@ Triage by failure type:
 
 - **Edge redirect failure**: fix Cloudflare/Caddy/Nginx host rules for
   `http -> https` and `www -> non-www`, then rerun `npm run verify:live`.
+  If `x-okhlopkov-www-proxy: baidu-verification-temporary` appears on `www`,
+  remove that temporary Cloudflare rule and replace it with a permanent redirect.
 - **Legacy URL failure**: inspect the failing row in `migration/url-map.csv`.
   Add or fix a static page/redirect, redeploy preview, rerun strict preview
   verification, then rerun live verification.

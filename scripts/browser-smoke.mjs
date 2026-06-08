@@ -55,7 +55,7 @@ const languageShellExpectations = {
     forbiddenText: ['Главная', 'Блог', 'Статьи', 'Обо мне'],
   },
   '/claude-code-nastrojka-mcp-hooks-skills-2026/': {
-    links: ['/ru/', '/ru/blog/', '/ru/articles/', '/about'],
+    links: ['/', '/ru/blog/', '/ru/articles/', '/about'],
     requiredText: ['Блог', 'Статьи', 'Обо мне'],
     forbiddenText: ['Home', 'Blog', 'Articles', 'About'],
   },

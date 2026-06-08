@@ -391,19 +391,7 @@ const ROUTES = [
     title: 'Даниил Охлопков — AI-агенты, данные, TON и Telegram',
     description: 'Практические разборы AI-агентов, Claude Code, Codex, MCP, TON-аналитики и Telegram-автоматизаций от Даниила Охлопкова.',
     alternates: {
-      ru: `${SITE_URL}/ru/`,
-      en: `${SITE_URL}/en/`,
-      'x-default': `${SITE_URL}/`,
-    },
-    markdown: HOME_FALLBACK_MD,
-  },
-  {
-    path: '/ru',
-    slug: 'ru',
-    title: 'Даниил Охлопков — AI-агенты, данные, TON и Telegram',
-    description: 'Практические разборы AI-агентов, Claude Code, Codex, MCP, TON-аналитики и Telegram-автоматизаций от Даниила Охлопкова.',
-    alternates: {
-      ru: `${SITE_URL}/ru/`,
+      ru: `${SITE_URL}/`,
       en: `${SITE_URL}/en/`,
       'x-default': `${SITE_URL}/`,
     },
@@ -416,7 +404,7 @@ const ROUTES = [
     description: 'Practical notes on AI agents, Codex, Claude Code, MCP, TON analytics and Telegram automation by Daniil Okhlopkov.',
     lang: 'en',
     alternates: {
-      ru: `${SITE_URL}/ru/`,
+      ru: `${SITE_URL}/`,
       en: `${SITE_URL}/en/`,
       'x-default': `${SITE_URL}/`,
     },
@@ -1144,10 +1132,10 @@ const BREADCRUMBS_BY_SLUG = {
   'en-articles': [['Home', `${SITE_URL}/en/`], ['Articles', `${SITE_URL}/en/articles/`]],
   'en-about': [['Home', `${SITE_URL}/en/`], ['About', `${SITE_URL}/en/about/`]],
   'about': [['Главная', `${SITE_URL}/`], ['Обо мне', `${SITE_URL}/about/`]],
-  'ru-blog': [['Главная', `${SITE_URL}/ru/`], ['Блог', `${SITE_URL}/ru/blog/`]],
-  'ru-articles': [['Главная', `${SITE_URL}/ru/`], ['Статьи', `${SITE_URL}/ru/articles/`]],
+  'ru-blog': [['Главная', `${SITE_URL}/`], ['Блог', `${SITE_URL}/ru/blog/`]],
+  'ru-articles': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/ru/articles/`]],
   'articles-ai-tools-for-designers-design-engineering-agents': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['AI-инструменты для дизайнеров', `${SITE_URL}/articles/ai-tools-for-designers-design-engineering-agents/`]],
-  'ru-articles-ai-tools-for-designers-design-engineering-agents': [['Главная', `${SITE_URL}/ru/`], ['Статьи', `${SITE_URL}/ru/articles/`], ['AI-инструменты для дизайнеров', `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`]],
+  'ru-articles-ai-tools-for-designers-design-engineering-agents': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/ru/articles/`], ['AI-инструменты для дизайнеров', `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`]],
   'private-channel': [['Главная', `${SITE_URL}/`], ['Закрытый канал', `${SITE_URL}/private-channel/`]],
   'markdown-vs-html': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['Markdown vs HTML', `${SITE_URL}/articles/markdown-vs-html/`]],
   'privacy': [['Home', `${SITE_URL}/`], ['Privacy Policy', `${SITE_URL}/privacy/`]],
@@ -1155,13 +1143,13 @@ const BREADCRUMBS_BY_SLUG = {
 
 function buildBreadcrumb(route) {
   const items = route.kind === 'generated-blog-post'
-    ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/ru/'}`], [route.lang === 'en' ? 'Blog' : 'Блог', `${SITE_URL}${route.lang === 'en' ? '/en/blog/' : '/ru/blog/'}`], [route.title, `${SITE_URL}${route.path}/`]]
+    ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Blog' : 'Блог', `${SITE_URL}${route.lang === 'en' ? '/en/blog/' : '/ru/blog/'}`], [route.title, `${SITE_URL}${route.path}/`]]
     : route.kind === 'generated-article-post'
-      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/ru/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/ru/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
+      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/ru/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
     : route.kind === 'article-page'
-      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/ru/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/ru/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
+      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/ru/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
     : route.kind === 'topic-page'
-      ? [['Главная', `${SITE_URL}/ru/`], ['Темы', `${SITE_URL}/ru/articles/`], [route.topicTitle || route.title, `${SITE_URL}${route.path}/`]]
+      ? [['Главная', `${SITE_URL}/`], ['Темы', `${SITE_URL}/ru/articles/`], [route.topicTitle || route.title, `${SITE_URL}${route.path}/`]]
     : BREADCRUMBS_BY_SLUG[route.slug]
   if (!items) return null
   return {
@@ -1336,6 +1324,7 @@ for (const route of ROUTES) {
 // via meta-refresh + canonical tag (no real 301 possible on GH Pages).
 // SPA-side React Router also handles these via <Navigate> for in-app nav.
 const REDIRECTS = [
+  { from: '/ru', fromSlug: 'ru', to: '/', toSlug: 'home' },
   { from: '/closed', fromSlug: 'closed', to: '/private-channel/', toSlug: 'private-channel' },
   { from: '/work-together', fromSlug: 'work-together', to: '/about/', toSlug: 'about' },
   { from: '/markdown-vs-html', fromSlug: 'markdown-vs-html-old', to: '/articles/markdown-vs-html/', toSlug: 'markdown-vs-html' },
@@ -1475,7 +1464,6 @@ const SITEMAP_URLS = [
   `${SITE_URL}/en/`,
   `${SITE_URL}/about/`,
   `${SITE_URL}/en/about/`,
-  `${SITE_URL}/ru/`,
   `${SITE_URL}/ru/blog/`,
   `${SITE_URL}/en/blog/`,
   `${SITE_URL}/ru/articles/`,

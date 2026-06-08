@@ -37,6 +37,11 @@ four `A` records to `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and
 Pages redirects it to the configured apex domain. Keep Cloudflare proxy disabled
 for these records.
 
+Do not leave temporary `www` proxy rules enabled after search-engine ownership
+checks. The June 2026 Baidu verification proxy made `www.okhlopkov.com` serve
+`200 OK`, which caused Semrush to flag non-self-referencing hreflang because all
+canonical and hreflang URLs correctly used the non-`www` host.
+
 Historical Docker/VPS files remain in the repository as migration context, but
 the active production deploy path is GitHub Pages:
 

@@ -31,10 +31,9 @@ const requiredPackageScripts = [
 
 const EXPECTED_IMPORTED_ARTICLES = 88
 const EXPECTED_PRESERVED_ARTICLES = 87
-const EXPECTED_REDIRECTS = 44
+const EXPECTED_REDIRECTS = 45
 const BASE_STATIC_PATHS = [
   '/',
-  '/ru/',
   '/en/',
   '/en/blog/',
   '/en/articles/',

@@ -11,6 +11,13 @@ const outPath = path.join('migration', 'url-map.csv')
 
 const redirects = [
   {
+    old_path: '/ru/',
+    new_path: '/',
+    action: '308_redirect',
+    source: 'ru_prefix_home_cleanup',
+    note: 'Root URL is the canonical Russian homepage; /ru/ redirects to avoid duplicate homepage hreflang.',
+  },
+  {
     old_path: '/author/okhlopkov/',
     new_path: '/about/',
     action: '308_redirect',
@@ -244,7 +251,6 @@ if (fs.existsSync(legacyRedirectsPath)) {
 
 const newStaticPages = [
   ['/', 'new_static_page', 'ru', 'Canonical Russian homepage'],
-  ['/ru/', 'new_static_page', 'ru', 'Russian homepage'],
   ['/en/', 'new_static_page', 'en', 'English homepage'],
   ['/en/blog/', 'new_static_page', 'en', 'English-only blog index'],
   ['/en/articles/', 'new_static_page', 'en', 'English-only article index'],

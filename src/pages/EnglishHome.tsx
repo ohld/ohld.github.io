@@ -13,7 +13,7 @@ export function EnglishHome() {
     canonical: absoluteUrl('/en/'),
     lang: 'en',
     alternates: {
-      ru: absoluteUrl('/ru/'),
+      ru: absoluteUrl('/'),
       en: absoluteUrl('/en/'),
       'x-default': absoluteUrl('/'),
     },

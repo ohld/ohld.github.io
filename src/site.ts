@@ -20,7 +20,7 @@ export const socialLinks = [
 ]
 
 export const navLinks = [
-  { path: '/ru/', enPath: '/en/', ru: 'Главная', en: 'Home' },
+  { path: '/', enPath: '/en/', ru: 'Главная', en: 'Home' },
   { path: '/ru/blog/', enPath: '/en/blog/', ru: 'Блог', en: 'Blog' },
   { path: '/ru/articles/', enPath: '/en/articles/', ru: 'Статьи', en: 'Articles' },
   { path: '/about', enPath: '/en/about/', ru: 'Обо мне', en: 'About' },
@@ -33,10 +33,9 @@ type PageLang = 'ru' | 'en' | 'zh'
 type ImportedArticleLanguage = { path: string; lang: PageLang }
 
 const staticLocalizedPairs: Array<{ ru: string; en: string }> = [
-  { ru: '/ru/', en: '/en/' },
+  { ru: '/', en: '/en/' },
   { ru: '/ru/blog/', en: '/en/blog/' },
   { ru: '/ru/articles/', en: '/en/articles/' },
-  { ru: '/', en: '/en/' },
   { ru: '/blog/', en: '/en/blog/' },
   { ru: '/articles/', en: '/en/articles/' },
   { ru: '/about/', en: '/en/about/' },
@@ -62,7 +61,7 @@ export function localizedPath(pathname: string, lang: 'ru' | 'en') {
   const importedLang = importedArticleLangByPath.get(current)
   if (importedLang) {
     if (importedLang === lang) return current
-    return lang === 'en' ? '/en/' : '/ru/'
+    return lang === 'en' ? '/en/' : '/'
   }
   if (current.startsWith('/en/articles/')) return lang === 'en' ? current : '/ru/articles/'
   if (current.startsWith('/ru/articles/')) return lang === 'en' ? '/en/articles/' : current
@@ -70,7 +69,7 @@ export function localizedPath(pathname: string, lang: 'ru' | 'en') {
   if (current.startsWith('/en/blog/')) return lang === 'en' ? current : '/ru/blog/'
   if (current.startsWith('/ru/blog/')) return lang === 'en' ? '/en/blog/' : current
   if (current.startsWith('/blog/')) return lang === 'en' ? '/en/blog/' : current
-  return lang === 'en' ? '/en/' : '/ru/'
+  return lang === 'en' ? '/en/' : '/'
 }
 
 export function pageLangForPath(pathname: string): PageLang {

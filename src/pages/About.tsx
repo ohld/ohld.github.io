@@ -73,6 +73,11 @@ export function About() {
     title: 'Даниил Охлопков — AI-агенты, TON-аналитика и Telegram',
     description: 'Даниил Охлопков: Head of Analytics @ TON Foundation, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.',
     canonical: absoluteUrl('/about/'),
+    alternates: {
+      ru: absoluteUrl('/about/'),
+      en: absoluteUrl('/en/about/'),
+      'x-default': absoluteUrl('/about/'),
+    },
   })
   return (
     <div className="page">

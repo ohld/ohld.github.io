@@ -1,4 +1,3 @@
-import { useLocation } from 'react-router-dom'
 import { ArticlePreviewCard } from '../components/ArticlePreviewCard'
 import { Footer } from '../components/Footer'
 import { absoluteUrl, SITE_DESCRIPTION } from '../site'
@@ -8,15 +7,13 @@ import { latestUniqueItems, russianArticleItems, russianBlogItems } from '../blo
 const latestWritingItems = latestUniqueItems([...russianBlogItems, ...russianArticleItems], 6)
 
 export function Home() {
-  const location = useLocation()
-  const canonicalPath = location.pathname.startsWith('/ru') ? '/ru/' : '/'
   useDocumentMeta({
     title: 'Даниил Охлопков — AI-агенты, данные, TON и Telegram',
     description: SITE_DESCRIPTION,
-    canonical: absoluteUrl(canonicalPath),
+    canonical: absoluteUrl('/'),
     lang: 'ru',
     alternates: {
-      ru: absoluteUrl('/ru/'),
+      ru: absoluteUrl('/'),
       en: absoluteUrl('/en/'),
       'x-default': absoluteUrl('/'),
     },

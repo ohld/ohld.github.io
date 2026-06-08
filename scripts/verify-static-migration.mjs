@@ -204,6 +204,7 @@ const staticPages = [
 ]
 
 const redirects = [
+  ['/ru/', '/'],
   ['/closed/', '/private-channel/'],
   ['/work-together/', '/about/'],
   ['/markdown-vs-html/', '/articles/markdown-vs-html/'],
@@ -293,7 +294,6 @@ function canonicalPathname(pathname) {
 
 const migrationMapStaticPaths = [
   '/',
-  '/ru/',
   '/ru/blog/',
   '/ru/articles/',
   '/en/',

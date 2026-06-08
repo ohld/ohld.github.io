@@ -171,7 +171,7 @@ function App() {
       <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/ru" element={<Home />} />
+          <Route path="/ru" element={<Navigate to="/" replace />} />
           <Route path="/en" element={<EnglishHome />} />
           <Route path="/en/blog" element={<EnglishBlogIndex />} />
           <Route path="/en/blog/:slug" element={<GeneratedBlogPost />} />
