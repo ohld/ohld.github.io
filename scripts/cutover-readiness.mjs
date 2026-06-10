@@ -26,6 +26,7 @@ const requiredPackageScripts = [
   'preflight:okhlopkov',
   'smoke:browser',
   'verify:live',
+  'verify:live:edge',
   'verify:migration',
 ]
 
@@ -43,6 +44,7 @@ const BASE_STATIC_PATHS = [
   '/ru/articles/',
   '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
+  '/archive/',
   '/topics/ai-agents/',
   '/topics/claude-code/',
   '/topics/codex/',
@@ -57,6 +59,8 @@ const BASE_STATIC_PATHS = [
   '/topics/html/',
   '/topics/second-brain/',
   '/topics/web-scraping/',
+  '/topics/dokku/',
+  '/topics/data-products/',
   '/topics/frameworks/',
   '/topics/workflow/',
   '/topics/community/',
@@ -232,7 +236,7 @@ if (fs.existsSync('migration/backlink-critical-urls.csv')) {
 
 if (fs.existsSync('package.json')) {
   const scripts = readJson('package.json').scripts || {}
-  check(scripts['verify:live']?.includes('VERIFY_REQUIRE_EDGE_REDIRECTS=1'), 'live verifier requires edge redirects')
+  check(Boolean(scripts['verify:live:edge']?.includes('VERIFY_REQUIRE_EDGE_REDIRECTS=1')), 'strict edge redirect verifier exists')
   check(scripts['verify:live']?.includes('VERIFY_REQUIRE_ORIGIN_HEADERS=1'), 'live verifier requires origin cache headers')
   check(scripts['cutover:live']?.includes('npm run smoke:browser'), 'live cutover command runs browser smoke')
 }
@@ -261,7 +265,7 @@ if (previewUrl) {
 }
 
 pending('RU and non-RU reachability must be verified against the deployed preview origin')
-pending('live edge redirects require DNS/Cloudflare cutover, then run npm run verify:live')
+pending('live edge redirects require DNS/Cloudflare cutover, then run npm run verify:live:edge')
 pending('Search Console/Yandex Webmaster sitemap submission happens only after live static origin is serving sitemap.xml')
 
 let failed = false

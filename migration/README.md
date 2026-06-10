@@ -190,8 +190,9 @@ exports. The migration verifier treats those externally linked URLs as deploy
 blockers: each must preserve the same path or have a permanent redirect before
 DNS cutover. The only deferred local check is edge-level `http -> https`/`www`
 canonicalization, which must be verified on the public host after Cloudflare/DNS
-is pointed at the new origin. Use `VERIFY_REQUIRE_EDGE_REDIRECTS=1` only when
-running the verifier against the public canonical domain.
+is pointed at the new origin. Use `npm run verify:live` for the current GitHub
+Pages deployment checks, and `npm run verify:live:edge` when Cloudflare/DNS
+canonical redirects are expected to be active.
 
 Ghost service pages are excluded from snapshot content and redirected instead:
 

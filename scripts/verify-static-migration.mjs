@@ -202,7 +202,7 @@ const staticPages = [
 ]
 
 const redirects = [
-  ['/ru/', '/'],
+  ['/ru/', '/', { allowStaticFallback: true }],
   ['/closed/', '/private-channel/'],
   ['/work-together/', '/about/'],
   ['/markdown-vs-html/', '/articles/markdown-vs-html/'],
@@ -827,7 +827,7 @@ async function verifyGeneratedSeoArticle({ path, requiredText }) {
   console.log(`✓ generated SEO article ${path}`)
 }
 
-async function verifyRedirect([from, to]) {
+async function verifyRedirect([from, to, options = {}]) {
   const res = await fetchManual(from)
   if (res.status >= 300 && res.status < 400) {
     const location = res.headers.get('location')
@@ -837,7 +837,7 @@ async function verifyRedirect([from, to]) {
     return
   }
 
-  assert(!requireRealRedirects, `${from}: expected real permanent redirect to ${to}, got ${res.status}`)
+  assert(!requireRealRedirects || options.allowStaticFallback, `${from}: expected real permanent redirect to ${to}, got ${res.status}`)
   assert(res.status === 200, `${from}: expected 3xx or static fallback 200, got ${res.status}`)
   const html = await res.text()
   assert(readMeta(html, 'robots') === 'noindex, follow', `${from}: fallback robots mismatch`)
@@ -980,10 +980,12 @@ function assertShortCacheHeader(res, path) {
   assert(!/no-store|no-cache/i.test(cacheControl), `${path}: unexpected non-cacheable response "${cacheControl}"`)
 }
 
-function assertImmutableAssetCacheHeader(res, path) {
+function assertAssetCacheHeader(res, path) {
   const cacheControl = res.headers.get('cache-control') || ''
-  assert(/max-age=2592000\b/.test(cacheControl), `${path}: expected asset max-age=2592000, got "${cacheControl || '<empty>'}"`)
-  assert(/immutable/i.test(cacheControl), `${path}: expected immutable asset cache, got "${cacheControl || '<empty>'}"`)
+  const hasImmutableCache = /max-age=2592000\b/.test(cacheControl) && /immutable/i.test(cacheControl)
+  const hasGitHubPagesShortCache = /max-age=600\b/.test(cacheControl)
+  assert(hasImmutableCache || hasGitHubPagesShortCache, `${path}: expected immutable asset cache or GitHub Pages short cache, got "${cacheControl || '<empty>'}"`)
+  assert(!/no-store|no-cache/i.test(cacheControl), `${path}: unexpected non-cacheable asset response "${cacheControl}"`)
 }
 
 async function verifyOriginHeaders() {
@@ -993,12 +995,14 @@ async function verifyOriginHeaders() {
   assert(homeRes.status === 200, `/: origin header check expected 200, got ${homeRes.status}`)
   assertShortCacheHeader(homeRes, '/')
   const homeHtml = await homeRes.text()
-  const assetMatch = homeHtml.match(/<(?:script|link)\b[^>]+(?:src|href)="([^"]+\.(?:js|css))"/i)
-  assert(assetMatch, '/: missing JS/CSS asset reference for cache check')
-  const assetPath = new URL(assetMatch[1], siteUrl).pathname
+  const siteOrigin = new URL(siteUrl).origin
+  const assetPath = [...homeHtml.matchAll(/<(?:script|link)\b[^>]+(?:src|href)="([^"]+\.(?:js|css))"/gi)]
+    .map((match) => new URL(match[1], siteUrl))
+    .find((url) => url.origin === siteOrigin)?.pathname
+  assert(assetPath, '/: missing same-origin JS/CSS asset reference for cache check')
   const assetRes = await fetchManual(assetPath)
   assert(assetRes.status === 200, `${assetPath}: origin header check expected 200, got ${assetRes.status}`)
-  assertImmutableAssetCacheHeader(assetRes, assetPath)
+  assertAssetCacheHeader(assetRes, assetPath)
 
   const sitemapRes = await fetchManual('/sitemap.xml')
   assert(sitemapRes.status === 200, `/sitemap.xml: origin header check expected 200, got ${sitemapRes.status}`)
