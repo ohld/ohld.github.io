@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+public/generated/
 *.local
 
 # Local secrets and raw exports for migration work. The repo is public.

@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { ArticleLayout } from '../components/ArticleLayout'
-import { getImportedArticleBody } from '../importedArticleContent'
+import { loadImportedArticleBody } from '../importedArticleContent'
 import {
   getImportedArticleByPath,
   importedArticleAlternates,
@@ -11,11 +12,28 @@ export function ImportedArticle() {
   const location = useLocation()
   const article = getImportedArticleByPath(location.pathname)
   const legacyRedirect = getLegacyRedirect(location.pathname)
+  const [bodyHtml, setBodyHtml] = useState('')
+  const [loadError, setLoadError] = useState(false)
+
+  useEffect(() => {
+    if (!article || legacyRedirect) return
+    let active = true
+    setBodyHtml('')
+    setLoadError(false)
+    loadImportedArticleBody(article)
+      .then((html) => {
+        if (active) setBodyHtml(html)
+      })
+      .catch(() => {
+        if (active) setLoadError(true)
+      })
+    return () => {
+      active = false
+    }
+  }, [article?.path, article, legacyRedirect])
 
   if (legacyRedirect) return <Navigate to={legacyRedirect} replace />
   if (!article) return <Navigate to="/" replace />
-
-  const bodyHtml = getImportedArticleBody(article.path)
 
   return (
     <ArticleLayout
@@ -36,6 +54,13 @@ export function ImportedArticle() {
         'x-default': article.path,
       }}
       bodyHtml={bodyHtml}
-    />
+      bodyText={bodyHtml ? undefined : article.description}
+    >
+      <div className="article-loading" role={loadError ? 'alert' : 'status'}>
+        {loadError
+          ? article.lang === 'en' ? 'Article failed to load.' : 'Статья не загрузилась.'
+          : article.lang === 'en' ? 'Loading article...' : 'Загружаю статью...'}
+      </div>
+    </ArticleLayout>
   )
 }

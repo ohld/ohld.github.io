@@ -31,6 +31,7 @@ const aboutImport = () => import('./pages/About').then(m => ({ default: m.About 
 const englishAboutImport = () => import('./pages/EnglishAbout').then(m => ({ default: m.EnglishAbout }))
 const mvhImport = () => import('./pages/MarkdownVsHtml').then(m => ({ default: m.MarkdownVsHtml }))
 const privacyImport = () => import('./pages/Privacy').then(m => ({ default: m.Privacy }))
+const archiveImport = () => import('./pages/Archive').then(m => ({ default: m.Archive }))
 const importedArticleImport = () => import('./pages/ImportedArticle').then(m => ({ default: m.ImportedArticle }))
 
 const BlogIndex = lazy(blogIndexImport)
@@ -45,6 +46,7 @@ const About = lazy(aboutImport)
 const EnglishAbout = lazy(englishAboutImport)
 const MarkdownVsHtml = lazy(mvhImport)
 const Privacy = lazy(privacyImport)
+const Archive = lazy(archiveImport)
 const ImportedArticle = lazy(importedArticleImport)
 
 // Preload all chunks after home page renders so subpages open instantly
@@ -60,6 +62,7 @@ function usePreloadChunks() {
       aboutImport()
       englishAboutImport()
       privacyImport()
+      archiveImport()
     }
     // requestIdleCallback not available in Telegram WebView (iOS)
     const id = typeof requestIdleCallback !== 'undefined'
@@ -200,6 +203,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/markdown-vs-html" element={<Navigate to="/articles/markdown-vs-html" replace />} />
           <Route path="/articles/markdown-vs-html" element={<MarkdownVsHtml />} />
+          <Route path="/archive" element={<Archive />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/:slug" element={<ImportedArticle />} />
           <Route path="*" element={<Navigate to="/" replace />} />

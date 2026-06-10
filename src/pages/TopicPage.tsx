@@ -3,13 +3,14 @@ import { BackButton } from '../components/BackButton'
 import { BlogCard } from '../components/BlogCard'
 import { Footer } from '../components/Footer'
 import { absoluteUrl } from '../site'
-import { getTopic, getTopicItems, topicPath } from '../topics'
+import { getTopic, getTopicItems, isTopicIndexable, topicPath } from '../topics'
 import { useDocumentMeta } from '../useDocumentMeta'
 
 export function TopicPage() {
   const { slug } = useParams()
   const topic = getTopic(slug)
   const items = getTopicItems(slug)
+  const indexable = isTopicIndexable(slug)
 
   if (!topic) return <Navigate to="/ru/articles/" replace />
 
@@ -22,6 +23,7 @@ export function TopicPage() {
       ru: absoluteUrl(topicPath(topic.slug)),
       'x-default': absoluteUrl(topicPath(topic.slug)),
     },
+    robots: indexable ? 'index, follow' : 'noindex, follow',
   })
 
   return (
@@ -49,7 +51,7 @@ export function TopicPage() {
             <a className="blog-card-hitarea" href="/ru/articles/" aria-label="Статьи и туториалы" />
             <div className="blog-card-body">
               <h2>Статьи и туториалы</h2>
-              <p>Пока отдельного хаба нет, ближайшие материалы лежат в общем разделе статей.</p>
+              <p>Пока здесь нет плотной подборки. Ближайшие материалы лежат в общем разделе статей.</p>
               <span className="blog-card-link">Открыть</span>
             </div>
           </article>

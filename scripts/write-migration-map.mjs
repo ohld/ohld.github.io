@@ -7,6 +7,7 @@ const importedArticlesPath = path.join('content', 'articles', 'imported-index.js
 const legacyRedirectsPath = path.join('content', 'articles', 'legacy-redirects.json')
 const blogPostsPath = path.join('content', 'blog-posts')
 const seoArticlesPath = path.join('content', 'seo-articles')
+const topicHubsPath = path.join('content', 'topic-hubs.json')
 const outPath = path.join('migration', 'url-map.csv')
 
 const redirects = [
@@ -249,6 +250,16 @@ if (fs.existsSync(legacyRedirectsPath)) {
   }
 }
 
+const topicHubConfig = JSON.parse(fs.readFileSync(topicHubsPath, 'utf8'))
+const minTopicItemsForIndex = topicHubConfig.minItemsForIndex || 2
+const topicStaticPages = (topicHubConfig.hubs || []).map((topic) => [
+  `/topics/${topic.slug}/`,
+  'new_static_page',
+  'ru',
+  (topic.articlePaths || []).length >= minTopicItemsForIndex ? 'index, follow' : 'noindex, follow',
+  `Topic collection for ${topic.title}`,
+])
+
 const newStaticPages = [
   ['/', 'new_static_page', 'ru', 'Canonical Russian homepage'],
   ['/en/', 'new_static_page', 'en', 'English homepage'],
@@ -260,28 +271,9 @@ const newStaticPages = [
   ['/ru/articles/', 'new_static_page', 'ru', 'Article index'],
   ['/ru/articles/ai-tools-for-designers-design-engineering-agents/', 'new_static_page', 'ru', 'First YouTube-derived article with component examples'],
   ['/articles/markdown-vs-html/', 'new_static_page', 'ru', 'Existing static article route moved under Articles'],
-  ['/topics/ai-agents/', 'new_static_page', 'ru', 'Topic collection for AI agents internal linking'],
-  ['/topics/claude-code/', 'new_static_page', 'ru', 'Topic collection for Claude Code internal linking'],
-  ['/topics/codex/', 'new_static_page', 'ru', 'Topic collection for Codex internal linking'],
-  ['/topics/mcp/', 'new_static_page', 'ru', 'Topic collection for MCP internal linking'],
-  ['/topics/gstack/', 'new_static_page', 'ru', 'Topic collection for GStack internal linking'],
-  ['/topics/gbrain/', 'new_static_page', 'ru', 'Topic collection for GBrain internal linking'],
-  ['/topics/ai-coding/', 'new_static_page', 'ru', 'Topic collection for AI coding internal linking'],
-  ['/topics/ai-transformation/', 'new_static_page', 'ru', 'Topic collection for AI transformation internal linking'],
-  ['/topics/refactoring/', 'new_static_page', 'ru', 'Topic collection for refactoring internal linking'],
-  ['/topics/ai-tools/', 'new_static_page', 'ru', 'Topic collection for AI tools internal linking'],
-  ['/topics/design-engineering/', 'new_static_page', 'ru', 'Topic collection for design engineering internal linking'],
-  ['/topics/html/', 'new_static_page', 'ru', 'Topic collection for HTML internal linking'],
-  ['/topics/second-brain/', 'new_static_page', 'ru', 'Topic collection for second brain internal linking'],
-  ['/topics/web-scraping/', 'new_static_page', 'ru', 'Topic collection for web scraping internal linking'],
-  ['/topics/frameworks/', 'new_static_page', 'ru', 'Topic collection for agent frameworks internal linking'],
-  ['/topics/workflow/', 'new_static_page', 'ru', 'Topic collection for workflow internal linking'],
-  ['/topics/community/', 'new_static_page', 'ru', 'Topic collection for community internal linking'],
-  ['/topics/openclaw/', 'new_static_page', 'ru', 'Topic collection for future OpenClaw content'],
-  ['/topics/hermes-agent/', 'new_static_page', 'ru', 'Topic collection for Hermes Agent content'],
-  ['/topics/ton-data/', 'new_static_page', 'ru', 'Topic collection for TON data and analytics'],
-  ['/topics/telegram-automation/', 'new_static_page', 'ru', 'Topic collection for Telegram automation'],
+  ['/archive/', 'new_static_page', 'ru', 'Full material archive grouped by language, topic and year'],
   ['/privacy/', 'new_static_page', 'en', 'Privacy policy for Pinterest app review and site data practices'],
+  ...topicStaticPages,
 ]
 
 function parseFrontmatter(raw, filename = 'markdown file') {
@@ -392,7 +384,9 @@ for (const redirect of redirects) {
   ]))
 }
 
-for (const [pagePath, action, lang, note] of newStaticPages) {
+for (const [pagePath, action, lang, robots, note] of newStaticPages.map(([pagePath, action, lang, maybeRobots, maybeNote]) => (
+  maybeNote ? [pagePath, action, lang, maybeRobots, maybeNote] : [pagePath, action, lang, 'index, follow', maybeRobots]
+))) {
   lines.push(row([
     '',
     '',
@@ -400,7 +394,7 @@ for (const [pagePath, action, lang, note] of newStaticPages) {
     `${SITE_URL}${pagePath}`,
     pagePath,
     '200',
-    'index, follow',
+    robots,
     lang,
     '',
     'static_app_route',

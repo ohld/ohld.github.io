@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 import fs from 'node:fs'
+import { verifyInternalLinkGraph } from './verify-internal-link-graph.mjs'
 
 const baseUrl = (process.env.VERIFY_BASE_URL || 'http://127.0.0.1:4174').replace(/\/$/, '')
 const siteUrl = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/, '')
 const importedArticlesPath = process.env.VERIFY_IMPORTED_ARTICLES || 'content/articles/imported-index.json'
 const importedArticleContentPath = process.env.VERIFY_IMPORTED_ARTICLE_CONTENT || 'content/articles/imported-content.json'
+const generatedImportedArticleBodiesPath = process.env.VERIFY_IMPORTED_ARTICLE_BODIES || 'dist/generated/imported-articles'
 const legacyRedirectsPath = process.env.VERIFY_LEGACY_REDIRECTS || 'content/articles/legacy-redirects.json'
 const migrationMapPath = process.env.VERIFY_MIGRATION_MAP || 'migration/url-map.csv'
 const backlinkCriticalPath = process.env.VERIFY_BACKLINK_CRITICAL || 'migration/backlink-critical-urls.csv'
 const blogPostsPath = process.env.VERIFY_BLOG_POSTS || 'content/blog-posts'
 const seoArticlesPath = process.env.VERIFY_SEO_ARTICLES || 'content/seo-articles'
+const topicHubsPath = process.env.VERIFY_TOPIC_HUBS || 'content/topic-hubs.json'
 const verbose = process.env.VERIFY_VERBOSE === '1'
 const requireStrict404 = process.env.VERIFY_REQUIRE_STRICT_404 === '1'
 const requireRealRedirects = process.env.VERIFY_REQUIRE_REAL_REDIRECTS === '1'
@@ -17,6 +20,9 @@ const requireEdgeRedirects = process.env.VERIFY_REQUIRE_EDGE_REDIRECTS === '1'
 const requireOriginHeaders = process.env.VERIFY_REQUIRE_ORIGIN_HEADERS === '1'
 const missingPath = '/__missing-static-migration-check-404/'
 const gaMeasurementId = 'G-9Z5T725JJD'
+const ahrefsAnalyticsUrl = 'https://analytics.ahrefs.com/analytics.js'
+const ahrefsAnalyticsOrigin = 'https://analytics.ahrefs.com'
+const ahrefsAnalyticsDataKey = 'aESMV3ihrQNdn9aJ9GkE0Q'
 const yandexMetrikaId = '46266270'
 const yandexVerificationIds = ['1b82de56693018c1', '3553f1209d48d2c4']
 const baiduVerificationId = 'codeva-qMNbDqnUbd'
@@ -84,6 +90,8 @@ function loadGeneratedMarkdownEntries(dir) {
 
 const generatedBlogPosts = loadGeneratedBlogPosts()
 const generatedSeoArticles = loadGeneratedSeoArticles()
+const topicHubConfig = JSON.parse(fs.readFileSync(topicHubsPath, 'utf8'))
+const topicHubMinItemsForIndex = topicHubConfig.minItemsForIndex || 2
 
 function generatedArticlePath(article) {
   return article.lang === 'en' ? `/en/articles/${article.slug}/` : `/ru/articles/${article.slug}/`
@@ -93,29 +101,11 @@ function generatedBlogPath(post) {
   return (post.lang || 'ru') === 'en' ? `/en/blog/${post.slug}/` : `/ru/blog/${post.slug}/`
 }
 
-const topicPages = [
-  ['/topics/ai-agents/', 'AI-агенты — Даниил Охлопков'],
-  ['/topics/claude-code/', 'Claude Code — Даниил Охлопков'],
-  ['/topics/codex/', 'Codex — Даниил Охлопков'],
-  ['/topics/mcp/', 'MCP — Даниил Охлопков'],
-  ['/topics/gstack/', 'GStack — Даниил Охлопков'],
-  ['/topics/gbrain/', 'GBrain — Даниил Охлопков'],
-  ['/topics/ai-coding/', 'AI coding — Даниил Охлопков'],
-  ['/topics/ai-transformation/', 'AI-трансформация — Даниил Охлопков'],
-  ['/topics/refactoring/', 'Рефакторинг — Даниил Охлопков'],
-  ['/topics/ai-tools/', 'AI-инструменты — Даниил Охлопков'],
-  ['/topics/design-engineering/', 'Design engineering — Даниил Охлопков'],
-  ['/topics/html/', 'HTML — Даниил Охлопков'],
-  ['/topics/second-brain/', 'Second Brain — Даниил Охлопков'],
-  ['/topics/web-scraping/', 'Web scraping — Даниил Охлопков'],
-  ['/topics/frameworks/', 'Фреймворки для агентов — Даниил Охлопков'],
-  ['/topics/workflow/', 'Workflow — Даниил Охлопков'],
-  ['/topics/community/', 'Community — Даниил Охлопков'],
-  ['/topics/openclaw/', 'OpenClaw — Даниил Охлопков'],
-  ['/topics/hermes-agent/', 'Hermes Agent — Даниил Охлопков'],
-  ['/topics/ton-data/', 'TON-данные — Даниил Охлопков'],
-  ['/topics/telegram-automation/', 'Telegram-автоматизация — Даниил Охлопков'],
-]
+const topicPages = (topicHubConfig.hubs || []).map((topic) => ({
+  path: `/topics/${topic.slug}/`,
+  title: `${topic.title} — Даниил Охлопков`,
+  robots: (topic.articlePaths || []).length >= topicHubMinItemsForIndex ? 'index, follow' : 'noindex, follow',
+}))
 
 const staticPages = [
   {
@@ -174,12 +164,20 @@ const staticPages = [
     ogLocale: 'en_US',
     hreflangs: ['en', 'x-default'],
   },
-  ...topicPages.map(([path, title]) => ({
+  {
+    path: '/archive/',
+    title: 'Архив материалов — Даниил Охлопков',
+    lang: 'ru',
+    ogLocale: 'ru_RU',
+    hreflangs: ['ru', 'x-default'],
+  },
+  ...topicPages.map(({ path, title, robots }) => ({
     path,
     title,
     lang: 'ru',
     ogLocale: 'ru_RU',
     hreflangs: ['ru', 'x-default'],
+    robots,
   })),
   ...generatedBlogPosts.map((post) => {
     const lang = post.lang || 'ru'
@@ -303,7 +301,8 @@ const migrationMapStaticPaths = [
   '/about/',
   '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
-  ...topicPages.map(([path]) => path),
+  '/archive/',
+  ...topicPages.map((topic) => topic.path),
   '/privacy/',
   ...generatedBlogPosts.map((post) => generatedBlogPath(post)),
   ...generatedSeoArticles.map((article) => generatedArticlePath(article)),
@@ -473,6 +472,14 @@ function readMetaAll(html, selector) {
   return values
 }
 
+function readHttpEquivMeta(html, selector) {
+  for (const match of html.matchAll(/<meta\s+([^>]+)>/gi)) {
+    const attrs = parseAttrs(match[1])
+    if ((attrs['http-equiv'] || '').toLowerCase() === selector.toLowerCase()) return attrs.content || ''
+  }
+  return ''
+}
+
 function isPermanentRedirect(status) {
   return status === 301 || status === 308
 }
@@ -505,6 +512,14 @@ function escapeRegExp(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+function readCspDirective(csp, directive) {
+  for (const part of csp.split(';')) {
+    const [name, ...values] = part.trim().split(/\s+/)
+    if (name === directive) return values
+  }
+  return []
+}
+
 function verifyAnalyticsSnippet(html, path) {
   assert(html.includes(`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`), `${path}: missing GA4 loader`)
   assert(new RegExp(`gtag\\(['"]config['"],\\s*['"]${escapeRegExp(gaMeasurementId)}['"]`).test(html), `${path}: missing GA4 config`)
@@ -524,6 +539,12 @@ function verifyAnalyticsSnippet(html, path) {
   assert(html.includes('webvisor:false'), `${path}: Yandex Webvisor should stay disabled for Core Web Vitals`)
   assert(html.includes('setTimeout(loadAnalytics, 3500)'), `${path}: analytics loaders should stay out of the early critical path`)
   assert(!html.includes(`https://mc.yandex.ru/watch/${yandexMetrikaId}`), `${path}: Yandex noscript pixel should not create empty-alt image noise`)
+
+  assert(html.includes(`<script src="${ahrefsAnalyticsUrl}" data-key="${ahrefsAnalyticsDataKey}" async></script>`), `${path}: missing Ahrefs analytics script`)
+  const csp = readHttpEquivMeta(html, 'Content-Security-Policy')
+  assert(csp, `${path}: missing Content-Security-Policy meta`)
+  assert(readCspDirective(csp, 'script-src').includes(ahrefsAnalyticsOrigin), `${path}: CSP script-src missing ${ahrefsAnalyticsOrigin}`)
+  assert(readCspDirective(csp, 'connect-src').includes(ahrefsAnalyticsOrigin), `${path}: CSP connect-src missing ${ahrefsAnalyticsOrigin}`)
 }
 
 function verifyImageAltText(html, path) {
@@ -697,6 +718,18 @@ async function verifyImportedArticles(importedArticles) {
   console.log(`✓ imported articles (${importedArticles.length})`)
 }
 
+function verifyGeneratedImportedArticleBodyFiles(importedArticles) {
+  assert(fs.existsSync(generatedImportedArticleBodiesPath), `${generatedImportedArticleBodiesPath}: missing generated imported article body files`)
+  for (const article of importedArticles) {
+    const filePath = `${generatedImportedArticleBodiesPath}/${article.slug}.json`
+    assert(fs.existsSync(filePath), `${filePath}: missing generated imported article body file`)
+    const payload = JSON.parse(fs.readFileSync(filePath, 'utf8'))
+    assert(payload.path === article.path, `${filePath}: path mismatch`)
+    assert(typeof payload.bodyHtml === 'string' && payload.bodyHtml.length > 0, `${filePath}: missing bodyHtml`)
+  }
+  console.log(`✓ imported article body files (${importedArticles.length})`)
+}
+
 function readHtmlLang(html) {
   return html.match(/<html\b[^>]*\blang=["']([^"']+)["']/i)?.[1] || ''
 }
@@ -710,7 +743,7 @@ function readHreflangs(html) {
   return new Set(langs)
 }
 
-async function verifyStaticPage({ path, title, lang = 'ru', ogLocale = 'ru_RU', hreflangs = [] }) {
+async function verifyStaticPage({ path, title, lang = 'ru', ogLocale = 'ru_RU', hreflangs = [], robots = 'index, follow' }) {
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
@@ -718,7 +751,7 @@ async function verifyStaticPage({ path, title, lang = 'ru', ogLocale = 'ru_RU', 
   assert(readHtmlLang(html) === lang, `${path}: html lang mismatch`)
   assert(readMeta(html, 'og:locale') === ogLocale, `${path}: og:locale mismatch`)
   assert(readMeta(html, 'canonical') === canonicalUrl(path), `${path}: canonical mismatch`)
-  assert(readMeta(html, 'robots') === 'index, follow', `${path}: robots mismatch`)
+  assert(readMeta(html, 'robots') === robots, `${path}: robots mismatch`)
   verifyImageAltText(html, path)
   const actualHreflangs = readHreflangs(html)
   for (const hreflang of hreflangs) {
@@ -1092,6 +1125,7 @@ async function main() {
   for (const page of generatedBlogChecks) await verifyGeneratedBlogPost(page)
   for (const page of generatedSeoArticleChecks) await verifyGeneratedSeoArticle(page)
   await verifyImportedArticles(importedArticles)
+  verifyGeneratedImportedArticleBodyFiles(importedArticles)
   for (const redirect of redirects) await verifyRedirect(redirect)
   for (const path of noindexPages) await verifyNoindexPage(path)
   await verifyBacklinkCriticalUrls(backlinkCriticalRows)
@@ -1099,6 +1133,7 @@ async function main() {
   await verifyMigrationMapUrls(migrationRows)
   verifyImportedInternalLinks(importedContent, migrationRows)
   await verifySitemap(migrationRows)
+  verifyInternalLinkGraph({ siteUrl })
   await verifyCrawlerFiles()
   await verifyRootVerificationMeta()
   await verifyHomepageBasics()

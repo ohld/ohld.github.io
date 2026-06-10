@@ -1,20 +1,15 @@
-import importedContent from '../content/articles/imported-content.json'
 import importedIndex from '../content/articles/imported-index.json'
 import { applyArticleSeoEnhancement, getEnhancedArticleDescription } from './articleSeoEnhancements'
 
-interface ImportedArticleContent {
-  path: string
-  bodyHtml: string
-}
-
 interface ImportedArticleMeta {
   path: string
+  slug: string
   title: string
   description?: string
 }
 
-const importedBodies = importedContent as ImportedArticleContent[]
 const importedMeta = importedIndex as ImportedArticleMeta[]
+const importedBodyCache = new Map<string, Promise<string>>()
 
 function escapeAttr(value: string) {
   return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
@@ -70,10 +65,32 @@ function canonicalPath(pathname: string) {
   return pathOnly.endsWith('/') ? pathOnly : `${pathOnly}/`
 }
 
-export function getImportedArticleBody(pathname: string) {
+function importedBodyUrl(slug: string) {
+  return `/generated/imported-articles/${encodeURIComponent(slug)}.json`
+}
+
+export function normalizeImportedArticleBody(pathname: string, bodyHtml: string) {
   const current = canonicalPath(pathname)
   const meta = importedMeta.find((article) => article.path === current)
   const fallbackAlt = meta?.title || getEnhancedArticleDescription(current, meta?.description || '') || 'Daniil Okhlopkov article image'
-  const html = normalizeImportedArticleHtml(importedBodies.find((article) => article.path === current)?.bodyHtml || '', fallbackAlt)
+  const html = normalizeImportedArticleHtml(bodyHtml, fallbackAlt)
   return applyArticleSeoEnhancement(current, html)
+}
+
+export async function loadImportedArticleBody(article: ImportedArticleMeta) {
+  const current = canonicalPath(article.path)
+  if (!importedBodyCache.has(current)) {
+    importedBodyCache.set(current, (async () => {
+      const response = await fetch(importedBodyUrl(article.slug), {
+        headers: { accept: 'application/json' },
+      })
+      if (!response.ok) throw new Error(`Could not load imported article body: ${article.path}`)
+      const payload = await response.json() as { path?: string; bodyHtml?: string }
+      if (payload.path && canonicalPath(payload.path) !== current) {
+        throw new Error(`Imported article body path mismatch: ${article.path}`)
+      }
+      return normalizeImportedArticleBody(current, payload.bodyHtml || '')
+    })())
+  }
+  return importedBodyCache.get(current)!
 }

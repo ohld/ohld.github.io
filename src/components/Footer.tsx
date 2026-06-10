@@ -29,13 +29,15 @@ export function Footer() {
   return (
     <footer className="footer">
       <nav className="footer-links" aria-label={isEnglish ? 'Site sections' : 'Разделы сайта'}>
-        <Link to="/">RU</Link>
+        <Link to="/ru/">RU</Link>
         <Link to="/en/">EN</Link>
         {sectionNavLinks.map((link) => (
           <Link key={link.path} to={isEnglish ? link.enPath || link.path : link.path}>
             {isEnglish ? link.en : link.ru}
           </Link>
         ))}
+        <Link to="/archive/">{isEnglish ? 'Archive' : 'Архив'}</Link>
+        <Link to="/privacy/">Privacy</Link>
       </nav>
       <div className="footer-socials">
         {socialLinks.map((s) => (

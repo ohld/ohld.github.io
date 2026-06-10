@@ -1,6 +1,8 @@
+import legacyRedirects from '../content/articles/legacy-redirects.json'
+import topicHubConfig from '../content/topic-hubs.json'
 import type { BlogListItem } from './blog'
 import { englishArticleItems, englishBlogItems, russianArticleItems, russianBlogItems } from './blog'
-import { importedArticleListItems } from './importedArticles'
+import { getImportedArticles } from './importedArticles'
 
 export interface TopicDefinition {
   slug: string
@@ -8,234 +10,86 @@ export interface TopicDefinition {
   title: string
   description: string
   aliases: string[]
+  articlePaths?: string[]
   featuredLinks?: Array<{
     href: string
     label: string
     description: string
   }>
-  extraItems?: BlogListItem[]
 }
 
-export const topicDefinitions: TopicDefinition[] = [
-  {
-    slug: 'ai-agents',
-    label: 'AI-агенты',
-    title: 'AI-агенты',
-    description: 'Практические материалы про агентные флоу, Claude Code, Codex, skills, ревью и рабочий контекст.',
-    aliases: ['ai agents', 'agents', 'ai coding'],
-    featuredLinks: [
-      {
-        href: '/web-scraping-ai-agents-2026/',
-        label: 'AI agents for web scraping',
-        description: 'Когда агенту хватит API/XHR, а когда нужен Playwright или browser agent.',
-      },
-    ],
-    extraItems: importedArticleListItems(['/web-scraping-ai-agents-2026/']),
-  },
-  {
-    slug: 'claude-code',
-    label: 'Claude Code',
-    title: 'Claude Code',
-    description: 'Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code.',
-    aliases: ['claude code', 'skills'],
-    featuredLinks: [
-      {
-        href: '/web-scraping-ai-agents-2026/',
-        label: 'browser agents for data extraction',
-        description: 'Практический пример, где Claude Code выбирает между API, XHR и browser automation.',
-      },
-    ],
-    extraItems: importedArticleListItems([
-      '/claude-code-nastrojka-mcp-hooks-skills-2026/',
-      '/vtoroj-mozg-ai-assistent-obsidian-claude-code/',
-      '/web-scraping-ai-agents-2026/',
-    ]),
-  },
-  {
-    slug: 'codex',
-    label: 'Codex',
-    title: 'Codex',
-    description: 'Переходы между Codex и Claude Code, review loops, desktop app и context hygiene.',
-    aliases: ['codex', 'review'],
-    extraItems: importedArticleListItems(['/claude-codex-dual-review/']),
-  },
-  {
-    slug: 'mcp',
-    label: 'MCP',
-    title: 'MCP',
-    description: 'MCP-серверы, agent-browser, Telegram/Coolify интеграции и практическое расширение агентных инструментов.',
-    aliases: ['mcp'],
-    featuredLinks: [
-      {
-        href: '/web-scraping-ai-agents-2026/',
-        label: 'AI agents for web scraping',
-        description: 'Где agent-browser помогает, а где лучше оставить прямой JSON/API слой.',
-      },
-    ],
-    extraItems: importedArticleListItems([
-      '/luchshie-skills-mcp-claude-code-agent-browser/',
-      '/web-scraping-ai-agents-2026/',
-    ]),
-  },
-  {
-    slug: 'gstack',
-    label: 'GStack',
-    title: 'GStack',
-    description: 'GStack, office-hours, goal loops и HTML-progress как рабочий цикл для AI-агента.',
-    aliases: ['gstack'],
-  },
-  {
-    slug: 'gbrain',
-    label: 'GBrain',
-    title: 'GBrain',
-    description: 'GBrain/OpenBrain, retrieval layer, shared context and memory for agents.',
-    aliases: ['gbrain'],
-  },
-  {
-    slug: 'ai-coding',
-    label: 'AI Coding',
-    title: 'AI coding',
-    description: 'Практика coding agents: specs, plan mode, review, context hygiene и переносимость флоу.',
-    aliases: ['ai coding'],
-  },
-  {
-    slug: 'ai-transformation',
-    label: 'AI Transformation',
-    title: 'AI-трансформация',
-    description: 'Как компании превращают AI-доступы, skills и общий контекст в рабочую систему.',
-    aliases: ['ai transformation'],
-  },
-  {
-    slug: 'refactoring',
-    label: 'Refactoring',
-    title: 'Рефакторинг',
-    description: 'Архитектурные ревью, improve-codebase-architecture и аккуратная докрутка вайбкода.',
-    aliases: ['refactoring'],
-  },
-  {
-    slug: 'ai-tools',
-    label: 'AI Tools',
-    title: 'AI-инструменты',
-    description: 'Инструменты для агентного рабочего флоу: что пробовать, что выкидывать, где реальная польза.',
-    aliases: ['ai tools', 'dev setup'],
-  },
-  {
-    slug: 'design-engineering',
-    label: 'Design Engineering',
-    title: 'Design engineering',
-    description: 'AI-assisted frontend, Figma-to-code, design tokens, taste и борьба с AI-slop.',
-    aliases: ['design engineering', 'frontend'],
-  },
-  {
-    slug: 'html',
-    label: 'HTML',
-    title: 'HTML',
-    description: 'HTML как формат для AI-agent артефактов, статей, компонентов и LLM-readable страниц.',
-    aliases: ['html'],
-  },
-  {
-    slug: 'second-brain',
-    label: 'Second Brain',
-    title: 'Second Brain',
-    description: 'Obsidian, markdown vaults, wiki-ссылки, raw notes и персональный рабочий контекст для агентов.',
-    aliases: ['second brain', 'obsidian'],
-  },
-  {
-    slug: 'web-scraping',
-    label: 'Web Scraping',
-    title: 'Web scraping',
-    description: 'Browser automation, agent-browser и новые способы доставать данные из сайтов.',
-    aliases: ['web scraping', 'browser automation'],
-    featuredLinks: [
-      {
-        href: '/web-scraping-ai-agents-2026/',
-        label: 'AI agents for web scraping',
-        description: 'Обновленная 2026-иерархия: API/XHR, embedded JSON, Playwright/browser agent, LLM extraction.',
-      },
-    ],
-    extraItems: importedArticleListItems(['/web-scraping-ai-agents-2026/']),
-  },
-  {
-    slug: 'frameworks',
-    label: 'Frameworks',
-    title: 'Фреймворки для агентов',
-    description: 'Beads, Gastown, first-party tools and the cost of adopting someone else’s agent framework.',
-    aliases: ['frameworks'],
-  },
-  {
-    slug: 'workflow',
-    label: 'Workflow',
-    title: 'Workflow',
-    description: 'Agent workflows: setup, context, review loops, progress artifacts and daily usage.',
-    aliases: ['workflow', 'setup', 'context', 'review'],
-  },
-  {
-    slug: 'community',
-    label: 'Community',
-    title: 'Community',
-    description: 'Telegram-чаты, обсуждения, community insights and the feedback loop around AI-agent content.',
-    aliases: ['community'],
-  },
-  {
-    slug: 'openclaw',
-    label: 'OpenClaw',
-    title: 'OpenClaw',
-    description: 'Заготовка под OpenClaw hub: practical setup, Codex/Hermes сравнения и skills flow.',
-    aliases: ['openclaw'],
-  },
-  {
-    slug: 'hermes-agent',
-    label: 'Hermes Agent',
-    title: 'Hermes Agent',
-    description: 'Hermes Agent, Telegram/VPS, skills, memory и self-hosted personal AI workflows.',
-    aliases: ['hermes agent', 'hermes'],
-  },
-  {
-    slug: 'ton-data',
-    label: 'TON-данные',
-    title: 'TON-данные',
-    description: 'On-chain analytics, TON research, Dune, EVAA, USDT и AI-ассистенты для анализа данных.',
-    aliases: ['ton', 'data', 'analytics'],
-    extraItems: importedArticleListItems([
-      '/ton-analyst-ai-skill-ton-blockchain-dune/',
-      '/evaa-strategies-onchain-research/',
-    ]),
-  },
-  {
-    slug: 'telegram-automation',
-    label: 'Telegram',
-    title: 'Telegram-автоматизация',
-    description: 'Telegram bots, Mini Apps, voice workflows, AI-агенты в чатах и автоматизация через Telegram.',
-    aliases: ['telegram', 'community'],
-    featuredLinks: [
-      {
-        href: '/web-scraping-ai-agents-2026/',
-        label: 'browser agents for data extraction',
-        description: 'Что делать, когда Telegram-задача упирается в данные с внешнего сайта.',
-      },
-    ],
-    extraItems: importedArticleListItems([
-      '/telegram-mini-app-llms-txt-claude-code-stream/',
-      '/ai-agent-forum-telegram-chat-agenty/',
-      '/web-scraping-ai-agents-2026/',
-    ]),
-  },
-]
-
-const homeTopicSlugs = ['ai-agents', 'claude-code', 'codex', 'mcp', 'gstack', 'openclaw', 'hermes-agent', 'ton-data', 'telegram-automation']
-export const homeTopics = topicDefinitions.filter((topic) => homeTopicSlugs.includes(topic.slug))
-
-export function topicPath(slug: string) {
-  return `/topics/${slug}/`
+interface TopicHubConfig {
+  minItemsForIndex?: number
+  homeTopicSlugs?: string[]
+  hubs: TopicDefinition[]
 }
 
-export function slugifyTopicTag(tag: string) {
-  const normalized = tag.trim().toLowerCase()
-  return topicDefinitions.find((topic) => topic.aliases.includes(normalized) || topic.label.toLowerCase() === normalized)?.slug
-    || normalized
-      .replace(/&/g, 'and')
-      .replace(/[^a-z0-9а-яё]+/gi, '-')
-      .replace(/^-+|-+$/g, '')
+type LegacyRedirect = { from: string; to: string }
+
+const config = topicHubConfig as TopicHubConfig
+const legacyRedirectFromPaths = new Set((legacyRedirects as LegacyRedirect[]).map((redirect) => canonicalPath(redirect.from)))
+
+export const minTopicItemsForIndex = config.minItemsForIndex || 2
+export const topicDefinitions: TopicDefinition[] = config.hubs.map((topic) => ({
+  ...topic,
+  aliases: topic.aliases || [],
+  articlePaths: topic.articlePaths || [],
+}))
+
+function canonicalPath(pathname: string) {
+  const pathOnly = pathname.split('?')[0].split('#')[0] || '/'
+  if (pathOnly === '/') return '/'
+  return pathOnly.endsWith('/') ? pathOnly : `${pathOnly}/`
+}
+
+function listItemKey(pathname: string) {
+  return canonicalPath(pathname)
+}
+
+function byNewest(a: BlogListItem, b: BlogListItem) {
+  return b.publishedAt.localeCompare(a.publishedAt)
+}
+
+function importedArticleToListItem(article: ReturnType<typeof getImportedArticles>[number]): BlogListItem {
+  return {
+    path: article.path,
+    title: article.title,
+    description: article.description,
+    publishedAt: article.publishedAt,
+    readingTime: article.readingTime,
+    tags: article.tags,
+    thumbnail: article.heroImage,
+  }
+}
+
+function uniqueItems(items: BlogListItem[]) {
+  const byPath = new Map<string, BlogListItem>()
+  for (const item of items) {
+    const key = listItemKey(item.path)
+    if (!byPath.has(key) && !legacyRedirectFromPaths.has(key)) byPath.set(key, item)
+  }
+  return [...byPath.values()]
+}
+
+export function getAllArticleItems() {
+  return uniqueItems([
+    ...russianBlogItems,
+    ...englishBlogItems,
+    ...russianArticleItems,
+    ...englishArticleItems,
+    ...getImportedArticles().map(importedArticleToListItem),
+  ]).sort(byNewest)
+}
+
+function itemsByPath() {
+  return new Map(getAllArticleItems().map((item) => [listItemKey(item.path), item]))
+}
+
+function configuredItemsForTopic(topic: TopicDefinition) {
+  const byPath = itemsByPath()
+  return (topic.articlePaths || [])
+    .map((pathname) => byPath.get(listItemKey(pathname)))
+    .filter((item): item is BlogListItem => Boolean(item))
 }
 
 function itemMatchesTopic(item: BlogListItem, topic: TopicDefinition) {
@@ -251,16 +105,48 @@ export function getTopic(slug: string | undefined) {
   return topicDefinitions.find((topic) => topic.slug === slug)
 }
 
+export function getConfiguredTopicItems(slug: string | undefined) {
+  const topic = getTopic(slug)
+  return topic ? configuredItemsForTopic(topic) : []
+}
+
+export function isTopicIndexable(slug: string | undefined) {
+  return getConfiguredTopicItems(slug).length >= minTopicItemsForIndex
+}
+
 export function getTopicItems(slug: string | undefined) {
   const topic = getTopic(slug)
   if (!topic) return []
-  const seen = new Set<string>()
-  const items = [...russianBlogItems, ...englishBlogItems, ...russianArticleItems, ...englishArticleItems, ...(topic.extraItems || [])]
-    .filter((item) => itemMatchesTopic(item, topic) || topic.extraItems?.some((extra) => extra.path === item.path))
-    .filter((item) => {
-      if (seen.has(item.path)) return false
-      seen.add(item.path)
-      return true
-    })
-  return items
+
+  const configuredItems = configuredItemsForTopic(topic)
+  if (configuredItems.length) return configuredItems
+
+  return getAllArticleItems()
+    .filter((item) => itemMatchesTopic(item, topic))
+    .sort(byNewest)
+}
+
+export function getPrimaryTopicForItem(item: BlogListItem) {
+  const itemPath = listItemKey(item.path)
+  const configuredTopic = topicDefinitions.find((topic) =>
+    (topic.articlePaths || []).some((pathname) => listItemKey(pathname) === itemPath),
+  )
+  if (configuredTopic) return configuredTopic
+  return topicDefinitions.find((topic) => itemMatchesTopic(item, topic)) || null
+}
+
+const homeTopicSlugs = config.homeTopicSlugs || []
+export const homeTopics = topicDefinitions.filter((topic) => homeTopicSlugs.includes(topic.slug))
+
+export function topicPath(slug: string) {
+  return `/topics/${slug}/`
+}
+
+export function slugifyTopicTag(tag: string) {
+  const normalized = tag.trim().toLowerCase()
+  return topicDefinitions.find((topic) => topic.aliases.includes(normalized) || topic.label.toLowerCase() === normalized)?.slug
+    || normalized
+      .replace(/&/g, 'and')
+      .replace(/[^a-z0-9а-яё]+/gi, '-')
+      .replace(/^-+|-+$/g, '')
 }

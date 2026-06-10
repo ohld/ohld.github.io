@@ -26,6 +26,7 @@ const IMPORTED_ARTICLES_CONTENT = path.join('content', 'articles', 'imported-con
 const LOCALIZED_GROUPS_PATH = path.join('content', 'articles', 'localized-groups.json')
 const ARTICLE_SEO_ENHANCEMENTS_PATH = path.join('content', 'articles', 'seo-enhancements.json')
 const LEGACY_REDIRECTS_PATH = path.join('content', 'articles', 'legacy-redirects.json')
+const TOPIC_HUBS_PATH = path.join('content', 'topic-hubs.json')
 
 function readJsonFile(filePath, fallback) {
   return fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : fallback
@@ -33,19 +34,26 @@ function readJsonFile(filePath, fallback) {
 
 const ARTICLE_SEO_ENHANCEMENTS = readJsonFile(ARTICLE_SEO_ENHANCEMENTS_PATH, {})
 const LEGACY_REDIRECTS = readJsonFile(LEGACY_REDIRECTS_PATH, [])
+const TOPIC_HUB_CONFIG = readJsonFile(TOPIC_HUBS_PATH, { minItemsForIndex: 2, hubs: [] })
+const TOPIC_HUBS = TOPIC_HUB_CONFIG.hubs || []
+const MIN_TOPIC_ITEMS_FOR_INDEX = TOPIC_HUB_CONFIG.minItemsForIndex || 2
 
 const NAV_LINKS_BY_SHELL_LANG = {
   ru: [
     ['/ru/blog/', 'Блог'],
     ['/ru/articles/', 'Статьи'],
     ['/about/', 'Обо мне'],
+    ['/archive/', 'Архив'],
+    ['/privacy/', 'Privacy'],
     ['/en/', 'English'],
   ],
   en: [
     ['/en/blog/', 'Blog'],
     ['/en/articles/', 'Articles'],
     ['/en/about/', 'About'],
-    ['/', 'RU'],
+    ['/archive/', 'Archive'],
+    ['/privacy/', 'Privacy'],
+    ['/ru/', 'RU'],
   ],
 }
 
@@ -318,72 +326,6 @@ function loadImportedArticleRows() {
 
 const IMPORTED_ARTICLES = loadImportedArticleRows()
 
-const TOPIC_PAGES = [
-  ['ai-agents', 'AI-агенты', 'Практические материалы про агентные флоу, Claude Code, Codex, skills, ревью и рабочий контекст.'],
-  ['claude-code', 'Claude Code', 'Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code.'],
-  ['codex', 'Codex', 'Переходы между Codex и Claude Code, review loops, desktop app и context hygiene.'],
-  ['mcp', 'MCP', 'MCP-серверы, agent-browser, Telegram/Coolify интеграции и практическое расширение агентных инструментов.'],
-  ['gstack', 'GStack', 'GStack, office-hours, goal loops и HTML-progress как рабочий цикл для AI-агента.'],
-  ['gbrain', 'GBrain', 'GBrain/OpenBrain, retrieval layer, shared context and memory for agents.'],
-  ['ai-coding', 'AI coding', 'Практика coding agents: specs, plan mode, review, context hygiene и переносимость флоу.'],
-  ['ai-transformation', 'AI-трансформация', 'Как компании превращают AI-доступы, skills и общий контекст в рабочую систему.'],
-  ['refactoring', 'Рефакторинг', 'Архитектурные ревью, improve-codebase-architecture и аккуратная докрутка вайбкода.'],
-  ['ai-tools', 'AI-инструменты', 'Инструменты для агентного рабочего флоу: что пробовать, что выкидывать, где реальная польза.'],
-  ['design-engineering', 'Design engineering', 'AI-assisted frontend, Figma-to-code, design tokens, taste и борьба с AI-slop.'],
-  ['html', 'HTML', 'HTML как формат для AI-agent артефактов, статей, компонентов и LLM-readable страниц.'],
-  ['second-brain', 'Second Brain', 'Obsidian, markdown vaults, wiki-ссылки, raw notes и персональный рабочий контекст для агентов.'],
-  ['web-scraping', 'Web scraping', 'Browser automation, agent-browser и новые способы доставать данные из сайтов.'],
-  ['frameworks', 'Фреймворки для агентов', 'Beads, Gastown, first-party tools and the cost of adopting someone else’s agent framework.'],
-  ['workflow', 'Workflow', 'Agent workflows: setup, context, review loops, progress artifacts and daily usage.'],
-  ['community', 'Community', 'Telegram-чаты, обсуждения, community insights and the feedback loop around AI-agent content.'],
-  ['openclaw', 'OpenClaw', 'Заготовка под OpenClaw hub: practical setup, Codex/Hermes сравнения и skills flow.'],
-  ['hermes-agent', 'Hermes Agent', 'Hermes Agent, Telegram/VPS, skills, memory и self-hosted personal AI workflows.'],
-  ['ton-data', 'TON-данные', 'On-chain analytics, TON research, Dune, EVAA, USDT и AI-ассистенты для анализа данных.'],
-  ['telegram-automation', 'Telegram-автоматизация', 'Telegram bots, Mini Apps, voice workflows, AI-агенты в чатах и автоматизация через Telegram.'],
-]
-
-const TOPIC_FEATURED_LINKS = new Map([
-  ['ai-agents', [
-    ['AI agents for web scraping', '/web-scraping-ai-agents-2026/', 'Когда агенту хватит API/XHR, а когда нужен Playwright или browser agent.'],
-  ]],
-  ['claude-code', [
-    ['browser agents for data extraction', '/web-scraping-ai-agents-2026/', 'Практический пример, где Claude Code выбирает между API, XHR и browser automation.'],
-  ]],
-  ['mcp', [
-    ['AI agents for web scraping', '/web-scraping-ai-agents-2026/', 'Где agent-browser помогает, а где лучше оставить прямой JSON/API слой.'],
-  ]],
-  ['web-scraping', [
-    ['AI agents for web scraping', '/web-scraping-ai-agents-2026/', 'Обновленная 2026-иерархия: API/XHR, embedded JSON, Playwright/browser agent, LLM extraction.'],
-  ]],
-  ['telegram-automation', [
-    ['browser agents for data extraction', '/web-scraping-ai-agents-2026/', 'Что делать, когда Telegram-задача упирается в данные с внешнего сайта.'],
-  ]],
-])
-
-function topicMarkdown(slug, title, description) {
-  const featuredLinks = TOPIC_FEATURED_LINKS.get(slug) || []
-  const featuredMarkdown = featuredLinks.length
-    ? `\n\n## Featured links\n\n${featuredLinks.map(([label, href, note]) => `- [${label}](${href}) — ${note}`).join('\n')}`
-    : ''
-
-  return `${description}${featuredMarkdown}
-
-## Материалы
-
-- [Блог](/ru/blog/) — записи и рабочие заметки.
-- [Статьи](/ru/articles/) — гайды, сравнения и туториалы.
-- [AI-агенты: с чего начать в 2026](/ru/blog/ai-agents-s-chego-nachat/)
-- [GStack, /goal и office hours](/ru/blog/gstack-goal-office-hours-ai-workflow/)
-- [Claude Code vs Codex](/ru/blog/claude-code-vs-codex-perehod/)
-- [Hermes Agent vs OpenClaw](/ru/articles/hermes-agent-vs-openclaw/)
-- [AI-инструменты для дизайнеров](/ru/articles/ai-tools-for-designers-design-engineering-agents/)
-
-## Смежные темы
-
-[AI-агенты](/topics/ai-agents/) · [Claude Code](/topics/claude-code/) · [Codex](/topics/codex/) · [MCP](/topics/mcp/) · [GStack](/topics/gstack/) · [OpenClaw](/topics/openclaw/) · [Hermes Agent](/topics/hermes-agent/) · [TON-данные](/topics/ton-data/) · [Telegram](/topics/telegram-automation/)
-`
-}
-
 const ROUTES = [
   {
     path: '/',
@@ -546,6 +488,7 @@ for (const post of GENERATED_BLOG_POSTS) {
     primaryKeyword: post.primaryKeyword,
     secondaryKeywords: post.secondaryKeywords,
     tags: post.tags,
+    readingTime: post.readingTime,
     views: post.views,
     forwards: post.forwards,
     comments: post.comments,
@@ -579,6 +522,7 @@ for (const article of GENERATED_SEO_ARTICLES) {
     primaryKeyword: article.primaryKeyword,
     secondaryKeywords: article.secondaryKeywords,
     tags: article.tags,
+    readingTime: article.readingTime,
     views: article.views,
     forwards: article.forwards,
     comments: article.comments,
@@ -588,23 +532,6 @@ for (const article of GENERATED_SEO_ARTICLES) {
     ...imageMetadataForUrl(article.coverImage),
     image: absoluteImageUrl(article.coverImage) || 'https://github.com/ohld.png',
     markdown: article.body,
-  })
-}
-
-for (const [slug, title, description] of TOPIC_PAGES) {
-  ROUTES.push({
-    path: `/topics/${slug}`,
-    slug: `topic-${slug}`,
-    title: `${title} — Даниил Охлопков`,
-    description,
-    lang: 'ru',
-    alternates: {
-      ru: `${SITE_URL}/topics/${slug}/`,
-      'x-default': `${SITE_URL}/topics/${slug}/`,
-    },
-    kind: 'topic-page',
-    topicTitle: title,
-    markdown: topicMarkdown(slug, title, description),
   })
 }
 
@@ -622,6 +549,7 @@ for (const article of IMPORTED_ARTICLES) {
     kind: 'article-page',
     publishedAt: article.publishedAt,
     updatedAt: article.updatedAt || STATIC_UPDATED_DATE,
+    readingTime: article.readingTime,
     markdown: articleMarkdown(article, article.bodyHtml),
     bodyHtml: article.bodyHtml,
     heroImage: article.heroImage,
@@ -631,6 +559,235 @@ for (const article of IMPORTED_ARTICLES) {
     alternates: importedArticleAlternates(canonical, article.lang || 'ru'),
   })
 }
+
+function routePathname(route) {
+  return route.path === '/' ? '/' : canonicalPathname(route.path)
+}
+
+function isInventoryArticleRoute(route) {
+  return route.kind === 'generated-blog-post'
+    || route.kind === 'generated-article-post'
+    || route.kind === 'article-page'
+    || route.slug === 'markdown-vs-html'
+    || route.slug === 'articles-ai-tools-for-designers-design-engineering-agents'
+    || route.slug === 'ru-articles-ai-tools-for-designers-design-engineering-agents'
+}
+
+function indexableArticleRoutes() {
+  return ROUTES
+    .filter((route) => isInventoryArticleRoute(route) && !route.robots?.startsWith('noindex'))
+    .sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''))
+}
+
+function routesByPath() {
+  return new Map(indexableArticleRoutes().map((route) => [routePathname(route), route]))
+}
+
+function configuredTopicRoutes(topic) {
+  const byPath = routesByPath()
+  return (topic.articlePaths || [])
+    .map((pathname) => byPath.get(canonicalPathname(pathname)))
+    .filter(Boolean)
+}
+
+function routeMatchesTopic(route, topic) {
+  const haystack = [
+    route.title,
+    route.description,
+    ...(route.tags || []),
+  ].join(' ').toLowerCase()
+  return (topic.aliases || []).some((alias) => haystack.includes(alias.toLowerCase()))
+}
+
+function topicRoutes(topic) {
+  const configured = configuredTopicRoutes(topic)
+  if (configured.length) return configured
+  return indexableArticleRoutes().filter((route) => routeMatchesTopic(route, topic))
+}
+
+function isTopicIndexable(topic) {
+  return configuredTopicRoutes(topic).length >= MIN_TOPIC_ITEMS_FOR_INDEX
+}
+
+function primaryTopicForRoute(route) {
+  const pathname = routePathname(route)
+  const configuredTopic = TOPIC_HUBS.find((topic) =>
+    (topic.articlePaths || []).some((topicPath) => canonicalPathname(topicPath) === pathname),
+  )
+  if (configuredTopic) return configuredTopic
+  return TOPIC_HUBS.find((topic) => routeMatchesTopic(route, topic)) || {
+    slug: 'other',
+    label: 'Other',
+    title: 'Other',
+  }
+}
+
+function articleRoutesMarkdown(routes) {
+  if (!routes.length) return '- [Полный архив](/archive/)'
+  return routes
+    .map((route) => {
+      const description = route.description ? ` — ${route.description}` : ''
+      return `- [${route.title}](${routePathname(route)})${description}`
+    })
+    .join('\n')
+}
+
+function collectionMarkdown({ intro, items, archiveLabel = 'Полный архив' }) {
+  return `${intro}
+
+## Материалы
+
+${articleRoutesMarkdown(items)}
+
+[${archiveLabel}](/archive/)`
+}
+
+function topicMarkdown(topic) {
+  const items = topicRoutes(topic)
+  const featuredLinks = topic.featuredLinks || []
+  const featuredMarkdown = featuredLinks.length
+    ? `\n\n## Featured links\n\n${featuredLinks.map((link) => `- [${link.label}](${link.href}) — ${link.description}`).join('\n')}`
+    : ''
+  const relatedTopics = TOPIC_HUBS
+    .filter((candidate) => candidate.slug !== topic.slug && isTopicIndexable(candidate))
+    .slice(0, 10)
+    .map((candidate) => `[${candidate.label}](/topics/${candidate.slug}/)`)
+    .join(' · ')
+
+  return `${topic.description}${featuredMarkdown}
+
+## Материалы
+
+${articleRoutesMarkdown(items)}
+
+## Смежные темы
+
+${relatedTopics || '[Архив](/archive/)' }
+`
+}
+
+function archiveMarkdown() {
+  const byLang = new Map()
+  for (const route of indexableArticleRoutes()) {
+    const lang = route.lang || 'ru'
+    if (!byLang.has(lang)) byLang.set(lang, [])
+    byLang.get(lang).push(route)
+  }
+
+  const langLabels = new Map([
+    ['ru', 'Русский'],
+    ['en', 'English'],
+    ['zh', '中文'],
+  ])
+  const sections = []
+  for (const lang of ['ru', 'en', 'zh']) {
+    const routes = byLang.get(lang) || []
+    if (!routes.length) continue
+    sections.push(`## ${langLabels.get(lang)}`)
+
+    const byTopic = new Map()
+    for (const route of routes) {
+      const topic = primaryTopicForRoute(route)
+      const key = `${topic.slug}::${topic.label || topic.title}`
+      if (!byTopic.has(key)) byTopic.set(key, [])
+      byTopic.get(key).push(route)
+    }
+
+    for (const [key, topicItems] of [...byTopic.entries()].sort(([a], [b]) => a.localeCompare(b))) {
+      const [topicSlug, topicLabel] = key.split('::')
+      const topic = TOPIC_HUBS.find((candidate) => candidate.slug === topicSlug)
+      const topicHeading = topic && isTopicIndexable(topic)
+        ? `[${topicLabel}](/topics/${topicSlug}/)`
+        : topicLabel
+      sections.push(`### ${topicHeading}`)
+
+      const byYear = new Map()
+      for (const route of topicItems) {
+        const year = (route.publishedAt || STATIC_UPDATED_DATE).slice(0, 4)
+        if (!byYear.has(year)) byYear.set(year, [])
+        byYear.get(year).push(route)
+      }
+
+      for (const [year, yearItems] of [...byYear.entries()].sort(([a], [b]) => b.localeCompare(a))) {
+        sections.push(`#### ${year}`)
+        sections.push(articleRoutesMarkdown(yearItems))
+      }
+    }
+  }
+
+  return `Полная карта сайта: язык, тема, год. Без промо, просто быстрые входы в тексты.
+
+${sections.join('\n\n')}`
+}
+
+function assignCollectionFallbackMarkdown() {
+  const allArticles = indexableArticleRoutes()
+  const generatedRuBlog = allArticles.filter((route) => route.kind === 'generated-blog-post' && (route.lang || 'ru') === 'ru')
+  const ruArticles = allArticles.filter((route) => (route.lang || 'ru') === 'ru' && route.kind !== 'generated-blog-post')
+  const enArticles = allArticles.filter((route) => route.lang === 'en' && route.kind !== 'generated-blog-post')
+  const enBlog = allArticles.filter((route) => route.lang === 'en' && route.kind === 'generated-blog-post')
+  const latestEn = allArticles.filter((route) => route.lang === 'en').slice(0, 24)
+
+  const fallbacks = new Map([
+    ['ru-blog', collectionMarkdown({
+      intro: 'Рабочие заметки про AI-агентов, инструменты, контекст и рабочие флоу.',
+      items: generatedRuBlog,
+    })],
+    ['ru-articles', collectionMarkdown({
+      intro: 'Гайды, сравнения и старые полезные статьи. Канонические URL сохраняются, даже если материал приехал из старого блога.',
+      items: ruArticles,
+    })],
+    ['en-blog', collectionMarkdown({
+      intro: 'English notes and imported posts about AI agents, Claude Code, data and Telegram.',
+      items: enBlog.length ? enBlog : latestEn,
+      archiveLabel: 'Full archive',
+    })],
+    ['en-articles', collectionMarkdown({
+      intro: 'English tutorials, evergreen explainers and preserved articles.',
+      items: enArticles,
+      archiveLabel: 'Full archive',
+    })],
+  ])
+
+  for (const [slug, markdown] of fallbacks) {
+    const route = ROUTES.find((candidate) => candidate.slug === slug)
+    if (route) route.markdown = markdown
+  }
+}
+
+assignCollectionFallbackMarkdown()
+
+for (const topic of TOPIC_HUBS) {
+  ROUTES.push({
+    path: `/topics/${topic.slug}`,
+    slug: `topic-${topic.slug}`,
+    title: `${topic.title} — Даниил Охлопков`,
+    description: topic.description,
+    lang: 'ru',
+    robots: isTopicIndexable(topic) ? 'index, follow' : 'noindex, follow',
+    alternates: {
+      ru: `${SITE_URL}/topics/${topic.slug}/`,
+      'x-default': `${SITE_URL}/topics/${topic.slug}/`,
+    },
+    kind: 'topic-page',
+    topicTitle: topic.title,
+    markdown: topicMarkdown(topic),
+  })
+}
+
+ROUTES.push({
+  path: '/archive',
+  slug: 'archive',
+  title: 'Архив материалов — Даниил Охлопков',
+  description: 'Полный индекс материалов okhlopkov.com по языку, теме и году.',
+  lang: 'ru',
+  alternates: {
+    ru: `${SITE_URL}/archive/`,
+    'x-default': `${SITE_URL}/archive/`,
+  },
+  kind: 'archive-page',
+  markdown: archiveMarkdown(),
+})
 
 function escape(s) {
   return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
@@ -960,6 +1117,7 @@ function mdToHtml(md) {
       out.push(`<table><thead><tr>${headers.map((cell) => `<th>${inlineFmt(cell)}</th>`).join('')}</tr></thead><tbody>${bodyRows.map((row) => `<tr>${row.map((cell) => `<td>${inlineFmt(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table>`)
       continue
     }
+    if (line.startsWith('#### ')) { flushPara(); closeList(); closeQuote(); out.push(`<h4>${inlineFmt(line.slice(5))}</h4>`); continue }
     if (line.startsWith('### ')) { flushPara(); closeList(); closeQuote(); out.push(`<h3>${inlineFmt(line.slice(4))}</h3>`); continue }
     if (line.startsWith('## ')) { flushPara(); closeList(); closeQuote(); out.push(`<h2>${inlineFmt(line.slice(3))}</h2>`); continue }
     if (line.startsWith('# ')) { flushPara(); closeList(); closeQuote(); out.push(`<h1>${inlineFmt(line.slice(2))}</h1>`); continue }
@@ -1081,6 +1239,15 @@ const SCHEMA_BY_SLUG = {
     about: ['AI agents', 'Claude Code', 'Codex', 'MCP', 'Telegram'],
     inLanguage: 'en',
   }),
+  archive: (r) => ({
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Архив материалов — Даниил Охлопков',
+    description: r.description,
+    url: `${SITE_URL}/archive/`,
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    inLanguage: 'ru',
+  }),
   'articles-ai-tools-for-designers-design-engineering-agents': (r) => articleSchema(r, {
     video: {
       '@type': 'VideoObject',
@@ -1138,6 +1305,7 @@ const BREADCRUMBS_BY_SLUG = {
   'ru-articles-ai-tools-for-designers-design-engineering-agents': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/ru/articles/`], ['AI-инструменты для дизайнеров', `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`]],
   'private-channel': [['Главная', `${SITE_URL}/`], ['Закрытый канал', `${SITE_URL}/private-channel/`]],
   'markdown-vs-html': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['Markdown vs HTML', `${SITE_URL}/articles/markdown-vs-html/`]],
+  'archive': [['Главная', `${SITE_URL}/ru/`], ['Архив', `${SITE_URL}/archive/`]],
   'privacy': [['Home', `${SITE_URL}/`], ['Privacy Policy', `${SITE_URL}/privacy/`]],
 }
 
@@ -1311,7 +1479,7 @@ for (const route of ROUTES) {
   if (route.robots?.startsWith('noindex')) continue
   const src = path.join(templatesDir, `${route.slug}.md`)
   const dest = path.join(dist, `${route.slug}.md`)
-  if (route.kind === 'generated-blog-post' || route.kind === 'generated-article-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
+  if (route.markdown) {
     fs.writeFileSync(dest, `# ${route.title}\n\n${route.markdown}\n`)
   } else {
     fs.copyFileSync(src, dest)
@@ -1468,6 +1636,7 @@ const SITEMAP_URLS = [
   `${SITE_URL}/en/blog/`,
   `${SITE_URL}/ru/articles/`,
   `${SITE_URL}/en/articles/`,
+  `${SITE_URL}/archive/`,
   `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`,
   `${SITE_URL}/articles/markdown-vs-html/`,
   `${SITE_URL}/privacy/`,
@@ -1512,8 +1681,8 @@ for (const post of GENERATED_BLOG_POSTS) {
 for (const article of GENERATED_SEO_ARTICLES) {
   addSitemapUrl(`${generatedArticlePath(article)}/`, article.updatedAt || STATIC_UPDATED_DATE)
 }
-for (const [slug] of TOPIC_PAGES) {
-  addSitemapUrl(`/topics/${slug}/`)
+for (const topic of TOPIC_HUBS) {
+  if (isTopicIndexable(topic)) addSitemapUrl(`/topics/${topic.slug}/`)
 }
 for (const article of IMPORTED_ARTICLES) {
   if (article.path) addSitemapUrl(article.path, article.updatedAt || STATIC_UPDATED_DATE)

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/prerender.mjs",
+    "build": "node scripts/write-imported-article-body-files.mjs && tsc -b && vite build && node scripts/prerender.mjs",
     "build:okhlopkov": "SITE_URL=https://okhlopkov.com VITE_SITE_URL=https://okhlopkov.com npm run build",
     "build:pages": "SITE_URL=https://okhlopkov.com VITE_SITE_URL=https://okhlopkov.com npm run build",
     "preview": "vite preview",
@@ -20,6 +20,7 @@
     "verify:analytics-routing": "node scripts/verify-analytics-routing.mjs",
     "verify:hreflang": "node scripts/verify-hreflang.mjs",
     "verify:image-seo": "node scripts/verify-image-seo.mjs",
+    "verify:internal-links": "node scripts/verify-internal-link-graph.mjs",
     "verify:migration": "node scripts/verify-static-migration.mjs",
     "verify:dist": "node scripts/serve-dist-and-verify.mjs",
     "verify:live": "VERIFY_BASE_URL=https://okhlopkov.com SITE_URL=https://okhlopkov.com VERIFY_REQUIRE_STRICT_404=1 VERIFY_REQUIRE_REAL_REDIRECTS=1 VERIFY_REQUIRE_EDGE_REDIRECTS=1 VERIFY_REQUIRE_ORIGIN_HEADERS=1 npm run verify:migration",
