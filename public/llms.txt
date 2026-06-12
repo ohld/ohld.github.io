@@ -19,38 +19,38 @@
 
 ## Контент
 
-- [Обо мне](https://okhlopkov.com/about.md): подробно о роли, опыте, проектах
-- [Блог](https://okhlopkov.com/ru-blog.md): короткие практические заметки и рабочие разборы
-- [AI-агенты: с чего начать в 2026](https://okhlopkov.com/blog-ai-agents-s-chego-nachat.md): карта материалов про AI-агентов
-- [Claude Code vs Codex](https://okhlopkov.com/blog-claude-code-vs-codex-perehod.md): личный snapshot перехода с Claude Code на Codex
-- [AI-трансформация в компании](https://okhlopkov.com/blog-ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain.md): общий контекст, skills и GBrain/OpenBrain
-- [Статьи](https://okhlopkov.com/ru-articles.md): гайды, сравнения, туториалы и материалы из собранных источников
+- [Обо мне](https://okhlopkov.com/about/): подробно о роли, опыте, проектах
+- [Блог](https://okhlopkov.com/ru/blog/): короткие практические заметки и рабочие разборы
+- [AI-агенты: с чего начать в 2026](https://okhlopkov.com/ru/blog/ai-agents-s-chego-nachat/): карта материалов про AI-агентов
+- [Claude Code vs Codex](https://okhlopkov.com/ru/blog/claude-code-vs-codex-perehod/): личный snapshot перехода с Claude Code на Codex
+- [AI-трансформация в компании](https://okhlopkov.com/ru/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/): общий контекст, skills и GBrain/OpenBrain
+- [Статьи](https://okhlopkov.com/ru/articles/): гайды, сравнения, туториалы и материалы из собранных источников
 
 ## Key AI / TON / Telegram Articles
 
-- [Second brain + Obsidian + Claude Code](https://okhlopkov.com/article-vtoroj-mozg-ai-assistent-obsidian-claude-code.md): как хранить проектный контекст для AI-агентов
-- [Claude Code setup: MCP, Hooks, Skills](https://okhlopkov.com/article-claude-code-nastrojka-mcp-hooks-skills-2026.md): практический сетап Claude Code
-- [Claude Code + Codex dual review](https://okhlopkov.com/article-claude-codex-dual-review.md): cross-check workflow для двух coding agents
-- [Web Scraping AI Agents](https://okhlopkov.com/article-web-scraping-ai-agents-2026.md): API/XHR, browser agents and LLM extraction in 2026
-- [Telegram MCP Server](https://okhlopkov.com/article-telegram-mcp-server-kak-sdelat.md): Python, Telethon, FastMCP и Telegram как agent UI
-- [183 AI bots on Telegram](https://okhlopkov.com/article-183-ai-bots-telegram-research.md): датасет и выводы по Telegram AI bot market
-- [Telegram Ads 61K queries](https://okhlopkov.com/article-cn-telegram-ads-61k-search-queries-analysis.md): demand map по Telegram Ads queries
-- [EVAA on-chain research](https://okhlopkov.com/article-evaa-strategies-onchain-research.md): TON DeFi стратегии, методология и caveats
-- [ton-analyst skill](https://okhlopkov.com/article-ton-analyst-ai-skill-ton-blockchain-dune.md): open-source skill для TON analytics через Dune
+- [Second brain + Obsidian + Claude Code](https://okhlopkov.com/vtoroj-mozg-ai-assistent-obsidian-claude-code/): как хранить проектный контекст для AI-агентов
+- [Claude Code setup: MCP, Hooks, Skills](https://okhlopkov.com/claude-code-setup-mcp-hooks-skills-2026/): MCP servers, hooks, skills, Windows setup, account/payment caveats and minimal Claude Code setup
+- [Claude Code + Codex dual review](https://okhlopkov.com/en-claude-codex-dual-review/): cross-check workflow для двух coding agents
+- [Web Scraping AI Agents](https://okhlopkov.com/web-scraping-ai-agents-2026/): API/XHR, browser agents and LLM extraction in 2026
+- [Telegram MCP Server](https://okhlopkov.com/telegram-mcp-server-kak-sdelat/): Python, Telethon, FastMCP и Telegram как agent UI
+- [183 AI bots on Telegram](https://okhlopkov.com/183-ai-bots-telegram-research/): датасет и выводы по Telegram AI bot market
+- [Telegram Ads 61K queries](https://okhlopkov.com/en-telegram-ads-61k-search-queries-analysis/): demand map по Telegram Ads queries
+- [EVAA on-chain research](https://okhlopkov.com/evaa-strategies-onchain-research/): TON DeFi стратегии, методология и caveats
+- [ton-analyst skill](https://okhlopkov.com/en-ton-analyst-open-source-ai-skill-dune/): open-source skill для TON analytics через Dune
 
 ## Archive / Discovery
 
 - [Sitemap](https://okhlopkov.com/sitemap.xml): all canonical HTML URLs
 - [Full Markdown bundle](https://okhlopkov.com/llms-full.txt): generated bundle of indexable markdown pages, including imported archive articles
 
-- [AI-инструменты для дизайнеров](https://okhlopkov.com/ru-articles-ai-tools-for-designers-design-engineering-agents.md): design engineering, AI-assisted frontend, Paper/Figma-to-code и борьба с AI-slop
-- [Hermes Agent vs OpenClaw](https://okhlopkov.com/article-hermes-agent-vs-openclaw.md): русское сравнение Hermes Agent и OpenClaw для Telegram, памяти, skills, cron и self-hosted agent workflows
-- [Markdown vs HTML для AI-агентов](https://okhlopkov.com/markdown-vs-html.md): когда агенту нужен HTML, а когда Markdown всё ещё выигрывает
-- [Privacy Policy](https://okhlopkov.com/privacy.md): privacy policy for okhlopkov.com and the Pinterest Content Ideas integration
+- [AI-инструменты для дизайнеров](https://okhlopkov.com/ru/articles/ai-tools-for-designers-design-engineering-agents/): design engineering, AI-assisted frontend, Paper/Figma-to-code и борьба с AI-slop
+- [Hermes Agent vs OpenClaw](https://okhlopkov.com/ru/articles/hermes-agent-vs-openclaw/): русское сравнение Hermes Agent и OpenClaw для Telegram, памяти, skills, cron и self-hosted agent workflows
+- [Markdown vs HTML для AI-агентов](https://okhlopkov.com/articles/markdown-vs-html/): когда агенту нужен HTML, а когда Markdown всё ещё выигрывает
+- [Privacy Policy](https://okhlopkov.com/privacy/): privacy policy for okhlopkov.com and the Pinterest Content Ideas integration
 
 ## Связаться
 
-- **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot) или [страницу обо мне](https://okhlopkov.com/about.md)
+- **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot) или [страницу обо мне](https://okhlopkov.com/about/)
 
 ## Использование
 

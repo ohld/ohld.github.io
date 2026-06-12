@@ -83,7 +83,7 @@ export function Archive() {
 
   useDocumentMeta({
     title: 'Архив материалов — Даниил Охлопков',
-    description: 'Полный индекс материалов okhlopkov.com по языку, теме и году.',
+    description: 'Полный индекс материалов okhlopkov.com по языку, теме и году: AI-агенты, Claude Code, Codex, TON, Telegram и практические разборы.',
     canonical: absoluteUrl('/archive/'),
     lang: 'ru',
     alternates: {
