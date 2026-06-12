@@ -31,6 +31,12 @@ Reference images, Pinterest boards, raw prompts and private source packs are
 not committed to this public repository unless they are explicitly safe to
 publish.
 
+For Dan's Pinterest moodboard, local notebooks and agent scripts should read
+the official Pinterest API manifest first: list boards, fetch board pins, then
+select by pin ID/image URL. Browser parsing is only a fallback when API
+credentials are unavailable. Keep `PINTEREST_*` tokens in local env or secret
+stores, never in notebooks, prompts or public sidecars.
+
 ## Generation Flow
 
 1. Decide what the visual must explain in one sentence.
