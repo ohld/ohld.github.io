@@ -4,7 +4,7 @@ import { Footer } from './Footer'
 import { enhanceCodeBlocks } from '../codeBlocks'
 import { imageDimensionsForUrl } from '../imageMetadata'
 import { absoluteUrl } from '../site'
-import { buildArticleStructuredData, htmlToPlainText } from '../structuredData'
+import { buildArticleStructuredData, faqItemsFromHtml, htmlToPlainText } from '../structuredData'
 import { useDocumentMeta } from '../useDocumentMeta'
 
 interface ArticleLayoutProps {
@@ -52,6 +52,7 @@ export function ArticleLayout({
   const structuredImage = schemaImage || heroImage
   const heroDimensions = imageDimensionsForUrl(heroImage)
   const articleText = bodyText || (bodyHtml ? htmlToPlainText(bodyHtml) : '')
+  const faqItems = bodyHtml ? faqItemsFromHtml(bodyHtml) : []
   const jsonLd = buildArticleStructuredData({
     title,
     description,
@@ -63,6 +64,7 @@ export function ArticleLayout({
     tags,
     section,
     bodyText: articleText,
+    faqItems,
   })
 
   useDocumentMeta({
