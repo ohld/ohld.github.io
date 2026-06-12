@@ -1035,12 +1035,12 @@
     "description": "",
     "lang": "en",
     "publishedAt": "2023-08-25",
-    "updatedAt": "2026-05-25",
+    "updatedAt": "2026-06-12",
     "readingTime": "2 min",
     "tags": [
       "Parsing"
     ],
-    "heroImage": "/content/images/2026/02/how-to-get-a-telegram-channel-subscribers-list-in-python-1.png"
+    "heroImage": "/assets/articles/how-to-get-a-telegram-channel-subscribers-list-in-python/telegram-subscribers-list-hero.webp"
   },
   {
     "path": "/how-to-watch-telegram-stories-from-python/",

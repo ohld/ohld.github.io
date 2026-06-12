@@ -21,6 +21,7 @@ const IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
   '/assets/articles/en-best-skills-mcp-claude-code-agent-browser/hero.webp': { width: 1376, height: 768 },
   '/assets/articles/hermes-agent-vs-openclaw/setup-cron-home.webp': { width: 1376, height: 768 },
   '/assets/articles/hermes-agent-vs-openclaw/telegram-remote-control.webp': { width: 1376, height: 768 },
+  '/assets/articles/how-to-get-a-telegram-channel-subscribers-list-in-python/telegram-subscribers-list-hero.webp': { width: 1600, height: 900 },
   '/assets/blog/ai-agents-s-chego-nachat/ai-agents-playlist-meme.webp': { width: 1280, height: 720 },
   '/assets/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/company-context-cover.webp': { width: 1376, height: 768 },
   '/assets/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/u-kazhdogo-svoya-karta.webp': { width: 1280, height: 720 },
