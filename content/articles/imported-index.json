@@ -1045,16 +1045,16 @@
   {
     "path": "/how-to-watch-telegram-stories-from-python/",
     "slug": "how-to-watch-telegram-stories-from-python",
-    "title": "How to watch Telegram stories from Python",
-    "description": "",
+    "title": "Watch Telegram Stories from Python with Telethon",
+    "description": "Use Python + Telethon to watch Telegram Stories from a user session: detect active stories, call ReadStoriesRequest, and understand viewer-list/rate-limit caveats.",
     "lang": "en",
     "publishedAt": "2023-08-25",
-    "updatedAt": "2026-05-25",
-    "readingTime": "2 min",
+    "updatedAt": "2026-06-15",
+    "readingTime": "3 min",
     "tags": [
       "Telegram"
     ],
-    "heroImage": "/content/images/2026/02/how-to-watch-telegram-stories-from-python-1.png"
+    "heroImage": "/assets/articles/how-to-watch-telegram-stories-from-python/telegram-stories-python-hero.webp"
   },
   {
     "path": "/how-to-find-all-blockchain-startups/",

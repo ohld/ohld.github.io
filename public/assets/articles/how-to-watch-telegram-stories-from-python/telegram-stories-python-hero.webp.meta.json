@@ -1,0 +1,26 @@
+{
+  "articleSlug": "how-to-watch-telegram-stories-from-python",
+  "articleUrl": "https://okhlopkov.com/how-to-watch-telegram-stories-from-python/",
+  "assetRole": "hero",
+  "assetPath": "/assets/articles/how-to-watch-telegram-stories-from-python/telegram-stories-python-hero.webp",
+  "generatedDate": "2026-06-15",
+  "dimensions": {
+    "width": 1600,
+    "height": 900
+  },
+  "optimization": {
+    "format": "webp",
+    "ffmpegQuality": 82,
+    "compressionLevel": 6,
+    "fileSizeBytes": 260068
+  },
+  "pinterestReference": {
+    "referenceId": "pin:839569555579668438",
+    "pinUrl": "https://ru.pinterest.com/pin/839569555579668438/",
+    "sourceImageUrl": "https://i.pinimg.com/originals/41/0a/c8/410ac8757fd5e39648db6e8f1eb0e467.jpg",
+    "imageHash": "urlsha256:1902642572bc84fd",
+    "dimensions": "736x736"
+  },
+  "promptSummary": "Reference-preserving local fallback edit from Dan's Pinterest CCTV/laundromat monitor collage; preserved camera-grid composition and added large English hero text: WATCH TG STORIES FROM PYTHON, plus Telethon/no bot API caveat.",
+  "fallbackReason": "Hermes image_generate interface cannot pass an input reference image in this session; used local reference-preserving crop/panel/text edit instead of blank text-to-image generation. Pinterest API board-pins smoke failed because client credentials require 2FA, so cached GBrain/manifest reference was used."
+}
