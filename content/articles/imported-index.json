@@ -1031,12 +1031,12 @@
   {
     "path": "/how-to-get-a-telegram-channel-subscribers-list-in-python/",
     "slug": "how-to-get-a-telegram-channel-subscribers-list-in-python",
-    "title": "How to get a Telegram channel subscribers list in python",
-    "description": "",
+    "title": "How to Get a Telegram Channel Subscribers List in Python",
+    "description": "Can you get a Telegram channel subscribers list with Python? Telethon/MTProto guide to admin limits, Bot API gaps, 200-result search and safe automation.",
     "lang": "en",
     "publishedAt": "2023-08-25",
-    "updatedAt": "2026-06-12",
-    "readingTime": "2 min",
+    "updatedAt": "2026-06-16",
+    "readingTime": "4 min",
     "tags": [
       "Parsing"
     ],
