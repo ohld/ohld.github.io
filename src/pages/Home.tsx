@@ -88,8 +88,9 @@ export function Home() {
             лучше сохранить для следующего проекта.
           </p>
           <p>
-            Дальше удобно идти по темам: AI-агенты для рабочих задач, Codex и
-            Claude Code для разработки, TON-данные для исследований,
+            Дальше удобно идти по темам: AI-агенты для рабочих задач, AI tools
+            для выбора рабочего стека, Codex и Claude Code для разработки,
+            web scraping для добычи данных, TON-данные для исследований,
             Telegram-автоматизация для продуктов и каналов, second brain для
             личной памяти. Хороший материал здесь должен помогать сделать
             следующий шаг: проверить гипотезу, собрать прототип, настроить
@@ -102,10 +103,20 @@ export function Home() {
               работает с файлами, проверяет себя и доводит задачу до результата.
             </li>
             <li>
+              <a href="/topics/ai-tools/">AI-инструменты</a> — Claude Code,
+              Codex, OpenClaw, Hermes, GBrain, GStack и другие инструменты,
+              которые стоит сравнивать по реальным задачам, а не по хайпу.
+            </li>
+            <li>
               <a href="/topics/claude-code/">Claude Code</a> и
               <a href="/topics/codex/"> Codex</a> — настройки, skills, MCP,
               hooks, browser smoke, ревью diff и длинные задачи, которые нужно
               держать в управляемом цикле.
+            </li>
+            <li>
+              <a href="/topics/web-scraping/">Web scraping</a> — API/XHR,
+              Playwright, browser agents, HTML parsing и практические границы
+              между one-off extraction и продакшен-парсером.
             </li>
             <li>
               <a href="/topics/ton-data/">TON-данные</a> — on-chain аналитика,

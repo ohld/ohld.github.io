@@ -355,6 +355,43 @@ async function assertBackButtonTracking(context, baseUrl) {
   }
 }
 
+async function assertArticleTelegramSubscribeTracking(context, baseUrl) {
+  const page = await context.newPage({ viewport: { width: 390, height: 844 } })
+  try {
+    await page.goto(`${baseUrl}/web-scraping-ai-agents-2026/`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 15000,
+    })
+    const cta = page.locator('[data-cta-id="telegram_web_scraping_ai_agents"]').first()
+    await cta.waitFor({ timeout: 5000 })
+    await page.evaluate(() => {
+      const link = document.querySelector('[data-cta-id="telegram_web_scraping_ai_agents"]')
+      link?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 }))
+    })
+    await waitForAnalyticsEvent(page, 'telegram_subscribe_click')
+
+    const calls = await getAnalyticsCalls(page)
+    const expected = {
+      event_category: 'subscribe',
+      event_label: 'telegram_web_scraping_ai_agents',
+      cta_id: 'telegram_web_scraping_ai_agents',
+      link_url: 'https://t.me/danokhlopkov?utm_source=okhlopkov.com&utm_medium=article&utm_campaign=web_scraping_ai_agents_2026',
+      link_domain: 't.me',
+      experiment_id: 'seo_ctr_web_scraping_ai_agents_2026_06_19',
+      cluster_id: 'web_scraping_ai_agents',
+      experiment_variant: 'title_meta_stack_answer_faq_related_cta_v1',
+    }
+    const gaPayload = gaEventPayloads(calls, 'telegram_subscribe_click').at(-1)
+    const ymPayload = ymGoalPayloads(calls, 'telegram_subscribe_click').at(-1)
+    assert(gaPayload, 'article Telegram CTA: missing GA4 telegram_subscribe_click')
+    assert(ymPayload, 'article Telegram CTA: missing Metrika telegram_subscribe_click goal')
+    assertSharedEventPayload(gaPayload, 'GA4 telegram_subscribe_click', expected)
+    assertSharedEventPayload(ymPayload, 'Metrika telegram_subscribe_click', expected)
+  } finally {
+    await page.close()
+  }
+}
+
 async function run(baseUrl) {
   const { chromium } = await loadPlaywright()
   const executablePath = findExecutable()
@@ -404,6 +441,7 @@ async function run(baseUrl) {
 
   await assertHeaderCtaTracking(page)
   await assertBackButtonTracking(context, baseUrl)
+  await assertArticleTelegramSubscribeTracking(context, baseUrl)
 
   await browser.close()
   console.log(`✓ analytics routing and click goals (${expectedPaths.join(', ')})`)

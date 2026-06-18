@@ -203,10 +203,12 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 Если вы впервые на сайте, начните с материалов про мой AI-сетап, практику работы с агентами и разборы инструментов, которые уже прошли через реальные задачи. Я стараюсь оставлять не абстрактные впечатления, а конкретику: что ускорило работу, где пришлось менять процесс, какие настройки можно повторить и какие выводы лучше сохранить для следующего проекта.
 
-Дальше удобно идти по темам: AI-агенты для рабочих задач, Codex и Claude Code для разработки, TON-данные для исследований, Telegram-автоматизация для продуктов и каналов, second brain для личной памяти. Хороший материал здесь должен помогать сделать следующий шаг: проверить гипотезу, собрать прототип, настроить workflow или не повторить уже найденную ошибку.
+Дальше удобно идти по темам: AI-агенты для рабочих задач, AI tools для выбора рабочего стека, Codex и Claude Code для разработки, web scraping для добычи данных, TON-данные для исследований, Telegram-автоматизация для продуктов и каналов, second brain для личной памяти. Хороший материал здесь должен помогать сделать следующий шаг: проверить гипотезу, собрать прототип, настроить workflow или не повторить уже найденную ошибку.
 
 - [AI-агенты](/topics/ai-agents/) — практические сценарии, где агент не просто отвечает в чате, а читает контекст, работает с файлами, проверяет себя и доводит задачу до результата.
+- [AI-инструменты](/topics/ai-tools/) — Claude Code, Codex, OpenClaw, Hermes, GBrain, GStack и другие инструменты, которые стоит сравнивать по реальным задачам, а не по хайпу.
 - [Claude Code](/topics/claude-code/) и [Codex](/topics/codex/) — настройки, skills, MCP, hooks, browser smoke, ревью diff и длинные задачи, которые нужно держать в управляемом цикле.
+- [Web scraping](/topics/web-scraping/) — API/XHR, Playwright, browser agents, HTML parsing и практические границы между one-off extraction и продакшен-парсером.
 - [TON-данные](/topics/ton-data/) — on-chain аналитика, Dune, исследовательские запросы, метрики и способы превратить сырые данные в решение для продукта или команды.
 - [Telegram-автоматизация](/topics/telegram-automation/) — mini apps, боты, контентные пайплайны, каналы и рабочие интерфейсы, где Telegram становится частью операционной системы.
 - [Second brain](/topics/second-brain/) — Obsidian, GBrain, проектная память, raw notes и правила, которые помогают не терять решения после длинных agent-сессий.
@@ -247,10 +249,12 @@ Some notes are short and useful as a quick reference before solving a similar ta
 
 If this is your first visit, start with the pieces about my AI setup, agent workflows and tool reviews that already went through real work. I try to write down concrete takeaways rather than abstract impressions: what made the work faster, where the process had to change, which settings are worth copying and which lessons should be kept for the next project.
 
-From there, it is easiest to follow the topic pages: AI agents for practical work, Codex and Claude Code for development, TON data for research, Telegram automation for products and channels, second brain systems for personal memory. A useful article here should help with a next step: test a hypothesis, build a prototype, tune a workflow or avoid a mistake that already showed up in practice.
+From there, it is easiest to follow the topic pages: AI agents for practical work, AI tools for stack choices, Codex and Claude Code for development, web scraping for data extraction, TON data for research, Telegram automation for products and channels, second brain systems for personal memory. A useful article here should help with a next step: test a hypothesis, build a prototype, tune a workflow or avoid a mistake that already showed up in practice.
 
 - [AI agents](/topics/ai-agents/) — practical workflows where an agent reads context, works with files, checks its own output and carries a task through to a concrete result.
+- [AI tools](/topics/ai-tools/) — Claude Code, Codex, OpenClaw, Hermes, GBrain, GStack and other tools compared by real work instead of hype.
 - [Claude Code](/topics/claude-code/) and [Codex](/topics/codex/) — skills, MCP, hooks, browser smoke checks, diff review and long tasks that need a controlled operating loop.
+- [Web scraping](/topics/web-scraping/) — API/XHR, Playwright, browser agents, HTML parsing and the line between one-off extraction and production parsers.
 - [TON data](/topics/ton-data/) — on-chain analytics, Dune, research queries, product metrics and ways to turn raw blockchain data into a decision a team can use.
 - [Telegram automation](/topics/telegram-automation/) — mini apps, bots, content pipelines, channels and operational interfaces where Telegram becomes part of the work system.
 - [Second brain](/topics/second-brain/) — Obsidian, GBrain, project memory, raw notes and rules that keep decisions available after long agent sessions.
@@ -878,9 +882,24 @@ function ogImageStructuredMeta(route) {
 
 const AUTHOR_SCHEMA = {
   '@type': 'Person',
+  '@id': `${SITE_URL}/about/#person`,
   name: 'Даниил Охлопков',
   alternateName: 'Daniil Okhlopkov',
-  url: `${SITE_URL}/`,
+  url: `${SITE_URL}/about/`,
+  jobTitle: 'Head of Analytics',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'TON Foundation',
+    url: 'https://ton.org/',
+  },
+  sameAs: [
+    'https://t.me/danokhlopkov',
+    'https://x.com/danokhlopkov',
+    'https://youtube.com/@danokhlopkov',
+    'https://www.linkedin.com/in/danokhlopkov/',
+    'https://github.com/ohld',
+  ],
+  knowsAbout: ['AI Agents', 'Claude Code', 'Codex', 'MCP', 'TON Analytics', 'Telegram Automation', 'Data Products'],
 }
 
 function isArticleRoute(route) {
@@ -1195,13 +1214,14 @@ const SCHEMA_BY_SLUG = {
   about: () => ({
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
-    mainEntity: { '@id': `${SITE_URL}/#person` },
+    mainEntity: AUTHOR_SCHEMA,
     url: `${SITE_URL}/about/`,
+    inLanguage: 'ru',
   }),
   'en-about': () => ({
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',
-    mainEntity: { '@id': `${SITE_URL}/#person` },
+    mainEntity: AUTHOR_SCHEMA,
     url: `${SITE_URL}/en/about/`,
     inLanguage: 'en',
   }),
@@ -1626,6 +1646,18 @@ Disallow: /*.md$
 Disallow: /*.md
 Disallow: /llms.txt
 Disallow: /llms-full.txt
+
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+Allow: /
+Allow: /*.md$
+Allow: /*.md
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: *
 Allow: /

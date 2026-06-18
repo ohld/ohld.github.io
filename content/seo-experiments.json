@@ -1,0 +1,26 @@
+{
+  "/claude-code-setup-mcp-hooks-skills-2026/": {
+    "experiment_id": "seo_ctr_claude_code_en_2026_06_18",
+    "cluster_id": "claude_code",
+    "language": "en",
+    "page_type": "legacy_article",
+    "variant": "title_meta_official_docs_answer_faq_v1",
+    "started_at": "2026-06-18"
+  },
+  "/claude-code-compaction-explained/": {
+    "experiment_id": "seo_ctr_claude_code_en_2026_06_18",
+    "cluster_id": "claude_code",
+    "language": "en",
+    "page_type": "legacy_article",
+    "variant": "title_meta_compact_answer_table_v1",
+    "started_at": "2026-06-18"
+  },
+  "/web-scraping-ai-agents-2026/": {
+    "experiment_id": "seo_ctr_web_scraping_ai_agents_2026_06_19",
+    "cluster_id": "web_scraping_ai_agents",
+    "language": "en",
+    "page_type": "legacy_article",
+    "variant": "title_meta_stack_answer_faq_related_cta_v1",
+    "started_at": "2026-06-19"
+  }
+}

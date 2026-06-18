@@ -22,12 +22,13 @@
     "verify:image-seo": "node scripts/verify-image-seo.mjs",
     "verify:internal-links": "node scripts/verify-internal-link-graph.mjs",
     "verify:migration": "node scripts/verify-static-migration.mjs",
+    "verify:seo-clusters": "node scripts/verify-seo-clusters.mjs",
     "verify:dist": "node scripts/serve-dist-and-verify.mjs",
     "verify:live": "VERIFY_BASE_URL=https://okhlopkov.com SITE_URL=https://okhlopkov.com VERIFY_REQUIRE_STRICT_404=1 VERIFY_REQUIRE_ORIGIN_HEADERS=1 npm run verify:migration",
     "verify:live:edge": "VERIFY_BASE_URL=https://okhlopkov.com SITE_URL=https://okhlopkov.com VERIFY_REQUIRE_STRICT_404=1 VERIFY_REQUIRE_EDGE_REDIRECTS=1 VERIFY_REQUIRE_ORIGIN_HEADERS=1 npm run verify:migration",
     "cutover:live": "npm run verify:live && SMOKE_BASE_URL=https://okhlopkov.com SITE_URL=https://okhlopkov.com npm run smoke:browser",
-    "preflight:okhlopkov": "npm run build:okhlopkov && SITE_URL=https://okhlopkov.com npm run verify:image-seo && npm run migration:map && npm run check:public-safety && SITE_URL=https://okhlopkov.com npm run verify:hreflang && SITE_URL=https://okhlopkov.com npm run verify:dist && SITE_URL=https://okhlopkov.com npm run smoke:dist",
-    "preflight:pages": "npm run build:pages && SITE_URL=https://okhlopkov.com npm run verify:image-seo && npm run migration:map && npm run check:public-safety && SITE_URL=https://okhlopkov.com npm run verify:hreflang && SITE_URL=https://okhlopkov.com npm run verify:dist && SITE_URL=https://okhlopkov.com npm run smoke:dist"
+    "preflight:okhlopkov": "npm run verify:seo-clusters && npm run build:okhlopkov && SITE_URL=https://okhlopkov.com npm run verify:image-seo && npm run migration:map && npm run check:public-safety && SITE_URL=https://okhlopkov.com npm run verify:hreflang && SITE_URL=https://okhlopkov.com npm run verify:dist && SITE_URL=https://okhlopkov.com npm run smoke:dist",
+    "preflight:pages": "npm run verify:seo-clusters && npm run build:pages && SITE_URL=https://okhlopkov.com npm run verify:image-seo && npm run migration:map && npm run check:public-safety && SITE_URL=https://okhlopkov.com npm run verify:hreflang && SITE_URL=https://okhlopkov.com npm run verify:dist && SITE_URL=https://okhlopkov.com npm run smoke:dist"
   },
   "dependencies": {
     "react": "^19.2.0",

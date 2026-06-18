@@ -2,7 +2,7 @@ import { BackButton } from '../components/BackButton'
 import { Footer } from '../components/Footer'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
-import { absoluteUrl } from '../site'
+import { absoluteUrl, socialLinks } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 
 const experience = [
@@ -42,6 +42,28 @@ const experience = [
   },
 ]
 
+const profileSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  url: absoluteUrl('/en/about/'),
+  inLanguage: 'en',
+  mainEntity: {
+    '@type': 'Person',
+    '@id': `${absoluteUrl('/about/')}#person`,
+    name: 'Daniil Okhlopkov',
+    alternateName: 'Даниил Охлопков',
+    url: absoluteUrl('/about/'),
+    jobTitle: 'Head of Analytics',
+    worksFor: {
+      '@type': 'Organization',
+      name: 'TON Foundation',
+      url: 'https://ton.org/',
+    },
+    sameAs: socialLinks.map((link) => link.url),
+    knowsAbout: ['AI Agents', 'Claude Code', 'Codex', 'MCP', 'TON Analytics', 'Telegram Automation', 'Data Products'],
+  },
+}
+
 export function EnglishAbout() {
   useDocumentMeta({
     title: 'Daniil Okhlopkov — AI Agents, TON Analytics and Telegram',
@@ -53,6 +75,7 @@ export function EnglishAbout() {
       en: absoluteUrl('/en/about/'),
       'x-default': absoluteUrl('/about/'),
     },
+    jsonLd: profileSchema,
   })
 
   return (

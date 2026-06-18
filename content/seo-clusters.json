@@ -1,0 +1,169 @@
+{
+  "quality_gates": {
+    "minimum_internal_links": 3,
+    "minimum_faq_questions": 3,
+    "required_candidate_fields": [
+      "slug",
+      "target_query_group",
+      "canonical_path",
+      "source_pack",
+      "unique_proof",
+      "internal_links",
+      "faq_questions",
+      "schema_type",
+      "sitemap_eligibility",
+      "status"
+    ],
+    "rule": "Do not publish keyword-variation pages. Every page needs unique data, firsthand proof, screenshots/config, a comparison table, or a strong editorial take."
+  },
+  "clusters": [
+    {
+      "cluster_id": "ai_tools_developer_agents",
+      "title": "AI tools for developer-agent workflows",
+      "language": "en",
+      "status": "planned",
+      "hub_path": "/topics/ai-tools/",
+      "measurement": {
+        "primary_metric": "GSC impressions and CTR by page/query",
+        "secondary_metric": "GA4 telegram_subscribe_click and article_internal_click",
+        "first_review_after_publish_days": 14
+      },
+      "candidates": [
+        {
+          "slug": "best-ai-agents-for-developers-2026",
+          "target_query_group": "best AI agents for developers; coding agents 2026; AI developer tools",
+          "canonical_path": "/en/articles/best-ai-agents-for-developers-2026/",
+          "source_pack": "GBrain workflow notes, Claude Code/Codex daily usage, Hermes/OpenClaw/GStack logs",
+          "unique_proof": "Firsthand tool matrix with task fit, setup cost, context model, failure modes and current stack screenshots",
+          "internal_links": ["/topics/ai-tools/", "/topics/ai-agents/", "/claude-code-setup-mcp-hooks-skills-2026/", "/en-claude-codex-dual-review/"],
+          "faq_questions": ["Which AI agent is best for developers?", "When should I use Claude Code instead of Codex?", "Do I need MCP servers for coding agents?"],
+          "schema_type": "CollectionPage",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        },
+        {
+          "slug": "claude-code-vs-codex-vs-cursor",
+          "target_query_group": "Claude Code vs Codex vs Cursor; Codex alternatives; Claude Code alternatives",
+          "canonical_path": "/en/articles/claude-code-vs-codex-vs-cursor/",
+          "source_pack": "Claude Code vs Codex source pack, dual-review workflow, daily migration notes",
+          "unique_proof": "Personal migration narrative plus role split table: fast prototyping, deliberate review, IDE autocomplete",
+          "internal_links": ["/claude-code-setup-mcp-hooks-skills-2026/", "/claude-code-compaction-explained/", "/en-claude-codex-dual-review/", "/topics/codex/"],
+          "faq_questions": ["Is Codex better than Claude Code?", "Should I use Cursor or a terminal coding agent?", "Can Claude Code and Codex work together?"],
+          "schema_type": "Article",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        },
+        {
+          "slug": "mcp-servers-for-claude-code-data-extraction",
+          "target_query_group": "Claude Code MCP servers; MCP for data extraction; browser agent MCP",
+          "canonical_path": "/en/articles/mcp-servers-for-claude-code-data-extraction/",
+          "source_pack": "Claude Code setup page, web-scraping article, MCP topic hub, browser smoke workflow",
+          "unique_proof": "Decision tree for API/XHR, browser automation, project memory and deploy/data MCP servers",
+          "internal_links": ["/topics/mcp/", "/web-scraping-ai-agents-2026/", "/claude-code-setup-mcp-hooks-skills-2026/", "/topics/web-scraping/"],
+          "faq_questions": ["Which MCP server should I add first?", "Can MCP replace web scraping?", "How do browser agents fit into Claude Code?"],
+          "schema_type": "Article",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        },
+        {
+          "slug": "hermes-agent-vps-telegram-gbrain-codex",
+          "target_query_group": "Hermes Agent VPS; Hermes Agent Telegram; self hosted AI agent",
+          "canonical_path": "/en/articles/hermes-agent-vps-telegram-gbrain-codex/",
+          "source_pack": "Hermes setup logs, Telegram control-plane notes, GBrain retrieval notes, Codex review workflow",
+          "unique_proof": "Real VPS/Telegram/GBrain architecture map with failure-mode table and sanitized config snippets",
+          "internal_links": ["/topics/hermes-agent/", "/topics/gbrain/", "/always-on-ai-agent-server-setup/", "/topics/telegram-automation/"],
+          "faq_questions": ["Can Hermes Agent run on a VPS?", "How do I control an AI agent from Telegram?", "What should agent memory store?"],
+          "schema_type": "Article",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        },
+        {
+          "slug": "gbrain-for-ai-agents-project-memory",
+          "target_query_group": "AI agent memory; GBrain project memory; agent-readable second brain",
+          "canonical_path": "/en/articles/gbrain-for-ai-agents-project-memory/",
+          "source_pack": "Second-brain notes, GBrain project overview, Obsidian/AGENTS.md workflow",
+          "unique_proof": "Memory layer comparison: raw vault, hot facts, GBrain retrieval, task files and public source packs",
+          "internal_links": ["/topics/gbrain/", "/topics/second-brain/", "/second-brain-obsidian-claude-code/", "/claude-code-compaction-explained/"],
+          "faq_questions": ["What should AI agent memory store?", "Is GBrain a replacement for Obsidian?", "How do agents avoid forgetting project decisions?"],
+          "schema_type": "Article",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        }
+      ]
+    },
+    {
+      "cluster_id": "ru_ai_tools_availability",
+      "title": "RU AI tool availability and task-based chooser",
+      "language": "ru",
+      "status": "planned",
+      "hub_path": "/topics/ai-tools/",
+      "measurement": {
+        "primary_metric": "Yandex/Metrika organic visits and GSC RU impressions",
+        "secondary_metric": "Telegram joins from page-specific invite or UTM links",
+        "first_review_after_publish_days": 14
+      },
+      "candidates": [
+        {
+          "slug": "luchshie-ai-agenty-dlya-razrabotchikov-2026",
+          "target_query_group": "luchshie ai agenty dlya razrabotchikov; claude code codex cursor",
+          "canonical_path": "/ru/articles/luchshie-ai-agenty-dlya-razrabotchikov-2026/",
+          "source_pack": "Wordstat demand, personal Claude/Codex/GStack workflow, RU vertical chooser script",
+          "unique_proof": "Task-based table: coding, review, browser data extraction, project memory, RU access/payment caveats",
+          "internal_links": ["/topics/ai-tools/", "/topics/claude-code/", "/claude-code-nastrojka-mcp-hooks-skills-2026/", "/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/"],
+          "faq_questions": ["Kakoy AI agent vybrat dlya koda?", "Chem Claude Code otlichaetsya ot Codex?", "Kak vybirat AI instrumenty v RF bez risky workaround guides?"],
+          "schema_type": "CollectionPage",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        },
+        {
+          "slug": "openclaw-setup-windows-github-skills",
+          "target_query_group": "openclaw setup; openclaw github; openclaw windows; openclaw skills",
+          "canonical_path": "/ru/articles/openclaw-setup-windows-github-skills/",
+          "source_pack": "OpenClaw docs/GitHub, Wordstat modifiers, Hermes/OpenClaw comparison notes",
+          "unique_proof": "Hands-on setup table with OS paths, provider options, skills model and known failure modes",
+          "internal_links": ["/topics/openclaw/", "/ru/articles/hermes-agent-vs-openclaw/", "/topics/ai-tools/", "/topics/mcp/"],
+          "faq_questions": ["Chto takoe OpenClaw?", "Kak ustanovit OpenClaw na Windows?", "Chem OpenClaw otlichaetsya ot Hermes Agent?"],
+          "schema_type": "Article",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        },
+        {
+          "slug": "codex-vs-claude-code-dlya-raboty",
+          "target_query_group": "codex vs claude code; codex ili claude code; opus vs gpt coding",
+          "canonical_path": "/ru/articles/codex-vs-claude-code-dlya-raboty/",
+          "source_pack": "Claude Code vs Codex YouTube/Dzen/source pack and daily workflow notes",
+          "unique_proof": "Personal role split story: Claude as fast builder, Codex as deliberate reviewer/executor",
+          "internal_links": ["/topics/codex/", "/topics/claude-code/", "/claude-codex-dual-review/", "/ru/blog/claude-code-vs-codex-perehod/"],
+          "faq_questions": ["Codex luchshe Claude Code?", "Kogda nuzhen dual review?", "Kak sochetat Claude i Codex v odnom workflow?"],
+          "schema_type": "Article",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        },
+        {
+          "slug": "mcp-servery-dlya-claude-code-i-agentov",
+          "target_query_group": "luchshie mcp dlya claude code; mcp servery; agent browser mcp",
+          "canonical_path": "/ru/articles/mcp-servery-dlya-claude-code-i-agentov/",
+          "source_pack": "Claude Code setup, MCP topic, browser/web-scraping workflow and Telegram MCP notes",
+          "unique_proof": "Priority matrix for repo, browser, Telegram, deployment and project-memory MCP servers",
+          "internal_links": ["/topics/mcp/", "/claude-code-nastrojka-mcp-hooks-skills-2026/", "/telegram-mcp-server-kak-sdelat/", "/web-scraping-ai-agents-2026/"],
+          "faq_questions": ["Kakoy MCP server dobavit pervym?", "Nuzhen li MCP dlya web scraping?", "Chem skill otlichaetsya ot MCP?"],
+          "schema_type": "Article",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        },
+        {
+          "slug": "gstack-gbrain-hermes-ai-agent-workflow",
+          "target_query_group": "gstack; gbrain; hermes agent; ai agent workflow",
+          "canonical_path": "/ru/articles/gstack-gbrain-hermes-ai-agent-workflow/",
+          "source_pack": "GStack goal/office-hours notes, GBrain memory notes, Hermes control-plane notes",
+          "unique_proof": "Operator workflow diagram: goal, browser QA, memory retrieval, Telegram control and handoff",
+          "internal_links": ["/topics/gstack/", "/topics/gbrain/", "/topics/hermes-agent/", "/ru/blog/gstack-goal-office-hours-ai-workflow/"],
+          "faq_questions": ["Chto takoe GStack?", "Zachem AI agentu GBrain?", "Kak sdelat restartable agent workflow?"],
+          "schema_type": "Article",
+          "sitemap_eligibility": "index_when_published",
+          "status": "planned"
+        }
+      ]
+    }
+  ]
+}

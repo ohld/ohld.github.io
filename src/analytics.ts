@@ -1,5 +1,6 @@
 /** GA4 + Yandex Metrika event helper. */
 
+import seoExperiments from '../content/seo-experiments.json'
 import { SITE_URL } from './site'
 
 const YM_COUNTER = 46266270
@@ -32,6 +33,14 @@ type RouteContext = {
   pagePath: string
   routeKey: string
   pageLocation: string
+}
+type SeoExperiment = {
+  experiment_id?: string
+  cluster_id?: string
+  language?: string
+  page_type?: string
+  variant?: string
+  started_at?: string
 }
 
 declare global {
@@ -136,6 +145,21 @@ function contentContext(path = location.pathname): EventParams {
   }
 }
 
+const experimentsByPath = seoExperiments as Record<string, SeoExperiment>
+
+function experimentContext(path = location.pathname): EventParams {
+  const experiment = experimentsByPath[normalizePath(path)]
+  if (!experiment) return {}
+  return {
+    experiment_id: experiment.experiment_id,
+    cluster_id: experiment.cluster_id,
+    experiment_language: experiment.language,
+    experiment_page_type: experiment.page_type,
+    experiment_variant: experiment.variant,
+    experiment_started_at: experiment.started_at,
+  }
+}
+
 function linkDomain(url: string) {
   try {
     return new URL(url, location.href).hostname.replace(/^www\./, '')
@@ -150,6 +174,12 @@ function clickId(label: string) {
 
 function isInternalUrl(url: URL) {
   return url.origin === location.origin || ['okhlopkov.com', 'www.okhlopkov.com'].includes(url.hostname)
+}
+
+function isTelegramSubscribeUrl(url: URL) {
+  const hostname = url.hostname.replace(/^www\./, '').toLowerCase()
+  const pathname = url.pathname.replace(/\/+$/, '').toLowerCase()
+  return ['t.me', 'telegram.me'].includes(hostname) && pathname === '/danokhlopkov'
 }
 
 function rememberRouteView(route: RouteContext) {
@@ -181,7 +211,7 @@ function ensurePageViewBeforeEvent(path = `${location.pathname}${location.search
 
 function send(event: string, params?: EventParams) {
   if (event !== 'page_view') ensurePageViewBeforeEvent()
-  const payload = cleanParams({ ...contentContext(), ...params })
+  const payload = cleanParams({ ...contentContext(), ...experimentContext(), ...params })
   if (window.gtag) {
     window.gtag('event', event, payload)
   }
@@ -215,7 +245,10 @@ export function trackRouteView(
 
   if (window.gtag) {
     window.gtag('event', 'page_view', {
-      ...cleanParams(contentContext(route.pagePath)),
+      ...cleanParams({
+        ...contentContext(route.pagePath),
+        ...experimentContext(route.pagePath),
+      }),
       page_path: route.pagePath,
       page_location: route.pageLocation,
       page_title: document.title,
@@ -291,10 +324,12 @@ export function trackDocumentLinkClick(link: HTMLAnchorElement) {
   }
 
   const label = (link.textContent || link.getAttribute('aria-label') || url.pathname).trim().slice(0, 120)
+  const ctaId = link.dataset.ctaId || clickId(label)
   const params = {
     event_category: 'link',
     event_label: label,
     click_text: label,
+    cta_id: ctaId,
     link_url: url.href,
     link_domain: url.hostname.replace(/^www\./, ''),
   }
@@ -304,11 +339,25 @@ export function trackDocumentLinkClick(link: HTMLAnchorElement) {
     const event = link.classList.contains('cta-btn') || link.classList.contains('cta-btn-secondary')
       ? 'article_cta_click'
       : 'article_internal_click'
-    send(event, { ...params, destination, cta_id: clickId(label) })
+    send(event, { ...params, destination })
     return
   }
 
-  const event = link.closest('.blog-article, .generated-blog-body, .mvh-page')
+  if (isTelegramSubscribeUrl(url)) {
+    send('telegram_subscribe_click', {
+      ...params,
+      event_category: 'subscribe',
+      event_label: ctaId,
+    })
+    return
+  }
+
+  const isArticleCta = link.classList.contains('cta-btn')
+    || link.classList.contains('cta-btn-secondary')
+    || link.classList.contains('article-cta-link')
+  const event = isArticleCta
+    ? 'article_cta_click'
+    : link.closest('.blog-article, .generated-blog-body, .mvh-page')
     ? 'source_link_click'
     : 'article_outbound_click'
   send(event, params)

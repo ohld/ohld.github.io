@@ -1,6 +1,6 @@
 {
   "minItemsForIndex": 2,
-  "homeTopicSlugs": ["ai-agents", "claude-code", "codex", "mcp", "gstack", "openclaw", "hermes-agent", "ton-data", "telegram-automation"],
+  "homeTopicSlugs": ["ai-agents", "ai-tools", "claude-code", "codex", "mcp", "web-scraping", "gstack", "openclaw", "hermes-agent", "ton-data", "telegram-automation"],
   "hubs": [
     {
       "slug": "ai-agents",
@@ -51,7 +51,8 @@
       "title": "AI-инструменты",
       "description": "Инструменты для агентного рабочего флоу: что пробовать, что выкидывать, где реальная польза.",
       "aliases": ["ai tools", "dev setup", "productivity"],
-      "articlePaths": ["/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/", "/ai-tools-setup-january-2026/", "/ai-tools-march-2026-honest-review/", "/ai-tools-march-2026-review/", "/ru/articles/ai-tools-for-designers-design-engineering-agents/", "/cn-ai-tools-march-2026/"]
+      "articlePaths": ["/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/", "/claude-code-setup-mcp-hooks-skills-2026/", "/web-scraping-ai-agents-2026/", "/en-best-skills-mcp-claude-code-agent-browser/", "/ai-tools-setup-january-2026/", "/ai-tools-march-2026-honest-review/", "/ai-tools-march-2026-review/", "/ru/articles/hermes-agent-vs-openclaw/", "/ru/articles/ai-tools-for-designers-design-engineering-agents/", "/cn-ai-tools-march-2026/"],
+      "featuredLinks": [{ "href": "/web-scraping-ai-agents-2026/", "label": "AI agents for web scraping", "description": "Практический тест: где агент помогает с API/XHR, Playwright и LLM extraction." }]
     },
     {
       "slug": "second-brain",

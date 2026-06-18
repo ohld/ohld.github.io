@@ -4,6 +4,18 @@ Disallow: /*.md
 Disallow: /llms.txt
 Disallow: /llms-full.txt
 
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+Allow: /
+Allow: /*.md$
+Allow: /*.md
+Allow: /llms.txt
+Allow: /llms-full.txt
+
 User-agent: *
 Allow: /
 Disallow: /*.md$

@@ -2,7 +2,7 @@ import { BackButton } from '../components/BackButton'
 import { Footer } from '../components/Footer'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { openUrl } from '../openUrl'
-import { absoluteUrl } from '../site'
+import { absoluteUrl, socialLinks } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 
 interface Role {
@@ -68,6 +68,28 @@ const experience: Role[] = [
   },
 ]
 
+const profileSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  url: absoluteUrl('/about/'),
+  inLanguage: 'ru',
+  mainEntity: {
+    '@type': 'Person',
+    '@id': `${absoluteUrl('/about/')}#person`,
+    name: 'Даниил Охлопков',
+    alternateName: 'Daniil Okhlopkov',
+    url: absoluteUrl('/about/'),
+    jobTitle: 'Head of Analytics',
+    worksFor: {
+      '@type': 'Organization',
+      name: 'TON Foundation',
+      url: 'https://ton.org/',
+    },
+    sameAs: socialLinks.map((link) => link.url),
+    knowsAbout: ['AI Agents', 'Claude Code', 'Codex', 'MCP', 'TON Analytics', 'Telegram Automation', 'Data Products'],
+  },
+}
+
 export function About() {
   useDocumentMeta({
     title: 'Даниил Охлопков — AI-агенты, TON-аналитика и Telegram',
@@ -78,6 +100,7 @@ export function About() {
       en: absoluteUrl('/en/about/'),
       'x-default': absoluteUrl('/about/'),
     },
+    jsonLd: profileSchema,
   })
   return (
     <div className="page">

@@ -1215,6 +1215,19 @@ button:focus-visible,
   margin-top: 30px;
 }
 
+.article-cta-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 10px 14px;
+  border-radius: 4px;
+  background: var(--text);
+  color: var(--bg) !important;
+  font-weight: 500;
+  text-decoration: none !important;
+}
+
 .article-faq {
   margin-top: 34px;
   padding-top: 22px;

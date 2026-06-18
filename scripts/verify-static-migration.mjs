@@ -603,7 +603,17 @@ async function verifyAnalyticsEventBundle() {
     assert(bundle.includes(eventName), `analytics bundle: missing ${eventName}`)
   }
 
-  for (const paramName of ['content_group', 'article_slug', 'article_topic', 'link_domain', 'scroll_threshold', 'navigation_mode']) {
+  for (const paramName of [
+    'content_group',
+    'article_slug',
+    'article_topic',
+    'link_domain',
+    'scroll_threshold',
+    'navigation_mode',
+    'experiment_id',
+    'cluster_id',
+    'experiment_variant',
+  ]) {
     assert(bundle.includes(paramName), `analytics bundle: missing ${paramName}`)
   }
 
@@ -964,6 +974,11 @@ async function verifyCrawlerFiles() {
   assert(robots.includes('Disallow: /*.md'), '/robots.txt: missing extension-prefix markdown disallow')
   assert(robots.includes('Disallow: /llms.txt'), '/robots.txt: missing Yandex llms.txt disallow')
   assert(robots.includes('Disallow: /llms-full.txt'), '/robots.txt: missing Yandex llms-full.txt disallow')
+  assert(robots.includes('User-agent: OAI-SearchBot'), '/robots.txt: missing OAI-SearchBot markdown allow group')
+  assert(robots.includes('User-agent: GPTBot'), '/robots.txt: missing GPTBot markdown allow group')
+  assert(robots.includes('User-agent: ClaudeBot'), '/robots.txt: missing ClaudeBot markdown allow group')
+  assert(robots.includes('User-agent: PerplexityBot'), '/robots.txt: missing PerplexityBot markdown allow group')
+  assert(robots.includes('Allow: /llms-full.txt'), '/robots.txt: missing AI crawler llms-full allow')
   assert(robots.includes(`Sitemap: ${siteUrl}/sitemap.xml`), '/robots.txt: sitemap host mismatch')
   assert(!/^Disallow:\s*\/\s*$/m.test(robots), '/robots.txt: blocks crawling')
 

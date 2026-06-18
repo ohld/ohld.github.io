@@ -94,7 +94,8 @@ export function EnglishHome() {
           </p>
           <p>
             From there, it is easiest to follow the topic pages: AI agents for
-            practical work, Codex and Claude Code for development, TON data for
+            practical work, AI tools for stack choices, Codex and Claude Code
+            for development, web scraping for data extraction, TON data for
             research, Telegram automation for products and channels, second
             brain systems for personal memory. A useful article here should help
             with a next step: test a hypothesis, build a prototype, tune a
@@ -107,10 +108,20 @@ export function EnglishHome() {
               output and carries a task through to a concrete result.
             </li>
             <li>
+              <a href="/topics/ai-tools/">AI tools</a> — Claude Code, Codex,
+              OpenClaw, Hermes, GBrain, GStack and other tools compared by real
+              work instead of hype.
+            </li>
+            <li>
               <a href="/topics/claude-code/">Claude Code</a> and
               <a href="/topics/codex/"> Codex</a> — skills, MCP, hooks, browser
               smoke checks, diff review and long tasks that need a controlled
               operating loop.
+            </li>
+            <li>
+              <a href="/topics/web-scraping/">Web scraping</a> — API/XHR,
+              Playwright, browser agents, HTML parsing and the line between
+              one-off extraction and production parsers.
             </li>
             <li>
               <a href="/topics/ton-data/">TON data</a> — on-chain analytics,
