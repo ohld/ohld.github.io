@@ -1617,12 +1617,14 @@ if (fs.existsSync(llmsPath)) {
 
 fs.writeFileSync(path.join(dist, 'robots.txt'), `User-agent: Yandex
 Disallow: /*.md$
+Disallow: /*.md
 Disallow: /llms.txt
 Disallow: /llms-full.txt
 
 User-agent: *
 Allow: /
 Disallow: /*.md$
+Disallow: /*.md
 
 # Content usage policy for crawlers that honor Content-Signal.
 Content-Signal: ai-input=yes

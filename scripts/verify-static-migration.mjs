@@ -946,6 +946,7 @@ async function verifyCrawlerFiles() {
   assert(robots.includes('User-agent: *'), '/robots.txt: missing wildcard user-agent')
   assert(robots.includes('Allow: /'), '/robots.txt: missing Allow: /')
   assert(robots.includes('Disallow: /*.md$'), '/robots.txt: missing markdown disallow')
+  assert(robots.includes('Disallow: /*.md'), '/robots.txt: missing extension-prefix markdown disallow')
   assert(robots.includes('Disallow: /llms.txt'), '/robots.txt: missing Yandex llms.txt disallow')
   assert(robots.includes('Disallow: /llms-full.txt'), '/robots.txt: missing Yandex llms-full.txt disallow')
   assert(robots.includes(`Sitemap: ${siteUrl}/sitemap.xml`), '/robots.txt: sitemap host mismatch')
