@@ -1615,7 +1615,12 @@ if (fs.existsSync(llmsPath)) {
   fs.writeFileSync(llmsPath, applySiteUrl(fs.readFileSync(llmsPath, 'utf8')))
 }
 
-fs.writeFileSync(path.join(dist, 'robots.txt'), `User-agent: *
+fs.writeFileSync(path.join(dist, 'robots.txt'), `User-agent: Yandex
+Disallow: /*.md$
+Disallow: /llms.txt
+Disallow: /llms-full.txt
+
+User-agent: *
 Allow: /
 Disallow: /*.md$
 

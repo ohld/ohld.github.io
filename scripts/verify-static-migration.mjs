@@ -942,9 +942,12 @@ async function verifyCrawlerFiles() {
   const robotsRes = await fetchManual('/robots.txt')
   assert(robotsRes.status === 200, `/robots.txt: expected 200, got ${robotsRes.status}`)
   const robots = await robotsRes.text()
+  assert(robots.includes('User-agent: Yandex'), '/robots.txt: missing Yandex user-agent')
   assert(robots.includes('User-agent: *'), '/robots.txt: missing wildcard user-agent')
   assert(robots.includes('Allow: /'), '/robots.txt: missing Allow: /')
   assert(robots.includes('Disallow: /*.md$'), '/robots.txt: missing markdown disallow')
+  assert(robots.includes('Disallow: /llms.txt'), '/robots.txt: missing Yandex llms.txt disallow')
+  assert(robots.includes('Disallow: /llms-full.txt'), '/robots.txt: missing Yandex llms-full.txt disallow')
   assert(robots.includes(`Sitemap: ${siteUrl}/sitemap.xml`), '/robots.txt: sitemap host mismatch')
   assert(!/^Disallow:\s*\/\s*$/m.test(robots), '/robots.txt: blocks crawling')
 
