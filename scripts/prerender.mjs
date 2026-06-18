@@ -92,6 +92,10 @@ function getArticleSeoEnhancement(pathname) {
   return ARTICLE_SEO_ENHANCEMENTS[canonicalPathname(pathname)] || null
 }
 
+function getEnhancedArticleTitle(pathname, fallback = '') {
+  return getArticleSeoEnhancement(pathname)?.title || fallback
+}
+
 function applyArticleSeoEnhancement(pathname, html = '') {
   if (!html || html.includes('data-seo-enhancement=')) return html
   const enhancement = getArticleSeoEnhancement(pathname)
@@ -222,8 +226,8 @@ const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
 
 ![My Claude Code setup](/assets/site/article-fallback.webp)
 
-- [Claude Code /compact: Context Compression, Compaction Prompts, What Survives](/claude-code-compaction-explained/)
-- [My Claude Code Setup: MCP Servers, Hooks, Skills and Agents (2026)](/claude-code-setup-mcp-hooks-skills-2026/)
+- [Claude Code /compact: What It Does, What Survives](/claude-code-compaction-explained/)
+- [Claude Code Setup 2026: MCP Servers, Hooks, Skills](/claude-code-setup-mcp-hooks-skills-2026/)
 - [Web Scraping AI Agents: What Actually Works in 2026](/web-scraping-ai-agents-2026/)
 - [My AI Dev Tools in 2026: What I Actually Use Daily](/ai-tools-setup-january-2026/)
 - [Best Claude Code Skills and MCP Servers for Agent Workflows](/en-best-skills-mcp-claude-code-agent-browser/)
@@ -311,13 +315,15 @@ function loadImportedArticleRows() {
     .filter((article) => !LEGACY_REDIRECT_FROM_PATHS.has(canonicalPathname(article.path)))
     .map((article) => {
       const enhancement = getArticleSeoEnhancement(article.path)
+      const title = getEnhancedArticleTitle(article.path, article.title || '')
       const description = enhancement?.description || article.description || ''
       const bodyHtml = addMissingImageAlts(
         bodyByPath.get(article.path) || '',
-        article.title || description || 'Daniil Okhlopkov article image',
+        title || description || 'Daniil Okhlopkov article image',
       )
       return {
         ...article,
+        title,
         description,
         bodyHtml: applyArticleSeoEnhancement(article.path, bodyHtml),
       }

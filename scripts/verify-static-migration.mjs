@@ -6,6 +6,7 @@ const baseUrl = (process.env.VERIFY_BASE_URL || 'http://127.0.0.1:4174').replace
 const siteUrl = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/, '')
 const importedArticlesPath = process.env.VERIFY_IMPORTED_ARTICLES || 'content/articles/imported-index.json'
 const importedArticleContentPath = process.env.VERIFY_IMPORTED_ARTICLE_CONTENT || 'content/articles/imported-content.json'
+const articleSeoEnhancementsPath = process.env.VERIFY_ARTICLE_SEO_ENHANCEMENTS || 'content/articles/seo-enhancements.json'
 const generatedImportedArticleBodiesPath = process.env.VERIFY_IMPORTED_ARTICLE_BODIES || 'dist/generated/imported-articles'
 const legacyRedirectsPath = process.env.VERIFY_LEGACY_REDIRECTS || 'content/articles/legacy-redirects.json'
 const migrationMapPath = process.env.VERIFY_MIGRATION_MAP || 'migration/url-map.csv'
@@ -311,13 +312,27 @@ const migrationMapStaticPaths = [
 function loadImportedArticles() {
   if (!fs.existsSync(importedArticlesPath)) return []
   const legacyRedirectPaths = new Set(loadLegacyRedirects().map((redirect) => canonicalPathname(redirect.from)))
+  const seoEnhancements = loadArticleSeoEnhancements()
   return JSON.parse(fs.readFileSync(importedArticlesPath, 'utf8'))
     .filter((article) => !legacyRedirectPaths.has(canonicalPathname(article.path)))
+    .map((article) => {
+      const enhancement = seoEnhancements[canonicalPathname(article.path)] || {}
+      return {
+        ...article,
+        title: enhancement.title || article.title,
+        description: enhancement.description || article.description,
+      }
+    })
 }
 
 function loadImportedArticleContent() {
   if (!fs.existsSync(importedArticleContentPath)) return []
   return JSON.parse(fs.readFileSync(importedArticleContentPath, 'utf8'))
+}
+
+function loadArticleSeoEnhancements() {
+  if (!fs.existsSync(articleSeoEnhancementsPath)) return {}
+  return JSON.parse(fs.readFileSync(articleSeoEnhancementsPath, 'utf8'))
 }
 
 function loadLegacyRedirects() {

@@ -1,6 +1,7 @@
 import seoEnhancements from '../content/articles/seo-enhancements.json'
 
 interface ArticleSeoEnhancement {
+  title?: string
   description?: string
   summaryHtml?: string
   relatedHtml?: string
@@ -17,6 +18,10 @@ function canonicalPath(pathname: string) {
 
 export function getArticleSeoEnhancement(pathname: string) {
   return enhancements[canonicalPath(pathname)] || null
+}
+
+export function getEnhancedArticleTitle(pathname: string, fallback: string) {
+  return getArticleSeoEnhancement(pathname)?.title || fallback
 }
 
 export function getEnhancedArticleDescription(pathname: string, fallback: string) {
