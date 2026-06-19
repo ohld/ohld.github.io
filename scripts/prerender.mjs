@@ -1588,10 +1588,35 @@ for (const redirect of LEGACY_REDIRECTS) {
     toSlug: to.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '-') || 'home',
   })
 }
+const INDEXABLE_CANONICALIZING_REDIRECTS = new Set([
+  '/kak-pravilno-pisat-skilly-claude-code-7-oshibok/',
+])
+
+function routeForPath(pathname) {
+  const canonical = canonicalPathname(pathname)
+  return ROUTES.find((route) => canonicalPathname(route.path) === canonical) || null
+}
+
+function alternateTagsForRedirectTarget(targetPath, targetUrl) {
+  const targetRoute = routeForPath(targetPath)
+  const alternates = targetRoute?.alternates || {
+    [targetRoute?.lang || 'ru']: targetUrl,
+    'x-default': targetUrl,
+  }
+  return Object.entries(alternates)
+    .map(([lang, href]) => `  <link rel="alternate" hreflang="${escape(lang)}" href="${escape(href)}" />`)
+    .join('\n')
+}
+
 let redirectCount = 0
 for (const r of REDIRECTS) {
   const targetUrl = `${SITE_URL}${r.to}`
   const redirectDescription = `Legacy okhlopkov.com URL moved to ${targetUrl}.`
+  const sourcePath = canonicalPathname(r.from)
+  const robotsMeta = INDEXABLE_CANONICALIZING_REDIRECTS.has(sourcePath)
+    ? ''
+    : '  <meta name="robots" content="noindex, follow" />\n'
+  const alternateTags = alternateTagsForRedirectTarget(r.to, targetUrl)
   const stub = `<!doctype html>
 <html lang="ru">
 <head>
@@ -1599,8 +1624,7 @@ for (const r of REDIRECTS) {
   <title>Redirecting…</title>
   <meta name="description" content="${escape(redirectDescription)}" />
   <link rel="canonical" href="${targetUrl}" />
-  <meta name="robots" content="noindex, follow" />
-  <meta http-equiv="refresh" content="0; url=${r.to}" />
+${alternateTags ? `${alternateTags}\n` : ''}${robotsMeta}  <meta http-equiv="refresh" content="0; url=${r.to}" />
   <script>window.location.replace(${JSON.stringify(r.to)})</script>
 </head>
 <body>

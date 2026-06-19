@@ -249,6 +249,10 @@ const noindexPages = [
   '/private-channel/',
 ]
 
+const indexableCanonicalizingRedirects = new Set([
+  '/kak-pravilno-pisat-skilly-claude-code-7-oshibok/',
+])
+
 const blogArticleChecks = [
   {
     path: '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
@@ -868,7 +872,11 @@ async function verifyRedirect([from, to, options = {}]) {
   assert(!requireRealRedirects || options.allowStaticFallback, `${from}: expected real permanent redirect to ${to}, got ${res.status}`)
   assert(res.status === 200, `${from}: expected 3xx or static fallback 200, got ${res.status}`)
   const html = await res.text()
-  assert(readMeta(html, 'robots') === 'noindex, follow', `${from}: fallback robots mismatch`)
+  if (indexableCanonicalizingRedirects.has(canonicalPathname(from))) {
+    assert(readMeta(html, 'robots') !== 'noindex, follow', `${from}: canonicalizing fallback should not carry noindex`)
+  } else {
+    assert(readMeta(html, 'robots') === 'noindex, follow', `${from}: fallback robots mismatch`)
+  }
   assert(readMeta(html, 'description'), `${from}: fallback missing description`)
   assert(readMeta(html, 'canonical') === canonicalUrl(to), `${from}: fallback canonical mismatch`)
   assert(html.includes(`url=${to}`), `${from}: fallback refresh target mismatch`)
