@@ -150,6 +150,7 @@ const staticPages = [
     lang: 'ru',
     ogLocale: 'ru_RU',
     hreflangs: ['ru', 'x-default'],
+    updatedAt: '2026-06-19',
   },
   {
     path: '/articles/markdown-vs-html/',
@@ -157,6 +158,7 @@ const staticPages = [
     lang: 'ru',
     ogLocale: 'ru_RU',
     hreflangs: ['ru', 'x-default'],
+    updatedAt: '2026-05-29',
   },
   {
     path: '/privacy/',
@@ -943,6 +945,7 @@ async function verifySitemap(migrationRows) {
       ...generatedBlogPosts.map((post) => [canonicalUrl(generatedBlogPath(post)), post.updatedAt || post.publishedAt || expectedSitemapLastmod]),
       ...generatedSeoArticles.map((article) => [canonicalUrl(generatedArticlePath(article)), article.updatedAt || article.publishedAt || expectedSitemapLastmod]),
       ...loadImportedArticles().map((article) => [canonicalUrl(article.path), article.updatedAt || article.publishedAt || expectedSitemapLastmod]),
+      ...staticPages.filter((page) => page.updatedAt).map((page) => [canonicalUrl(page.path), page.updatedAt]),
     ]
   )
   const expectedLocs = new Set(

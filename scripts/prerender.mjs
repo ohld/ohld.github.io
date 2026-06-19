@@ -1672,6 +1672,15 @@ Sitemap: ${SITE_URL}/sitemap.xml
 `)
 
 // ---- Minimal XML sitemap for Google Search Console ----
+const routeLastmodByLoc = new Map(
+  ROUTES
+    .filter((route) => route.updatedAt)
+    .map((route) => [
+      route.path === '/' ? `${SITE_URL}/` : `${SITE_URL}${route.path}/`,
+      route.updatedAt,
+    ]),
+)
+
 const SITEMAP_URLS = [
   `${SITE_URL}/`,
   `${SITE_URL}/en/`,
@@ -1687,7 +1696,7 @@ const SITEMAP_URLS = [
   `${SITE_URL}/privacy/`,
 ].map((loc) => ({
   loc,
-  lastmod: STATIC_UPDATED_DATE,
+  lastmod: routeLastmodByLoc.get(loc) || STATIC_UPDATED_DATE,
 }))
 
 function addSitemapUrl(pathname, lastmod = STATIC_UPDATED_DATE) {
