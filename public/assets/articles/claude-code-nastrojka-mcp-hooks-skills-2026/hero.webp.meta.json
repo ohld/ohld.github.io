@@ -1,12 +1,34 @@
 {
-  "sourceUrl": "https://file5.aitohumanize.com/file/89defd6f65584dddaaad6d6b5d650ce3.png",
-  "promptSummary": "Hero illustration for Russian article about Claude Code setup in 2026, readable CLAUDE CODE 2026 text with MCP, hooks, and skills notes; no people or logos.",
-  "generatedAt": "2026-06-04",
-  "model": "nano-banana-2",
-  "format": "webp",
-  "quality": 80,
-  "dimensions": {
+  "source": "pinterest-reference-edit",
+  "article_slug": "claude-code-nastrojka-mcp-hooks-skills-2026",
+  "public_article_url": "https://okhlopkov.com/claude-code-nastrojka-mcp-hooks-skills-2026/",
+  "asset_role": "hero",
+  "asset": "/assets/articles/claude-code-nastrojka-mcp-hooks-skills-2026/hero.webp",
+  "pinterest_reference": {
+    "reference_id": "pin:839569555579889461",
+    "pin_url": "https://www.pinterest.com/pin/839569555579889461/",
+    "source_image_url": "https://i.pinimg.com/1200x/04/6f/94/046f947ad91b1647b10827312855d313.jpg",
+    "image_hash": "sha256_16:87fcee18e5fc2063",
+    "source_dimensions": "1200x1449",
+    "original_vibe": "Dark lo-fi collage: central person sitting among many monitors/laptops; original quote-style poster text."
+  },
+  "edit": {
+    "model": "nano-banana-pro-2k",
+    "job_id": "1a84c85d-88d5-4702-aada-625d669956bb",
+    "workflow": "CheapAIAPI async /v1/images/generations reference edit with image input",
+    "prompt_text": "Я ПРОСТО ХОТЕЛ / НАСТРОИТЬ CLAUDE CODE / MCP · hooks · skills · CLAUDE.md",
+    "preservation_rule": "Preserve 95%+ of Pinterest reference; only adapt to 16:9 and replace text.",
+    "generated_source_dimensions": "2752x1536"
+  },
+  "web_asset": {
+    "path": "/assets/articles/claude-code-nastrojka-mcp-hooks-skills-2026/hero.webp",
     "width": 1376,
-    "height": 768
+    "height": 768,
+    "quality": 82,
+    "bytes": 87304
+  },
+  "verified": {
+    "visual_inspection": "Readable text; reference-preserving 16:9 low-fi monitor setup; no blocking artifacts.",
+    "inspected_at": "2026-06-19"
   }
 }
