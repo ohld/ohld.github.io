@@ -255,6 +255,7 @@ const blogArticleChecks = [
     youtubeUrl: 'https://www.youtube.com/watch?v=fIEMOzz0_AI',
     requiredText: [
       'Почему агенты делают AI-slop',
+      'Figma MCP + Claude Code',
       'Промпт, который можно дать агенту',
       'Все статьи',
     ],
@@ -794,7 +795,7 @@ async function verifyBlogArticle({ path, cover, thumbnail, youtubeUrl, requiredT
   assert(/"@type": "(?:BlogPosting|Article)"/.test(html), `${path}: missing article JSON-LD`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assert(html.includes('"@type": "VideoObject"'), `${path}: missing VideoObject JSON-LD`)
-  assert(html.includes('"dateModified": "2026-05-28"'), `${path}: missing article dateModified`)
+  assert(html.includes('"dateModified": "2026-06-19"'), `${path}: missing article dateModified`)
   if (cover) {
     assert(html.includes(cover), `${path}: missing article cover image`)
     assert(html.includes('<meta name="twitter:card" content="summary_large_image"'), `${path}: cover should render large twitter card`)
