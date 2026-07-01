@@ -92,7 +92,7 @@ export function Privacy() {
 
       <div className="info-card">
         <p>
-          Questions about this policy can be sent via Telegram at @danokhlopkov or through
+          Questions about this policy can be sent via Telegram at <a href="https://t.me/+klIZiMe4w30zZTgy" target="_blank" rel="noopener noreferrer">@danokhlopkov</a> or through
           the public contact links on okhlopkov.com.
         </p>
       </div>

@@ -57,8 +57,10 @@ const NAV_LINKS_BY_SHELL_LANG = {
   ],
 }
 
+const TELEGRAM_CHANNEL_URL = 'https://t.me/+klIZiMe4w30zZTgy'
+
 const SOCIAL_LINKS = [
-  ['https://t.me/danokhlopkov', 'Telegram'],
+  [TELEGRAM_CHANNEL_URL, '@danokhlopkov'],
   ['https://youtube.com/@danokhlopkov', 'YouTube'],
   ['https://instagram.com/d7733o', 'Instagram'],
   ['https://x.com/danokhlopkov', 'X'],

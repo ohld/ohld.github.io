@@ -90,7 +90,7 @@
     "description": "Hands-on review of 5 AI tools from March 2026: paperclip task tracker, gstack YC prompts, conductor.build IDE, x402 crypto payments, and agent-browser setup.",
     "lang": "en",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-26",
+    "updatedAt": "2026-07-01",
     "readingTime": "2 min",
     "tags": [
       "Telegram"
@@ -132,7 +132,7 @@
     "description": "How I run an always-on AI agent on a Hetzner VPS. Architecture, Docker setup, Telegram bridge, memory system, and real costs.",
     "lang": "en",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-25",
+    "updatedAt": "2026-07-01",
     "readingTime": "5 min",
     "tags": [
       "Telegram"
@@ -146,7 +146,7 @@
     "description": "How to build a Telegram MCP server for Claude Code with Telethon: tools, auth, session strings, async traps, security boundaries and production workflows.",
     "lang": "en",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-26",
+    "updatedAt": "2026-07-01",
     "readingTime": "8 min",
     "tags": [
       "Telegram"
@@ -491,7 +491,7 @@
     "description": "Is web scraping dead in 2026? Not exactly. Use AI agents to choose API/XHR, Playwright/browser flows or LLM extraction without hallucinated selectors.",
     "lang": "en",
     "publishedAt": "2026-02-11",
-    "updatedAt": "2026-06-05",
+    "updatedAt": "2026-07-01",
     "readingTime": "10 min",
     "tags": [
       "Web Scraping"

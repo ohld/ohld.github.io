@@ -1,8 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { trackClick, trackNav } from '../analytics'
-import { localizedPath, sectionNavLinks, shellLangForPath } from '../site'
-
-const TELEGRAM_DIRECT_URL = 'https://t.me/danokhlopkov?direct'
+import { TELEGRAM_CHANNEL_URL, localizedPath, sectionNavLinks, shellLangForPath } from '../site'
 
 export function SiteHeader() {
   const location = useLocation()
@@ -45,12 +43,12 @@ export function SiteHeader() {
         </nav>
         <a
           className="site-header-cta"
-          href={TELEGRAM_DIRECT_URL}
+          href={TELEGRAM_CHANNEL_URL}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => trackClick('about_header', 'telegram_direct', TELEGRAM_DIRECT_URL)}
+          onClick={() => trackClick('about_header', 'telegram_channel_invite', TELEGRAM_CHANNEL_URL)}
         >
-          {isEnglish ? 'Message me' : 'Написать'}
+          @danokhlopkov
         </a>
       </div>
     </header>

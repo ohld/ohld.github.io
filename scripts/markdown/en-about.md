@@ -32,7 +32,7 @@ $1.5B/year in volume.
 
 ## Links
 
-- Telegram: [@danokhlopkov](https://t.me/danokhlopkov)
+- Telegram: [@danokhlopkov](https://t.me/+klIZiMe4w30zZTgy)
 - X: [@danokhlopkov](https://x.com/danokhlopkov)
 - LinkedIn: https://www.linkedin.com/in/danokhlopkov/
 - GitHub: [@ohld](https://github.com/ohld)

@@ -38,7 +38,7 @@ TechCrunch: https://techcrunch.com/2021/10/20/study-finds-most-big-open-source-s
 
 ## Контакты
 
-- Telegram: [@danokhlopkov](https://t.me/danokhlopkov) (RU)
+- Telegram: [@danokhlopkov](https://t.me/+klIZiMe4w30zZTgy) (RU)
 - X / Twitter: [@danokhlopkov](https://x.com/danokhlopkov) (EN)
 - LinkedIn: https://www.linkedin.com/in/danokhlopkov/
 - GitHub: [@ohld](https://github.com/ohld)

@@ -325,7 +325,7 @@ const ARTICLE_HTML = `
 <p>Финальная мысль автора, которая мне зашла больше всего: реальная причина любви к HTML — это <strong>ощущение, что ты в курсе того, что делает агент</strong>. Когда я перестал читать длинные markdown-планы, у меня появился страх, что я отдал управление и просто доверяю Claude. С HTML я снова в loop'е — потому что артефакт читать действительно интересно.</p>
 
 <div class="mvh-signature">
-  Адаптация: Дан Охлопков (<a href="https://t.me/danokhlopkov" target="_blank" rel="noopener">@danokhlopkov</a>) · 2026-05-09<br>
+  Адаптация: Дан Охлопков (<a href="https://t.me/+klIZiMe4w30zZTgy" target="_blank" rel="noopener">@danokhlopkov</a>) · 2026-05-09<br>
   Оригинал: Tariq, Claude Code team · <a href="https://x.com/trq212/status/2052809885763747935" target="_blank" rel="noopener">x.com/trq212</a>
 </div>
 `

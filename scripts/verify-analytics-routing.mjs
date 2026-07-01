@@ -300,7 +300,7 @@ function assertSharedEventPayload(payload, eventName, expected) {
 
 async function assertHeaderCtaTracking(page) {
   const href = await page.locator('.site-header-cta').first().getAttribute('href')
-  assert(href === 'https://t.me/danokhlopkov?direct', `header CTA href mismatch: ${href}`)
+  assert(href === 'https://t.me/+klIZiMe4w30zZTgy', `header CTA href mismatch: ${href}`)
 
   const popup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
   await page.locator('.site-header-cta').first().click({ noWaitAfter: true })
@@ -311,10 +311,10 @@ async function assertHeaderCtaTracking(page) {
   const calls = await getAnalyticsCalls(page)
   const expected = {
     event_category: 'about_header',
-    event_label: 'telegram_direct',
-    click_text: 'telegram_direct',
-    cta_id: 'telegram_direct',
-    link_url: 'https://t.me/danokhlopkov?direct',
+    event_label: 'telegram_channel_invite',
+    click_text: 'telegram_channel_invite',
+    cta_id: 'telegram_channel_invite',
+    link_url: 'https://t.me/+klIZiMe4w30zZTgy',
     link_domain: 't.me',
   }
   const gaPayload = gaEventPayloads(calls, 'lead_contact_click').at(-1)
@@ -375,7 +375,7 @@ async function assertArticleTelegramSubscribeTracking(context, baseUrl) {
       event_category: 'subscribe',
       event_label: 'telegram_web_scraping_ai_agents',
       cta_id: 'telegram_web_scraping_ai_agents',
-      link_url: 'https://t.me/danokhlopkov?utm_source=okhlopkov.com&utm_medium=article&utm_campaign=web_scraping_ai_agents_2026',
+      link_url: 'https://t.me/+klIZiMe4w30zZTgy',
       link_domain: 't.me',
       experiment_id: 'seo_ctr_web_scraping_ai_agents_2026_06_19',
       cluster_id: 'web_scraping_ai_agents',

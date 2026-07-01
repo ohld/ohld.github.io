@@ -9,9 +9,10 @@ export const SITE_TITLE = 'Даниил Охлопков — AI-агенты, д
 export const SITE_DESCRIPTION = 'Практические разборы AI-агентов, Claude Code, Codex, MCP, TON-аналитики и Telegram-автоматизаций от Даниила Охлопкова.'
 export const SITE_IMAGE = 'https://github.com/ohld.png'
 export const SITE_THUMBNAIL = '/assets/site/article-fallback.webp'
+export const TELEGRAM_CHANNEL_URL = 'https://t.me/+klIZiMe4w30zZTgy'
 
 export const socialLinks = [
-  { label: 'Telegram', url: 'https://t.me/danokhlopkov' },
+  { label: 'Telegram', url: TELEGRAM_CHANNEL_URL },
   { label: 'YouTube', url: 'https://youtube.com/@danokhlopkov' },
   { label: 'Instagram', url: 'https://instagram.com/d7733o' },
   { label: 'X', url: 'https://x.com/danokhlopkov' },

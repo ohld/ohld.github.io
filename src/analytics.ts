@@ -179,7 +179,8 @@ function isInternalUrl(url: URL) {
 function isTelegramSubscribeUrl(url: URL) {
   const hostname = url.hostname.replace(/^www\./, '').toLowerCase()
   const pathname = url.pathname.replace(/\/+$/, '').toLowerCase()
-  return ['t.me', 'telegram.me'].includes(hostname) && pathname === '/danokhlopkov'
+  return ['t.me', 'telegram.me'].includes(hostname)
+    && (pathname === '/danokhlopkov' || pathname.startsWith('/+'))
 }
 
 function rememberRouteView(route: RouteContext) {
