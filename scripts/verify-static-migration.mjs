@@ -288,6 +288,8 @@ const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
     ? ['Короткий ответ', '7 ошибок', 'Skill pack', 'FAQ']
     : article.slug === 'gde-deshevle-kupit-telegram-stars'
     ? ['Короткий ответ', 'Где дешевле купить Telegram Stars', 'StarsZakupBot', 'FAQ']
+    : article.slug === 'ai-agent-v-telegram-rabochiy-interfeis'
+    ? ['Бот против рабочего интерфейса', 'Архитектура нормального Telegram-агента', 'Day-30 тест', 'Минимальный чеклист запуска']
     : article.lang === 'en'
     ? ['Quick answer', 'The wrong way to choose', 'Read next']
     : ['Суть пайплайна', 'SEO-теги', 'Источники'],
@@ -832,7 +834,7 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)
   assert(!html.includes('>Коротко<'), `${path}: leaked generic summary heading`)
   assert(!html.includes('Эта страница не про'), `${path}: leaked AI-tell contrast construction`)
-  assert(/"dateModified": "2026-(05-(25|26|27|31)|06-(01|06))"/.test(html), `${path}: missing generated post dateModified`)
+  assert(/"dateModified": "2026-(05-(25|26|27|31)|06-(01|06)|07-07)"/.test(html), `${path}: missing generated post dateModified`)
   assert(html.includes('/blog/'), `${path}: missing internal blog links`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   for (const text of requiredText) {
@@ -852,7 +854,7 @@ async function verifyGeneratedSeoArticle({ path, requiredText }) {
   assert(!html.includes('/blog/hermes-agent-vs-openclaw/'), `${path}: should not link to old Blog URL`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   assert(html.includes('/blog/'), `${path}: missing related blog links`)
-  assert(/"dateModified": "2026-(05-(25|26|27|28)|06-(02|03|06))"/.test(html), `${path}: missing generated article dateModified`)
+  assert(/"dateModified": "2026-(05-(25|26|27|28)|06-(02|03|06)|07-07)"/.test(html), `${path}: missing generated article dateModified`)
   for (const text of requiredText) {
     assert(html.includes(text), `${path}: missing required text "${text}"`)
   }

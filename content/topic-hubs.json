@@ -8,7 +8,7 @@
       "title": "AI-агенты",
       "description": "Практические материалы про агентные флоу, Claude Code, Codex, skills, ревью и рабочий контекст.",
       "aliases": ["ai agents", "agents", "ai coding", "ai"],
-      "articlePaths": ["/ru/blog/ai-agents-s-chego-nachat/", "/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/", "/ru/articles/hermes-agent-vs-openclaw/", "/claude-code-nastrojka-mcp-hooks-skills-2026/", "/claude-codex-dual-review/", "/web-scraping-ai-agents-2026/", "/21-question-ai-agent/", "/21-questions-ai-agent-knowledge-gaps/"],
+      "articlePaths": ["/ru/blog/ai-agents-s-chego-nachat/", "/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/", "/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/", "/ru/articles/hermes-agent-vs-openclaw/", "/claude-code-nastrojka-mcp-hooks-skills-2026/", "/claude-codex-dual-review/", "/web-scraping-ai-agents-2026/", "/21-question-ai-agent/", "/21-questions-ai-agent-knowledge-gaps/"],
       "featuredLinks": [{ "href": "/web-scraping-ai-agents-2026/", "label": "AI agents for web scraping", "description": "Когда агенту хватит API/XHR, а когда нужен Playwright или browser agent." }]
     },
     {
@@ -34,7 +34,7 @@
       "title": "MCP",
       "description": "MCP-серверы, agent-browser, Telegram/Coolify интеграции и практическое расширение агентных инструментов.",
       "aliases": ["mcp"],
-      "articlePaths": ["/luchshie-skills-mcp-claude-code-agent-browser/", "/en-best-skills-mcp-claude-code-agent-browser/", "/telegram-mcp-server-kak-sdelat/", "/telegram-mcp-server-guide/", "/claude-code-nastrojka-mcp-hooks-skills-2026/"],
+      "articlePaths": ["/luchshie-skills-mcp-claude-code-agent-browser/", "/en-best-skills-mcp-claude-code-agent-browser/", "/telegram-mcp-server-kak-sdelat/", "/telegram-mcp-server-guide/", "/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/", "/claude-code-nastrojka-mcp-hooks-skills-2026/"],
       "featuredLinks": [{ "href": "/web-scraping-ai-agents-2026/", "label": "AI agents for web scraping", "description": "Где agent-browser помогает, а где лучше оставить прямой JSON/API слой." }]
     },
     {
@@ -85,7 +85,7 @@
       "title": "Telegram-автоматизация",
       "description": "Telegram bots, Mini Apps, voice workflows, AI-агенты в чатах и автоматизация через Telegram.",
       "aliases": ["telegram", "telegram automation", "telegram mini apps", "telegram stars"],
-      "articlePaths": ["/ru/blog/vibecoding-telegram-mini-app-claude-code/", "/telegram-mini-app-llms-txt-claude-code-stream/", "/telegram-mcp-server-kak-sdelat/", "/telegram-mcp-server-guide/", "/183-ai-bots-telegram-research/", "/183-ai-bots-telegram-44m-users/", "/en-telegram-ads-61k-search-queries-analysis/", "/how-to-get-a-telegram-channel-subscribers-list-in-python/"],
+      "articlePaths": ["/ru/blog/vibecoding-telegram-mini-app-claude-code/", "/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/", "/telegram-mini-app-llms-txt-claude-code-stream/", "/telegram-mcp-server-kak-sdelat/", "/telegram-mcp-server-guide/", "/183-ai-bots-telegram-research/", "/183-ai-bots-telegram-44m-users/", "/en-telegram-ads-61k-search-queries-analysis/", "/how-to-get-a-telegram-channel-subscribers-list-in-python/"],
       "featuredLinks": [{ "href": "/web-scraping-ai-agents-2026/", "label": "browser agents for data extraction", "description": "Что делать, когда Telegram-задача упирается в данные с внешнего сайта." }]
     },
     {
@@ -121,6 +121,6 @@
     { "slug": "workflow", "label": "Workflow", "title": "Workflow", "description": "Agent workflows: setup, context, review loops, progress artifacts and daily usage.", "aliases": ["workflow", "setup", "context", "review"] },
     { "slug": "community", "label": "Community", "title": "Community", "description": "Telegram-чаты, обсуждения, community insights and the feedback loop around AI-agent content.", "aliases": ["community"] },
     { "slug": "openclaw", "label": "OpenClaw", "title": "OpenClaw", "description": "Заготовка под OpenClaw hub: practical setup, Codex/Hermes сравнения и skills flow.", "aliases": ["openclaw"], "articlePaths": ["/ru/articles/hermes-agent-vs-openclaw/", "/legalnyj-ai-setup-claude-codex-crontab/"] },
-    { "slug": "hermes-agent", "label": "Hermes Agent", "title": "Hermes Agent", "description": "Hermes Agent, Telegram/VPS, skills, memory и self-hosted personal AI workflows.", "aliases": ["hermes agent", "hermes"], "articlePaths": ["/ru/articles/hermes-agent-vs-openclaw/", "/ai-agent-na-servere-24-7/", "/always-on-ai-agent-server-setup/"] }
+    { "slug": "hermes-agent", "label": "Hermes Agent", "title": "Hermes Agent", "description": "Hermes Agent, Telegram/VPS, skills, memory и self-hosted personal AI workflows.", "aliases": ["hermes agent", "hermes"], "articlePaths": ["/ru/articles/hermes-agent-vs-openclaw/", "/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/", "/ai-agent-na-servere-24-7/", "/always-on-ai-agent-server-setup/"] }
   ]
 }
