@@ -6,8 +6,8 @@ publishedAt: 2026-05-14
 updatedAt: 2026-07-07
 readingTime: 15 мин
 tags: Claude Code, Codex, Cursor, AI Coding
-coverImage: /assets/blog/claude-code-vs-codex-perehod/telegram-cover.webp
-coverAlt: Скриншот из Telegram-поста про переход с Claude Code на Codex
+coverImage: /assets/blog/claude-code-vs-codex-perehod/claude-codex-terminal-cover-20260707.webp
+coverAlt: Мем-обложка в стиле terminal loop: Claude Code или Codex — выбирай флоу, не модель
 sourceTelegramId: 1676
 primaryKeyword: claude code или codex
 secondaryKeywords: codex vs claude code; openai codex; codex cli; claude code vs cursor; vibe coding; агентная разработка; ai coding agent comparison; claude code skills; codex subagents

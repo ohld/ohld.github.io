@@ -1,0 +1,31 @@
+{
+  "source": "pinterest-reference-edit",
+  "workflow": "Pinterest content-ideas board → CheapAIAPI/Nano Banana reference-edit → ffmpeg WebP 1280x720",
+  "model": "nano-banana-pro-2k",
+  "preservation_rule": "Preserve 95%+ of Pinterest reference; only adapt to 16:9 and replace text through neural edit, no local text overlay.",
+  "created_at": "2026-07-07",
+  "article_slug": "claude-code-vs-codex-perehod",
+  "article_url": "https://okhlopkov.com/ru/blog/claude-code-vs-codex-perehod/",
+  "web_asset": {
+    "path": "/assets/blog/claude-code-vs-codex-perehod/claude-codex-terminal-cover-20260707.webp",
+    "width": 1280,
+    "height": 720,
+    "sha256_16": "f600ad3684a4819b",
+    "bytes": 150628
+  },
+  "pinterest_reference": {
+    "reference_id": "pin:839569555579709589",
+    "pin_url": "https://www.pinterest.com/pin/839569555579709589/",
+    "source_image_url": "https://i.pinimg.com/1200x/e2/7d/54/e27d54c5db1ba81944181218aa60dfc6.jpg",
+    "reference_sha256_16": "34d18dce0222fc99"
+  },
+  "generation": {
+    "job_id": "ab8281bb-af2a-4267-b8df-644dc77e74c2",
+    "model": "nano-banana-pro-2k",
+    "target_text": [
+      "CLAUDE CODE ИЛИ CODEX",
+      "ВЫБИРАЙ ФЛОУ, НЕ МОДЕЛЬ"
+    ]
+  },
+  "visual_inspection": "Pass: 16:9, readable/correct text, terminal-loop reference preserved, no extra objects."
+}

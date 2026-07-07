@@ -68,8 +68,8 @@ const generatedBlogPostMeta: GeneratedPostMeta[] = [
     lang: 'ru',
     readingTime: '15 мин',
     tags: ['Claude Code', 'Codex', 'AI Coding'],
-    coverImage: '/assets/blog/claude-code-vs-codex-perehod/telegram-cover.webp',
-    coverAlt: 'Скриншот из Telegram-поста про переход с Claude Code на Codex',
+    coverImage: '/assets/blog/claude-code-vs-codex-perehod/claude-codex-terminal-cover-20260707.webp',
+    coverAlt: 'Мем-обложка в стиле terminal loop: Claude Code или Codex — выбирай флоу, не модель',
   },
   {
     slug: 'gstack-goal-office-hours-ai-workflow',
@@ -156,6 +156,8 @@ const generatedArticlePostMeta: GeneratedPostMeta[] = [
     lang: 'ru',
     readingTime: '13 мин',
     tags: ['AI Agents', 'Telegram Automation', 'Hermes Agent', 'MCP', 'GBrain'],
+    coverImage: '/assets/articles/ai-agent-v-telegram-rabochiy-interfeis/telegram-agent-terminal-cover-20260707.webp',
+    coverAlt: 'Мем-обложка в стиле browser terminal: бот ждёт, агент делает',
   },
   {
     slug: 'hermes-agent-vs-openclaw',

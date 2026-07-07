@@ -1,0 +1,31 @@
+{
+  "source": "pinterest-reference-edit",
+  "workflow": "Pinterest content-ideas board → CheapAIAPI/Nano Banana reference-edit → ffmpeg WebP 1280x720",
+  "model": "nano-banana-pro-2k",
+  "preservation_rule": "Preserve 95%+ of Pinterest reference; only adapt to 16:9 and replace text through neural edit, no local text overlay.",
+  "created_at": "2026-07-07",
+  "article_slug": "ai-agent-v-telegram-rabochiy-interfeis",
+  "article_url": "https://okhlopkov.com/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/",
+  "web_asset": {
+    "path": "/assets/articles/ai-agent-v-telegram-rabochiy-interfeis/telegram-agent-terminal-cover-20260707.webp",
+    "width": 1280,
+    "height": 720,
+    "sha256_16": "d58462e0728e9df2",
+    "bytes": 29532
+  },
+  "pinterest_reference": {
+    "reference_id": "pin:839569555579668645",
+    "pin_url": "https://www.pinterest.com/pin/839569555579668645/",
+    "source_image_url": "https://i.pinimg.com/1200x/ea/da/b0/eadab05a7fa7880144020779bb30b9b1.jpg",
+    "reference_sha256_16": "a41a21f98d8ea78f"
+  },
+  "generation": {
+    "job_id": "e384fba4-6ec7-4fa2-b74c-6f2114689ba5",
+    "model": "nano-banana-pro-2k",
+    "target_text": [
+      "БОТ ЖДЁТ?",
+      "АГЕНТ ДЕЛАЕТ"
+    ]
+  },
+  "visual_inspection": "Pass: 16:9, readable/correct text, browser/terminal screen-photo reference preserved, no generic dashboard restyle."
+}

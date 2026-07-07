@@ -7,6 +7,8 @@ publishedAt: 2026-07-07
 updatedAt: 2026-07-07
 readingTime: 13 мин
 tags: AI Agents, Telegram Automation, Hermes Agent, MCP, GBrain
+coverImage: /assets/articles/ai-agent-v-telegram-rabochiy-interfeis/telegram-agent-terminal-cover-20260707.webp
+coverAlt: Мем-обложка в стиле browser terminal: бот ждёт, агент делает
 sourceTelegramId: 0
 primaryKeyword: ai агент в telegram
 secondaryKeywords: ии агент в телеграм; telegram ai agent; telegram бот с ai; ai агент с памятью; hermes agent telegram; mcp telegram агент; персональный ai агент; агентный интерфейс
