@@ -8,12 +8,12 @@
     "started_at": "2026-06-18"
   },
   "/claude-code-compaction-explained/": {
-    "experiment_id": "seo_ctr_claude_code_en_2026_06_18",
-    "cluster_id": "claude_code",
+    "experiment_id": "seo_ctr_claude_compaction_direct_answers_2026_07_17",
+    "cluster_id": "claude_code_compaction",
     "language": "en",
     "page_type": "legacy_article",
-    "variant": "title_meta_compact_answer_table_v1",
-    "started_at": "2026-06-18"
+    "variant": "first_screen_three_direct_answers_v2",
+    "started_at": "2026-07-17"
   },
   "/web-scraping-ai-agents-2026/": {
     "experiment_id": "seo_ctr_web_scraping_ai_agents_2026_06_19",
@@ -22,5 +22,21 @@
     "page_type": "legacy_article",
     "variant": "title_meta_stack_answer_faq_related_cta_v1",
     "started_at": "2026-06-19"
+  },
+  "/how-to-watch-telegram-stories-from-python/": {
+    "experiment_id": "seo_intent_telegram_stories_disambiguation_2026_07_17",
+    "cluster_id": "telegram_stories_python",
+    "language": "en",
+    "page_type": "legacy_article",
+    "variant": "anonymous_viewer_disambiguation_v1",
+    "started_at": "2026-07-17"
+  },
+  "/ru/blog/ai-agents-s-chego-nachat/": {
+    "experiment_id": "seo_recrawl_ai_agents_start_internal_link_2026_07_17",
+    "cluster_id": "ai_agents_start_ru",
+    "language": "ru",
+    "page_type": "blog_post",
+    "variant": "contextual_inbound_link_recrawl_v1",
+    "started_at": "2026-07-17"
   }
 }
