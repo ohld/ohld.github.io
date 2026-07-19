@@ -290,6 +290,8 @@ const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
     ? ['Короткий ответ', 'Где дешевле купить Telegram Stars', 'StarsZakupBot', 'FAQ']
     : article.slug === 'ai-agent-v-telegram-rabochiy-interfeis'
     ? ['Бот против рабочего интерфейса', 'Архитектура нормального Telegram-агента', 'Day-30 тест', 'Минимальный чеклист запуска']
+    : article.slug === 'telegram-bot-api-vs-mtproto-methods'
+    ? ['Quick answer', 'The method matrix', 'Decision guide', 'Frequently asked questions']
     : article.lang === 'en'
     ? ['Quick answer', 'The wrong way to choose', 'Read next']
     : ['Суть пайплайна', 'SEO-теги', 'Источники'],
@@ -854,7 +856,7 @@ async function verifyGeneratedSeoArticle({ path, requiredText }) {
   assert(!html.includes('/blog/hermes-agent-vs-openclaw/'), `${path}: should not link to old Blog URL`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   assert(html.includes('/blog/'), `${path}: missing related blog links`)
-  assert(/"dateModified": "2026-(05-(25|26|27|28)|06-(02|03|06)|07-(07|17))"/.test(html), `${path}: missing generated article dateModified`)
+  assert(/"dateModified": "2026-(05-(25|26|27|28)|06-(02|03|06)|07-(07|17|19))"/.test(html), `${path}: missing generated article dateModified`)
   for (const text of requiredText) {
     assert(html.includes(text), `${path}: missing required text "${text}"`)
   }

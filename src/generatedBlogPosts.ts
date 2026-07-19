@@ -11,6 +11,7 @@ import claudeCodeSkillsArticle from '../content/seo-articles/kak-pravilno-pisat-
 import hermesVsOpenClawArticle from '../content/seo-articles/hermes-agent-vs-openclaw.md?raw'
 import telegramAgentInterfaceArticle from '../content/seo-articles/ai-agent-v-telegram-rabochiy-interfeis.md?raw'
 import telegramStarsArticle from '../content/seo-articles/gde-deshevle-kupit-telegram-stars.md?raw'
+import telegramBotMtprotoArticle from '../content/seo-articles/telegram-bot-api-vs-mtproto-methods.md?raw'
 
 interface BlogListItem {
   path: string
@@ -55,6 +56,7 @@ const sources = [
 ]
 
 const articleSources = [
+  telegramBotMtprotoArticle,
   aiReelsSeoPipelineArticle,
   claudeCodeSkillsArticle,
   hermesVsOpenClawArticle,

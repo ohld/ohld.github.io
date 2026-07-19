@@ -123,6 +123,18 @@ const generatedBlogPostMeta: GeneratedPostMeta[] = [
 
 const generatedArticlePostMeta: GeneratedPostMeta[] = [
   {
+    slug: 'telegram-bot-api-vs-mtproto-methods',
+    title: 'Telegram Bot API vs MTProto: Methods Available to Bots',
+    description: 'Which MTProto methods can Telegram bots call? A production-tested Bot API comparison with bot-token methods, user-only limits, and Telethon examples.',
+    publishedAt: '2026-07-19',
+    updatedAt: '2026-07-19',
+    lang: 'en',
+    readingTime: '8 min',
+    tags: ['Telegram', 'Telegram Bot API', 'MTProto', 'Telethon', 'Python'],
+    coverImage: '/assets/articles/telegram-bot-api-vs-mtproto-methods/telegram-bot-api-mtproto-cover.webp',
+    coverAlt: 'Telegram Bot API versus MTProto cover showing that the Bot API is not the limit',
+  },
+  {
     slug: 'ai-reels-seo-pipeline-telegram-claude-code',
     title: 'AI-рилзы для SEO: как собрать video pipeline из Telegram-трендов',
     description: 'Пайплайн AI-рилзов для SEO: Telegram/X трендвотчинг, быстрые видео-эксперименты, метрики saves/shares и превращение победителей в evergreen-страницы.',

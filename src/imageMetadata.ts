@@ -4,6 +4,7 @@ interface ImageDimensions {
 }
 
 const IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
+  '/assets/articles/telegram-bot-api-vs-mtproto-methods/telegram-bot-api-mtproto-cover.webp': { width: 1280, height: 720 },
   '/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/raw-source-pack-meme.webp': { width: 736, height: 808 },
   '/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/reels-seo-cover.webp': { width: 1280, height: 720 },
   '/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/shadow-account-meme.webp': { width: 736, height: 808 },

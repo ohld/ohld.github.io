@@ -164,6 +164,32 @@
           "status": "planned"
         }
       ]
+    },
+    {
+      "cluster_id": "telegram_bot_mtproto",
+      "title": "Telegram Bot API and MTProto engineering",
+      "language": "en",
+      "status": "active",
+      "hub_path": "/topics/telegram-automation/",
+      "measurement": {
+        "primary_metric": "GSC impressions and CTR for Bot API vs MTProto queries",
+        "secondary_metric": "GA4 article_internal_click and telegram_subscribe_click",
+        "first_review_after_publish_days": 14
+      },
+      "candidates": [
+        {
+          "slug": "telegram-bot-api-vs-mtproto-methods",
+          "target_query_group": "telegram bot api vs mtproto; telegram bot mtproto methods; telethon bot token",
+          "canonical_path": "/en/articles/telegram-bot-api-vs-mtproto-methods/",
+          "source_pack": "OHLDBot production code, live read-only bot-session probes, Telethon 1.44 source and Telegram method documentation",
+          "unique_proof": "Method-by-method evidence labels plus production participant/profile flow and a live known-message-ID probe",
+          "internal_links": ["/topics/telegram-automation/", "/how-to-get-a-telegram-channel-subscribers-list-in-python/", "/how-to-watch-telegram-stories-from-python/"],
+          "faq_questions": ["Can a Telegram bot use MTProto?", "Can a bot read Telegram chat history through MTProto?", "Is there an MTProto method called getMessageById?"],
+          "schema_type": "Article",
+          "sitemap_eligibility": "index_when_published",
+          "status": "published"
+        }
+      ]
     }
   ]
 }

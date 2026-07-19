@@ -1,0 +1,39 @@
+{
+  "source": "pinterest-reference-edit",
+  "workflow": "Pinterest content-ideas cached board index and GBrain usage ledger → CheapAIAPI/Nano Banana reference-edit → ffmpeg WebP 1280x720",
+  "model": "nano-banana-pro-2k",
+  "generation_job_id": "d4125999-9863-46c1-b950-39cd95248cd0",
+  "generated_at": "2026-07-19T20:18:00Z",
+  "article_slug": "telegram-bot-api-vs-mtproto-methods",
+  "public_article_url": "https://okhlopkov.com/en/articles/telegram-bot-api-vs-mtproto-methods/",
+  "asset_role": "hero",
+  "asset": {
+    "path": "/assets/articles/telegram-bot-api-vs-mtproto-methods/telegram-bot-api-mtproto-cover.webp",
+    "width": 1280,
+    "height": 720,
+    "format": "webp",
+    "bytes": 122422,
+    "sha256": "44db5ca5a5c0102a088bc6da83608cbbef363f31b149ea2a1a5b43294f9eab85"
+  },
+  "pinterest_reference": {
+    "reference_id": "pin:839569555579668440",
+    "pin_url": "https://ru.pinterest.com/pin/839569555579668440/",
+    "source_image_url": "https://i.pinimg.com/originals/de/a9/c0/dea9c029b082f8907116751c06b7cf1d.jpg",
+    "reference_image_hash": "urlsha256:cf4032ce2ba6e252",
+    "reference_local_sha256": "6c1caad9d8a0ca3d114d60134beb8443e090560a5b303a62fd10be0c108b6c16",
+    "status_before_use": "indexed; no match in site sidecars or GBrain used/avoid ledger"
+  },
+  "target_text": [
+    "MORE METHODS",
+    "STILL A BOT",
+    "BOT API → MTProto"
+  ],
+  "edit_summary": "Preserved the green surveillance/HUD reference and changed its interface labels inside the neural reference-edit step. The first subagent variant used an overbroad UNLOCKED label; the accepted iteration replaced it with the article-accurate MORE METHODS / STILL A BOT hook.",
+  "verification": {
+    "dimensions": "passed: 1280x720",
+    "ocr_engine_2": "passed: MORE METHODS / STILL A BOT / BOT API → MTProto",
+    "fresh_reference_check": "passed",
+    "manual_text_overlay": false,
+    "vision_tool": "unavailable in this runtime; OCR and structural metadata used"
+  }
+}
