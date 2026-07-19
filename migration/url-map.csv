@@ -142,6 +142,7 @@
 "","","new_static_page","https://okhlopkov.com/ru/articles/ai-tools-for-designers-design-engineering-agents/","/ru/articles/ai-tools-for-designers-design-engineering-agents/","200","index, follow","ru","","static_app_route","First YouTube-derived article with component examples"
 "","","new_static_page","https://okhlopkov.com/articles/markdown-vs-html/","/articles/markdown-vs-html/","200","index, follow","ru","","static_app_route","Existing static article route moved under Articles"
 "","","new_static_page","https://okhlopkov.com/archive/","/archive/","200","index, follow","ru","","static_app_route","Full material archive grouped by language, topic and year"
+"","","new_static_page","https://okhlopkov.com/telegram-map/","/telegram-map/","200","index, follow","ru","","static_app_route","Interactive semantic map of public Telegram posts"
 "","","new_static_page","https://okhlopkov.com/privacy/","/privacy/","200","index, follow","en","","static_app_route","Privacy policy for Pinterest app review and site data practices"
 "","","new_static_page","https://okhlopkov.com/topics/ai-agents/","/topics/ai-agents/","200","index, follow","ru","","static_app_route","Topic collection for AI-агенты"
 "","","new_static_page","https://okhlopkov.com/topics/claude-code/","/topics/claude-code/","200","index, follow","ru","","static_app_route","Topic collection for Claude Code"

@@ -272,6 +272,7 @@ const newStaticPages = [
   ['/ru/articles/ai-tools-for-designers-design-engineering-agents/', 'new_static_page', 'ru', 'First YouTube-derived article with component examples'],
   ['/articles/markdown-vs-html/', 'new_static_page', 'ru', 'Existing static article route moved under Articles'],
   ['/archive/', 'new_static_page', 'ru', 'Full material archive grouped by language, topic and year'],
+  ['/telegram-map/', 'new_static_page', 'ru', 'Interactive semantic map of public Telegram posts'],
   ['/privacy/', 'new_static_page', 'en', 'Privacy policy for Pinterest app review and site data practices'],
   ...topicStaticPages,
 ]
