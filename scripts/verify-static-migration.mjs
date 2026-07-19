@@ -174,6 +174,13 @@ const staticPages = [
     ogLocale: 'ru_RU',
     hreflangs: ['ru', 'x-default'],
   },
+  {
+    path: '/telegram-map/',
+    title: 'Смысловая карта Telegram — Даниил Охлопков',
+    lang: 'ru',
+    ogLocale: 'ru_RU',
+    hreflangs: ['ru', 'x-default'],
+  },
   ...topicPages.map(({ path, title, robots }) => ({
     path,
     title,
@@ -314,6 +321,7 @@ const migrationMapStaticPaths = [
   '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
   '/archive/',
+  '/telegram-map/',
   ...topicPages.map((topic) => topic.path),
   '/privacy/',
   ...generatedBlogPosts.map((post) => generatedBlogPath(post)),

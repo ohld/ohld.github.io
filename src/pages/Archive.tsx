@@ -103,6 +103,9 @@ export function Archive() {
       </div>
 
       <main className="blog-article" aria-label="Архив материалов">
+        <p>
+          <a href="/telegram-map/">Открыть смысловую карту 1 500+ постов Telegram →</a>
+        </p>
         {groups.map((langGroup) => (
           <section key={langGroup.lang}>
             <h2>{langLabels[langGroup.lang]}</h2>

@@ -729,6 +729,8 @@ function archiveMarkdown() {
 
   return `Полная карта сайта: язык, тема, год. Без промо, просто быстрые входы в тексты.
 
+[Открыть смысловую карту 1 500+ постов Telegram →](/telegram-map/)
+
 ${sections.join('\n\n')}`
 }
 
@@ -799,6 +801,23 @@ ROUTES.push({
   },
   kind: 'archive-page',
   markdown: archiveMarkdown(),
+})
+
+ROUTES.push({
+  path: '/telegram-map',
+  slug: 'telegram-map',
+  title: 'Смысловая карта Telegram — Даниил Охлопков',
+  description: 'Интерактивная карта 1 500+ постов @danokhlopkov: темы, поиск и похожие публикации за шесть лет.',
+  lang: 'ru',
+  alternates: {
+    ru: `${SITE_URL}/telegram-map/`,
+    'x-default': `${SITE_URL}/telegram-map/`,
+  },
+  markdown: `# Смысловая карта Telegram
+
+Все тексты [@danokhlopkov](https://t.me/danokhlopkov) разложены по смыслу. Ищите тему, выбирайте точку и переходите к похожим постам.
+
+Для интерактивной карты нужен JavaScript.`,
 })
 
 function escape(s) {
@@ -1717,6 +1736,7 @@ const SITEMAP_URLS = [
   `${SITE_URL}/ru/articles/`,
   `${SITE_URL}/en/articles/`,
   `${SITE_URL}/archive/`,
+  `${SITE_URL}/telegram-map/`,
   `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`,
   `${SITE_URL}/articles/markdown-vs-html/`,
   `${SITE_URL}/privacy/`,
