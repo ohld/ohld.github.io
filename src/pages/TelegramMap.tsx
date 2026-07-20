@@ -42,6 +42,7 @@ type RadiusScale = { low: number; high: number; minRadius: number; maxRadius: nu
 type CareerRole = { company: string; role: string; start: number; end: number }
 type TopicWindowStat = AtlasTopic & { count: number; share: number }
 type TopicPopularityStat = AtlasTopic & { share: number; weight: number }
+type PointSprite = { canvas: HTMLCanvasElement; width: number; height: number }
 
 const DATA_URL = '/data/telegram-atlas.json'
 const TELEGRAM_CHANNEL = 'danokhlopkov'
@@ -49,6 +50,7 @@ const LABEL_GRID_SIZE = 8
 const PLAYBACK_WINDOW_MONTHS = 6
 const PLAYBACK_DURATION_MS = 28_000
 const PLAYBACK_FRAME_INTERVAL_MS = 70
+const MAX_CANVAS_DPR = 1.5
 const dateFormatter = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })
 const monthFormatter = new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' })
 const numberFormatter = new Intl.NumberFormat('ru-RU', { notation: 'compact', maximumFractionDigits: 1 })
@@ -105,6 +107,19 @@ function colorWithAlpha(color: string, alpha: number) {
   const green = Number.parseInt(value.slice(2, 4), 16)
   const blue = Number.parseInt(value.slice(4, 6), 16)
   return `rgba(${red}, ${green}, ${blue}, ${alpha})`
+}
+
+function atlasBackgroundColor(x: number, y: number, width: number, height: number) {
+  const centerX = width * 0.52
+  const centerY = height * 0.46
+  const innerRadius = Math.min(width, height) * 0.05
+  const outerRadius = Math.max(width, height) * 0.7
+  const position = Math.max(0, Math.min(1, (Math.hypot(x - centerX, y - centerY) - innerRadius) / Math.max(1, outerRadius - innerRadius)))
+  const start = position <= 0.55 ? [18, 26, 36] : [13, 18, 25]
+  const end = position <= 0.55 ? [13, 18, 25] : [8, 9, 12]
+  const progress = position <= 0.55 ? position / 0.55 : (position - 0.55) / 0.45
+  const channels = start.map((channel, index) => Math.round(channel + (end[index] - channel) * progress))
+  return `rgb(${channels[0]}, ${channels[1]}, ${channels[2]})`
 }
 
 function telegramPostDeepLink(postId: number) {
@@ -164,10 +179,13 @@ function AtlasCanvas({
   onSelect: (id: number) => void
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const backgroundCanvasRef = useRef<HTMLCanvasElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const viewRef = useRef<View>({ scale: 1, x: 0, y: 0 })
   const pointersRef = useRef(new Map<number, { originX: number; originY: number; x: number; y: number; moved: boolean }>())
   const redrawFrameRef = useRef<number | null>(null)
+  const pointSpritesRef = useRef(new Map<string, PointSprite>())
+  const pointSpriteDprRef = useRef(1)
   const [size, setSize] = useState<CanvasSize>({ width: 1, height: 1, dpr: 1 })
   const [viewVersion, setViewVersion] = useState(0)
   const [playbackLabelIds, setPlaybackLabelIds] = useState<string[]>([])
@@ -187,6 +205,7 @@ function AtlasCanvas({
   const topicColors = useMemo(() => new Map(topics.map(topic => [topic.id, topic.color])), [topics])
   const postsById = useMemo(() => new Map(allPosts.map(post => [post.id, post])), [allPosts])
   const visibleIds = useMemo(() => new Set(visiblePosts.map(post => post.id)), [visiblePosts])
+  const isFiltered = visiblePosts.length !== allPosts.length
   const pointScale = useMemo(() => radiusScale(allPosts), [allPosts])
   const visibleLabelAnchors = useMemo(() => topicLabelAnchors(visiblePosts, topics), [topics, visiblePosts])
   const stableLabelAnchors = useMemo(() => topicLabelAnchors(allPosts, topics), [allPosts, topics])
@@ -230,6 +249,11 @@ function AtlasCanvas({
     screenCoordinates(post.x, post.y, view)
   ), [screenCoordinates])
 
+  const backgroundMaskColors = useMemo(() => new Map(allPosts.map(post => {
+    const point = screenPoint(post)
+    return [post.id, atlasBackgroundColor(point.x, point.y, size.width, size.height)]
+  })), [allPosts, screenPoint, size.height, size.width, viewVersion])
+
   const playbackOpacity = useCallback((post: AtlasPost) => {
     if (!playbackActive) return 0.82
     const span = Math.max(1, playheadMs - playbackWindowStart)
@@ -237,8 +261,52 @@ function AtlasCanvas({
     return 0.18 + Math.pow(1 - age, 1.25) * 0.78
   }, [playbackActive, playbackWindowStart, playheadMs])
 
-  const redraw = useCallback(() => {
-    const canvas = canvasRef.current
+  const getPointSprite = useCallback((color: string, drawRadius: number) => {
+    if (pointSpriteDprRef.current !== size.dpr) {
+      pointSpritesRef.current.clear()
+      pointSpriteDprRef.current = size.dpr
+    }
+    const radius = Math.max(0.5, Math.round(drawRadius * 2) / 2)
+    const key = `${size.dpr}:${color}:${radius.toFixed(1)}`
+    const cached = pointSpritesRef.current.get(key)
+    if (cached) return cached
+
+    const padding = 2
+    const requestedSize = radius * 2 + padding * 2
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.max(1, Math.ceil(requestedSize * size.dpr))
+    canvas.height = Math.max(1, Math.ceil(requestedSize * size.dpr))
+    const width = canvas.width / size.dpr
+    const height = canvas.height / size.dpr
+    const context = canvas.getContext('2d')
+    if (context) {
+      const centerX = width / 2
+      const centerY = height / 2
+      context.setTransform(size.dpr, 0, 0, size.dpr, 0, 0)
+      const gradient = context.createRadialGradient(
+        centerX - radius * 0.22,
+        centerY - radius * 0.24,
+        0,
+        centerX,
+        centerY,
+        radius,
+      )
+      gradient.addColorStop(0, colorWithAlpha(color, 1))
+      gradient.addColorStop(0.38, colorWithAlpha(color, 0.92))
+      gradient.addColorStop(0.74, colorWithAlpha(color, 0.42))
+      gradient.addColorStop(1, colorWithAlpha(color, 0))
+      context.fillStyle = gradient
+      context.beginPath()
+      context.arc(centerX, centerY, radius, 0, Math.PI * 2)
+      context.fill()
+    }
+    const sprite = { canvas, width, height }
+    pointSpritesRef.current.set(key, sprite)
+    return sprite
+  }, [size.dpr])
+
+  const redrawBackground = useCallback(() => {
+    const canvas = backgroundCanvasRef.current
     if (!canvas || size.width <= 1 || size.height <= 1) return
     const context = canvas.getContext('2d')
     if (!context) return
@@ -259,16 +327,34 @@ function AtlasCanvas({
     context.fillStyle = background
     context.fillRect(0, 0, size.width, size.height)
 
-    const isFiltered = visiblePosts.length !== allPosts.length
     if (isFiltered) {
       context.fillStyle = 'rgba(255, 255, 255, 0.055)'
       for (const post of allPosts) {
-        if (visibleIds.has(post.id)) continue
         const point = screenPoint(post)
         if (point.x < -5 || point.y < -5 || point.x > size.width + 5 || point.y > size.height + 5) continue
         context.beginPath()
         context.arc(point.x, point.y, 1.15, 0, Math.PI * 2)
         context.fill()
+      }
+    }
+  }, [allPosts, isFiltered, screenPoint, size])
+
+  const redraw = useCallback(() => {
+    const canvas = canvasRef.current
+    if (!canvas || size.width <= 1 || size.height <= 1) return
+    const context = canvas.getContext('2d')
+    if (!context) return
+    context.setTransform(size.dpr, 0, 0, size.dpr, 0, 0)
+    context.clearRect(0, 0, size.width, size.height)
+    context.globalAlpha = 1
+
+    if (isFiltered) {
+      const maskSize = 3.5
+      for (const post of visiblePosts) {
+        const point = screenPoint(post)
+        if (point.x < -maskSize || point.y < -maskSize || point.x > size.width + maskSize || point.y > size.height + maskSize) continue
+        context.fillStyle = backgroundMaskColors.get(post.id) || '#0d1219'
+        context.fillRect(point.x - maskSize / 2, point.y - maskSize / 2, maskSize, maskSize)
       }
     }
 
@@ -311,26 +397,14 @@ function AtlasCanvas({
       const radius = pointRadius(post, pointScale) * Math.min(1.45, Math.sqrt(viewRef.current.scale))
       const drawRadius = selectedPoint ? Math.max(10, radius * 1.45) : Math.max(2.5, radius * 1.65)
       const color = topicColors.get(post.topic) || '#8295ad'
-      const gradient = context.createRadialGradient(
-        point.x - drawRadius * 0.22,
-        point.y - drawRadius * 0.24,
-        0,
-        point.x,
-        point.y,
-        drawRadius,
-      )
-      gradient.addColorStop(0, colorWithAlpha(color, 1))
-      gradient.addColorStop(0.38, colorWithAlpha(color, 0.92))
-      gradient.addColorStop(0.74, colorWithAlpha(color, 0.42))
-      gradient.addColorStop(1, colorWithAlpha(color, 0))
+      const sprite = getPointSprite(color, drawRadius)
       context.globalAlpha = selectedPoint ? 1 : playbackOpacity(post)
-      context.fillStyle = gradient
-      context.beginPath()
-      context.arc(point.x, point.y, drawRadius, 0, Math.PI * 2)
-      context.fill()
+      context.drawImage(sprite.canvas, point.x - sprite.width / 2, point.y - sprite.height / 2, sprite.width, sprite.height)
       if (selectedPoint) {
         context.strokeStyle = '#FFFFFF'
         context.lineWidth = 2
+        context.beginPath()
+        context.arc(point.x, point.y, drawRadius, 0, Math.PI * 2)
         context.stroke()
       }
     }
@@ -358,25 +432,33 @@ function AtlasCanvas({
       context.font = '14px Inter, sans-serif'
       context.fillText('Ничего не найдено', size.width / 2, size.height / 2)
     }
-  }, [allPosts, playbackActive, playbackOpacity, pointScale, postsById, screenPoint, selectedId, size, topicColors, visibleIds, visiblePosts])
+  }, [backgroundMaskColors, getPointSprite, isFiltered, playbackActive, playbackOpacity, pointScale, postsById, screenPoint, selectedId, size, topicColors, visibleIds, visiblePosts])
 
   useEffect(() => {
     const wrapper = wrapperRef.current
     const canvas = canvasRef.current
-    if (!wrapper || !canvas) return
+    const backgroundCanvas = backgroundCanvasRef.current
+    if (!wrapper || !canvas || !backgroundCanvas) return
     const update = () => {
       const rect = wrapper.getBoundingClientRect()
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      canvas.width = Math.max(1, Math.round(rect.width * dpr))
-      canvas.height = Math.max(1, Math.round(rect.height * dpr))
+      const dpr = Math.min(window.devicePixelRatio || 1, MAX_CANVAS_DPR)
+      for (const layer of [backgroundCanvas, canvas]) {
+        layer.width = Math.max(1, Math.round(rect.width * dpr))
+        layer.height = Math.max(1, Math.round(rect.height * dpr))
+      }
       setSize({ width: rect.width, height: rect.height, dpr })
     }
     update()
     const observer = new ResizeObserver(update)
     observer.observe(wrapper)
-    return () => observer.disconnect()
+    window.addEventListener('resize', update)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('resize', update)
+    }
   }, [])
 
+  useEffect(redrawBackground, [redrawBackground, viewVersion])
   useEffect(redraw, [redraw, viewVersion])
 
   const findPost = (x: number, y: number) => {
@@ -576,6 +658,7 @@ function AtlasCanvas({
 
   return (
     <div className="atlas-canvas-wrap" ref={wrapperRef}>
+      <canvas ref={backgroundCanvasRef} className="atlas-canvas-background" aria-hidden="true" />
       <canvas
         ref={canvasRef}
         className="atlas-canvas"
@@ -584,12 +667,15 @@ function AtlasCanvas({
         data-visible-posts={visiblePosts.length}
         data-total-posts={allPosts.length}
         data-view-scale={viewRef.current.scale.toFixed(3)}
+        data-render-dpr={size.dpr}
         data-min-radius={pointScale.minRadius}
         data-max-radius={pointScale.maxRadius}
         data-radius-low-views={pointScale.low}
         data-radius-high-views={pointScale.high}
         data-radius-exponent={pointScale.exponent}
         data-point-rendering="radial-gradient"
+        data-render-strategy="layered-canvases-and-point-sprites"
+        data-visible-ghost-policy="masked"
         data-layout-mode="fixed-semantic"
         data-graph-mode={playbackActive ? 'similarity-flow' : 'static-neighbors'}
         data-playback-active={playbackActive}

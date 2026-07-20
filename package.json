@@ -17,6 +17,7 @@
     "readiness:cutover": "node scripts/cutover-readiness.mjs",
     "smoke:browser": "node scripts/browser-smoke.mjs",
     "smoke:atlas": "node scripts/telegram-map-smoke.mjs",
+    "smoke:atlas:performance": "node scripts/telegram-map-performance-smoke.mjs",
     "smoke:dist": "node scripts/serve-dist-and-smoke.mjs",
     "verify:atlas": "node scripts/verify-telegram-atlas.mjs",
     "verify:analytics-routing": "node scripts/verify-analytics-routing.mjs",
