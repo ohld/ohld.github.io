@@ -41,6 +41,7 @@ type PositionedTopicLabel = TopicLabelAnchor & { left: number; top: number }
 type RadiusScale = { low: number; high: number; minRadius: number; maxRadius: number; exponent: number }
 type CareerRole = { company: string; role: string; start: number; end: number }
 type TopicWindowStat = AtlasTopic & { count: number; share: number }
+type TopicPopularityStat = AtlasTopic & { share: number; weight: number }
 
 const DATA_URL = '/data/telegram-atlas.json'
 const TELEGRAM_CHANNEL = 'danokhlopkov'
@@ -203,6 +204,20 @@ function AtlasCanvas({
 
   const playbackLabelIdSet = useMemo(() => new Set(playbackLabelIds), [playbackLabelIds])
   const placementAnchors = playbackActive ? stableLabelAnchors : visibleLabelAnchors
+  const labelPopularity = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const post of visiblePosts) counts.set(post.topic, (counts.get(post.topic) || 0) + 1)
+    const totalPosts = Math.max(1, visiblePosts.length)
+    const maxCount = Math.max(1, ...counts.values())
+    return new Map(topics.map(topic => {
+      const count = counts.get(topic.id) || 0
+      return [topic.id, {
+        count,
+        share: count / totalPosts * 100,
+        weight: count / maxCount * 100,
+      }]
+    }))
+  }, [topics, visiblePosts])
 
   const screenCoordinates = useCallback((x: number, y: number, view = viewRef.current) => {
     const padding = 30
@@ -497,7 +512,7 @@ function AtlasCanvas({
     const placed: CollisionBox[] = []
 
     const measureContext = document.createElement('canvas').getContext('2d')
-    if (measureContext) measureContext.font = '650 11.2px system-ui, sans-serif'
+    if (measureContext) measureContext.font = '720 13.6px system-ui, sans-serif'
     const offsets: Array<[number, number]> = [[0, 0], [-44, 0], [44, 0], [-88, 0], [88, 0]]
     for (const distance of [26, 52, 78, 104, 130, 156]) {
       offsets.push(
@@ -514,7 +529,7 @@ function AtlasCanvas({
       const point = screenCoordinates(anchor.x, anchor.y)
       const measuredText = measureContext?.measureText(anchor.label).width ?? anchor.label.length * 6.5
       const width = Math.min(208, Math.ceil(measuredText) + 16)
-      const height = 22
+      const height = 25
 
       const tryPosition = (candidateX: number, candidateY: number): PositionedTopicLabel | null => {
         const reservedTop = 7
@@ -585,15 +600,26 @@ function AtlasCanvas({
       />
       {positionedLabels.length > 0 && (
         <div className="atlas-map-labels" aria-hidden="true">
-          {positionedLabels.map(label => (
-            <span
-              className="atlas-map-label"
-              key={label.id}
-              style={{ left: label.left, top: label.top, '--topic-color': label.color } as React.CSSProperties}
-            >
-              {label.label}
-            </span>
-          ))}
+          {positionedLabels.map(label => {
+            const popularity = labelPopularity.get(label.id) || { count: 0, share: 0, weight: 0 }
+            return (
+              <span
+                className="atlas-map-label"
+                key={label.id}
+                data-topic-count={popularity.count}
+                data-topic-share={popularity.share.toFixed(2)}
+                data-topic-weight={Math.round(popularity.weight)}
+                style={{
+                  left: label.left,
+                  top: label.top,
+                  '--topic-color': label.color,
+                  '--topic-popularity': popularity.weight / 100,
+                } as React.CSSProperties}
+              >
+                {label.label}
+              </span>
+            )
+          })}
         </div>
       )}
     </div>
@@ -717,6 +743,18 @@ export function TelegramMap() {
 
   const topicsById = useMemo(() => new Map((data?.topics || []).map(item => [item.id, item])), [data])
   const postsById = useMemo(() => new Map((data?.posts || []).map(item => [item.id, item])), [data])
+  const topicPopularity = useMemo<TopicPopularityStat[]>(() => {
+    if (!data?.topics.length) return []
+    const totalPosts = Math.max(1, data.posts.length)
+    const maxCount = Math.max(1, ...data.topics.map(item => item.count))
+    return data.topics
+      .map(item => ({
+        ...item,
+        share: item.count / totalPosts * 100,
+        weight: item.count / maxCount * 100,
+      }))
+      .sort((left, right) => right.count - left.count || left.label.localeCompare(right.label, 'ru-RU'))
+  }, [data])
   const timelineBounds = useMemo(() => {
     const times = (data?.posts || []).map(postTime)
     if (!times.length) return { min: Date.now(), max: Date.now() }
@@ -825,6 +863,7 @@ export function TelegramMap() {
   }, [data, selectedId, visiblePosts])
 
   const selectPost = useCallback((id: number) => {
+    setIsPlaying(false)
     setSelectedId(id)
     const url = new URL(window.location.href)
     url.searchParams.set('post', String(id))
@@ -889,7 +928,7 @@ export function TelegramMap() {
           <p className="atlas-meta">@danokhlopkov · 1 556 постов · 2020–2026</p>
           <p className="sr-only">
             Интерактивная карта тем, связей и эволюции публикаций. Перемещайте временную шкалу,
-            чтобы увидеть главные темы выбранного периода, их рост и карьерный контекст автора.
+            чтобы увидеть главные темы выбранного периода, их доли и карьерный контекст автора.
           </p>
         </div>
       </header>
@@ -1006,15 +1045,23 @@ export function TelegramMap() {
                   </summary>
                   <div className="atlas-filter-row atlas-topic-filters" aria-label="Фильтр по темам">
                     <button type="button" className={topic === 'all' ? 'is-active' : ''} onClick={() => setTopic('all')}>Все темы</button>
-                    {data.topics.map(item => (
+                    {topicPopularity.map(item => (
                       <button
                         type="button"
                         key={item.id}
                         className={topic === item.id ? 'is-active' : ''}
                         onClick={() => setTopic(current => current === item.id ? 'all' : item.id)}
-                        style={{ '--topic-color': item.color } as React.CSSProperties}
+                        data-topic-count={item.count}
+                        data-topic-share={item.share.toFixed(2)}
+                        data-topic-weight={Math.round(item.weight)}
+                        style={{
+                          '--topic-color': item.color,
+                          '--topic-weight': `${item.weight}%`,
+                        } as React.CSSProperties}
                       >
-                        <span />{item.label}
+                        <span className="atlas-topic-dot" />
+                        <span className="atlas-topic-name">{item.label}</span>
+                        <small className="atlas-topic-share">{Math.round(item.share)}%</small>
                       </button>
                     ))}
                   </div>

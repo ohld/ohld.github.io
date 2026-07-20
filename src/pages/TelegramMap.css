@@ -144,9 +144,11 @@ body.atlas-map-active {
 }
 
 .atlas-filter-row button {
+  position: relative;
   display: inline-flex;
   min-height: 28px;
   padding: 4px 10px;
+  overflow: hidden;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
@@ -159,6 +161,29 @@ body.atlas-map-active {
   font-size: 0.72rem;
   white-space: nowrap;
   transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.atlas-topic-filters button[data-topic-count]::before {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--topic-weight, 0%);
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--topic-color, #fff) 30%, transparent),
+    color-mix(in srgb, var(--topic-color, #fff) 10%, transparent)
+  );
+  content: '';
+  pointer-events: none;
+  transition: width 180ms ease, opacity 140ms ease;
+}
+
+.atlas-topic-filters button[data-topic-count] > * {
+  position: relative;
+  z-index: 1;
 }
 
 .atlas-filter-row button:hover,
@@ -174,12 +199,32 @@ body.atlas-map-active {
   color: #0a0a0d;
 }
 
-.atlas-topic-filters button > span {
+.atlas-topic-filters .atlas-topic-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--topic-color, #fff);
   box-shadow: 0 0 9px color-mix(in srgb, var(--topic-color, #fff) 74%, transparent);
+  flex: 0 0 auto;
+}
+
+.atlas-topic-filters .atlas-topic-name {
+  font-weight: 560;
+}
+
+.atlas-topic-filters .atlas-topic-share {
+  color: rgba(244, 244, 241, 0.48);
+  font-family: var(--mono);
+  font-size: 0.59rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.atlas-topic-filters button.is-active::before {
+  opacity: 0.16;
+}
+
+.atlas-topic-filters button.is-active .atlas-topic-share {
+  color: rgba(10, 10, 13, 0.58);
 }
 
 .atlas-timeline {
@@ -488,12 +533,14 @@ body.atlas-map-active {
   background: rgba(7, 8, 11, 0.76);
   box-shadow: 0 0 18px color-mix(in srgb, var(--topic-color) 13%, transparent);
   color: #f7f7f4;
-  font-size: 0.7rem;
-  font-weight: 650;
+  font-size: calc(0.61rem + var(--topic-popularity, 0.5) * 0.24rem);
+  font-weight: calc(560 + var(--topic-popularity, 0.5) * 160);
   line-height: 1.15;
+  opacity: calc(0.32 + var(--topic-popularity, 0.5) * 0.68);
   text-align: center;
   text-shadow: 0 1px 5px #000;
   white-space: nowrap;
+  transition: font-size 180ms ease, font-weight 180ms ease, opacity 180ms ease;
 }
 
 .atlas-detail {
@@ -777,7 +824,7 @@ body.atlas-map-active {
   }
 
   .atlas-map-label {
-    font-size: 0.66rem;
+    font-size: calc(0.6rem + var(--topic-popularity, 0.5) * 0.18rem);
   }
 
   .atlas-lower-panel {

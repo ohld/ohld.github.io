@@ -48,7 +48,10 @@ async function mapLabelPositions(page) {
     if (!canvas) return []
     return elements.map(element => {
       const box = element.getBoundingClientRect()
-      return [element.textContent || '', { left: box.left - canvas.left, top: box.top - canvas.top }]
+      return [element.textContent || '', {
+        left: box.left - canvas.left + box.width / 2,
+        top: box.top - canvas.top + box.height / 2,
+      }]
     })
   })
   return Object.fromEntries(entries)
@@ -90,6 +93,37 @@ try {
   console.log('OK Telegram app/web links and deep-link state')
   await deepLinkPage.close()
 
+  const pausePage = await browser.newPage({ viewport: { width: 1280, height: 800 } })
+  await pausePage.goto(`${baseUrl}/telegram-map/`, { waitUntil: 'networkidle' })
+  const pauseCanvas = pausePage.locator('canvas.atlas-canvas')
+  await pausePage.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.totalPosts === '1556')
+  const earliestPost = await pausePage.evaluate(async () => {
+    const response = await fetch('/data/telegram-atlas.json')
+    const atlas = await response.json()
+    return atlas.posts.reduce((earliest, post) => post.date < earliest.date ? post : earliest)
+  })
+  await pausePage.locator('.atlas-play-button').click()
+  await pausePage.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.playbackActive === 'true')
+  assert.match(await pausePage.locator('.atlas-play-button').getAttribute('class'), /is-playing/, 'evolution must be running before selecting a post')
+  const pauseCanvasBox = await pauseCanvas.boundingBox()
+  assert.ok(pauseCanvasBox, 'pause-on-post canvas must have bounds')
+  await pauseCanvas.click({
+    position: {
+      x: 30 + earliestPost.x * Math.max(1, pauseCanvasBox.width - 60),
+      y: 30 + earliestPost.y * Math.max(1, pauseCanvasBox.height - 60),
+    },
+  })
+  await pausePage.locator('.atlas-detail').waitFor()
+  assert.doesNotMatch(await pausePage.locator('.atlas-play-button').getAttribute('class'), /is-playing/, 'selecting a visible post during evolution must pause playback')
+  assert.match(await pausePage.locator('.atlas-play-button').textContent(), /Продолжить/, 'paused evolution must offer to continue')
+  const selectedPostUrl = pausePage.url()
+  const selectedPostDate = await pausePage.locator('.atlas-playback-date').textContent()
+  await pausePage.waitForTimeout(500)
+  assert.equal(await pausePage.locator('.atlas-playback-date').textContent(), selectedPostDate, 'timeline must stay frozen while the selected post preview is open')
+  assert.equal(pausePage.url(), selectedPostUrl, 'selected post preview must stay open while playback is paused')
+  console.log('OK selecting a post pauses evolution and preserves the preview')
+  await pausePage.close()
+
   for (const viewport of [
     { name: 'desktop', width: 1440, height: 1000 },
     { name: 'mobile-320', width: 320, height: 568 },
@@ -124,6 +158,7 @@ try {
     assert.equal(await canvas.getAttribute('data-graph-mode'), 'static-neighbors', 'all-history mode must keep graph edges quiet')
     assert.equal(await page.locator('.atlas-career-context').count(), 0, 'career context must stay hidden outside timeline mode')
     assert.equal(await page.locator('.atlas-playback-insights').count(), 0, 'playback insights must stay hidden outside timeline mode')
+    assert.doesNotMatch(await page.locator('.atlas-header .sr-only').textContent(), /рост/i, 'accessible map description must not promise a removed growth metric')
     const workspaceBox = await page.locator('.atlas-workspace').boundingBox()
     assert.ok(workspaceBox, 'workspace must have bounds')
     assert.ok(workspaceBox.x <= 1, `workspace must start at viewport edge, got x=${workspaceBox.x}`)
@@ -181,6 +216,23 @@ try {
     const allPosts = Number(await canvas.getAttribute('data-total-posts'))
     await page.locator('.atlas-filter-panel summary').click()
     assert.equal(await page.locator('.atlas-filter-panel').getAttribute('open'), '', 'topic panel must expand on demand')
+    const topicPopularity = await page.locator('.atlas-topic-filters button[data-topic-count]').evaluateAll(buttons => buttons.map(button => ({
+      count: Number(button.getAttribute('data-topic-count')),
+      share: Number(button.getAttribute('data-topic-share')),
+      weight: Number(button.getAttribute('data-topic-weight')),
+      visibleShare: button.querySelector('.atlas-topic-share')?.textContent || '',
+      fillWidth: Number.parseFloat(getComputedStyle(button, '::before').width),
+    })))
+    assert.equal(topicPopularity.length, 12, 'every topic must expose its popularity')
+    assert.deepEqual(
+      topicPopularity.map(item => item.count),
+      [...topicPopularity].map(item => item.count).sort((left, right) => right - left),
+      'topic filters must be sorted from most to least popular',
+    )
+    assert.ok(topicPopularity[0].count > topicPopularity.at(-1).count, 'topic popularity must distinguish the largest and smallest topics')
+    assert.equal(topicPopularity[0].weight, 100, 'the most popular topic must define the full visual scale')
+    assert.ok(topicPopularity.every(item => item.share > 0 && item.share < 100 && /%$/.test(item.visibleShare)), 'each topic must show its share of all posts')
+    assert.ok(topicPopularity[0].fillWidth > topicPopularity.at(-1).fillWidth, 'the most popular topic must have a wider color fill than the least popular topic')
     if (viewport.name === 'desktop') {
       const topicGeometry = await page.locator('.atlas-topic-filters').evaluate(element => ({
         clientWidth: element.clientWidth,
@@ -272,6 +324,26 @@ try {
       assert.equal(await page.locator('.atlas-playback-date').textContent(), pausedDate, 'playback date must stop while paused')
       await scrubber.fill('350')
       await page.waitForTimeout(100)
+      const playbackTopicPopularity = await page.locator('.atlas-map-label').evaluateAll(elements => elements.map(element => {
+        const style = getComputedStyle(element)
+        return {
+          count: Number(element.getAttribute('data-topic-count')),
+          share: Number(element.getAttribute('data-topic-share')),
+          weight: Number(element.getAttribute('data-topic-weight')),
+          fontSize: Number.parseFloat(style.fontSize),
+          opacity: Number.parseFloat(style.opacity),
+        }
+      }).sort((left, right) => right.weight - left.weight))
+      assert.ok(playbackTopicPopularity.length > 1, 'playback must expose several ranked topic labels')
+      assert.equal(playbackTopicPopularity[0].weight, 100, 'the leading visible topic label must define the full visual scale')
+      assert.ok(playbackTopicPopularity[0].count > playbackTopicPopularity.at(-1).count, 'active topic labels must expose different current-window popularity')
+      assert.ok(playbackTopicPopularity[0].fontSize > playbackTopicPopularity.at(-1).fontSize, 'a more popular topic label must render larger')
+      assert.ok(playbackTopicPopularity[0].opacity > playbackTopicPopularity.at(-1).opacity, 'a more popular topic label must render brighter')
+      assert.ok(
+        Math.abs(playbackTopicPopularity.reduce((sum, item) => sum + item.share, 0) - 100) < 0.2,
+        'visible playback topic shares must account for the current six-month window',
+      )
+      await assertMapLabels(page, playbackTopicPopularity.length)
       const earlyPlaybackLabels = await mapLabelPositions(page)
       assert.ok(Object.keys(earlyPlaybackLabels).length > 0, 'early playback must expose at least one topic label')
       await scrubber.fill('700')
