@@ -796,11 +796,13 @@ export function TelegramMap() {
 
 
   useDocumentMeta({
-    title: 'Смысловая карта Telegram — Даниил Охлопков',
-    description: 'Интерактивная карта 1 500+ постов @danokhlopkov: темы, поиск и эволюция интересов во времени.',
-    canonical: absoluteUrl('/telegram-map/'),
+    title: 'Карта моих постов в Telegram — Даниил Охлопков',
+    description: 'Интерактивная карта 1 556 постов @danokhlopkov за 2020–2026 годы: темы, связи, поиск и эволюция интересов.',
+    canonical: absoluteUrl('/karta-postov-telegram/'),
     lang: 'ru',
-    alternates: { ru: absoluteUrl('/telegram-map/'), 'x-default': absoluteUrl('/telegram-map/') },
+    alternates: { ru: absoluteUrl('/karta-postov-telegram/'), 'x-default': absoluteUrl('/karta-postov-telegram/') },
+    image: absoluteUrl('/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp'),
+    imageAlt: 'Два графика с подписями «Мои посты» и «Карта Telegram»',
   })
 
   useEffect(() => {
@@ -1010,7 +1012,7 @@ export function TelegramMap() {
       <header className="atlas-header">
         <BackButton />
         <div>
-          <h1>Смысловая карта Telegram</h1>
+          <h1>Карта моих постов в Telegram</h1>
           <p className="atlas-meta">@danokhlopkov · 1 556 постов · 2020–2026</p>
           <p className="sr-only">
             Интерактивная карта тем, связей и эволюции публикаций. Перемещайте временную шкалу,

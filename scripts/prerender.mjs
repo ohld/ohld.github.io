@@ -730,7 +730,7 @@ function archiveMarkdown() {
 
   return `Полная карта сайта: язык, тема, год. Без промо, просто быстрые входы в тексты.
 
-[Открыть смысловую карту 1 500+ постов Telegram →](/telegram-map/)
+[Открыть карту моих 1 556 постов в Telegram →](/karta-postov-telegram/)
 
 ${sections.join('\n\n')}`
 }
@@ -805,18 +805,22 @@ ROUTES.push({
 })
 
 ROUTES.push({
-  path: '/telegram-map',
-  slug: 'telegram-map',
-  title: 'Смысловая карта Telegram — Даниил Охлопков',
-  description: 'Интерактивная карта 1 500+ постов @danokhlopkov: темы, поиск и похожие публикации за шесть лет.',
+  path: '/karta-postov-telegram',
+  slug: 'karta-postov-telegram',
+  title: 'Карта моих постов в Telegram — Даниил Охлопков',
+  description: 'Интерактивная карта 1 556 постов @danokhlopkov за 2020–2026 годы: темы, связи, поиск и эволюция интересов.',
   lang: 'ru',
   alternates: {
-    ru: `${SITE_URL}/telegram-map/`,
-    'x-default': `${SITE_URL}/telegram-map/`,
+    ru: `${SITE_URL}/karta-postov-telegram/`,
+    'x-default': `${SITE_URL}/karta-postov-telegram/`,
   },
-  markdown: `# Смысловая карта Telegram
+  heroImage: '/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp',
+  imageAlt: 'Два графика с подписями «Мои посты» и «Карта Telegram»',
+  ...imageMetadataForUrl('/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp'),
+  image: `${SITE_URL}/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp`,
+  markdown: `# Карта моих постов в Telegram
 
-Все тексты [@danokhlopkov](https://t.me/danokhlopkov) разложены по смыслу. Ищите тему, выбирайте точку и переходите к похожим постам.
+Все 1 556 постов [@danokhlopkov](https://t.me/danokhlopkov) разложены по смыслу. Ищите тему, выбирайте точку и переходите к похожим публикациям.
 
 Для интерактивной карты нужен JavaScript.`,
 })
@@ -1354,6 +1358,7 @@ const BREADCRUMBS_BY_SLUG = {
   'private-channel': [['Главная', `${SITE_URL}/`], ['Закрытый канал', `${SITE_URL}/private-channel/`]],
   'markdown-vs-html': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['Markdown vs HTML', `${SITE_URL}/articles/markdown-vs-html/`]],
   'archive': [['Главная', `${SITE_URL}/ru/`], ['Архив', `${SITE_URL}/archive/`]],
+  'karta-postov-telegram': [['Главная', `${SITE_URL}/`], ['Блог', `${SITE_URL}/ru/blog/`], ['Карта моих постов в Telegram', `${SITE_URL}/karta-postov-telegram/`]],
   'privacy': [['Home', `${SITE_URL}/`], ['Privacy Policy', `${SITE_URL}/privacy/`]],
 }
 
@@ -1547,6 +1552,7 @@ const REDIRECTS = [
   { from: '/closed', fromSlug: 'closed', to: '/private-channel/', toSlug: 'private-channel' },
   { from: '/work-together', fromSlug: 'work-together', to: '/about/', toSlug: 'about' },
   { from: '/markdown-vs-html', fromSlug: 'markdown-vs-html-old', to: '/articles/markdown-vs-html/', toSlug: 'markdown-vs-html' },
+  { from: '/telegram-map', fromSlug: 'telegram-map', to: '/karta-postov-telegram/', toSlug: 'karta-postov-telegram' },
   { from: '/posts', fromSlug: 'posts', to: '/ru/blog/', toSlug: 'ru-blog' },
   { from: '/ai-agents', fromSlug: 'ai-agents', to: '/topics/ai-agents/', toSlug: 'topic-ai-agents' },
   { from: '/ai-course', fromSlug: 'ai-course', to: '/ru/articles/', toSlug: 'ru-articles' },
@@ -1740,7 +1746,7 @@ const SITEMAP_URLS = [
   `${SITE_URL}/ru/articles/`,
   `${SITE_URL}/en/articles/`,
   `${SITE_URL}/archive/`,
-  `${SITE_URL}/telegram-map/`,
+  `${SITE_URL}/karta-postov-telegram/`,
   `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`,
   `${SITE_URL}/articles/markdown-vs-html/`,
   `${SITE_URL}/privacy/`,

@@ -1,0 +1,40 @@
+{
+  "source": "pinterest-reference-edit",
+  "workflow": "Pinterest Content ideas board → CheapAIAPI/Nano Banana reference-edit → ffmpeg WebP 1600x900",
+  "model": "nano-banana-pro-2k",
+  "preservation_rule": "Preserve 95%+ of the Pinterest reference; adapt the two existing chart panels to 16:9 and replace text through neural edits only. No blank generation or local text overlay.",
+  "created_at": "2026-07-20",
+  "page_slug": "karta-postov-telegram",
+  "page_url": "https://okhlopkov.com/karta-postov-telegram/",
+  "asset_role": "listing-and-social-cover",
+  "web_asset": {
+    "path": "/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp",
+    "format": "webp",
+    "width": 1600,
+    "height": 900,
+    "sha256": "46889ea2962ebf9f3db17240cd07b85b1e205f4a157d65fde5d44124074cb3b8",
+    "sha256_16": "46889ea2962ebf9f",
+    "bytes": 18966
+  },
+  "pinterest_reference": {
+    "reference_id": "pin:839569555579668847",
+    "pin_url": "https://www.pinterest.com/pin/839569555579668847/",
+    "source_image_url": "https://i.pinimg.com/1200x/08/29/19/082919cd78b626b828cf3992a53a0d99.png",
+    "source_dimensions": "1080x1674",
+    "reference_sha256": "4e2b67bcf6d44fe0bd3c2546fe371551f276d49a7519d9b1c90946952e4c36e4",
+    "reference_sha256_16": "4e2b67bcf6d44fe0"
+  },
+  "generation": {
+    "final_job_id": "ff588df3-4e01-49fb-9b7a-c65951afab6a",
+    "layout_job_id": "58bfea2e-e12d-479d-b7e8-74597782e60e",
+    "text_correction_job_id": "413eacab-c7f8-4db2-8713-901a64c1009e",
+    "model": "nano-banana-pro-2k",
+    "target_text": [
+      "МОИ ПОСТЫ",
+      "КАРТА TELEGRAM"
+    ],
+    "final_raw_sha256": "7d4fb6ac0948bcb93f8a9917590b33770b7c188eec9637c229aa1a9ec637c4b1"
+  },
+  "visual_inspection": "Pass: exact text, two original chart panels retained, clean white 16:9 composition, continuous frames, no people, logos, unsafe content, or page-level hero rendering. Readable at card size.",
+  "selection_note": "Official Pinterest API required renewed app-owner 2FA in this runtime. The reference came from the complete local Content ideas index dated 2026-06-16 and was checked against GBrain used/avoid records and every public image sidecar before use."
+}

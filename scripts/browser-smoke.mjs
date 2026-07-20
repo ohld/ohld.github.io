@@ -21,7 +21,7 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/how-to-get-a-telegram-channel-subscribers-list-in-python/',
   '/claude-code-nastrojka-mcp-hooks-skills-2026/',
   '/topics/ai-agents/',
-  '/telegram-map/',
+  '/karta-postov-telegram/',
   '/about/',
 ].join(','))
   .split(',')

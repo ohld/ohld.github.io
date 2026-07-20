@@ -45,7 +45,7 @@ const BASE_STATIC_PATHS = [
   '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
   '/archive/',
-  '/telegram-map/',
+  '/karta-postov-telegram/',
   '/topics/ai-agents/',
   '/topics/claude-code/',
   '/topics/codex/',

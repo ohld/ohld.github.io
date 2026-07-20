@@ -207,7 +207,8 @@ function App() {
           <Route path="/markdown-vs-html" element={<Navigate to="/articles/markdown-vs-html" replace />} />
           <Route path="/articles/markdown-vs-html" element={<MarkdownVsHtml />} />
           <Route path="/archive" element={<Archive />} />
-          <Route path="/telegram-map" element={<TelegramMap />} />
+          <Route path="/telegram-map" element={<Navigate to="/karta-postov-telegram/" replace />} />
+          <Route path="/karta-postov-telegram" element={<TelegramMap />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/:slug" element={<ImportedArticle />} />
           <Route path="*" element={<Navigate to="/" replace />} />

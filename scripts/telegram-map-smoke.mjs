@@ -85,7 +85,7 @@ async function assertPinchZoomsMap(page, canvas, canvasBox) {
 
 try {
   const deepLinkPage = await browser.newPage({ viewport: { width: 1280, height: 800 } })
-  await deepLinkPage.goto(`${baseUrl}/telegram-map/?post=1718`, { waitUntil: 'networkidle' })
+  await deepLinkPage.goto(`${baseUrl}/karta-postov-telegram/?post=1718`, { waitUntil: 'networkidle' })
   await deepLinkPage.locator('.atlas-post-text').filter({ hasText: 'Нескучном саду' }).waitFor()
   assert.match(deepLinkPage.url(), /post=1718/, 'deep link must survive initial data loading')
   assert.equal(await deepLinkPage.locator('.atlas-telegram-link').getAttribute('href'), 'tg://resolve?domain=danokhlopkov&post=1718')
@@ -94,7 +94,7 @@ try {
   await deepLinkPage.close()
 
   const pausePage = await browser.newPage({ viewport: { width: 1280, height: 800 } })
-  await pausePage.goto(`${baseUrl}/telegram-map/`, { waitUntil: 'networkidle' })
+  await pausePage.goto(`${baseUrl}/karta-postov-telegram/`, { waitUntil: 'networkidle' })
   const pauseCanvas = pausePage.locator('canvas.atlas-canvas')
   await pausePage.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.totalPosts === '1556')
   const earliestPost = await pausePage.evaluate(async () => {
@@ -138,7 +138,7 @@ try {
     })
     page.on('pageerror', error => errors.push(error.message))
 
-    await page.goto(`${baseUrl}/telegram-map/`, { waitUntil: 'networkidle' })
+    await page.goto(`${baseUrl}/karta-postov-telegram/`, { waitUntil: 'networkidle' })
     await page.locator('.atlas-workspace').waitFor({ state: 'attached', timeout: 60_000 })
     const canvas = page.locator('canvas.atlas-canvas')
     await page.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.totalPosts === '1556')

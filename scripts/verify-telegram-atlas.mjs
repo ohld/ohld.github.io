@@ -66,4 +66,25 @@ for (const post of data.posts) {
 
 const bytes = Buffer.byteLength(raw)
 assert.ok(bytes < 6_000_000, `atlas JSON is too large: ${bytes} bytes`)
-console.log(JSON.stringify({ posts: data.posts.length, topics: data.topics.length, bytes }))
+
+const [blogSource, appSource, pageSource, prerenderSource] = await Promise.all([
+  readFile(resolve(process.cwd(), 'src/blog.ts'), 'utf8'),
+  readFile(resolve(process.cwd(), 'src/App.tsx'), 'utf8'),
+  readFile(resolve(process.cwd(), 'src/pages/TelegramMap.tsx'), 'utf8'),
+  readFile(resolve(process.cwd(), 'scripts/prerender.mjs'), 'utf8'),
+])
+
+assert.match(blogSource, /path:\s*['"]\/karta-postov-telegram\/['"]/, 'Russian blog list must include the Telegram posts map')
+assert.match(blogSource, /title:\s*['"]Карта моих постов в Telegram['"]/, 'Blog card must use the explicit map title')
+assert.match(blogSource, /thumbnail:\s*['"]\/assets\/blog\/karta-postov-telegram\/telegram-posts-map-cover-20260720\.webp['"]/, 'Blog card must use the dedicated cover')
+assert.match(appSource, /path=['"]\/karta-postov-telegram['"][^>]+element=\{<TelegramMap\s*\/>\}/, 'App must serve the atlas at the explicit route')
+assert.match(appSource, /path=['"]\/telegram-map['"][^>]+Navigate\s+to=['"]\/karta-postov-telegram\/['"]/, 'The old route must redirect to the canonical route')
+assert.match(pageSource, /title:\s*['"]Карта моих постов в Telegram — Даниил Охлопков['"]/, 'Atlas metadata must use the explicit page title')
+assert.match(pageSource, /canonical:\s*absoluteUrl\(['"]\/karta-postov-telegram\/['"]\)/, 'Atlas metadata must use the new canonical URL')
+assert.match(pageSource, /<h1>Карта моих постов в Telegram<\/h1>/, 'Visible atlas heading must explain whose posts are mapped')
+assert.doesNotMatch(pageSource, /<img[^>]+telegram-posts-map-cover-20260720/, 'The cover belongs only in listings and metadata, not inside the atlas page DOM')
+assert.match(prerenderSource, /path:\s*['"]\/karta-postov-telegram['"]/, 'Prerender must emit the new canonical route')
+assert.match(prerenderSource, /from:\s*['"]\/telegram-map['"][^}]+to:\s*['"]\/karta-postov-telegram\/['"]/, 'Prerender must emit an old-route redirect')
+assert.match(prerenderSource, /\$\{SITE_URL\}\/karta-postov-telegram\//, 'Sitemap or route metadata must include the new canonical URL')
+
+console.log(JSON.stringify({ posts: data.posts.length, topics: data.topics.length, bytes, discovery: 'karta-postov-telegram' }))

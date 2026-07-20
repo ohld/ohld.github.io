@@ -64,6 +64,15 @@ function withoutItemPaths(items: BlogListItem[], excludedItems: BlogListItem[]):
 }
 
 export const russianBlogItems: BlogListItem[] = [
+  {
+    path: '/karta-postov-telegram/',
+    title: 'Карта моих постов в Telegram',
+    description: 'Интерактивная карта 1 556 постов @danokhlopkov за 2020–2026 годы: темы, связи, поиск и эволюция интересов.',
+    publishedAt: '2026-07-20',
+    readingTime: 'Интерактивная карта',
+    tags: ['Telegram', 'Данные', 'Личный архив'],
+    thumbnail: '/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp',
+  },
   ...generatedRussianBlogItems,
   ...importedArticleListItems([
     '/claude-code-nastrojka-mcp-hooks-skills-2026/',

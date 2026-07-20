@@ -44,7 +44,7 @@ try {
     }
   })
   const page = await context.newPage()
-  await page.goto(`${baseUrl}/telegram-map/`, { waitUntil: 'networkidle' })
+  await page.goto(`${baseUrl}/karta-postov-telegram/`, { waitUntil: 'networkidle' })
   await page.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.totalPosts === '1556')
 
   const dimensions = await page.locator('canvas.atlas-canvas').evaluate(element => {

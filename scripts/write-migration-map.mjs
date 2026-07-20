@@ -180,6 +180,13 @@ const redirects = [
     note: 'Standalone article moved under the Articles collection.',
   },
   {
+    old_path: '/telegram-map/',
+    new_path: '/karta-postov-telegram/',
+    action: '308_redirect',
+    source: 'static_ia_cleanup',
+    note: 'The explicit Russian slug replaces the ambiguous English route while preserving the original URL.',
+  },
+  {
     old_path: '/posts/',
     new_path: '/ru/blog/',
     action: '308_redirect',
@@ -272,7 +279,7 @@ const newStaticPages = [
   ['/ru/articles/ai-tools-for-designers-design-engineering-agents/', 'new_static_page', 'ru', 'First YouTube-derived article with component examples'],
   ['/articles/markdown-vs-html/', 'new_static_page', 'ru', 'Existing static article route moved under Articles'],
   ['/archive/', 'new_static_page', 'ru', 'Full material archive grouped by language, topic and year'],
-  ['/telegram-map/', 'new_static_page', 'ru', 'Interactive semantic map of public Telegram posts'],
+  ['/karta-postov-telegram/', 'new_static_page', 'ru', 'Interactive semantic map of Dan’s public Telegram posts'],
   ['/privacy/', 'new_static_page', 'en', 'Privacy policy for site analytics and external links'],
   ...topicStaticPages,
 ]
