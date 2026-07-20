@@ -164,6 +164,20 @@ function useStartParamNavigation() {
   }, [navigate])
 }
 
+function LegacyTelegramMapRedirect() {
+  const location = useLocation()
+  return (
+    <Navigate
+      to={{
+        pathname: '/karta-postov-telegram/',
+        search: location.search,
+        hash: location.hash,
+      }}
+      replace
+    />
+  )
+}
+
 function App() {
   usePreloadChunks()
   usePageTracking()
@@ -207,7 +221,7 @@ function App() {
           <Route path="/markdown-vs-html" element={<Navigate to="/articles/markdown-vs-html" replace />} />
           <Route path="/articles/markdown-vs-html" element={<MarkdownVsHtml />} />
           <Route path="/archive" element={<Archive />} />
-          <Route path="/telegram-map" element={<Navigate to="/karta-postov-telegram/" replace />} />
+          <Route path="/telegram-map" element={<LegacyTelegramMapRedirect />} />
           <Route path="/karta-postov-telegram" element={<TelegramMap />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/:slug" element={<ImportedArticle />} />

@@ -644,6 +644,10 @@ async function verifyHomepageBasics() {
   const res = await fetchManual('/')
   assert(res.status === 200, `/: expected 200 for homepage basics, got ${res.status}`)
   const html = await res.text()
+  const homeArticle = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i)?.[1] || ''
+  const latestSection = homeArticle.match(/<h2>Свежие материалы<\/h2>([\s\S]*)/i)?.[1] || ''
+  const homeFirstHref = latestSection.match(/<a\b[^>]*href=["']([^"']+)["']/i)?.[1] || ''
+  assert(homeFirstHref === '/karta-postov-telegram/', `/: first static latest-material link should be /karta-postov-telegram/, got ${homeFirstHref || '<empty>'}`)
   assert(/<meta\s+name=["']viewport["'][^>]+width=device-width[^>]+initial-scale=1/i.test(html), '/: missing responsive viewport')
   verifyImageAltText(html, '/')
 
@@ -792,6 +796,11 @@ async function verifyStaticPage({ path, title, lang = 'ru', ogLocale = 'ru_RU', 
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
+  if (path === '/ru/blog/') {
+    const article = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i)?.[1] || ''
+    const firstHref = article.match(/<a\b[^>]*href=["']([^"']+)["']/i)?.[1] || ''
+    assert(firstHref === '/karta-postov-telegram/', `${path}: first static fallback link should be /karta-postov-telegram/, got ${firstHref || '<empty>'}`)
+  }
   assert(html.includes(`<title>${title}</title>`), `${path}: title mismatch`)
   assert(readHtmlLang(html) === lang, `${path}: html lang mismatch`)
   assert(readMeta(html, 'og:locale') === ogLocale, `${path}: og:locale mismatch`)

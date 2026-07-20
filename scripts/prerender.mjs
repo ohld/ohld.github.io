@@ -177,11 +177,19 @@ function importedArticleAlternates(pathname, lang) {
   return alternates
 }
 
+const TELEGRAM_MAP_FALLBACK_ITEM = {
+  path: '/karta-postov-telegram/',
+  title: 'Карта моих постов в Telegram',
+  description: 'Интерактивная карта 1 556 постов @danokhlopkov за 2020–2026 годы: темы, связи, поиск и эволюция интересов.',
+}
+
 const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 > AI-native аналитика, on-chain данные, Telegram и агентские workflow. Здесь свежие тексты про инструменты, эксперименты и рабочие схемы. Бэкграунд, опыт и ссылки — на странице [обо мне](/about/).
 
 ## Свежие материалы
+
+- [Карта моих постов в Telegram](/karta-postov-telegram/)
 
 ![Мой AI-сетап 2026](/assets/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/phone-agent-meme.webp)
 
@@ -746,7 +754,7 @@ function assignCollectionFallbackMarkdown() {
   const fallbacks = new Map([
     ['ru-blog', collectionMarkdown({
       intro: 'Рабочие заметки про AI-агентов, инструменты, контекст и рабочие флоу.',
-      items: generatedRuBlog,
+      items: [TELEGRAM_MAP_FALLBACK_ITEM, ...generatedRuBlog],
     })],
     ['ru-articles', collectionMarkdown({
       intro: 'Гайды, сравнения и старые полезные статьи. Канонические URL сохраняются, даже если материал приехал из старого блога.',
@@ -1656,7 +1664,7 @@ for (const r of REDIRECTS) {
   <meta name="description" content="${escape(redirectDescription)}" />
   <link rel="canonical" href="${targetUrl}" />
 ${alternateTags ? `${alternateTags}\n` : ''}${robotsMeta}  <meta http-equiv="refresh" content="0; url=${r.to}" />
-  <script>window.location.replace(${JSON.stringify(r.to)})</script>
+  <script>window.location.replace(${JSON.stringify(r.to)} + window.location.search + window.location.hash)</script>
 </head>
 <body>
   <p>Эта страница переехала на <a href="${r.to}">${r.to}</a></p>

@@ -34,9 +34,9 @@ const viewports = [
 ]
 
 const clickChecks = [
-  { start: '/ru/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'blog first card' },
+  { start: '/ru/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'blog first card', expectedHref: '/karta-postov-telegram/', expectedThumbnail: '/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp' },
   { start: '/en/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'en blog first card' },
-  { start: '/', selector: '.home-latest-section .article-preview-hitarea', label: 'home latest card' },
+  { start: '/', selector: '.home-latest-section .article-preview-hitarea', label: 'home latest card', expectedHref: '/karta-postov-telegram/', expectedThumbnail: '/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp' },
   { start: '/en/', selector: '.home-latest-section .article-preview-hitarea', label: 'en home latest card' },
   { start: '/', selector: '.page-header-bio a', label: 'home about link' },
 ]
@@ -205,6 +205,7 @@ async function main() {
       await page.goto(`${baseUrl}${check.start}`, { waitUntil: 'domcontentloaded', timeout: 15000 })
       const link = page.locator(check.selector).first()
       const href = await link.getAttribute('href')
+      const thumbnail = await link.evaluate((element) => element.closest('.article-preview-card, .blog-card')?.querySelector('img')?.getAttribute('src') || '')
       await link.click()
       await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {})
       await page.waitForFunction(() => {
@@ -225,11 +226,36 @@ async function main() {
         viewport: viewport.name,
         route: `${check.start} click:${check.label}`,
         expectedCanonical: href ? expectedCanonicalForUrl(href) : '',
+        clickedHref: href || '',
+        clickedThumbnail: thumbnail,
+        expectedHref: check.expectedHref || '',
+        expectedThumbnail: check.expectedThumbnail || '',
         status: 200,
         errors: [...errors],
         ...data,
       })
     }
+
+    errors.length = 0
+    await page.goto(`${baseUrl}/telegram-map/?post=1718#legacy-deep-link`, { waitUntil: 'networkidle', timeout: 15000 })
+    await page.waitForURL('**/karta-postov-telegram/?post=1718#legacy-deep-link', { timeout: 5000 })
+    results.push({
+      viewport: viewport.name,
+      route: '/telegram-map/?post=1718#legacy-deep-link redirect',
+      expectedCanonical: `${siteUrl}/karta-postov-telegram/`,
+      expectedFinalUrl: `${baseUrl}/karta-postov-telegram/?post=1718#legacy-deep-link`,
+      finalUrl: page.url(),
+      status: 200,
+      errors: [...errors],
+      title: await page.title(),
+      canonical: await page.locator('link[rel="canonical"]').getAttribute('href') || '',
+      robots: await page.locator('meta[name="robots"]').getAttribute('content') || '',
+      bodyChars: (await page.locator('body').innerText()).trim().length,
+      hasHeader: Boolean(await page.locator('.site-header').count()),
+      hasFooter: Boolean(await page.locator('.footer').count()),
+      overflowX: await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
+      headerMainOverlap: false,
+    })
 
     for (const check of codeBlockChecks) {
       errors.length = 0
@@ -286,6 +312,9 @@ async function main() {
     if (result.heroImageCount && result.brokenHeroImages) issues.push(`broken hero images ${result.brokenHeroImages}`)
     if (result.expectedCodeBlocks && result.codeBlocks < result.expectedCodeBlocks) issues.push(`code blocks ${result.codeBlocks || 0} < ${result.expectedCodeBlocks}`)
     if (result.expectedCodeBlocks && result.copyButtons < result.expectedCodeBlocks) issues.push(`copy buttons ${result.copyButtons || 0} < ${result.expectedCodeBlocks}`)
+    if (result.expectedHref && result.clickedHref !== result.expectedHref) issues.push(`first-card href ${result.clickedHref || '<empty>'} != ${result.expectedHref}`)
+    if (result.expectedThumbnail && result.clickedThumbnail !== result.expectedThumbnail) issues.push(`first-card thumbnail ${result.clickedThumbnail || '<empty>'} != ${result.expectedThumbnail}`)
+    if (result.expectedFinalUrl && result.finalUrl !== result.expectedFinalUrl) issues.push(`redirect URL ${result.finalUrl || '<empty>'} != ${result.expectedFinalUrl}`)
     if (result.canonical !== expected) issues.push(`canonical ${result.canonical || '<empty>'} != ${expected}`)
     if (!['index, follow', 'noindex, follow'].includes(result.robots)) issues.push(`robots ${result.robots || '<empty>'}`)
     const shell = languageShellExpectations[canonicalPath(result.route)]
