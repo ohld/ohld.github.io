@@ -42,6 +42,18 @@ async function assertMapLabels(page, expectedCount) {
   }
 }
 
+async function mapLabelPositions(page) {
+  const entries = await page.locator('.atlas-map-label').evaluateAll(elements => {
+    const canvas = document.querySelector('.atlas-canvas-wrap')?.getBoundingClientRect()
+    if (!canvas) return []
+    return elements.map(element => {
+      const box = element.getBoundingClientRect()
+      return [element.textContent || '', { left: box.left - canvas.left, top: box.top - canvas.top }]
+    })
+  })
+  return Object.fromEntries(entries)
+}
+
 async function assertPinchZoomsMap(page, canvas, canvasBox) {
   const session = await page.context().newCDPSession(page)
   const centerX = canvasBox.x + canvasBox.width / 2
@@ -216,7 +228,7 @@ try {
       const careerContext = page.locator('.atlas-career-context')
       await careerContext.waitFor()
       assert.equal(await careerContext.getAttribute('data-career-companies'), '')
-      assert.match(await careerContext.textContent(), /Между ролями.*Нет активной должности по LinkedIn/, 'playback must not stretch Sweatcoin into the 2020 career gap')
+      assert.match(await page.locator('.atlas-career-context').textContent(), /Работа.*Между ролями/, 'playback must not stretch Sweatcoin into the 2020 career gap')
       const scrubber = page.locator('.atlas-timeline input[type="range"]')
       await scrubber.scrollIntoViewIfNeeded()
       let scrubberBox = await scrubber.boundingBox()
@@ -258,6 +270,21 @@ try {
       const pausedDate = await page.locator('.atlas-playback-date').textContent()
       await page.waitForTimeout(400)
       assert.equal(await page.locator('.atlas-playback-date').textContent(), pausedDate, 'playback date must stop while paused')
+      await scrubber.fill('350')
+      await page.waitForTimeout(100)
+      const earlyPlaybackLabels = await mapLabelPositions(page)
+      assert.ok(Object.keys(earlyPlaybackLabels).length > 0, 'early playback must expose at least one topic label')
+      await scrubber.fill('700')
+      await page.waitForTimeout(100)
+      const laterPlaybackLabels = await mapLabelPositions(page)
+      for (const [label, position] of Object.entries(earlyPlaybackLabels)) {
+        assert.ok(laterPlaybackLabels[label], `${label} must remain visible after it first appears during playback`)
+        assert.ok(
+          Math.abs(laterPlaybackLabels[label].left - position.left) <= 0.5
+            && Math.abs(laterPlaybackLabels[label].top - position.top) <= 0.5,
+          `${label} must keep a stable playback position: ${JSON.stringify(position)} -> ${JSON.stringify(laterPlaybackLabels[label])}`,
+        )
+      }
       await scrubber.scrollIntoViewIfNeeded()
       scrubberBox = await scrubber.boundingBox()
       assert.ok(scrubberBox, 'timeline scrubber must have bounds')
@@ -274,7 +301,12 @@ try {
       assert.equal(await insights.getAttribute('data-window-months'), '6')
       assert.equal(await insights.getAttribute('data-leading-topic'), 'AI-инструменты и контент')
       assert.equal(await insights.getAttribute('data-career-companies'), 'TON Foundation')
-      assert.equal(await insights.locator('.atlas-insight-card').count(), 3, 'playback must explain leading topics, strongest shift, and current role')
+      assert.deepEqual(
+        await insights.locator('.atlas-insight-card').evaluateAll(elements => elements.map(element => element.getAttribute('data-insight'))),
+        ['career', 'leading'],
+        'playback context must show work first and the leading topic second',
+      )
+      assert.doesNotMatch(await insights.textContent(), /Рост|п\.п\./, 'playback context must omit growth in percentage points')
       await page.locator('.atlas-map-block').screenshot({ path: `${artifacts}/telegram-map-v3-playback-desktop.png` })
       await page.locator('.atlas-history-button').click()
       assert.equal(await canvas.getAttribute('data-playback-active'), 'false', 'all-history action must exit playback mode')
@@ -295,13 +327,24 @@ try {
         const card = element.closest('.atlas-insight-card')?.getBoundingClientRect()
         return { text: element.textContent || '', width: metric.width, left: metric.left, right: metric.right, cardLeft: card?.left || 0, cardRight: card?.right || 0 }
       }))
-      assert.equal(criticalMetrics.length, 2, 'mobile insights must expose topic share and growth delta')
+      assert.equal(criticalMetrics.length, 1, 'mobile insights must expose only the leading topic share')
       for (const metric of criticalMetrics) {
         assert.ok(metric.width > 0 && metric.left >= metric.cardLeft - 1 && metric.right <= metric.cardRight + 1, `critical mobile metric must not be clipped: ${JSON.stringify(metric)}`)
       }
-      const mobileWorkspaceBox = await page.locator('.atlas-workspace').boundingBox()
-      const mobilePanelBox = await page.locator('.atlas-lower-panel').boundingBox()
-      const mobileInsightsBox = await page.locator('.atlas-playback-insights').boundingBox()
+      const mobileLayout = await page.evaluate(() => {
+        const bounds = (selector) => {
+          const box = document.querySelector(selector)?.getBoundingClientRect()
+          return box ? { x: box.x, y: box.y, width: box.width, height: box.height } : null
+        }
+        return {
+          workspace: bounds('.atlas-workspace'),
+          panel: bounds('.atlas-lower-panel'),
+          insights: bounds('.atlas-playback-insights'),
+        }
+      })
+      const mobileWorkspaceBox = mobileLayout.workspace
+      const mobilePanelBox = mobileLayout.panel
+      const mobileInsightsBox = mobileLayout.insights
       assert.ok(mobileWorkspaceBox && mobilePanelBox && mobileInsightsBox, 'mobile map and lower panel must have bounds')
       assert.ok(
         mobilePanelBox.y >= mobileWorkspaceBox.y + mobileWorkspaceBox.height - 3,

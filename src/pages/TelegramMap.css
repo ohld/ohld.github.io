@@ -383,46 +383,51 @@ body.atlas-map-active {
 }
 
 .atlas-playback-insights {
-  display: flex;
+  display: grid;
   min-width: 0;
-  align-items: baseline;
   color: rgba(255, 255, 255, 0.62);
-  flex-wrap: wrap;
-  gap: 3px 14px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1px;
 }
 
 .atlas-insight-card {
-  display: inline-flex;
+  display: grid;
+  width: 100%;
   min-width: 0;
   align-items: baseline;
   font-size: 0.64rem;
   line-height: 1.35;
+  grid-template-columns: 44px minmax(0, 1fr);
   gap: 5px;
 }
 
 .atlas-insight-card:not(:last-child)::after {
-  margin-left: 9px;
-  color: rgba(255, 255, 255, 0.2);
-  content: '·';
+  display: none;
 }
 
 .atlas-insight-card small {
+  width: 44px;
   color: rgba(255, 255, 255, 0.38);
   font-family: var(--mono);
   font-size: 0.56rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
+  grid-column: 1;
 }
 
 .atlas-insight-card strong {
   display: inline-flex;
+  width: 100%;
   min-width: 0;
   align-items: center;
+  overflow: hidden;
   color: rgba(248, 248, 245, 0.9);
   font-size: 0.66rem;
   font-weight: 650;
   gap: 4px;
+  grid-column: 2;
+  white-space: nowrap;
 }
 
 .atlas-insight-card strong i {
@@ -443,14 +448,25 @@ body.atlas-map-active {
   white-space: nowrap;
 }
 
-.atlas-insight-value {
+.atlas-insight-value,
+.atlas-insight-context {
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.atlas-insight-card > span {
+.atlas-insight-card strong em {
+  flex: 0 0 auto;
+}
+
+.atlas-career-context .atlas-insight-value {
+  flex: 0 0 auto;
+}
+
+.atlas-insight-context {
   color: rgba(255, 255, 255, 0.42);
   font-size: 0.6rem;
-  white-space: nowrap;
 }
 
 .atlas-map-labels {
@@ -796,28 +812,17 @@ body.atlas-map-active {
 
   .atlas-insight-card strong {
     width: 100%;
-    overflow: visible;
+    overflow: hidden;
     font-size: 0.62rem;
     grid-column: 2;
     white-space: nowrap;
   }
 
-  .atlas-insight-value {
+  .atlas-insight-value,
+  .atlas-insight-context {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .atlas-insight-card > span {
-    grid-column: 2;
-    overflow: hidden;
-    font-size: 0.56rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .atlas-insight-card[data-insight='leading'] > span {
-    display: none;
   }
 
   .atlas-detail {

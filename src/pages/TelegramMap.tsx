@@ -40,7 +40,7 @@ type TopicLabelAnchor = AtlasTopic & { x: number; y: number }
 type PositionedTopicLabel = TopicLabelAnchor & { left: number; top: number }
 type RadiusScale = { low: number; high: number; minRadius: number; maxRadius: number; exponent: number }
 type CareerRole = { company: string; role: string; start: number; end: number }
-type TopicWindowStat = AtlasTopic & { count: number; share: number; previousShare: number; delta: number }
+type TopicWindowStat = AtlasTopic & { count: number; share: number }
 
 const DATA_URL = '/data/telegram-atlas.json'
 const TELEGRAM_CHANNEL = 'danokhlopkov'
@@ -169,6 +169,7 @@ function AtlasCanvas({
   const redrawFrameRef = useRef<number | null>(null)
   const [size, setSize] = useState<CanvasSize>({ width: 1, height: 1, dpr: 1 })
   const [viewVersion, setViewVersion] = useState(0)
+  const [playbackLabelIds, setPlaybackLabelIds] = useState<string[]>([])
 
   const queueRedraw = useCallback(() => {
     if (redrawFrameRef.current !== null) return
@@ -186,7 +187,22 @@ function AtlasCanvas({
   const postsById = useMemo(() => new Map(allPosts.map(post => [post.id, post])), [allPosts])
   const visibleIds = useMemo(() => new Set(visiblePosts.map(post => post.id)), [visiblePosts])
   const pointScale = useMemo(() => radiusScale(allPosts), [allPosts])
-  const labelAnchors = useMemo(() => topicLabelAnchors(visiblePosts, topics), [topics, visiblePosts])
+  const visibleLabelAnchors = useMemo(() => topicLabelAnchors(visiblePosts, topics), [topics, visiblePosts])
+  const stableLabelAnchors = useMemo(() => topicLabelAnchors(allPosts, topics), [allPosts, topics])
+  const visibleLabelKey = useMemo(() => visibleLabelAnchors.map(label => label.id).sort().join('|'), [visibleLabelAnchors])
+
+  useEffect(() => {
+    setPlaybackLabelIds(current => {
+      if (!playbackActive) return current.length ? [] : current
+      const next = new Set(current)
+      if (visibleLabelKey) visibleLabelKey.split('|').forEach(id => next.add(id))
+      if (next.size === current.length) return current
+      return [...next].sort()
+    })
+  }, [playbackActive, visibleLabelKey])
+
+  const playbackLabelIdSet = useMemo(() => new Set(playbackLabelIds), [playbackLabelIds])
+  const placementAnchors = playbackActive ? stableLabelAnchors : visibleLabelAnchors
 
   const screenCoordinates = useCallback((x: number, y: number, view = viewRef.current) => {
     const padding = 30
@@ -490,11 +506,11 @@ function AtlasCanvas({
         [-88, -distance], [88, -distance], [-88, distance], [88, distance],
       )
     }
-    const orderedAnchors = [...labelAnchors].sort((left, right) => (
+    const orderedAnchors = [...placementAnchors].sort((left, right) => (
       right.label.length - left.label.length || left.id.localeCompare(right.id)
     ))
 
-    return orderedAnchors.map<PositionedTopicLabel>(anchor => {
+    const placedLabels = orderedAnchors.map<PositionedTopicLabel>(anchor => {
       const point = screenCoordinates(anchor.x, anchor.y)
       const measuredText = measureContext?.measureText(anchor.label).width ?? anchor.label.length * 6.5
       const width = Math.min(208, Math.ceil(measuredText) + 16)
@@ -537,7 +553,11 @@ function AtlasCanvas({
 
       return { ...anchor, left: -width, top: -height }
     })
-  }, [labelAnchors, screenCoordinates, size.height, size.width, viewVersion])
+
+    return playbackActive
+      ? placedLabels.filter(label => playbackLabelIdSet.has(label.id))
+      : placedLabels
+  }, [placementAnchors, playbackActive, playbackLabelIdSet, screenCoordinates, size.height, size.width, viewVersion])
 
   return (
     <div className="atlas-canvas-wrap" ref={wrapperRef}>
@@ -706,7 +726,6 @@ export function TelegramMap() {
   const timelineEndYear = new Date(timelineBounds.max).getUTCFullYear()
   const effectivePlayhead = Math.max(timelineBounds.min, Math.min(timelineBounds.max, playheadMs ?? timelineBounds.max))
   const playbackWindowStart = subtractMonths(effectivePlayhead, PLAYBACK_WINDOW_MONTHS)
-  const previousWindowStart = subtractMonths(playbackWindowStart, PLAYBACK_WINDOW_MONTHS)
   const activeCareer = useMemo(() => {
     const companies = new Set<string>()
     return CAREER_ROLES.filter(item => item.start <= effectivePlayhead && effectivePlayhead < item.end)
@@ -720,31 +739,21 @@ export function TelegramMap() {
   const windowTopicStats = useMemo<TopicWindowStat[]>(() => {
     if (!data) return []
     const currentCounts = new Map<string, number>()
-    const previousCounts = new Map<string, number>()
     let currentTotal = 0
-    let previousTotal = 0
     for (const post of data.posts) {
       const time = postTime(post)
       if (time >= playbackWindowStart && time <= effectivePlayhead) {
         currentCounts.set(post.topic, (currentCounts.get(post.topic) || 0) + 1)
         currentTotal += 1
-      } else if (time >= previousWindowStart && time < playbackWindowStart) {
-        previousCounts.set(post.topic, (previousCounts.get(post.topic) || 0) + 1)
-        previousTotal += 1
       }
     }
     return data.topics.map(item => {
       const count = currentCounts.get(item.id) || 0
       const share = currentTotal ? count / currentTotal * 100 : 0
-      const previousShare = previousTotal ? (previousCounts.get(item.id) || 0) / previousTotal * 100 : 0
-      return { ...item, count, share, previousShare, delta: share - previousShare }
+      return { ...item, count, share }
     }).sort((left, right) => right.share - left.share || right.count - left.count)
-  }, [data, effectivePlayhead, playbackWindowStart, previousWindowStart])
+  }, [data, effectivePlayhead, playbackWindowStart])
   const leadingTopic = windowTopicStats.find(item => item.count > 0)
-  const secondTopic = windowTopicStats.filter(item => item.count > 0)[1]
-  const growingTopic = [...windowTopicStats]
-    .filter(item => item.count >= 2 && item.delta > 0.5)
-    .sort((left, right) => right.delta - left.delta)[0]
 
   useEffect(() => {
     playheadRef.current = playheadMs
@@ -969,35 +978,24 @@ export function TelegramMap() {
                   data-leading-topic={leadingTopic.label}
                   data-career-companies={careerCompanies}
                 >
-                  <article className="atlas-insight-card" data-insight="leading">
-                    <small>Фокус</small>
-                    <strong>
-                      <i style={{ '--topic-color': leadingTopic.color } as React.CSSProperties} />
-                      <span className="atlas-insight-value">{leadingTopic.label}</span>
-                      <em>{Math.round(leadingTopic.share)}%</em>
-                    </strong>
-                    <span>{secondTopic ? `ещё ${secondTopic.label} · ${Math.round(secondTopic.share)}%` : 'мало данных'}</span>
-                  </article>
-                  <article className="atlas-insight-card" data-insight="growth">
-                    <small>Рост</small>
-                    {growingTopic ? (
-                      <strong>
-                        <i style={{ '--topic-color': growingTopic.color } as React.CSSProperties} />
-                        <span className="atlas-insight-value">{growingTopic.label}</span>
-                        <em>+{growingTopic.delta.toFixed(1)} п.п.</em>
-                      </strong>
-                    ) : (
-                      <strong>Недостаточно данных</strong>
-                    )}
-                  </article>
                   <article
                     className="atlas-insight-card atlas-career-context"
                     data-insight="career"
                     data-career-companies={careerCompanies}
                   >
                     <small>Работа</small>
-                    <strong><span className="atlas-insight-value">{careerCompanies || 'Между ролями'}</span></strong>
-                    <span>{activeCareer.map(item => item.role).join(' + ') || 'Нет активной должности по LinkedIn'}</span>
+                    <strong>
+                      <span className="atlas-insight-value">{careerCompanies || 'Между ролями'}</span>
+                      {activeCareer.length > 0 && <span className="atlas-insight-context">· {activeCareer.map(item => item.role).join(' + ')}</span>}
+                    </strong>
+                  </article>
+                  <article className="atlas-insight-card" data-insight="leading">
+                    <small>Тема</small>
+                    <strong>
+                      <i style={{ '--topic-color': leadingTopic.color } as React.CSSProperties} />
+                      <span className="atlas-insight-value">{leadingTopic.label}</span>
+                      <em>{Math.round(leadingTopic.share)}%</em>
+                    </strong>
                   </article>
                 </section>
               ) : !timelineActive ? (
