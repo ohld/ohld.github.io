@@ -39,6 +39,8 @@ type CanvasSize = { width: number; height: number; dpr: number }
 type TopicLabelAnchor = AtlasTopic & { x: number; y: number }
 type PositionedTopicLabel = TopicLabelAnchor & { left: number; top: number }
 type RadiusScale = { low: number; high: number; minRadius: number; maxRadius: number; exponent: number }
+type CareerRole = { company: string; role: string; start: number; end: number }
+type TopicWindowStat = AtlasTopic & { count: number; share: number; previousShare: number; delta: number }
 
 const DATA_URL = '/data/telegram-atlas.json'
 const TELEGRAM_CHANNEL = 'danokhlopkov'
@@ -49,6 +51,17 @@ const PLAYBACK_FRAME_INTERVAL_MS = 70
 const dateFormatter = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })
 const monthFormatter = new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' })
 const numberFormatter = new Intl.NumberFormat('ru-RU', { notation: 'compact', maximumFractionDigits: 1 })
+const CAREER_ROLES: CareerRole[] = [
+  { company: 'TON Foundation', role: 'Head of Analytics', start: Date.parse('2025-09-01T00:00:00Z'), end: Date.parse('2100-01-01T00:00:00Z') },
+  { company: 'TON Foundation', role: 'Research Analyst', start: Date.parse('2024-12-01T00:00:00Z'), end: Date.parse('2025-11-01T00:00:00Z') },
+  { company: 'sequel', role: 'Senior Data Scientist', start: Date.parse('2024-01-01T00:00:00Z'), end: Date.parse('2024-12-01T00:00:00Z') },
+  { company: 'Entrepreneur First', role: 'Founder In Residence', start: Date.parse('2023-09-01T00:00:00Z'), end: Date.parse('2024-01-01T00:00:00Z') },
+  { company: 'Via Protocol', role: 'Data Advisor', start: Date.parse('2023-03-01T00:00:00Z'), end: Date.parse('2023-06-01T00:00:00Z') },
+  { company: 'Via Protocol', role: 'Co-Founder, CTO', start: Date.parse('2021-08-01T00:00:00Z'), end: Date.parse('2023-04-01T00:00:00Z') },
+  { company: 'Runa Capital', role: 'Data Lead', start: Date.parse('2021-01-01T00:00:00Z'), end: Date.parse('2022-02-01T00:00:00Z') },
+  { company: 'Sweatcoin', role: 'Lead Data Scientist', start: Date.parse('2018-01-01T00:00:00Z'), end: Date.parse('2020-02-01T00:00:00Z') },
+  { company: 'Double Data', role: 'Data Scientist', start: Date.parse('2016-09-01T00:00:00Z'), end: Date.parse('2017-06-01T00:00:00Z') },
+]
 
 function postTime(post: AtlasPost) {
   return new Date(`${post.date.slice(0, 10)}T12:00:00Z`).getTime()
@@ -82,6 +95,15 @@ function pointRadius(post: AtlasPost, scale: RadiusScale) {
   const high = Math.log1p(scale.high)
   const normalized = Math.max(0, Math.min(1, (Math.log1p(Math.max(1, post.views)) - low) / Math.max(0.001, high - low)))
   return scale.minRadius + Math.pow(normalized, scale.exponent) * (scale.maxRadius - scale.minRadius)
+}
+
+function colorWithAlpha(color: string, alpha: number) {
+  const value = color.replace('#', '')
+  if (!/^[\da-f]{6}$/i.test(value)) return color
+  const red = Number.parseInt(value.slice(0, 2), 16)
+  const green = Number.parseInt(value.slice(2, 4), 16)
+  const blue = Number.parseInt(value.slice(4, 6), 16)
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`
 }
 
 function telegramPostDeepLink(postId: number) {
@@ -142,9 +164,8 @@ function AtlasCanvas({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const zoomControlsRef = useRef<HTMLDivElement>(null)
   const viewRef = useRef<View>({ scale: 1, x: 0, y: 0 })
-  const pointerRef = useRef<{ originX: number; originY: number; x: number; y: number; moved: boolean } | null>(null)
+  const pointersRef = useRef(new Map<number, { originX: number; originY: number; x: number; y: number; moved: boolean }>())
   const redrawFrameRef = useRef<number | null>(null)
   const [size, setSize] = useState<CanvasSize>({ width: 1, height: 1, dpr: 1 })
   const [viewVersion, setViewVersion] = useState(0)
@@ -221,7 +242,7 @@ function AtlasCanvas({
     }
 
     context.save()
-    context.lineWidth = 0.6
+    context.lineWidth = playbackActive ? 0.75 : 0.45
     for (const post of visiblePosts) {
       const neighbor = post.neighbors.find(item => visibleIds.has(item.id))
       if (!neighbor || post.id > neighbor.id) continue
@@ -229,43 +250,56 @@ function AtlasCanvas({
       if (!target) continue
       const originPoint = screenPoint(post)
       const targetPoint = screenPoint(target)
-      context.globalAlpha = playbackOpacity(post) * 0.095
-      context.strokeStyle = topicColors.get(post.topic) || '#8295ad'
+      const color = topicColors.get(post.topic) || '#8295ad'
+      context.globalAlpha = playbackActive
+        ? playbackOpacity(post) * (0.18 + neighbor.similarity * 0.12)
+        : 0.065
+      context.strokeStyle = color
       context.beginPath()
       context.moveTo(originPoint.x, originPoint.y)
       context.lineTo(targetPoint.x, targetPoint.y)
       context.stroke()
-    }
-    context.restore()
 
-    context.save()
-    context.filter = 'blur(13px)'
-    context.globalCompositeOperation = 'screen'
-    for (const post of visiblePosts) {
-      const point = screenPoint(post)
-      if (point.x < -30 || point.y < -30 || point.x > size.width + 30 || point.y > size.height + 30) continue
-      const radius = pointRadius(post, pointScale)
-      context.globalAlpha = playbackOpacity(post) * 0.2
-      context.fillStyle = topicColors.get(post.topic) || '#8295ad'
-      context.beginPath()
-      context.arc(point.x, point.y, radius * 2.6, 0, Math.PI * 2)
-      context.fill()
+      if (playbackActive) {
+        const flow = ((playheadMs / 1_400) + (post.id % 97) / 97) % 1
+        const flowX = originPoint.x + (targetPoint.x - originPoint.x) * flow
+        const flowY = originPoint.y + (targetPoint.y - originPoint.y) * flow
+        context.globalAlpha = playbackOpacity(post) * 0.72
+        context.fillStyle = color
+        context.beginPath()
+        context.arc(flowX, flowY, 1.35, 0, Math.PI * 2)
+        context.fill()
+      }
     }
     context.restore()
 
     for (const post of visiblePosts) {
       const point = screenPoint(post)
-      if (point.x < -15 || point.y < -15 || point.x > size.width + 15 || point.y > size.height + 15) continue
+      if (point.x < -24 || point.y < -24 || point.x > size.width + 24 || point.y > size.height + 24) continue
       const selectedPoint = post.id === selectedId
       const radius = pointRadius(post, pointScale) * Math.min(1.45, Math.sqrt(viewRef.current.scale))
+      const drawRadius = selectedPoint ? Math.max(10, radius * 1.45) : Math.max(2.5, radius * 1.65)
+      const color = topicColors.get(post.topic) || '#8295ad'
+      const gradient = context.createRadialGradient(
+        point.x - drawRadius * 0.22,
+        point.y - drawRadius * 0.24,
+        0,
+        point.x,
+        point.y,
+        drawRadius,
+      )
+      gradient.addColorStop(0, colorWithAlpha(color, 1))
+      gradient.addColorStop(0.38, colorWithAlpha(color, 0.92))
+      gradient.addColorStop(0.74, colorWithAlpha(color, 0.42))
+      gradient.addColorStop(1, colorWithAlpha(color, 0))
       context.globalAlpha = selectedPoint ? 1 : playbackOpacity(post)
-      context.fillStyle = topicColors.get(post.topic) || '#8295ad'
+      context.fillStyle = gradient
       context.beginPath()
-      context.arc(point.x, point.y, selectedPoint ? Math.max(8, radius + 2.5) : radius, 0, Math.PI * 2)
+      context.arc(point.x, point.y, drawRadius, 0, Math.PI * 2)
       context.fill()
       if (selectedPoint) {
         context.strokeStyle = '#FFFFFF'
-        context.lineWidth = 2.5
+        context.lineWidth = 2
         context.stroke()
       }
     }
@@ -332,36 +366,73 @@ function AtlasCanvas({
 
   const onPointerDown = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const point = pointerPosition(event)
-    pointerRef.current = { originX: point.x, originY: point.y, ...point, moved: false }
+    const pointers = pointersRef.current
+    pointers.set(event.pointerId, { originX: point.x, originY: point.y, ...point, moved: false })
+    if (pointers.size > 1) {
+      for (const pointer of pointers.values()) pointer.moved = true
+    }
     event.currentTarget.setPointerCapture(event.pointerId)
   }
 
   const onPointerMove = (event: React.PointerEvent<HTMLCanvasElement>) => {
-    const point = pointerPosition(event)
-    const pointer = pointerRef.current
+    const pointers = pointersRef.current
+    const pointer = pointers.get(event.pointerId)
     if (!pointer) return
-    const dx = point.x - pointer.x
-    const dy = point.y - pointer.y
+    const point = pointerPosition(event)
+    const before = [...pointers.values()].map(item => ({ x: item.x, y: item.y }))
+    pointer.x = point.x
+    pointer.y = point.y
+
+    if (pointers.size >= 2) {
+      const after = [...pointers.values()].map(item => ({ x: item.x, y: item.y }))
+      const previousDistance = Math.hypot(before[0].x - before[1].x, before[0].y - before[1].y)
+      const nextDistance = Math.hypot(after[0].x - after[1].x, after[0].y - after[1].y)
+      if (previousDistance > 0 && nextDistance > 0) {
+        const previousCenter = { x: (before[0].x + before[1].x) / 2, y: (before[0].y + before[1].y) / 2 }
+        const nextCenter = { x: (after[0].x + after[1].x) / 2, y: (after[0].y + after[1].y) / 2 }
+        const current = viewRef.current
+        const nextScale = Math.max(0.76, Math.min(5.5, current.scale * nextDistance / previousDistance))
+        const worldX = (previousCenter.x - current.x) / current.scale
+        const worldY = (previousCenter.y - current.y) / current.scale
+        viewRef.current = {
+          scale: nextScale,
+          x: nextCenter.x - worldX * nextScale,
+          y: nextCenter.y - worldY * nextScale,
+        }
+        queueRedraw()
+      }
+      return
+    }
+
+    const dx = point.x - before[0].x
+    const dy = point.y - before[0].y
     if (Math.hypot(point.x - pointer.originX, point.y - pointer.originY) > 5) pointer.moved = true
     if (pointer.moved) {
       viewRef.current.x += dx
       viewRef.current.y += dy
-      pointer.x = point.x
-      pointer.y = point.y
       queueRedraw()
     }
   }
 
-  const onPointerUp = (event: React.PointerEvent<HTMLCanvasElement>) => {
+  const releasePointer = (event: React.PointerEvent<HTMLCanvasElement>, allowSelection: boolean) => {
     const point = pointerPosition(event)
-    const pointer = pointerRef.current
-    if (pointer && !pointer.moved) {
+    const pointers = pointersRef.current
+    const pointer = pointers.get(event.pointerId)
+    if (allowSelection && pointers.size === 1 && pointer && !pointer.moved) {
       const id = findPost(point.x, point.y)
       if (id) onSelect(id)
     }
-    pointerRef.current = null
+    pointers.delete(event.pointerId)
+    for (const remaining of pointers.values()) {
+      remaining.originX = remaining.x
+      remaining.originY = remaining.y
+      remaining.moved = true
+    }
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId)
   }
+
+  const onPointerUp = (event: React.PointerEvent<HTMLCanvasElement>) => releasePointer(event, true)
+  const onPointerCancel = (event: React.PointerEvent<HTMLCanvasElement>) => releasePointer(event, false)
 
   const zoomAt = useCallback((factor: number, x = size.width / 2, y = size.height / 2) => {
     const current = viewRef.current
@@ -375,11 +446,6 @@ function AtlasCanvas({
     }
     queueRedraw()
   }, [queueRedraw, size.height, size.width])
-
-  const resetView = useCallback(() => {
-    viewRef.current = { scale: 1, x: 0, y: 0 }
-    queueRedraw()
-  }, [queueRedraw])
 
   useEffect(() => {
     const wrapper = wrapperRef.current
@@ -396,22 +462,23 @@ function AtlasCanvas({
     return () => wrapper.removeEventListener('wheel', handleWheel)
   }, [zoomAt])
 
+  useEffect(() => {
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
+    const containMapTouch = (event: TouchEvent) => {
+      const target = event.target
+      if (target instanceof Element && target.closest('.atlas-detail')) return
+      if (event.cancelable) event.preventDefault()
+    }
+    wrapper.addEventListener('touchmove', containMapTouch, { passive: false })
+    return () => wrapper.removeEventListener('touchmove', containMapTouch)
+  }, [])
+
   const positionedLabels = useMemo(() => {
     if (viewRef.current.scale > 2.8) return []
 
     type CollisionBox = { left: number; right: number; top: number; bottom: number }
-    const gap = 6
     const placed: CollisionBox[] = []
-    const wrapperBounds = wrapperRef.current?.getBoundingClientRect()
-    const controlsBounds = zoomControlsRef.current?.getBoundingClientRect()
-    if (wrapperBounds && controlsBounds) {
-      placed.push({
-        left: controlsBounds.left - wrapperBounds.left - gap,
-        right: controlsBounds.right - wrapperBounds.left + gap,
-        top: controlsBounds.top - wrapperBounds.top - gap,
-        bottom: controlsBounds.bottom - wrapperBounds.top + gap,
-      })
-    }
 
     const measureContext = document.createElement('canvas').getContext('2d')
     if (measureContext) measureContext.font = '650 11.2px system-ui, sans-serif'
@@ -434,8 +501,9 @@ function AtlasCanvas({
       const height = 22
 
       const tryPosition = (candidateX: number, candidateY: number): PositionedTopicLabel | null => {
+        const reservedTop = playbackActive ? (size.width <= 760 ? 214 : 104) : 7
         const left = Math.max(width / 2 + 8, Math.min(size.width - width / 2 - 8, candidateX))
-        const top = Math.max(height / 2 + 7, Math.min(size.height - height / 2 - 7, candidateY))
+        const top = Math.max(reservedTop + height / 2, Math.min(size.height - height / 2 - 7, candidateY))
         const box = {
           left: left - width / 2 - 3,
           right: left + width / 2 + 3,
@@ -469,7 +537,7 @@ function AtlasCanvas({
 
       return { ...anchor, left: -width, top: -height }
     })
-  }, [labelAnchors, screenCoordinates, size.height, size.width, viewVersion])
+  }, [labelAnchors, playbackActive, screenCoordinates, size.height, size.width, viewVersion])
 
   return (
     <div className="atlas-canvas-wrap" ref={wrapperRef}>
@@ -486,11 +554,14 @@ function AtlasCanvas({
         data-radius-low-views={pointScale.low}
         data-radius-high-views={pointScale.high}
         data-radius-exponent={pointScale.exponent}
+        data-point-rendering="radial-gradient"
+        data-layout-mode="fixed-semantic"
+        data-graph-mode={playbackActive ? 'similarity-flow' : 'static-neighbors'}
         data-playback-active={playbackActive}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        onPointerCancel={() => { pointerRef.current = null }}
+        onPointerCancel={onPointerCancel}
       />
       {positionedLabels.length > 0 && (
         <div className="atlas-map-labels" aria-hidden="true">
@@ -505,11 +576,6 @@ function AtlasCanvas({
           ))}
         </div>
       )}
-      <div className="atlas-zoom-controls" aria-label="Масштаб карты" ref={zoomControlsRef}>
-        <button type="button" onClick={() => zoomAt(1.14)} aria-label="Приблизить">+</button>
-        <button type="button" onClick={() => zoomAt(0.88)} aria-label="Отдалить">−</button>
-        <button type="button" onClick={resetView} aria-label="Сбросить масштаб">↺</button>
-      </div>
     </div>
   )
 }
@@ -620,6 +686,15 @@ export function TelegramMap() {
     return () => controller.abort()
   }, [])
 
+  useEffect(() => {
+    document.documentElement.classList.add('atlas-map-active')
+    document.body.classList.add('atlas-map-active')
+    return () => {
+      document.documentElement.classList.remove('atlas-map-active')
+      document.body.classList.remove('atlas-map-active')
+    }
+  }, [])
+
   const topicsById = useMemo(() => new Map((data?.topics || []).map(item => [item.id, item])), [data])
   const postsById = useMemo(() => new Map((data?.posts || []).map(item => [item.id, item])), [data])
   const years = useMemo(() => [...new Set((data?.posts || []).map(post => post.year))].sort((left, right) => right - left), [data])
@@ -630,6 +705,45 @@ export function TelegramMap() {
   }, [data])
   const effectivePlayhead = Math.max(timelineBounds.min, Math.min(timelineBounds.max, playheadMs ?? timelineBounds.max))
   const playbackWindowStart = subtractMonths(effectivePlayhead, PLAYBACK_WINDOW_MONTHS)
+  const previousWindowStart = subtractMonths(playbackWindowStart, PLAYBACK_WINDOW_MONTHS)
+  const activeCareer = useMemo(() => {
+    const companies = new Set<string>()
+    return CAREER_ROLES.filter(item => item.start <= effectivePlayhead && effectivePlayhead < item.end)
+      .filter(item => {
+        if (companies.has(item.company)) return false
+        companies.add(item.company)
+        return true
+      })
+  }, [effectivePlayhead])
+  const careerCompanies = activeCareer.map(item => item.company).join(' + ')
+  const windowTopicStats = useMemo<TopicWindowStat[]>(() => {
+    if (!data) return []
+    const currentCounts = new Map<string, number>()
+    const previousCounts = new Map<string, number>()
+    let currentTotal = 0
+    let previousTotal = 0
+    for (const post of data.posts) {
+      const time = postTime(post)
+      if (time >= playbackWindowStart && time <= effectivePlayhead) {
+        currentCounts.set(post.topic, (currentCounts.get(post.topic) || 0) + 1)
+        currentTotal += 1
+      } else if (time >= previousWindowStart && time < playbackWindowStart) {
+        previousCounts.set(post.topic, (previousCounts.get(post.topic) || 0) + 1)
+        previousTotal += 1
+      }
+    }
+    return data.topics.map(item => {
+      const count = currentCounts.get(item.id) || 0
+      const share = currentTotal ? count / currentTotal * 100 : 0
+      const previousShare = previousTotal ? (previousCounts.get(item.id) || 0) / previousTotal * 100 : 0
+      return { ...item, count, share, previousShare, delta: share - previousShare }
+    }).sort((left, right) => right.share - left.share || right.count - left.count)
+  }, [data, effectivePlayhead, playbackWindowStart, previousWindowStart])
+  const leadingTopic = windowTopicStats.find(item => item.count > 0)
+  const secondTopic = windowTopicStats.filter(item => item.count > 0)[1]
+  const growingTopic = [...windowTopicStats]
+    .filter(item => item.count >= 2 && item.delta > 0.5)
+    .sort((left, right) => right.delta - left.delta)[0]
 
   useEffect(() => {
     playheadRef.current = playheadMs
@@ -839,6 +953,49 @@ export function TelegramMap() {
               playbackWindowStart={playbackWindowStart}
               onSelect={selectPost}
             />
+            {timelineActive && leadingTopic && (
+              <section
+                className="atlas-playback-insights"
+                aria-label="Выводы за последние шесть месяцев"
+                data-window-months={PLAYBACK_WINDOW_MONTHS}
+                data-leading-topic={leadingTopic.label}
+                data-career-companies={careerCompanies}
+              >
+                <article className="atlas-insight-card" data-insight="leading">
+                  <small>Главные темы · 6 месяцев</small>
+                  <strong>
+                    <i style={{ '--topic-color': leadingTopic.color } as React.CSSProperties} />
+                    {leadingTopic.label}
+                    <em>{Math.round(leadingTopic.share)}%</em>
+                  </strong>
+                  <span>{secondTopic ? `Ещё: ${secondTopic.label} · ${Math.round(secondTopic.share)}%` : 'Пока мало данных'}</span>
+                </article>
+                <article className="atlas-insight-card" data-insight="growth">
+                  <small>Сильнее всего выросло</small>
+                  {growingTopic ? (
+                    <>
+                      <strong>
+                        <i style={{ '--topic-color': growingTopic.color } as React.CSSProperties} />
+                        {growingTopic.label}
+                        <em>+{growingTopic.delta.toFixed(1)} п.п.</em>
+                      </strong>
+                      <span>против предыдущих 6 месяцев</span>
+                    </>
+                  ) : (
+                    <><strong>Недостаточно данных</strong><span>для сравнения периодов</span></>
+                  )}
+                </article>
+                <article
+                  className="atlas-insight-card atlas-career-context"
+                  data-insight="career"
+                  data-career-companies={careerCompanies}
+                >
+                  <small>В это время</small>
+                  <strong>{careerCompanies || 'Между ролями'}</strong>
+                  <span>{activeCareer.map(item => item.role).join(' + ') || 'Нет активной должности по LinkedIn'}</span>
+                </article>
+              </section>
+            )}
             <PostPanel
               post={activePost}
               topicsById={topicsById}

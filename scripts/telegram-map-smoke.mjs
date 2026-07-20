@@ -24,17 +24,14 @@ const boxesOverlap = (left, right) => (
 async function assertMapLabels(page, expectedCount) {
   await page.waitForFunction(count => document.querySelectorAll('.atlas-map-label').length === count, expectedCount)
   const canvasBox = await page.locator('.atlas-canvas-wrap').boundingBox()
-  const zoomBox = await page.locator('.atlas-zoom-controls').boundingBox()
   const labelBoxes = await page.locator('.atlas-map-label').evaluateAll(elements => elements.map(element => {
     const box = element.getBoundingClientRect()
     return { text: element.textContent || '', left: box.left, right: box.right, top: box.top, bottom: box.bottom }
   }))
-  assert.ok(canvasBox && zoomBox, 'map and zoom controls must have bounds')
-  const zoom = { left: zoomBox.x, right: zoomBox.x + zoomBox.width, top: zoomBox.y, bottom: zoomBox.y + zoomBox.height }
+  assert.ok(canvasBox, 'map must have bounds')
   for (const label of labelBoxes) {
     assert.ok(label.left >= canvasBox.x && label.right <= canvasBox.x + canvasBox.width, `${label.text} must fit horizontally inside the map`)
     assert.ok(label.top >= canvasBox.y && label.bottom <= canvasBox.y + canvasBox.height, `${label.text} must fit vertically inside the map`)
-    assert.equal(boxesOverlap(label, zoom), false, `${label.text} must not overlap zoom controls`)
   }
   for (let leftIndex = 0; leftIndex < labelBoxes.length; leftIndex += 1) {
     for (let rightIndex = leftIndex + 1; rightIndex < labelBoxes.length; rightIndex += 1) {
@@ -43,6 +40,50 @@ async function assertMapLabels(page, expectedCount) {
       assert.equal(boxesOverlap(left, right), false, `map labels must not overlap: ${JSON.stringify(left)} / ${JSON.stringify(right)}`)
     }
   }
+}
+
+async function assertLabelsAvoid(page, obstacleSelector) {
+  const obstacle = await page.locator(obstacleSelector).boundingBox()
+  assert.ok(obstacle, `${obstacleSelector} must have bounds`)
+  const obstacleBox = {
+    left: obstacle.x,
+    right: obstacle.x + obstacle.width,
+    top: obstacle.y,
+    bottom: obstacle.y + obstacle.height,
+  }
+  const labelBoxes = await page.locator('.atlas-map-label').evaluateAll(elements => elements.map(element => {
+    const box = element.getBoundingClientRect()
+    return { text: element.textContent || '', left: box.left, right: box.right, top: box.top, bottom: box.bottom }
+  }))
+  for (const label of labelBoxes) {
+    assert.equal(boxesOverlap(label, obstacleBox), false, `${label.text} must not overlap ${obstacleSelector}`)
+  }
+}
+
+async function assertPinchZoomsMap(page, canvas, canvasBox) {
+  const session = await page.context().newCDPSession(page)
+  const centerX = canvasBox.x + canvasBox.width / 2
+  const centerY = canvasBox.y + Math.min(canvasBox.height / 2, 220)
+  const scaleBefore = Number(await canvas.getAttribute('data-view-scale'))
+  await session.send('Input.dispatchTouchEvent', {
+    type: 'touchStart',
+    touchPoints: [
+      { id: 1, x: centerX - 28, y: centerY },
+      { id: 2, x: centerX + 28, y: centerY },
+    ],
+  })
+  await session.send('Input.dispatchTouchEvent', {
+    type: 'touchMove',
+    touchPoints: [
+      { id: 1, x: centerX - 66, y: centerY },
+      { id: 2, x: centerX + 66, y: centerY },
+    ],
+  })
+  await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
+  await page.waitForTimeout(160)
+  const scaleAfter = Number(await canvas.getAttribute('data-view-scale'))
+  assert.ok(scaleAfter > scaleBefore * 1.25, `pinch-out must increase map scale, got ${scaleBefore} -> ${scaleAfter}`)
+  await session.detach()
 }
 
 try {
@@ -62,7 +103,7 @@ try {
     { name: 'mobile-375', width: 375, height: 667 },
     { name: 'mobile', width: 390, height: 844 },
   ]) {
-    const page = await browser.newPage({ viewport })
+    const page = await browser.newPage({ viewport, hasTouch: viewport.name.startsWith('mobile') })
     const errors = []
     page.on('console', message => {
       if (message.type() === 'error') errors.push(message.text())
@@ -80,6 +121,12 @@ try {
     assert.equal(await page.locator('.atlas-topic-filters button').count(), 13, 'all-topics plus twelve topic buttons must be visible')
     assert.equal(await page.locator('.atlas-play-button').count(), 1, 'timeline play control must be visible')
     assert.equal(await page.locator('.atlas-timeline input[type="range"]').count(), 1, 'timeline scrubber must be visible')
+    assert.equal(await page.locator('.atlas-zoom-controls').count(), 0, 'zoom/reset buttons must be removed from the map')
+    assert.equal(await canvas.getAttribute('data-point-rendering'), 'radial-gradient', 'posts must render as one radial gradient instead of a solid dot plus halo')
+    assert.equal(await canvas.getAttribute('data-layout-mode'), 'fixed-semantic', 'playback must preserve a stable semantic geography')
+    assert.equal(await canvas.getAttribute('data-graph-mode'), 'static-neighbors', 'all-history mode must keep graph edges quiet')
+    assert.equal(await page.locator('.atlas-career-context').count(), 0, 'career context must stay hidden outside timeline mode')
+    assert.equal(await page.locator('.atlas-playback-insights').count(), 0, 'playback insights must stay hidden outside timeline mode')
     if (viewport.name === 'desktop') {
       const topicGeometry = await page.locator('.atlas-topic-filters').evaluate(element => ({
         clientWidth: element.clientWidth,
@@ -123,6 +170,12 @@ try {
     await page.waitForTimeout(100)
     const canvasBox = await page.locator('.atlas-canvas-wrap').boundingBox()
     assert.ok(canvasBox, 'canvas must have bounds')
+    const touchMovePrevented = await canvas.evaluate(element => {
+      const event = new Event('touchmove', { bubbles: true, cancelable: true })
+      element.dispatchEvent(event)
+      return event.defaultPrevented
+    })
+    assert.equal(touchMovePrevented, true, 'cancelable touchmove over the canvas must be contained inside the map')
     const scrollBefore = await page.evaluate(() => window.scrollY)
     const scaleBefore = Number(await canvas.getAttribute('data-view-scale'))
     await page.mouse.move(canvasBox.x + canvasBox.width / 2, canvasBox.y + Math.min(canvasBox.height / 2, viewport.height / 3))
@@ -134,18 +187,7 @@ try {
     assert.notEqual(scaleAfter, scaleBefore, 'wheel over map must adjust map scale')
     await assertMapLabels(page, 12)
 
-    const controlsBox = await page.locator('.atlas-zoom-controls').boundingBox()
-    assert.ok(controlsBox, 'zoom controls must have bounds')
-    const controlsScrollBefore = await page.evaluate(() => window.scrollY)
-    const controlsScaleBefore = Number(await canvas.getAttribute('data-view-scale'))
-    await page.mouse.move(controlsBox.x + controlsBox.width / 2, controlsBox.y + controlsBox.height / 2)
-    await page.mouse.wheel(0, -80)
-    await page.waitForTimeout(160)
-    const controlsScrollAfter = await page.evaluate(() => window.scrollY)
-    const controlsScaleAfter = Number(await canvas.getAttribute('data-view-scale'))
-    assert.equal(controlsScrollAfter, controlsScrollBefore, 'wheel over map controls must not scroll the page')
-    assert.notEqual(controlsScaleAfter, controlsScaleBefore, 'wheel over map controls must still adjust map scale')
-    await page.getByRole('button', { name: 'Сбросить масштаб' }).click()
+    if (viewport.name === 'mobile-360') await assertPinchZoomsMap(page, canvas, canvasBox)
 
     const allPosts = Number(await canvas.getAttribute('data-total-posts'))
     await page.locator('.atlas-year-filters button[data-year="2022"]').click()
@@ -158,17 +200,44 @@ try {
       const dateBefore = await page.locator('.atlas-playback-date').textContent()
       await page.locator('.atlas-play-button').click()
       await page.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.playbackActive === 'true')
+      assert.equal(await canvas.getAttribute('data-graph-mode'), 'similarity-flow', 'playback must animate the active similarity graph')
       await page.waitForTimeout(900)
       const dateAfter = await page.locator('.atlas-playback-date').textContent()
       assert.notEqual(dateAfter, dateBefore, 'playback date must advance while playing')
       const playbackPosts = Number(await canvas.getAttribute('data-visible-posts'))
       assert.ok(playbackPosts > 0 && playbackPosts < allPosts, `playback must show a moving time window, got ${playbackPosts}`)
+      const careerContext = page.locator('.atlas-career-context')
+      await careerContext.waitFor()
+      assert.equal(await careerContext.getAttribute('data-career-companies'), '')
+      assert.match(await careerContext.textContent(), /Между ролями.*Нет активной должности по LinkedIn/, 'playback must not stretch Sweatcoin into the 2020 career gap')
       await page.locator('.atlas-play-button').click()
       const pausedDate = await page.locator('.atlas-playback-date').textContent()
       await page.waitForTimeout(400)
       assert.equal(await page.locator('.atlas-playback-date').textContent(), pausedDate, 'playback date must stop while paused')
+      await page.locator('.atlas-timeline input[type="range"]').fill('1000')
+      const insights = page.locator('.atlas-playback-insights')
+      await insights.waitFor()
+      assert.equal(await insights.getAttribute('data-window-months'), '6')
+      assert.equal(await insights.getAttribute('data-leading-topic'), 'AI-инструменты и контент')
+      assert.equal(await insights.getAttribute('data-career-companies'), 'TON Foundation')
+      assert.equal(await insights.locator('.atlas-insight-card').count(), 3, 'playback must explain leading topics, strongest shift, and current role')
+      await assertLabelsAvoid(page, '.atlas-playback-insights')
+      await page.locator('.atlas-workspace').screenshot({ path: `${artifacts}/telegram-map-v3-playback-desktop.png` })
       await page.locator('.atlas-history-button').click()
       assert.equal(await canvas.getAttribute('data-playback-active'), 'false', 'all-history action must exit playback mode')
+      assert.equal(await page.locator('.atlas-career-context').count(), 0, 'career context must hide after returning to all history')
+      assert.equal(await page.locator('.atlas-playback-insights').count(), 0, 'insights must hide after returning to all history')
+    }
+
+    if (viewport.name === 'mobile') {
+      await page.locator('.atlas-play-button').click()
+      await page.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.playbackActive === 'true')
+      await page.locator('.atlas-play-button').click()
+      await page.locator('.atlas-timeline input[type="range"]').fill('1000')
+      await page.locator('.atlas-playback-insights').waitFor()
+      await assertLabelsAvoid(page, '.atlas-playback-insights')
+      await page.locator('.atlas-workspace').screenshot({ path: `${artifacts}/telegram-map-v3-playback-mobile.png` })
+      await page.locator('.atlas-history-button').click()
     }
 
     await page.locator('.atlas-search input').fill('настольный теннис')
