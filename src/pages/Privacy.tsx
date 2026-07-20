@@ -6,7 +6,7 @@ import { useDocumentMeta } from '../useDocumentMeta'
 export function Privacy() {
   useDocumentMeta({
     title: 'Privacy Policy — okhlopkov.com',
-    description: 'Privacy policy for okhlopkov.com and the personal Pinterest Content Ideas integration.',
+    description: 'Privacy policy for okhlopkov.com, including traffic analytics and external links.',
     canonical: absoluteUrl('/privacy/'),
     lang: 'en',
   })
@@ -16,72 +16,66 @@ export function Privacy() {
       <div className="subpage-header">
         <BackButton />
         <h1 className="subpage-title">Privacy Policy</h1>
-        <p className="subpage-subtitle">Effective date: May 25, 2026</p>
+        <p className="subpage-subtitle">Effective date: July 20, 2026</p>
       </div>
 
       <div className="info-card">
         <p>
-          This policy explains how okhlopkov.com and the personal Pinterest Content Ideas
-          integration handle data. The integration is intended for personal use by Daniil
-          Okhlopkov to read his own Pinterest boards and pins for private visual reference
-          workflows.
+          okhlopkov.com is a personal publishing website. It does not offer user accounts or
+          forms, and it does not ask visitors to submit personal information.
         </p>
       </div>
 
       <div className="section-label">
-        <span>Data Access</span>
+        <span>Analytics</span>
         <div className="section-label-line" />
       </div>
 
       <div className="info-card">
         <p>
-          If Pinterest authorization is used, the integration may read Pinterest account
-          identifiers, boards, pins, pin metadata, descriptions, links, and image URLs that
-          are available to the authorized Pinterest account.
-        </p>
-        <p style={{ marginTop: 12 }}>
-          The integration does not request permissions to create, update, or delete
-          Pinterest content.
+          To understand traffic and improve the site, okhlopkov.com uses{' '}
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">
+            Google Analytics
+          </a>
+          ,{' '}
+          <a href="https://yandex.com/legal/confidential/" target="_blank" rel="noreferrer">
+            Yandex Metrica
+          </a>
+          , and{' '}
+          <a
+            href="https://help.ahrefs.com/en/articles/10247870-about-ahrefs-web-analytics"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Ahrefs Web Analytics
+          </a>
+          . These services may receive technical and usage data such as browser and device
+          information, approximate location, pages visited, and referral source. Some
+          providers may use cookies or similar technologies under their own privacy policies.
         </p>
       </div>
 
       <div className="section-label">
-        <span>Use</span>
+        <span>Use of Data</span>
         <div className="section-label-line" />
       </div>
 
       <div className="info-card">
         <p>
-          Pinterest data is used to maintain a private visual moodboard, create local
-          reference manifests, and select inspiration for newly generated article visuals.
-          Source Pinterest images are treated as references, not as public assets for
-          redistribution.
+          Analytics data is used to understand site traffic, diagnose problems, and improve
+          content. Personal data is not sold.
         </p>
       </div>
 
       <div className="section-label">
-        <span>Storage</span>
+        <span>External Links</span>
         <div className="section-label-line" />
       </div>
 
       <div className="info-card">
         <p>
-          Reference data may be stored locally or in private systems controlled by Daniil
-          Okhlopkov. Raw Pinterest references, access tokens, and private manifests are not
-          intentionally published in the public okhlopkov.com repository.
-        </p>
-      </div>
-
-      <div className="section-label">
-        <span>Sharing</span>
-        <div className="section-label-line" />
-      </div>
-
-      <div className="info-card">
-        <p>
-          Pinterest data is not sold or shared with third parties. Final generated visuals
-          and articles may be published on okhlopkov.com, but they are created as new
-          content and reviewed before publication.
+          This site links to other websites and services. Their own privacy policies apply
+          when you visit them.
         </p>
       </div>
 
@@ -92,8 +86,15 @@ export function Privacy() {
 
       <div className="info-card">
         <p>
-          Questions about this policy can be sent via Telegram at <a href="https://t.me/+klIZiMe4w30zZTgy" target="_blank" rel="noopener noreferrer">@danokhlopkov</a> or through
-          the public contact links on okhlopkov.com.
+          Questions about this policy can be sent via Telegram at{' '}
+          <a
+            href="https://t.me/+klIZiMe4w30zZTgy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @danokhlopkov
+          </a>
+          .
         </p>
       </div>
 

@@ -273,7 +273,7 @@ const newStaticPages = [
   ['/articles/markdown-vs-html/', 'new_static_page', 'ru', 'Existing static article route moved under Articles'],
   ['/archive/', 'new_static_page', 'ru', 'Full material archive grouped by language, topic and year'],
   ['/telegram-map/', 'new_static_page', 'ru', 'Interactive semantic map of public Telegram posts'],
-  ['/privacy/', 'new_static_page', 'en', 'Privacy policy for Pinterest app review and site data practices'],
+  ['/privacy/', 'new_static_page', 'en', 'Privacy policy for site analytics and external links'],
   ...topicStaticPages,
 ]
 

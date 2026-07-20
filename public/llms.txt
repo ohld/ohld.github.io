@@ -46,7 +46,7 @@
 - [AI-инструменты для дизайнеров](https://okhlopkov.com/ru/articles/ai-tools-for-designers-design-engineering-agents/): design engineering, AI-assisted frontend, Paper/Figma-to-code и борьба с AI-slop
 - [Hermes Agent vs OpenClaw](https://okhlopkov.com/ru/articles/hermes-agent-vs-openclaw/): русское сравнение Hermes Agent и OpenClaw для Telegram, памяти, skills, cron и self-hosted agent workflows
 - [Markdown vs HTML для AI-агентов](https://okhlopkov.com/articles/markdown-vs-html/): когда агенту нужен HTML, а когда Markdown всё ещё выигрывает
-- [Privacy Policy](https://okhlopkov.com/privacy/): privacy policy for okhlopkov.com and the Pinterest Content Ideas integration
+- [Privacy Policy](https://okhlopkov.com/privacy/): privacy policy for okhlopkov.com analytics and external links
 
 ## Связаться
 

@@ -473,7 +473,7 @@ const ROUTES = [
     path: '/privacy',
     slug: 'privacy',
     title: 'Privacy Policy — okhlopkov.com',
-    description: 'Privacy policy for okhlopkov.com and the personal Pinterest Content Ideas integration.',
+    description: 'Privacy policy for okhlopkov.com, including traffic analytics and external links.',
     lang: 'en',
     alternates: {
       en: `${SITE_URL}/privacy/`,

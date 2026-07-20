@@ -1,24 +1,21 @@
 Privacy Policy for okhlopkov.com
-Effective date: May 25, 2026
+Effective date: July 20, 2026
 
-This policy explains how okhlopkov.com and the personal Pinterest Content Ideas integration handle data.
+okhlopkov.com is a personal publishing website. It does not offer user accounts or forms, and it does not ask visitors to submit personal information.
 
-The Pinterest Content Ideas integration is intended for personal use by Daniil Okhlopkov to read his own Pinterest boards and pins for private visual reference workflows.
+Analytics:
+To understand traffic and improve the site, okhlopkov.com uses Google Analytics, Yandex Metrica, and Ahrefs Web Analytics. These services may receive technical and usage data such as browser and device information, approximate location, pages visited, and referral source. Some providers may use cookies or similar technologies under their own privacy policies.
 
-Data accessed:
-- Pinterest account identifiers available to the authorized account.
-- Boards, pins, pin metadata, descriptions, links, and image URLs available to the authorized account.
+Provider policies:
+- Google: https://policies.google.com/privacy
+- Yandex: https://yandex.com/legal/confidential/
+- Ahrefs: https://help.ahrefs.com/en/articles/10247870-about-ahrefs-web-analytics
 
-The integration does not request permissions to create, update, or delete Pinterest content.
+Use of data:
+Analytics data is used to understand site traffic, diagnose problems, and improve content. Personal data is not sold.
 
-Use:
-Pinterest data is used to maintain a private visual moodboard, create local reference manifests, and select inspiration for newly generated article visuals. Source Pinterest images are treated as references, not as public assets for redistribution.
-
-Storage:
-Reference data may be stored locally or in private systems controlled by Daniil Okhlopkov. Raw Pinterest source packs, access tokens, and private manifests are not intentionally published in the public okhlopkov.com repository.
-
-Sharing:
-Pinterest data is not sold or shared with third parties. Final generated visuals and articles may be published on okhlopkov.com, but they are created as new content and reviewed before publication.
+External links:
+This site links to other websites and services. Their own privacy policies apply when you visit them.
 
 Contact:
-Questions about this policy can be sent via Telegram at @danokhlopkov or through the public contact links on okhlopkov.com.
+Questions about this policy can be sent via Telegram at https://t.me/+klIZiMe4w30zZTgy.
