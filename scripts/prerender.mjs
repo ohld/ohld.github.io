@@ -27,6 +27,7 @@ const LOCALIZED_GROUPS_PATH = path.join('content', 'articles', 'localized-groups
 const ARTICLE_SEO_ENHANCEMENTS_PATH = path.join('content', 'articles', 'seo-enhancements.json')
 const LEGACY_REDIRECTS_PATH = path.join('content', 'articles', 'legacy-redirects.json')
 const TOPIC_HUBS_PATH = path.join('content', 'topic-hubs.json')
+const HOME_IMAGE_PRELOAD = '    <link rel="preload" as="image" href="/assets/articles/gde-deshevle-kupit-telegram-stars/telegram-stars-cover-card.webp" fetchpriority="high" />\n'
 
 function readJsonFile(filePath, fallback) {
   return fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : fallback
@@ -1488,6 +1489,9 @@ function rewrite(html, route) {
   }
   if (articleRoute) {
     out = out.replace('</head>', `${buildArticleOgMeta(route)}\n  </head>`)
+  }
+  if (routePath === '/') {
+    out = out.replace('</head>', `${HOME_IMAGE_PRELOAD}</head>`)
   }
   return out
 }
