@@ -42,24 +42,6 @@ async function assertMapLabels(page, expectedCount) {
   }
 }
 
-async function assertLabelsAvoid(page, obstacleSelector) {
-  const obstacle = await page.locator(obstacleSelector).boundingBox()
-  assert.ok(obstacle, `${obstacleSelector} must have bounds`)
-  const obstacleBox = {
-    left: obstacle.x,
-    right: obstacle.x + obstacle.width,
-    top: obstacle.y,
-    bottom: obstacle.y + obstacle.height,
-  }
-  const labelBoxes = await page.locator('.atlas-map-label').evaluateAll(elements => elements.map(element => {
-    const box = element.getBoundingClientRect()
-    return { text: element.textContent || '', left: box.left, right: box.right, top: box.top, bottom: box.bottom }
-  }))
-  for (const label of labelBoxes) {
-    assert.equal(boxesOverlap(label, obstacleBox), false, `${label.text} must not overlap ${obstacleSelector}`)
-  }
-}
-
 async function assertPinchZoomsMap(page, canvas, canvasBox) {
   const session = await page.context().newCDPSession(page)
   const centerX = canvasBox.x + canvasBox.width / 2
@@ -117,24 +99,19 @@ try {
 
     assert.equal(await page.locator('.atlas-map-hint').count(), 0, 'instructional map hint must be removed')
     assert.equal(await page.locator('.atlas-count').count(), 0, 'redundant visible/total counter must be removed')
-    assert.equal(await page.locator('.atlas-year-filters button').count(), 8, 'all-years plus seven year buttons must be visible')
-    assert.equal(await page.locator('.atlas-topic-filters button').count(), 13, 'all-topics plus twelve topic buttons must be visible')
+    assert.equal(await page.locator('.atlas-year-filters').count(), 0, 'year chips must be replaced by the timeline scrubber')
+    assert.equal(await page.locator('.atlas-topic-filters button').count(), 13, 'all-topics plus twelve topic buttons must remain available in the collapsed topic panel')
+    assert.equal(await page.locator('.atlas-filter-panel').getAttribute('open'), null, 'topic filters must start collapsed')
+    const collapsedTopicsBox = await page.locator('.atlas-topic-filters').boundingBox()
+    assert.ok(!collapsedTopicsBox || collapsedTopicsBox.width * collapsedTopicsBox.height === 0, 'collapsed topic filters must not consume map space')
     assert.equal(await page.locator('.atlas-play-button').count(), 1, 'timeline play control must be visible')
-    assert.equal(await page.locator('.atlas-timeline input[type="range"]').count(), 1, 'timeline scrubber must be visible')
+    assert.equal(await page.locator('.atlas-timeline input[type="range"]').count(), 1, 'timeline scrubber must stay visible below the map')
     assert.equal(await page.locator('.atlas-zoom-controls').count(), 0, 'zoom/reset buttons must be removed from the map')
     assert.equal(await canvas.getAttribute('data-point-rendering'), 'radial-gradient', 'posts must render as one radial gradient instead of a solid dot plus halo')
     assert.equal(await canvas.getAttribute('data-layout-mode'), 'fixed-semantic', 'playback must preserve a stable semantic geography')
     assert.equal(await canvas.getAttribute('data-graph-mode'), 'static-neighbors', 'all-history mode must keep graph edges quiet')
     assert.equal(await page.locator('.atlas-career-context').count(), 0, 'career context must stay hidden outside timeline mode')
     assert.equal(await page.locator('.atlas-playback-insights').count(), 0, 'playback insights must stay hidden outside timeline mode')
-    if (viewport.name === 'desktop') {
-      const topicGeometry = await page.locator('.atlas-topic-filters').evaluate(element => ({
-        clientWidth: element.clientWidth,
-        scrollWidth: element.scrollWidth,
-      }))
-      assert.ok(topicGeometry.scrollWidth <= topicGeometry.clientWidth + 1, `desktop topic filters must not be clipped: ${JSON.stringify(topicGeometry)}`)
-    }
-
     const workspaceBox = await page.locator('.atlas-workspace').boundingBox()
     assert.ok(workspaceBox, 'workspace must have bounds')
     assert.ok(workspaceBox.x <= 1, `workspace must start at viewport edge, got x=${workspaceBox.x}`)
@@ -190,16 +167,46 @@ try {
     if (viewport.name === 'mobile-360') await assertPinchZoomsMap(page, canvas, canvasBox)
 
     const allPosts = Number(await canvas.getAttribute('data-total-posts'))
-    await page.locator('.atlas-year-filters button[data-year="2022"]').click()
+    await page.locator('.atlas-filter-panel summary').click()
+    assert.equal(await page.locator('.atlas-filter-panel').getAttribute('open'), '', 'topic panel must expand on demand')
+    if (viewport.name === 'desktop') {
+      const topicGeometry = await page.locator('.atlas-topic-filters').evaluate(element => ({
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+      }))
+      assert.ok(topicGeometry.scrollWidth <= topicGeometry.clientWidth + 1, `desktop topic filters must not be clipped: ${JSON.stringify(topicGeometry)}`)
+    }
+    await page.locator('.atlas-topic-filters button').nth(1).click()
     await page.waitForFunction(total => Number(document.querySelector('canvas.atlas-canvas')?.dataset.visiblePosts) < total, allPosts)
-    const yearPosts = Number(await canvas.getAttribute('data-visible-posts'))
-    assert.ok(yearPosts > 0 && yearPosts < allPosts, `year filter must reduce posts, got ${yearPosts}`)
-    await page.locator('.atlas-year-filters button[data-year="all"]').click()
+    const topicPosts = Number(await canvas.getAttribute('data-visible-posts'))
+    assert.ok(topicPosts > 0 && topicPosts < allPosts, `topic filter must reduce posts, got ${topicPosts}`)
+    if (viewport.name === 'desktop') {
+      await page.locator('.atlas-filter-panel summary').click()
+      await page.locator('.atlas-play-button').click()
+      await page.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.playbackActive === 'true')
+      await page.locator('.atlas-play-button').click()
+      await page.locator('.atlas-history-button').click()
+      await page.waitForFunction(expected => Number(document.querySelector('canvas.atlas-canvas')?.dataset.visiblePosts) === expected, topicPosts)
+      assert.match(await page.locator('.atlas-topic-filters button').nth(1).getAttribute('class'), /is-active/, 'topic choice must survive playback and return with all-history mode')
+      await page.locator('.atlas-filter-panel summary').click()
+      await page.locator('.atlas-topic-filters button').first().click()
+      await page.locator('.atlas-filter-panel summary').click()
+    } else {
+      await page.locator('.atlas-topic-filters button').first().click()
+      await page.locator('.atlas-filter-panel summary').click()
+    }
 
     if (viewport.name === 'desktop') {
       const dateBefore = await page.locator('.atlas-playback-date').textContent()
       await page.locator('.atlas-play-button').click()
       await page.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.playbackActive === 'true')
+      assert.equal(await page.locator('.atlas-filter-panel').count(), 0, 'topic filters must hide during evolution')
+      assert.equal(await page.locator('.atlas-workspace .atlas-playback-insights').count(), 0, 'insights must never overlay the canvas')
+      const activeWorkspaceBox = await page.locator('.atlas-workspace').boundingBox()
+      const lowerPanelBox = await page.locator('.atlas-lower-panel').boundingBox()
+      assert.ok(activeWorkspaceBox && lowerPanelBox, 'map and lower panel must have bounds')
+      assert.ok(lowerPanelBox.y >= activeWorkspaceBox.y + activeWorkspaceBox.height - 1, 'timeline and insights must sit below the canvas')
+      assert.ok(lowerPanelBox.height <= 120, `desktop lower panel must stay compact, got ${lowerPanelBox.height}px`)
       assert.equal(await canvas.getAttribute('data-graph-mode'), 'similarity-flow', 'playback must animate the active similarity graph')
       await page.waitForTimeout(900)
       const dateAfter = await page.locator('.atlas-playback-date').textContent()
@@ -210,10 +217,57 @@ try {
       await careerContext.waitFor()
       assert.equal(await careerContext.getAttribute('data-career-companies'), '')
       assert.match(await careerContext.textContent(), /Между ролями.*Нет активной должности по LinkedIn/, 'playback must not stretch Sweatcoin into the 2020 career gap')
+      const scrubber = page.locator('.atlas-timeline input[type="range"]')
+      await scrubber.scrollIntoViewIfNeeded()
+      let scrubberBox = await scrubber.boundingBox()
+      assert.ok(scrubberBox, 'timeline scrubber must have bounds')
+      await page.mouse.move(scrubberBox.x + scrubberBox.width * 0.72, scrubberBox.y + scrubberBox.height / 2)
+      await page.mouse.down()
+      await page.mouse.move(scrubberBox.x + scrubberBox.width * 0.28, scrubberBox.y + scrubberBox.height / 2, { steps: 8 })
+      await page.mouse.up()
+      const dragProgress = Number(await scrubber.inputValue())
+      assert.ok(dragProgress > 0 && dragProgress < 500, `pointer drag must rewind the active timeline, got ${dragProgress}`)
+      assert.match(await page.locator('.atlas-play-button').getAttribute('class'), /is-playing/, 'pointer drag must not pause playback')
+      await scrubber.focus()
+      await page.keyboard.press('Home')
+      const homeProgress = Number(await scrubber.inputValue())
+      assert.ok(homeProgress < 50, `Home must rewind close to the timeline start during playback, got ${homeProgress}`)
+      await page.keyboard.press('ArrowRight')
+      await page.waitForTimeout(100)
+      assert.ok(Number(await scrubber.inputValue()) > homeProgress, 'ArrowRight must advance the active timeline')
+      assert.match(await page.locator('.atlas-play-button').getAttribute('class'), /is-playing/, 'keyboard seek must not pause playback')
+      await scrubber.fill('650')
+      const seekForwardDate = await page.locator('.atlas-playback-date').textContent()
+      assert.match(await page.locator('.atlas-play-button').getAttribute('class'), /is-playing/, 'seeking must not pause playback')
+      await page.waitForTimeout(500)
+      assert.notEqual(await page.locator('.atlas-playback-date').textContent(), seekForwardDate, 'playback must continue after seeking forward')
+      await scrubber.fill('200')
+      const rewindDate = await page.locator('.atlas-playback-date').textContent()
+      assert.notEqual(rewindDate, seekForwardDate, 'timeline must rewind while playback is active')
+      await page.waitForTimeout(500)
+      assert.notEqual(await page.locator('.atlas-playback-date').textContent(), rewindDate, 'playback must continue after rewinding')
+      const progressBeforeActiveWheel = Number(await scrubber.inputValue())
+      const scrollBeforeActiveWheel = await page.evaluate(() => window.scrollY)
+      await page.mouse.move(scrubberBox.x + scrubberBox.width / 2, scrubberBox.y + scrubberBox.height / 2)
+      await page.mouse.wheel(0, 120)
+      await page.waitForTimeout(120)
+      assert.ok(Number(await scrubber.inputValue()) > progressBeforeActiveWheel, 'wheel must seek while playback remains active')
+      assert.equal(await page.evaluate(() => window.scrollY), scrollBeforeActiveWheel, 'active timeline wheel must not scroll the page')
+      assert.match(await page.locator('.atlas-play-button').getAttribute('class'), /is-playing/, 'wheel seek must not pause playback')
       await page.locator('.atlas-play-button').click()
       const pausedDate = await page.locator('.atlas-playback-date').textContent()
       await page.waitForTimeout(400)
       assert.equal(await page.locator('.atlas-playback-date').textContent(), pausedDate, 'playback date must stop while paused')
+      await scrubber.scrollIntoViewIfNeeded()
+      scrubberBox = await scrubber.boundingBox()
+      assert.ok(scrubberBox, 'timeline scrubber must have bounds')
+      const progressBeforeWheel = Number(await scrubber.inputValue())
+      const scrollBeforeWheel = await page.evaluate(() => window.scrollY)
+      await page.mouse.move(scrubberBox.x + scrubberBox.width / 2, scrubberBox.y + scrubberBox.height / 2)
+      await page.mouse.wheel(0, 120)
+      await page.waitForTimeout(120)
+      assert.ok(Number(await scrubber.inputValue()) > progressBeforeWheel, 'wheel over timeline must seek forward')
+      assert.equal(await page.evaluate(() => window.scrollY), scrollBeforeWheel, 'wheel over timeline must not scroll the page')
       await page.locator('.atlas-timeline input[type="range"]').fill('1000')
       const insights = page.locator('.atlas-playback-insights')
       await insights.waitFor()
@@ -221,22 +275,45 @@ try {
       assert.equal(await insights.getAttribute('data-leading-topic'), 'AI-инструменты и контент')
       assert.equal(await insights.getAttribute('data-career-companies'), 'TON Foundation')
       assert.equal(await insights.locator('.atlas-insight-card').count(), 3, 'playback must explain leading topics, strongest shift, and current role')
-      await assertLabelsAvoid(page, '.atlas-playback-insights')
-      await page.locator('.atlas-workspace').screenshot({ path: `${artifacts}/telegram-map-v3-playback-desktop.png` })
+      await page.locator('.atlas-map-block').screenshot({ path: `${artifacts}/telegram-map-v3-playback-desktop.png` })
       await page.locator('.atlas-history-button').click()
       assert.equal(await canvas.getAttribute('data-playback-active'), 'false', 'all-history action must exit playback mode')
       assert.equal(await page.locator('.atlas-career-context').count(), 0, 'career context must hide after returning to all history')
       assert.equal(await page.locator('.atlas-playback-insights').count(), 0, 'insights must hide after returning to all history')
+      assert.equal(await page.locator('.atlas-filter-panel').count(), 1, 'topic filters must return after leaving evolution')
     }
 
-    if (viewport.name === 'mobile') {
+    if (viewport.name.startsWith('mobile')) {
       await page.locator('.atlas-play-button').click()
       await page.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.playbackActive === 'true')
       await page.locator('.atlas-play-button').click()
       await page.locator('.atlas-timeline input[type="range"]').fill('1000')
       await page.locator('.atlas-playback-insights').waitFor()
-      await assertLabelsAvoid(page, '.atlas-playback-insights')
-      await page.locator('.atlas-workspace').screenshot({ path: `${artifacts}/telegram-map-v3-playback-mobile.png` })
+      assert.equal(await page.locator('.atlas-workspace .atlas-playback-insights').count(), 0, 'mobile insights must not overlay the canvas')
+      const criticalMetrics = await page.locator('.atlas-insight-card strong em').evaluateAll(elements => elements.map(element => {
+        const metric = element.getBoundingClientRect()
+        const card = element.closest('.atlas-insight-card')?.getBoundingClientRect()
+        return { text: element.textContent || '', width: metric.width, left: metric.left, right: metric.right, cardLeft: card?.left || 0, cardRight: card?.right || 0 }
+      }))
+      assert.equal(criticalMetrics.length, 2, 'mobile insights must expose topic share and growth delta')
+      for (const metric of criticalMetrics) {
+        assert.ok(metric.width > 0 && metric.left >= metric.cardLeft - 1 && metric.right <= metric.cardRight + 1, `critical mobile metric must not be clipped: ${JSON.stringify(metric)}`)
+      }
+      const mobileWorkspaceBox = await page.locator('.atlas-workspace').boundingBox()
+      const mobilePanelBox = await page.locator('.atlas-lower-panel').boundingBox()
+      const mobileInsightsBox = await page.locator('.atlas-playback-insights').boundingBox()
+      assert.ok(mobileWorkspaceBox && mobilePanelBox && mobileInsightsBox, 'mobile map and lower panel must have bounds')
+      assert.ok(
+        mobilePanelBox.y >= mobileWorkspaceBox.y + mobileWorkspaceBox.height - 3,
+        `mobile lower panel may share only its border with the canvas: workspace=${JSON.stringify(mobileWorkspaceBox)} panel=${JSON.stringify(mobilePanelBox)}`,
+      )
+      assert.ok(
+        mobileInsightsBox.y >= mobileWorkspaceBox.y + mobileWorkspaceBox.height - 1,
+        `mobile insight text must begin below the canvas: workspace=${JSON.stringify(mobileWorkspaceBox)} insights=${JSON.stringify(mobileInsightsBox)}`,
+      )
+      assert.ok(mobilePanelBox.height <= 130, `mobile lower panel must stay compact, got ${mobilePanelBox.height}px`)
+      assert.ok(mobileInsightsBox.height <= 72, `mobile insights must stay terse, got ${mobileInsightsBox.height}px`)
+      await page.locator('.atlas-map-block').screenshot({ path: `${artifacts}/telegram-map-v3-playback-mobile.png` })
       await page.locator('.atlas-history-button').click()
     }
 

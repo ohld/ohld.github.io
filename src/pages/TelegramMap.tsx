@@ -501,7 +501,7 @@ function AtlasCanvas({
       const height = 22
 
       const tryPosition = (candidateX: number, candidateY: number): PositionedTopicLabel | null => {
-        const reservedTop = playbackActive ? (size.width <= 760 ? 214 : 104) : 7
+        const reservedTop = 7
         const left = Math.max(width / 2 + 8, Math.min(size.width - width / 2 - 8, candidateX))
         const top = Math.max(reservedTop + height / 2, Math.min(size.height - height / 2 - 7, candidateY))
         const box = {
@@ -537,7 +537,7 @@ function AtlasCanvas({
 
       return { ...anchor, left: -width, top: -height }
     })
-  }, [labelAnchors, playbackActive, screenCoordinates, size.height, size.width, viewVersion])
+  }, [labelAnchors, screenCoordinates, size.height, size.width, viewVersion])
 
   return (
     <div className="atlas-canvas-wrap" ref={wrapperRef}>
@@ -651,11 +651,11 @@ export function TelegramMap() {
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
   const [topic, setTopic] = useState('all')
-  const [year, setYear] = useState('all')
   const [timelineActive, setTimelineActive] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [playheadMs, setPlayheadMs] = useState<number | null>(null)
   const playheadRef = useRef<number | null>(null)
+  const timelineInputRef = useRef<HTMLInputElement | null>(null)
   const playbackFrameRef = useRef<number | null>(null)
   const [selectedId, setSelectedId] = useState<number | null>(() => {
     const value = new URLSearchParams(window.location.search).get('post')
@@ -697,12 +697,13 @@ export function TelegramMap() {
 
   const topicsById = useMemo(() => new Map((data?.topics || []).map(item => [item.id, item])), [data])
   const postsById = useMemo(() => new Map((data?.posts || []).map(item => [item.id, item])), [data])
-  const years = useMemo(() => [...new Set((data?.posts || []).map(post => post.year))].sort((left, right) => right - left), [data])
   const timelineBounds = useMemo(() => {
     const times = (data?.posts || []).map(postTime)
     if (!times.length) return { min: Date.now(), max: Date.now() }
     return { min: Math.min(...times), max: Math.max(...times) }
   }, [data])
+  const timelineStartYear = new Date(timelineBounds.min).getUTCFullYear()
+  const timelineEndYear = new Date(timelineBounds.max).getUTCFullYear()
   const effectivePlayhead = Math.max(timelineBounds.min, Math.min(timelineBounds.max, playheadMs ?? timelineBounds.max))
   const playbackWindowStart = subtractMonths(effectivePlayhead, PLAYBACK_WINDOW_MONTHS)
   const previousWindowStart = subtractMonths(playbackWindowStart, PLAYBACK_WINDOW_MONTHS)
@@ -753,8 +754,7 @@ export function TelegramMap() {
     if (!data) return []
     const needle = query.trim().toLocaleLowerCase('ru-RU')
     return data.posts.filter(post => {
-      if (topic !== 'all' && post.topic !== topic) return false
-      if (!timelineActive && year !== 'all' && post.year !== Number(year)) return false
+      if (!timelineActive && topic !== 'all' && post.topic !== topic) return false
       if (timelineActive) {
         const time = postTime(post)
         if (time > effectivePlayhead || time < playbackWindowStart) return false
@@ -765,29 +765,30 @@ export function TelegramMap() {
         || topicLabel.toLocaleLowerCase('ru-RU').includes(needle)
         || String(post.id) === needle
     })
-  }, [data, effectivePlayhead, playbackWindowStart, query, timelineActive, topic, topicsById, year])
+  }, [data, effectivePlayhead, playbackWindowStart, query, timelineActive, topic, topicsById])
 
   useEffect(() => {
     if (!isPlaying || !data) return
     const currentValue = playheadRef.current ?? timelineBounds.max
-    const startValue = currentValue >= timelineBounds.max - 86_400_000 ? timelineBounds.min : currentValue
-    if (startValue !== currentValue) {
-      playheadRef.current = startValue
-      setPlayheadMs(startValue)
+    if (currentValue >= timelineBounds.max - 86_400_000) {
+      playheadRef.current = timelineBounds.min
+      setPlayheadMs(timelineBounds.min)
     }
-    const startedAt = performance.now()
-    const duration = Math.max(600, PLAYBACK_DURATION_MS * ((timelineBounds.max - startValue) / Math.max(1, timelineBounds.max - timelineBounds.min)))
+    const playbackRate = (timelineBounds.max - timelineBounds.min) / PLAYBACK_DURATION_MS
+    let previousTick = performance.now()
     let lastPaint = -Infinity
 
     const tick = (now: number) => {
-      const progress = Math.min(1, (now - startedAt) / duration)
-      if (now - lastPaint >= PLAYBACK_FRAME_INTERVAL_MS || progress === 1) {
-        const nextValue = startValue + (timelineBounds.max - startValue) * progress
-        playheadRef.current = nextValue
+      const elapsed = Math.max(0, now - previousTick)
+      previousTick = now
+      const currentPlayhead = playheadRef.current ?? timelineBounds.min
+      const nextValue = Math.min(timelineBounds.max, currentPlayhead + elapsed * playbackRate)
+      playheadRef.current = nextValue
+      if (now - lastPaint >= PLAYBACK_FRAME_INTERVAL_MS || nextValue >= timelineBounds.max) {
         setPlayheadMs(nextValue)
         lastPaint = now
       }
-      if (progress >= 1) {
+      if (nextValue >= timelineBounds.max) {
         setIsPlaying(false)
         playbackFrameRef.current = null
         return
@@ -828,25 +829,43 @@ export function TelegramMap() {
     window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
   }, [])
 
-  const chooseYear = (value: string) => {
-    setIsPlaying(false)
-    setTimelineActive(false)
-    setYear(value)
-  }
+  const seekTimeline = useCallback((progressValue: number) => {
+    const boundedProgress = Math.max(0, Math.min(1000, progressValue))
+    const nextPlayhead = timelineBounds.min + (timelineBounds.max - timelineBounds.min) * (boundedProgress / 1000)
+    playheadRef.current = nextPlayhead
+    setTimelineActive(true)
+    setPlayheadMs(nextPlayhead)
+  }, [timelineBounds.max, timelineBounds.min])
 
   const togglePlayback = () => {
-    setYear('all')
     setTimelineActive(true)
-    if (!isPlaying && effectivePlayhead >= timelineBounds.max - 86_400_000) setPlayheadMs(timelineBounds.min)
+    if (!isPlaying && effectivePlayhead >= timelineBounds.max - 86_400_000) {
+      playheadRef.current = timelineBounds.min
+      setPlayheadMs(timelineBounds.min)
+    }
     setIsPlaying(current => !current)
   }
 
   const showAllHistory = () => {
     setIsPlaying(false)
     setTimelineActive(false)
+    playheadRef.current = timelineBounds.max
     setPlayheadMs(timelineBounds.max)
-    setYear('all')
   }
+
+  useEffect(() => {
+    const input = timelineInputRef.current
+    if (!input || !data) return
+    const handleWheel = (event: WheelEvent) => {
+      event.preventDefault()
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
+      const currentPlayhead = playheadRef.current ?? timelineBounds.max
+      const currentProgress = ((currentPlayhead - timelineBounds.min) / Math.max(1, timelineBounds.max - timelineBounds.min)) * 1000
+      seekTimeline(currentProgress + delta * 0.75)
+    }
+    input.addEventListener('wheel', handleWheel, { passive: false })
+    return () => input.removeEventListener('wheel', handleWheel)
+  }, [data, seekTimeline, timelineBounds.max, timelineBounds.min])
 
   const activePost = postsById.get(selectedId || -1) || null
   const resultSuggestions = query.trim() ? visiblePosts.slice(0, 6) : []
@@ -859,72 +878,28 @@ export function TelegramMap() {
         <div>
           <h1>Смысловая карта Telegram</h1>
           <p className="atlas-meta">@danokhlopkov · 1 556 постов · 2020–2026</p>
+          <p className="sr-only">
+            Интерактивная карта тем, связей и эволюции публикаций. Перемещайте временную шкалу,
+            чтобы увидеть главные темы выбранного периода, их рост и карьерный контекст автора.
+          </p>
         </div>
       </header>
 
       <main className="atlas-shell">
-        <section className="atlas-controls" aria-label="Фильтры и время карты">
+        <section className="atlas-controls" aria-label="Поиск и управление картой">
           <div className="atlas-search-row">
             <label className="atlas-search">
               <span className="sr-only">Поиск по постам</span>
               <input value={query} onChange={event => setQuery(event.target.value)} placeholder="Найти пост или тему" />
             </label>
             <button type="button" className={`atlas-play-button${isPlaying ? ' is-playing' : ''}`} onClick={togglePlayback}>
-              {isPlaying ? 'Ⅱ Пауза' : '▶ Эволюция'}
+              {isPlaying ? 'Ⅱ Пауза' : timelineActive ? '▶ Продолжить' : '▶ Эволюция'}
             </button>
-            <button type="button" className="atlas-history-button" onClick={showAllHistory} disabled={!timelineActive}>
-              Вся история
-            </button>
-          </div>
-
-          <div className="atlas-filter-row atlas-year-filters" aria-label="Фильтр по годам">
-            <button type="button" data-year="all" className={!timelineActive && year === 'all' ? 'is-active' : ''} onClick={() => chooseYear('all')}>Все годы</button>
-            {years.map(item => (
-              <button
-                type="button"
-                data-year={item}
-                key={item}
-                className={!timelineActive && year === String(item) ? 'is-active' : ''}
-                onClick={() => chooseYear(String(item))}
-              >
-                {item}
+            {timelineActive && (
+              <button type="button" className="atlas-history-button" onClick={showAllHistory}>
+                Вся история
               </button>
-            ))}
-          </div>
-
-          <div className="atlas-filter-row atlas-topic-filters" aria-label="Фильтр по темам">
-            <button type="button" className={topic === 'all' ? 'is-active' : ''} onClick={() => setTopic('all')}>Все темы</button>
-            {data?.topics.map(item => (
-              <button
-                type="button"
-                key={item.id}
-                className={topic === item.id ? 'is-active' : ''}
-                onClick={() => setTopic(current => current === item.id ? 'all' : item.id)}
-                style={{ '--topic-color': item.color } as React.CSSProperties}
-              >
-                <span />{item.label}
-              </button>
-            ))}
-          </div>
-
-          <div className={`atlas-timeline${timelineActive ? ' is-active' : ''}`}>
-            <span>{years.at(-1) || '2020'}</span>
-            <input
-              type="range"
-              min="0"
-              max="1000"
-              value={timelineProgress}
-              aria-label="Временная шкала постов"
-              onChange={event => {
-                const progress = Number(event.target.value) / 1000
-                setIsPlaying(false)
-                setTimelineActive(true)
-                setYear('all')
-                setPlayheadMs(timelineBounds.min + (timelineBounds.max - timelineBounds.min) * progress)
-              }}
-            />
-            <strong className="atlas-playback-date">{timelineActive ? formatMonth(effectivePlayhead) : 'Вся история'}</strong>
-            <span>{years[0] || '2026'}</span>
+            )}
           </div>
         </section>
 
@@ -942,72 +917,112 @@ export function TelegramMap() {
         {error && <div className="atlas-status">{error}</div>}
         {!data && !error && <div className="atlas-status">Загружаю карту…</div>}
         {data && (
-          <div className="atlas-workspace">
-            <AtlasCanvas
-              allPosts={data.posts}
-              visiblePosts={visiblePosts}
-              topics={data.topics}
-              selectedId={selectedId}
-              playbackActive={timelineActive}
-              playheadMs={effectivePlayhead}
-              playbackWindowStart={playbackWindowStart}
-              onSelect={selectPost}
-            />
-            {timelineActive && leadingTopic && (
-              <section
-                className="atlas-playback-insights"
-                aria-label="Выводы за последние шесть месяцев"
-                data-window-months={PLAYBACK_WINDOW_MONTHS}
-                data-leading-topic={leadingTopic.label}
-                data-career-companies={careerCompanies}
-              >
-                <article className="atlas-insight-card" data-insight="leading">
-                  <small>Главные темы · 6 месяцев</small>
-                  <strong>
-                    <i style={{ '--topic-color': leadingTopic.color } as React.CSSProperties} />
-                    {leadingTopic.label}
-                    <em>{Math.round(leadingTopic.share)}%</em>
-                  </strong>
-                  <span>{secondTopic ? `Ещё: ${secondTopic.label} · ${Math.round(secondTopic.share)}%` : 'Пока мало данных'}</span>
-                </article>
-                <article className="atlas-insight-card" data-insight="growth">
-                  <small>Сильнее всего выросло</small>
-                  {growingTopic ? (
-                    <>
-                      <strong>
-                        <i style={{ '--topic-color': growingTopic.color } as React.CSSProperties} />
-                        {growingTopic.label}
-                        <em>+{growingTopic.delta.toFixed(1)} п.п.</em>
-                      </strong>
-                      <span>против предыдущих 6 месяцев</span>
-                    </>
-                  ) : (
-                    <><strong>Недостаточно данных</strong><span>для сравнения периодов</span></>
-                  )}
-                </article>
-                <article
-                  className="atlas-insight-card atlas-career-context"
-                  data-insight="career"
+          <div className="atlas-map-block">
+            <div className="atlas-workspace">
+              <AtlasCanvas
+                allPosts={data.posts}
+                visiblePosts={visiblePosts}
+                topics={data.topics}
+                selectedId={selectedId}
+                playbackActive={timelineActive}
+                playheadMs={effectivePlayhead}
+                playbackWindowStart={playbackWindowStart}
+                onSelect={selectPost}
+              />
+              <PostPanel
+                post={activePost}
+                topicsById={topicsById}
+                postsById={postsById}
+                onClose={closePost}
+                onSelect={(id) => {
+                  setQuery('')
+                  setTopic('all')
+                  showAllHistory()
+                  selectPost(id)
+                }}
+              />
+            </div>
+
+            <section className={`atlas-lower-panel${timelineActive ? ' is-playback' : ''}`} aria-label="Время и контекст карты">
+              <div className={`atlas-timeline${timelineActive ? ' is-active' : ''}`}>
+                <span>{timelineStartYear}</span>
+                <input
+                  ref={timelineInputRef}
+                  type="range"
+                  min="0"
+                  max="1000"
+                  step="1"
+                  value={timelineProgress}
+                  aria-label="Временная шкала постов"
+                  aria-valuetext={timelineActive ? formatMonth(effectivePlayhead) : 'Вся история'}
+                  onChange={event => seekTimeline(Number(event.target.value))}
+                />
+                <strong className="atlas-playback-date">{timelineActive ? formatMonth(effectivePlayhead) : 'Вся история'}</strong>
+                <span>{timelineEndYear}</span>
+              </div>
+
+              {timelineActive && leadingTopic ? (
+                <section
+                  className="atlas-playback-insights"
+                  aria-label="Выводы за последние шесть месяцев"
+                  data-window-months={PLAYBACK_WINDOW_MONTHS}
+                  data-leading-topic={leadingTopic.label}
                   data-career-companies={careerCompanies}
                 >
-                  <small>В это время</small>
-                  <strong>{careerCompanies || 'Между ролями'}</strong>
-                  <span>{activeCareer.map(item => item.role).join(' + ') || 'Нет активной должности по LinkedIn'}</span>
-                </article>
-              </section>
-            )}
-            <PostPanel
-              post={activePost}
-              topicsById={topicsById}
-              postsById={postsById}
-              onClose={closePost}
-              onSelect={(id) => {
-                setQuery('')
-                setTopic('all')
-                showAllHistory()
-                selectPost(id)
-              }}
-            />
+                  <article className="atlas-insight-card" data-insight="leading">
+                    <small>Фокус</small>
+                    <strong>
+                      <i style={{ '--topic-color': leadingTopic.color } as React.CSSProperties} />
+                      <span className="atlas-insight-value">{leadingTopic.label}</span>
+                      <em>{Math.round(leadingTopic.share)}%</em>
+                    </strong>
+                    <span>{secondTopic ? `ещё ${secondTopic.label} · ${Math.round(secondTopic.share)}%` : 'мало данных'}</span>
+                  </article>
+                  <article className="atlas-insight-card" data-insight="growth">
+                    <small>Рост</small>
+                    {growingTopic ? (
+                      <strong>
+                        <i style={{ '--topic-color': growingTopic.color } as React.CSSProperties} />
+                        <span className="atlas-insight-value">{growingTopic.label}</span>
+                        <em>+{growingTopic.delta.toFixed(1)} п.п.</em>
+                      </strong>
+                    ) : (
+                      <strong>Недостаточно данных</strong>
+                    )}
+                  </article>
+                  <article
+                    className="atlas-insight-card atlas-career-context"
+                    data-insight="career"
+                    data-career-companies={careerCompanies}
+                  >
+                    <small>Работа</small>
+                    <strong><span className="atlas-insight-value">{careerCompanies || 'Между ролями'}</span></strong>
+                    <span>{activeCareer.map(item => item.role).join(' + ') || 'Нет активной должности по LinkedIn'}</span>
+                  </article>
+                </section>
+              ) : !timelineActive ? (
+                <details className="atlas-filter-panel">
+                  <summary>
+                    <span>Темы</span>
+                    <small>{topic === 'all' ? 'Все темы' : topicsById.get(topic)?.label || 'Все темы'}</small>
+                  </summary>
+                  <div className="atlas-filter-row atlas-topic-filters" aria-label="Фильтр по темам">
+                    <button type="button" className={topic === 'all' ? 'is-active' : ''} onClick={() => setTopic('all')}>Все темы</button>
+                    {data.topics.map(item => (
+                      <button
+                        type="button"
+                        key={item.id}
+                        className={topic === item.id ? 'is-active' : ''}
+                        onClick={() => setTopic(current => current === item.id ? 'all' : item.id)}
+                        style={{ '--topic-color': item.color } as React.CSSProperties}
+                      >
+                        <span />{item.label}
+                      </button>
+                    ))}
+                  </div>
+                </details>
+              ) : null}
+            </section>
           </div>
         )}
       </main>
