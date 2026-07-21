@@ -782,11 +782,13 @@ export function TelegramMap() {
   const [data, setData] = useState<AtlasData | null>(null)
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [topic, setTopic] = useState('all')
   const [timelineActive, setTimelineActive] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [playheadMs, setPlayheadMs] = useState<number | null>(null)
   const playheadRef = useRef<number | null>(null)
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
   const timelineInputRef = useRef<HTMLInputElement | null>(null)
   const playbackFrameRef = useRef<number | null>(null)
   const [selectedId, setSelectedId] = useState<number | null>(() => {
@@ -828,6 +830,10 @@ export function TelegramMap() {
       document.body.classList.remove('atlas-map-active')
     }
   }, [])
+
+  useEffect(() => {
+    if (mobileSearchOpen) searchInputRef.current?.focus()
+  }, [mobileSearchOpen])
 
   const topicsById = useMemo(() => new Map((data?.topics || []).map(item => [item.id, item])), [data])
   const postsById = useMemo(() => new Map((data?.posts || []).map(item => [item.id, item])), [data])
@@ -989,6 +995,11 @@ export function TelegramMap() {
     setPlayheadMs(timelineBounds.max)
   }
 
+  const closeMobileSearch = () => {
+    setQuery('')
+    setMobileSearchOpen(false)
+  }
+
   useEffect(() => {
     const input = timelineInputRef.current
     if (!input || !data) return
@@ -1013,7 +1024,6 @@ export function TelegramMap() {
         <BackButton />
         <div>
           <h1>Карта моих постов в Telegram</h1>
-          <p className="atlas-meta">@danokhlopkov · 1 556 постов · 2020–2026</p>
           <p className="sr-only">
             Интерактивная карта тем, связей и эволюции публикаций. Перемещайте временную шкалу,
             чтобы увидеть главные темы выбранного периода, их доли и карьерный контекст автора.
@@ -1023,17 +1033,58 @@ export function TelegramMap() {
 
       <main className="atlas-shell">
         <section className="atlas-controls" aria-label="Поиск и управление картой">
-          <div className="atlas-search-row">
+          <div className={`atlas-search-row${mobileSearchOpen ? ' is-searching' : ''}${timelineActive ? ' is-timeline-active' : ''}`}>
             <label className="atlas-search">
               <span className="sr-only">Поиск по постам</span>
-              <input value={query} onChange={event => setQuery(event.target.value)} placeholder="Найти пост или тему" />
+              <input
+                ref={searchInputRef}
+                type="search"
+                value={query}
+                onChange={event => setQuery(event.target.value)}
+                onKeyDown={event => {
+                  if (event.key === 'Escape') closeMobileSearch()
+                }}
+                placeholder="Найти пост или тему"
+              />
             </label>
             <button type="button" className={`atlas-play-button${isPlaying ? ' is-playing' : ''}`} onClick={togglePlayback}>
               {isPlaying ? 'Ⅱ Пауза' : timelineActive ? '▶ Продолжить' : '▶ Эволюция'}
             </button>
+            {!timelineActive && !mobileSearchOpen && (
+              <button
+                type="button"
+                className="atlas-search-toggle"
+                aria-label="Открыть поиск"
+                title="Открыть поиск"
+                onClick={() => setMobileSearchOpen(true)}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="11" cy="11" r="6.5" />
+                  <path d="m16 16 4 4" />
+                </svg>
+              </button>
+            )}
+            {mobileSearchOpen && (
+              <button
+                type="button"
+                className="atlas-search-close"
+                aria-label="Закрыть поиск"
+                title="Закрыть поиск"
+                onClick={closeMobileSearch}
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            )}
             {timelineActive && (
-              <button type="button" className="atlas-history-button" onClick={showAllHistory}>
-                Вся история
+              <button
+                type="button"
+                className="atlas-history-button"
+                aria-label="Выйти из эволюции"
+                title="Выйти из эволюции"
+                onClick={showAllHistory}
+              >
+                <span className="atlas-history-label">Вся история</span>
+                <span className="atlas-history-icon" aria-hidden="true">×</span>
               </button>
             )}
           </div>
@@ -1042,7 +1093,10 @@ export function TelegramMap() {
         {resultSuggestions.length > 0 && (
           <div className="atlas-search-results">
             {resultSuggestions.map(post => (
-              <button type="button" key={post.id} onClick={() => selectPost(post.id)}>
+              <button type="button" key={post.id} onClick={() => {
+                selectPost(post.id)
+                if (mobileSearchOpen) closeMobileSearch()
+              }}>
                 <span>{post.text.slice(0, 110)}{post.text.length > 110 ? '…' : ''}</span>
                 <small>{formatDate(post.date)}</small>
               </button>

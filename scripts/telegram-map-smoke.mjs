@@ -143,6 +143,7 @@ try {
     const canvas = page.locator('canvas.atlas-canvas')
     await page.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.totalPosts === '1556')
 
+    assert.equal(await page.locator('.atlas-meta').count(), 0, 'visual atlas subtitle must be removed')
     assert.equal(await page.locator('.atlas-map-hint').count(), 0, 'instructional map hint must be removed')
     assert.equal(await page.locator('.atlas-count').count(), 0, 'redundant visible/total counter must be removed')
     assert.equal(await page.locator('.atlas-year-filters').count(), 0, 'year chips must be replaced by the timeline scrubber')
@@ -159,6 +160,46 @@ try {
     assert.equal(await page.locator('.atlas-career-context').count(), 0, 'career context must stay hidden outside timeline mode')
     assert.equal(await page.locator('.atlas-playback-insights').count(), 0, 'playback insights must stay hidden outside timeline mode')
     assert.doesNotMatch(await page.locator('.atlas-header .sr-only').textContent(), /рост/i, 'accessible map description must not promise a removed growth metric')
+
+    if (viewport.name.startsWith('mobile')) {
+      const compactControls = async (rightSelector) => page.evaluate((selector) => {
+        const bounds = (target) => {
+          const box = document.querySelector(target)?.getBoundingClientRect()
+          return box && box.width > 0 && box.height > 0
+            ? { x: box.x, y: box.y, width: box.width, height: box.height }
+            : null
+        }
+        return {
+          row: bounds('.atlas-search-row'),
+          play: bounds('.atlas-play-button'),
+          search: bounds('.atlas-search input'),
+          right: bounds(selector),
+        }
+      }, rightSelector)
+
+      const idleControls = await compactControls('.atlas-search-toggle')
+      assert.ok(idleControls.row && idleControls.play && idleControls.right, `mobile idle controls must be visible: ${JSON.stringify(idleControls)}`)
+      assert.equal(idleControls.search, null, 'mobile search input must start collapsed')
+      assert.ok(Math.abs(idleControls.play.y - idleControls.right.y) <= 1, `mobile idle controls must share one row: ${JSON.stringify(idleControls)}`)
+      assert.ok(idleControls.row.height <= 50, `mobile idle controls must stay one compact row, got ${idleControls.row.height}px`)
+      assert.ok(Math.abs(idleControls.right.width - idleControls.right.height) <= 1, `mobile search control must be square: ${JSON.stringify(idleControls.right)}`)
+      await page.screenshot({ path: `${artifacts}/telegram-map-v4-${viewport.name}-idle.png`, fullPage: false })
+
+      await page.locator('.atlas-search-toggle').click()
+      await page.locator('.atlas-search input').waitFor({ state: 'visible' })
+      assert.equal(await page.locator('.atlas-search input').evaluate(element => document.activeElement === element), true, 'expanded mobile search must focus the input')
+      const searchControls = await compactControls('.atlas-search-close')
+      assert.ok(searchControls.row && searchControls.search && searchControls.right, `mobile search controls must be visible: ${JSON.stringify(searchControls)}`)
+      assert.equal(searchControls.play, null, 'mobile play control must hide while search is expanded')
+      assert.ok(Math.abs(searchControls.search.y - searchControls.right.y) <= 1, `mobile search controls must share one row: ${JSON.stringify(searchControls)}`)
+      assert.ok(searchControls.row.height <= 50, `expanded mobile search must stay one compact row, got ${searchControls.row.height}px`)
+      assert.ok(Math.abs(searchControls.right.width - searchControls.right.height) <= 1, `mobile search close control must be square: ${JSON.stringify(searchControls.right)}`)
+      await page.screenshot({ path: `${artifacts}/telegram-map-v4-${viewport.name}-search.png`, fullPage: false })
+      await page.keyboard.press('Escape')
+      await page.locator('.atlas-search-toggle').waitFor({ state: 'visible' })
+      assert.equal(await page.locator('.atlas-search input').isVisible(), false, 'Escape must collapse mobile search')
+    }
+
     const workspaceBox = await page.locator('.atlas-workspace').boundingBox()
     assert.ok(workspaceBox, 'workspace must have bounds')
     assert.ok(workspaceBox.x <= 1, `workspace must start at viewport edge, got x=${workspaceBox.x}`)
@@ -390,6 +431,26 @@ try {
     if (viewport.name.startsWith('mobile')) {
       await page.locator('.atlas-play-button').click()
       await page.waitForFunction(() => document.querySelector('canvas.atlas-canvas')?.dataset.playbackActive === 'true')
+      const evolutionControls = await page.evaluate(() => {
+        const bounds = (selector) => {
+          const box = document.querySelector(selector)?.getBoundingClientRect()
+          return box && box.width > 0 && box.height > 0 ? { x: box.x, y: box.y, width: box.width, height: box.height } : null
+        }
+        return {
+          row: bounds('.atlas-search-row'),
+          play: bounds('.atlas-play-button'),
+          exit: bounds('.atlas-history-button'),
+          historyLabelDisplay: getComputedStyle(document.querySelector('.atlas-history-label')).display,
+          historyIconDisplay: getComputedStyle(document.querySelector('.atlas-history-icon')).display,
+        }
+      })
+      assert.ok(evolutionControls.row && evolutionControls.play && evolutionControls.exit, `mobile evolution controls must be visible: ${JSON.stringify(evolutionControls)}`)
+      assert.ok(Math.abs(evolutionControls.play.y - evolutionControls.exit.y) <= 1, `mobile evolution controls must share one row: ${JSON.stringify(evolutionControls)}`)
+      assert.ok(evolutionControls.row.height <= 50, `mobile evolution controls must stay one compact row, got ${evolutionControls.row.height}px`)
+      assert.ok(Math.abs(evolutionControls.exit.width - evolutionControls.exit.height) <= 1, `mobile evolution exit control must be square: ${JSON.stringify(evolutionControls.exit)}`)
+      assert.equal(evolutionControls.historyLabelDisplay, 'none', 'mobile evolution exit must hide the “Вся история” label')
+      assert.notEqual(evolutionControls.historyIconDisplay, 'none', 'mobile evolution exit must show the close icon')
+      await page.locator('.atlas-search-row').screenshot({ path: `${artifacts}/telegram-map-v4-${viewport.name}-evolution-controls.png` })
       await page.locator('.atlas-play-button').click()
       await page.locator('.atlas-timeline input[type="range"]').fill('1000')
       await page.locator('.atlas-playback-insights').waitFor()
@@ -432,6 +493,7 @@ try {
       await page.locator('.atlas-history-button').click()
     }
 
+    if (viewport.name.startsWith('mobile')) await page.locator('.atlas-search-toggle').click()
     await page.locator('.atlas-search input').fill('настольный теннис')
     const result = page.locator('.atlas-search-results button').first()
     await result.waitFor()
@@ -444,7 +506,11 @@ try {
     assert.equal(await telegramWebLink.getAttribute('target'), '_blank')
     assert.equal(await telegramWebLink.getAttribute('rel'), 'noreferrer')
 
-    await page.locator('.atlas-search input').fill('')
+    if (viewport.name.startsWith('mobile')) {
+      assert.equal(await page.locator('.atlas-search input').isVisible(), false, 'selecting a mobile search result must collapse search')
+    } else {
+      await page.locator('.atlas-search input').fill('')
+    }
     await page.locator('.atlas-detail-close').click()
     await page.screenshot({ path: `${artifacts}/telegram-map-v2-${viewport.name}.png`, fullPage: false })
     await page.locator('.atlas-canvas-wrap').screenshot({ path: `${artifacts}/telegram-map-v2-${viewport.name}-canvas.png` })

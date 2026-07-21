@@ -35,13 +35,6 @@ body.atlas-map-active {
   letter-spacing: -0.05em;
 }
 
-.atlas-meta {
-  margin: 10px 0 0;
-  color: rgba(244, 244, 241, 0.56);
-  font-family: var(--mono);
-  font-size: 0.74rem;
-}
-
 .atlas-page .back-nav {
   margin-top: 5px;
   color: rgba(244, 244, 241, 0.68);
@@ -71,7 +64,9 @@ body.atlas-map-active {
 
 .atlas-search input,
 .atlas-play-button,
-.atlas-history-button {
+.atlas-history-button,
+.atlas-search-toggle,
+.atlas-search-close {
   min-height: 44px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 9px;
@@ -86,7 +81,12 @@ body.atlas-map-active {
 }
 
 .atlas-search input::placeholder {
-  color: rgba(244, 244, 241, 0.34);
+  color: rgba(244, 244, 241, 0.48);
+}
+
+.atlas-search input::-webkit-search-cancel-button {
+  display: none;
+  appearance: none;
 }
 
 .atlas-search input:focus {
@@ -95,7 +95,9 @@ body.atlas-map-active {
 }
 
 .atlas-play-button,
-.atlas-history-button {
+.atlas-history-button,
+.atlas-search-toggle,
+.atlas-search-close {
   padding: 0 15px;
   background: #17181d;
   cursor: pointer;
@@ -112,7 +114,11 @@ body.atlas-map-active {
 .atlas-play-button:hover,
 .atlas-play-button:focus-visible,
 .atlas-history-button:hover:not(:disabled),
-.atlas-history-button:focus-visible:not(:disabled) {
+.atlas-history-button:focus-visible:not(:disabled),
+.atlas-search-toggle:hover,
+.atlas-search-toggle:focus-visible,
+.atlas-search-close:hover,
+.atlas-search-close:focus-visible {
   border-color: rgba(255, 255, 255, 0.38);
   transform: translateY(-1px);
 }
@@ -125,6 +131,35 @@ body.atlas-map-active {
 .atlas-history-button:disabled {
   color: rgba(244, 244, 241, 0.28);
   cursor: default;
+}
+
+.atlas-search-toggle,
+.atlas-search-close {
+  display: none;
+  width: 44px;
+  padding: 0;
+  place-items: center;
+}
+
+.atlas-search-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+}
+
+.atlas-search-close,
+.atlas-history-icon {
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.atlas-history-icon {
+  display: none;
 }
 
 .atlas-filter-row {
@@ -768,7 +803,7 @@ body.atlas-map-active {
 
 @media (max-width: 760px) {
   .atlas-header {
-    padding: 18px 20px 16px;
+    padding: 18px 20px 13px;
     grid-template-columns: 1fr;
     gap: 14px;
   }
@@ -783,7 +818,7 @@ body.atlas-map-active {
   }
 
   .atlas-controls {
-    padding: 0 20px 15px;
+    padding: 0 20px 14px;
   }
 
   .atlas-topic-filters {
@@ -791,16 +826,73 @@ body.atlas-map-active {
   }
 
   .atlas-search-row {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) 48px;
+    gap: 8px;
   }
 
   .atlas-search {
-    grid-column: 1 / -1;
+    display: none;
+    min-width: 0;
+    grid-column: 1;
   }
 
+  .atlas-search-row.is-searching .atlas-search {
+    display: block;
+    transform-origin: right center;
+    animation: atlas-search-reveal 180ms ease-out both;
+  }
+
+  .atlas-search-row.is-searching .atlas-play-button {
+    display: none;
+  }
+
+  .atlas-search input,
   .atlas-play-button,
+  .atlas-history-button,
+  .atlas-search-toggle,
+  .atlas-search-close {
+    min-height: 48px;
+  }
+
+  .atlas-play-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .atlas-search-toggle,
+  .atlas-search-close {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    grid-column: 2;
+  }
+
   .atlas-history-button {
-    min-height: 40px;
+    display: grid;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    place-items: center;
+    grid-column: 2;
+  }
+
+  .atlas-history-label {
+    display: none;
+  }
+
+  .atlas-history-icon {
+    display: inline;
+  }
+
+  @keyframes atlas-search-reveal {
+    from {
+      opacity: 0;
+      transform: scaleX(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: scaleX(1);
+    }
   }
 
   .atlas-timeline {
@@ -908,5 +1000,11 @@ body.atlas-map-active {
 
   .atlas-filter-row button {
     min-height: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 760px) {
+  .atlas-search-row.is-searching .atlas-search {
+    animation: none;
   }
 }
