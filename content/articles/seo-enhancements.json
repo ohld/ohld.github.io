@@ -20,7 +20,7 @@
     "relatedHtml": "<h2>Related workflow</h2><p>If <code>/compact</code> is already a problem, fix the setup layer too: <a href='/claude-code-setup-mcp-hooks-skills-2026/'>Claude Code MCP servers, hooks and skills setup</a>. That page is where I keep the boring baseline: small <code>CLAUDE.md</code>, scoped MCP, hooks, skills and Windows/account caveats.</p>"
   },
   "/claude-code-nastrojka-mcp-hooks-skills-2026/": {
-    "relatedHtml": "<h2>Английская версия</h2><p>Для EN-кластера я держу отдельную страницу: <a href='/claude-code-setup-mcp-hooks-skills-2026/'>Claude Code MCP servers, hooks, skills and Windows setup</a>. Там коротко закрыты MCP servers, hooks, skills, Windows и account/payment caveat.</p>"
+    "relatedHtml": "<h2>Что читать дальше</h2><p>Если базовый сетап уже собран, следующий слой — короткие повторяемые инструкции: <a href='/ru/articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok/'>как писать skills для Claude Code и не ломать SKILL.md</a>. Для EN-кластера рядом лежит <a href='/claude-code-setup-mcp-hooks-skills-2026/'>Claude Code MCP servers, hooks, skills and Windows setup</a>.</p>"
   },
   "/en-claude-codex-dual-review/": {
     "relatedHtml": "<h2>Related setup</h2><p>Dual review only works if the base agent setup is boring and repeatable. Start with <a href='/claude-code-setup-mcp-hooks-skills-2026/'>Claude Code MCP servers</a>, scoped hooks and skills before adding Codex as a second reviewer.</p>"
