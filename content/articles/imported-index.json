@@ -242,11 +242,11 @@
   {
     "path": "/claude-code-setup-mcp-hooks-skills-2026/",
     "slug": "claude-code-setup-mcp-hooks-skills-2026",
-    "title": "My Claude Code Setup: MCP Servers, Hooks, Skills and Agents (2026)",
-    "description": "My daily Claude Code setup: CLAUDE.md, MCP servers, hooks, skills, subagents, troubleshooting, and the choices that actually matter in 2026.",
+    "title": "My Claude Code Setup After 4 Months of Daily Use (2026)",
+    "description": "My practical Claude Code setup after four months of daily use: native install, CLAUDE.md, MCP servers, hooks, skills, subagents, and what I kept.",
     "lang": "en",
     "publishedAt": "2026-02-23",
-    "updatedAt": "2026-06-12",
+    "updatedAt": "2026-08-01",
     "readingTime": "14 min",
     "tags": [
       "Claude Code"
