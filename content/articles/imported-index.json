@@ -132,7 +132,7 @@
     "description": "How I run an always-on AI agent on a Hetzner VPS. Architecture, Docker setup, Telegram bridge, memory system, and real costs.",
     "lang": "en",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-07-01",
+    "updatedAt": "2026-08-08",
     "readingTime": "5 min",
     "tags": [
       "Telegram"
