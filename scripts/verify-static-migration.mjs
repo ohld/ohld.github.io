@@ -714,6 +714,8 @@ async function verifyImportedArticle({ path, title, lang = 'ru' }) {
   assert(readHtmlLang(html) === lang, `${path}: html lang mismatch`)
   verifyImportedArticleShell(html, path, lang)
   assert(html.includes('data-article-engine="article"'), `${path}: missing common article engine marker`)
+  const h1Count = (html.match(/<h1\b/gi) || []).length
+  assert(h1Count === 1, `${path}: expected exactly one H1, found ${h1Count}`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assertNoMalformedExternalLinks(html, path)
   assert(!html.includes('legacy-'), `${path}: page leaked old renderer class/name`)
