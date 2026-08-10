@@ -38,5 +38,23 @@
     "page_type": "blog_post",
     "variant": "contextual_inbound_link_recrawl_v1",
     "started_at": "2026-07-17"
+  },
+  "/measure-texts-simularity/": {
+    "experiment_id": "seo_ctr_sentence_transformers_refresh_2026_08_10",
+    "cluster_id": "data_products",
+    "language": "en",
+    "page_type": "legacy_article",
+    "variant": "title_meta_direct_answer_current_api_v1",
+    "started_at": "2026-08-10",
+    "baseline": {
+      "window": "2025-08-10..2026-08-09",
+      "query": "sentence transformers",
+      "clicks": 0,
+      "impressions": 764,
+      "ctr": 0,
+      "position": 6.3502
+    },
+    "review_after_14d": "2026-08-24",
+    "review_after_28d": "2026-09-07"
   }
 }

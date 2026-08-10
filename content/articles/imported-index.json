@@ -1193,12 +1193,12 @@
   {
     "path": "/measure-texts-simularity/",
     "slug": "measure-texts-simularity",
-    "title": "Measure texts similarity with Sentence Transformers (embeddings)",
-    "description": "Imagine you have a lot of objects with text descriptions (users and their bios, tweets, comments) and you need to somehow cluster them: find groups of similar objects.",
+    "title": "Sentence Transformers: Semantic Text Similarity in Python",
+    "description": "Use Sentence Transformers in Python to create embeddings, compare text with cosine similarity, and find nearest matches in a practical Crunchbase example.",
     "lang": "en",
     "publishedAt": "2021-07-28",
-    "updatedAt": "2026-05-25",
-    "readingTime": "2 min",
+    "updatedAt": "2026-08-10",
+    "readingTime": "3 min",
     "tags": [
       "Analytics"
     ],
