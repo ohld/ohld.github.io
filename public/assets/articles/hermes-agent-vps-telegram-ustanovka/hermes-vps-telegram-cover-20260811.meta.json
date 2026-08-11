@@ -1,0 +1,42 @@
+{
+  "source": "pinterest-reference-edit",
+  "article_slug": "hermes-agent-vps-telegram-ustanovka",
+  "article_url": "https://okhlopkov.com/ru/articles/hermes-agent-vps-telegram-ustanovka/",
+  "asset_role": "hero",
+  "asset_path": "/assets/articles/hermes-agent-vps-telegram-ustanovka/hermes-vps-telegram-cover-20260811.webp",
+  "generated_date": "2026-08-11",
+  "model": "nano-banana-pro-2k",
+  "job_id": "5e29de82-5ec2-442a-862b-af61ee7de5e7",
+  "dimensions": {
+    "width": 1376,
+    "height": 768,
+    "aspect_ratio": "16:9"
+  },
+  "optimization": {
+    "format": "webp",
+    "quality": 80,
+    "compression_level": 6,
+    "bytes": 192000
+  },
+  "pinterest_reference": {
+    "reference_id": "pin:839569555579709607",
+    "pin_url": "https://www.pinterest.com/pin/839569555579709607/",
+    "source_image_url": "https://i.pinimg.com/1200x/b6/5b/9f/b65b9faaa7715182ebf9c9034dbb68d7.jpg",
+    "reference_sha256": "63a386a82011b912a6c4bb040906869941b243ca67b46f6b45fa14704370976e",
+    "source_dimensions": "735x551",
+    "board": "Content ideas"
+  },
+  "prompt_summary": "Preserve the low-resolution desert meme composition and replace only the top and bottom caption while extending naturally to 16:9.",
+  "exact_text": [
+    "HERMES СТАВИТЬ ТЫ ВПРАВЕ",
+    "НО ПО ШАГАМ ПРОВЕРЯТЬ ОБЯЗАН"
+  ],
+  "output_sha256": "79b77f55a7f084773c8a9decba8d6ae6b3a3890452a6d864188a56b7193638b5",
+  "qa": {
+    "exact_text_verified": true,
+    "old_text_removed": true,
+    "reference_preserved": true,
+    "preview_350px_verified": true
+  },
+  "localized_reference_note": "The same Pinterest base is intentionally used for the RU/EN pair of one localized article; only the caption language changes."
+}

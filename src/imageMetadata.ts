@@ -4,6 +4,8 @@ interface ImageDimensions {
 }
 
 const IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
+  '/assets/articles/hermes-agent-vps-telegram-ustanovka/hermes-vps-telegram-cover-20260811.webp': { width: 1376, height: 768 },
+  '/assets/articles/hermes-agent-vps-telegram-setup/hermes-vps-telegram-cover-20260811.webp': { width: 1376, height: 768 },
   '/assets/articles/telegram-bot-api-vs-mtproto-methods/telegram-bot-api-mtproto-cover.webp': { width: 1280, height: 720 },
   '/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/raw-source-pack-meme.webp': { width: 736, height: 808 },
   '/assets/articles/ai-reels-seo-pipeline-telegram-claude-code/reels-seo-cover.webp': { width: 1280, height: 720 },

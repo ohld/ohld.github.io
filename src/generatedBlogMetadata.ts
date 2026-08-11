@@ -195,6 +195,30 @@ const generatedArticlePostMeta: GeneratedPostMeta[] = [
     coverImage: '/assets/articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok/claude-code-skills-cover.webp',
     coverAlt: 'Мем-обложка SKILL.md / NOT PROMPT SOUP для статьи про Claude Code skills',
   },
+  {
+    slug: 'hermes-agent-vps-telegram-ustanovka',
+    title: 'Hermes Agent на VPS с Telegram: установка и проверка по шагам',
+    description: 'Как установить Hermes Agent на VPS, подключить модель и Telegram, запустить gateway как сервис и проверить весь путь от сообщения до ответа.',
+    publishedAt: '2026-08-11',
+    updatedAt: '2026-08-11',
+    lang: 'ru',
+    readingTime: '14 мин',
+    tags: ['Hermes Agent', 'AI-агенты', 'Telegram', 'VPS'],
+    coverImage: '/assets/articles/hermes-agent-vps-telegram-ustanovka/hermes-vps-telegram-cover-20260811.webp',
+    coverAlt: 'Мем — HERMES ставить ты вправе, но по шагам проверять обязан',
+  },
+  {
+    slug: 'hermes-agent-vps-telegram-setup',
+    title: 'Hermes Agent on a VPS with Telegram: verified setup guide',
+    description: 'Install Hermes Agent on a Linux VPS, connect a model and Telegram, run the gateway under systemd, and verify the complete message path.',
+    publishedAt: '2026-08-11',
+    updatedAt: '2026-08-11',
+    lang: 'en',
+    readingTime: '13 min',
+    tags: ['Hermes Agent', 'AI agents', 'Telegram', 'VPS'],
+    coverImage: '/assets/articles/hermes-agent-vps-telegram-setup/hermes-vps-telegram-cover-20260811.webp',
+    coverAlt: 'Meme — install Hermes as you please, but verify every layer',
+  },
 ]
 
 function byNewest(a: GeneratedPostMeta, b: GeneratedPostMeta) {

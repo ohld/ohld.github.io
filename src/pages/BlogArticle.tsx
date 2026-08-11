@@ -3,6 +3,7 @@ import { ArticleLayout } from '../components/ArticleLayout'
 import { ArrowRightUpIcon } from '../components/Icons'
 import { articlePath, getBlogArticle } from '../blog'
 import { getGeneratedArticlePost } from '../generatedBlogPosts'
+import { importedArticleAlternates } from '../importedArticles'
 import { markdownToHtml } from '../markdown'
 import { markdownToPlainText } from '../structuredData'
 
@@ -49,7 +50,7 @@ export function BlogArticle() {
         section={generatedArticle.lang === 'en' ? 'Articles' : 'Статьи'}
         bodyText={markdownToPlainText(generatedArticle.body)}
         bodyHtml={markdownToHtml(generatedArticle.body)}
-        alternates={{
+        alternates={importedArticleAlternates(canonical) || {
           [generatedArticle.lang]: canonical,
           'x-default': canonical,
         }}

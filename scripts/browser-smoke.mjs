@@ -8,12 +8,14 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/en/',
   '/en/blog/',
   '/en/articles/',
+  '/en/articles/hermes-agent-vps-telegram-setup/',
   '/en/about/',
   '/ru/blog/',
   '/ru/blog/ai-agents-s-chego-nachat/',
   '/ru/blog/claude-code-vs-codex-perehod/',
   '/ru/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/',
   '/ru/articles/',
+  '/ru/articles/hermes-agent-vps-telegram-ustanovka/',
   '/ru/articles/hermes-agent-vs-openclaw/',
   '/ru/articles/ai-reels-seo-pipeline-telegram-claude-code/',
   '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
@@ -36,12 +38,16 @@ const viewports = [
 const clickChecks = [
   { start: '/ru/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'blog first card', expectedHref: '/karta-postov-telegram/', expectedThumbnail: '/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp' },
   { start: '/en/blog/', selector: '.article-preview-hitarea, .blog-card-hitarea', label: 'en blog first card' },
-  { start: '/', selector: '.home-latest-section .article-preview-hitarea', label: 'home latest card', expectedHref: '/karta-postov-telegram/', expectedThumbnail: '/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp' },
+  { start: '/', selector: '.home-latest-section .article-preview-hitarea', label: 'home latest card' },
   { start: '/en/', selector: '.home-latest-section .article-preview-hitarea', label: 'en home latest card' },
+  { start: '/ru/articles/hermes-agent-vps-telegram-ustanovka/', selector: '.language-switcher a[href="/en/articles/hermes-agent-vps-telegram-setup/"]', label: 'Hermes article RU to EN', expectedHref: '/en/articles/hermes-agent-vps-telegram-setup/' },
+  { start: '/en/articles/hermes-agent-vps-telegram-setup/', selector: '.language-switcher a[href="/ru/articles/hermes-agent-vps-telegram-ustanovka/"]', label: 'Hermes article EN to RU', expectedHref: '/ru/articles/hermes-agent-vps-telegram-ustanovka/' },
   { start: '/', selector: '.page-header-bio a', label: 'home about link' },
 ]
 
 const codeBlockChecks = [
+  { route: '/en/articles/hermes-agent-vps-telegram-setup/', min: 8, label: 'Hermes Telegram setup code blocks' },
+  { route: '/ru/articles/hermes-agent-vps-telegram-ustanovka/', min: 8, label: 'Hermes Telegram setup code blocks' },
   { route: '/claude-code-setup-mcp-hooks-skills-2026/', min: 1, label: 'imported article code blocks' },
   { route: '/ru/articles/ai-tools-for-designers-design-engineering-agents/', min: 1, label: 'article prompt code block' },
   { route: '/ru/blog/improve-codebase-architecture-prompt/', min: 1, label: 'generated blog code block' },

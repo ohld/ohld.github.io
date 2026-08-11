@@ -5,12 +5,14 @@ const SITE_URL = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$
 const distDir = process.env.HREFLANG_DIST_DIR || 'dist'
 const groupsPath = path.join('content', 'articles', 'localized-groups.json')
 const importedIndexPath = path.join('content', 'articles', 'imported-index.json')
+const generatedArticlesDir = path.join('content', 'seo-articles')
 const langs = ['ru', 'en', 'zh']
 const issues = []
 
 const groups = JSON.parse(fs.readFileSync(groupsPath, 'utf8'))
 const importedArticles = JSON.parse(fs.readFileSync(importedIndexPath, 'utf8'))
-const importedByPath = new Map(importedArticles.map((article) => [canonicalPath(article.path), article]))
+const generatedArticles = readGeneratedArticles()
+const articlesByPath = new Map([...importedArticles, ...generatedArticles].map((article) => [canonicalPath(article.path), article]))
 const pages = readDistPages()
 const pagesByUrl = new Map(pages.map((page) => [page.canonical, page]))
 
@@ -32,9 +34,9 @@ function validateLocalizedGroups() {
     if (entries.length < 2) issues.push(`${groupsPath}#${index + 1}: group must contain at least two languages`)
     if (group.xDefault && !group[group.xDefault]) issues.push(`${groupsPath}#${index + 1}: xDefault points to missing ${group.xDefault}`)
     for (const [lang, href] of entries) {
-      const article = importedByPath.get(href)
+      const article = articlesByPath.get(href)
       if (!article) {
-        issues.push(`${groupsPath}#${index + 1}: ${lang} URL ${href} is not in imported-index.json`)
+        issues.push(`${groupsPath}#${index + 1}: ${lang} URL ${href} is not in imported-index.json or ${generatedArticlesDir}`)
       } else if (article.lang !== lang) {
         issues.push(`${groupsPath}#${index + 1}: ${href} is marked ${article.lang}, not ${lang}`)
       }
@@ -47,6 +49,27 @@ function validateLocalizedGroups() {
       issues.push(`${article.path}: Chinese imported article is not listed in ${groupsPath}`)
     }
   }
+}
+
+function readGeneratedArticles() {
+  if (!fs.existsSync(generatedArticlesDir)) return []
+  return fs.readdirSync(generatedArticlesDir)
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => {
+      const raw = fs.readFileSync(path.join(generatedArticlesDir, file), 'utf8')
+      const frontmatter = raw.match(/^---\s*\n([\s\S]*?)\n---/)
+      const meta = {}
+      for (const line of (frontmatter?.[1] || '').split('\n')) {
+        const separator = line.indexOf(':')
+        if (separator < 0) continue
+        meta[line.slice(0, separator).trim()] = line.slice(separator + 1).trim().replace(/^(["'])(.*)\1$/, '$2')
+      }
+      const lang = meta.lang || 'ru'
+      if (!meta.slug) return null
+      const pathPrefix = lang === 'en' ? '/en/articles/' : '/ru/articles/'
+      return { path: `${pathPrefix}${meta.slug}/`, lang }
+    })
+    .filter(Boolean)
 }
 
 function validatePages() {

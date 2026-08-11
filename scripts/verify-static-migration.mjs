@@ -290,7 +290,11 @@ const generatedBlogChecks = generatedBlogPosts.map((post) => {
 const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
   path: generatedArticlePath(article),
   title: article.title,
-  requiredText: article.slug === 'hermes-agent-vs-openclaw'
+  requiredText: article.slug === 'hermes-agent-vps-telegram-ustanovka'
+    ? ['Что получится', 'Сначала заставить работать модель', 'Сделать проверку после перезагрузки', 'Если Telegram-бот молчит']
+    : article.slug === 'hermes-agent-vps-telegram-setup'
+    ? ['The result', 'Prove the model works before adding Telegram', 'Reboot and test from the phone again', 'Troubleshooting a silent bot']
+    : article.slug === 'hermes-agent-vs-openclaw'
     ? ['Короткий вывод', 'Telegram', 'Что ломается первым', 'Безопасность', 'Источники']
     : article.slug === 'kak-pravilno-pisat-skilly-claude-code-7-oshibok'
     ? ['Короткий ответ', '7 ошибок', 'Skill pack', 'FAQ']
@@ -372,6 +376,14 @@ function loadMigrationMapRows() {
 
 function assert(condition, message) {
   if (!condition) throw new Error(message)
+}
+
+function verifyGeneratedArticleDates(html, path) {
+  const publishedAt = html.match(/"datePublished": "(\d{4}-\d{2}-\d{2})(?:T[^"]+)?"/)?.[1]
+  const modifiedAt = html.match(/"dateModified": "(\d{4}-\d{2}-\d{2})(?:T[^"]+)?"/)?.[1]
+  assert(publishedAt, `${path}: missing or invalid generated content datePublished`)
+  assert(modifiedAt, `${path}: missing or invalid generated content dateModified`)
+  assert(modifiedAt >= publishedAt, `${path}: dateModified ${modifiedAt} is earlier than datePublished ${publishedAt}`)
 }
 
 function absolute(path) {
@@ -856,7 +868,7 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)
   assert(!html.includes('>Коротко<'), `${path}: leaked generic summary heading`)
   assert(!html.includes('Эта страница не про'), `${path}: leaked AI-tell contrast construction`)
-  assert(/"dateModified": "2026-(05-(25|26|27|31)|06-(01|06)|07-07)"/.test(html), `${path}: missing generated post dateModified`)
+  verifyGeneratedArticleDates(html, path)
   assert(html.includes('/blog/'), `${path}: missing internal blog links`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   for (const text of requiredText) {
@@ -876,7 +888,7 @@ async function verifyGeneratedSeoArticle({ path, requiredText }) {
   assert(!html.includes('/blog/hermes-agent-vs-openclaw/'), `${path}: should not link to old Blog URL`)
   assert(html.includes('/articles/'), `${path}: missing internal article links`)
   assert(html.includes('/blog/'), `${path}: missing related blog links`)
-  assert(/"dateModified": "2026-(05-(25|26|27|28)|06-(02|03|06)|07-(07|17|19))"/.test(html), `${path}: missing generated article dateModified`)
+  verifyGeneratedArticleDates(html, path)
   for (const text of requiredText) {
     assert(html.includes(text), `${path}: missing required text "${text}"`)
   }

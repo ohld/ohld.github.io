@@ -531,10 +531,7 @@ for (const article of GENERATED_SEO_ARTICLES) {
     title: article.title,
     description: article.description,
     lang: articleLang,
-    alternates: {
-      [articleLang]: `${SITE_URL}${articlePath}/`,
-      'x-default': `${SITE_URL}${articlePath}/`,
-    },
+    alternates: importedArticleAlternates(articlePath, articleLang),
     kind: 'generated-article-post',
     section: articleLang === 'en' ? 'Articles' : 'Статьи',
     publishedAt: article.publishedAt,
