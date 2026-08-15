@@ -392,6 +392,45 @@ async function assertArticleTelegramSubscribeTracking(context, baseUrl) {
   }
 }
 
+async function assertTelegramStoryViewerSourceTracking(context, baseUrl) {
+  const page = await context.newPage({ viewport: { width: 390, height: 844 } })
+  try {
+    await page.goto(`${baseUrl}/how-to-watch-telegram-stories-from-python/`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 15000,
+    })
+    await waitForPageView(page, '/how-to-watch-telegram-stories-from-python/')
+    await page.locator('.code-block-copy').first().waitFor({ timeout: 5000 })
+    const source = page.locator('a[href^="https://core.telegram.org/method/stories.readStories"]').first()
+    await source.waitFor({ timeout: 5000 })
+    const popup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
+    await source.evaluate((link) => {
+      link.setAttribute('target', '_blank')
+      link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, button: 0 }))
+    })
+    const openedPopup = await popup
+    if (openedPopup) await openedPopup.close()
+    await waitForAnalyticsEvent(page, 'source_link_click')
+
+    const calls = await getAnalyticsCalls(page)
+    const expected = {
+      link_domain: 'core.telegram.org',
+      experiment_id: 'seo_exact_query_telegram_story_viewer_2026_08_15',
+      cluster_id: 'telegram_stories_python',
+      experiment_variant: 'exact_query_intent_clarifier_official_sources_v2',
+      experiment_started_at: '2026-08-15',
+    }
+    const gaPayload = gaEventPayloads(calls, 'source_link_click').at(-1)
+    const ymPayload = ymGoalPayloads(calls, 'source_link_click').at(-1)
+    assert(gaPayload, 'Telegram Stories source: missing GA4 source_link_click')
+    assert(ymPayload, 'Telegram Stories source: missing Metrika source_link_click goal')
+    assertSharedEventPayload(gaPayload, 'GA4 Telegram Stories source_link_click', expected)
+    assertSharedEventPayload(ymPayload, 'Metrika Telegram Stories source_link_click', expected)
+  } finally {
+    await page.close()
+  }
+}
+
 async function run(baseUrl) {
   const { chromium } = await loadPlaywright()
   const executablePath = findExecutable()
@@ -442,6 +481,7 @@ async function run(baseUrl) {
   await assertHeaderCtaTracking(page)
   await assertBackButtonTracking(context, baseUrl)
   await assertArticleTelegramSubscribeTracking(context, baseUrl)
+  await assertTelegramStoryViewerSourceTracking(context, baseUrl)
 
   await browser.close()
   console.log(`✓ analytics routing and click goals (${expectedPaths.join(', ')})`)
@@ -468,6 +508,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(error.message)
+  console.error(error.stack || error.message)
   process.exit(1)
 })

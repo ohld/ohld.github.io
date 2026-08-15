@@ -746,6 +746,12 @@ async function verifyImportedArticle({ path, title, lang = 'ru', updatedAt, publ
   if (path === '/en-second-brain-obsidian-claude-code-assistant/' || path === '/vtoroj-mozg-ai-assistent-obsidian-claude-code/') {
     assert(html.includes('<ul class="article-task-list">'), `${path}: setup checklist is not normalized as a semantic list`)
   }
+  if (path === '/how-to-watch-telegram-stories-from-python/') {
+    assert(html.includes('Telegram story viewer vs this Python/Telethon script'), `${path}: missing exact-query intent clarifier`)
+    assert(html.includes('https://core.telegram.org/method/stories.readStories?ref=okhlopkov.com'), `${path}: missing official stories.readStories source`)
+    assert(html.includes('https://telegram.org/tour/stories?ref=okhlopkov.com'), `${path}: missing official Telegram Stories source`)
+    assert(html.includes('"dateModified": "2026-08-15T00:00:00+03:00"'), `${path}: missing SEO refresh dateModified`)
+  }
   if (verbose) console.log(`✓ imported article ${path}`)
 }
 

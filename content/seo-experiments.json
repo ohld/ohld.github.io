@@ -24,12 +24,22 @@
     "started_at": "2026-06-19"
   },
   "/how-to-watch-telegram-stories-from-python/": {
-    "experiment_id": "seo_intent_telegram_stories_disambiguation_2026_07_17",
+    "experiment_id": "seo_exact_query_telegram_story_viewer_2026_08_15",
     "cluster_id": "telegram_stories_python",
     "language": "en",
     "page_type": "legacy_article",
-    "variant": "anonymous_viewer_disambiguation_v1",
-    "started_at": "2026-07-17"
+    "variant": "exact_query_intent_clarifier_official_sources_v2",
+    "started_at": "2026-08-15",
+    "baseline": {
+      "window": "2026-02-11..2026-08-12",
+      "query": "telegram story viewer",
+      "clicks": 34,
+      "impressions": 1661,
+      "ctr": 0.0204695966,
+      "position": 9.1119807345
+    },
+    "review_after_14d": "2026-08-29",
+    "review_after_28d": "2026-09-12"
   },
   "/ru/blog/ai-agents-s-chego-nachat/": {
     "experiment_id": "seo_recrawl_ai_agents_start_internal_link_2026_07_17",

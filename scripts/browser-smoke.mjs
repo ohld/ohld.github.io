@@ -21,6 +21,7 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/ru/articles/ai-tools-for-designers-design-engineering-agents/',
   '/articles/markdown-vs-html/',
   '/how-to-get-a-telegram-channel-subscribers-list-in-python/',
+  '/how-to-watch-telegram-stories-from-python/',
   '/claude-code-nastrojka-mcp-hooks-skills-2026/',
   '/topics/ai-agents/',
   '/karta-postov-telegram/',
@@ -57,6 +58,11 @@ const thumbnailRoutes = new Set(['/', '/en/', '/ru/blog/', '/en/blog/', '/ru/art
 
 const languageShellExpectations = {
   '/how-to-get-a-telegram-channel-subscribers-list-in-python/': {
+    links: ['/en/', '/en/blog/', '/en/articles/', '/en/about/'],
+    requiredText: ['Blog', 'Articles', 'About'],
+    forbiddenText: ['Главная', 'Блог', 'Статьи', 'Обо мне'],
+  },
+  '/how-to-watch-telegram-stories-from-python/': {
     links: ['/en/', '/en/blog/', '/en/articles/', '/en/about/'],
     requiredText: ['Blog', 'Articles', 'About'],
     forbiddenText: ['Главная', 'Блог', 'Статьи', 'Обо мне'],
