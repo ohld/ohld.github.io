@@ -1049,8 +1049,8 @@
     "description": "Use Python + Telethon to watch Telegram Stories from a user session: detect active stories, call ReadStoriesRequest, and understand viewer-list/rate-limit caveats.",
     "lang": "en",
     "publishedAt": "2023-08-25",
-    "updatedAt": "2026-07-17",
-    "readingTime": "3 min",
+    "updatedAt": "2026-08-15",
+    "readingTime": "4 min",
     "tags": [
       "Telegram"
     ],
