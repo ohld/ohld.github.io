@@ -125,6 +125,8 @@ function normalizeImportedArticleHtml(html = '') {
       /\bhref=(["'])(?![a-z][a-z0-9+.-]*:|[/?#]|mailto:|tel:)([^"'\s>]+?\.[a-z]{2,}(?:[/?#][^"']*)?)\1/gi,
       (_match, quote, href) => `href=${quote}https://${href}${quote}`,
     )
+    .replace(/<h1\b/gi, '<h2')
+    .replace(/<\/h1>/gi, '</h2>')
 }
 
 function textFromHtml(value = '') {
