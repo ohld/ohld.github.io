@@ -1624,9 +1624,7 @@ for (const redirect of LEGACY_REDIRECTS) {
     toSlug: to.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '-') || 'home',
   })
 }
-const INDEXABLE_CANONICALIZING_REDIRECTS = new Set([
-  '/kak-pravilno-pisat-skilly-claude-code-7-oshibok/',
-])
+const INDEXABLE_CANONICALIZING_REDIRECTS = new Set([])
 
 function routeForPath(pathname) {
   const canonical = canonicalPathname(pathname)

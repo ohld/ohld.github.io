@@ -257,9 +257,7 @@ const noindexPages = [
   '/private-channel/',
 ]
 
-const indexableCanonicalizingRedirects = new Set([
-  '/kak-pravilno-pisat-skilly-claude-code-7-oshibok/',
-])
+const indexableCanonicalizingRedirects = new Set([])
 
 const blogArticleChecks = [
   {
