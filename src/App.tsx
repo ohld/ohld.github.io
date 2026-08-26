@@ -68,7 +68,6 @@ function usePreloadChunks() {
       privacyImport()
       archiveImport()
       telegramMapImport()
-      botRevolutionArticleImport()
     }
     // requestIdleCallback not available in Telegram WebView (iOS)
     const id = typeof requestIdleCallback !== 'undefined'

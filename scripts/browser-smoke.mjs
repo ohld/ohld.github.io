@@ -164,7 +164,10 @@ async function main() {
       const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded', timeout: 15000 })
       await page.waitForFunction(() => {
         const bodyChars = document.body.innerText.trim().length
-        return Boolean(document.querySelector('footer')) && bodyChars >= 500
+        const footerSelector = location.pathname.replace(/\/+$/, '') === '/ru/blog/bot-revolution'
+          ? '.bot-revolution-footer'
+          : '.footer'
+        return Boolean(document.querySelector(footerSelector)) && bodyChars >= 500
       }, { timeout: 4000 }).catch(() => {})
       const checkCardImages = thumbnailRoutes.has(canonicalPath(route))
       if (checkCardImages) {
@@ -173,7 +176,10 @@ async function main() {
       await forceLoadImages(page, '.article-hero-image img')
       const data = await page.evaluate(() => {
         const header = document.querySelector('.site-header')
-        const footer = document.querySelector('footer')
+        const footerSelector = location.pathname.replace(/\/+$/, '') === '/ru/blog/bot-revolution'
+          ? '.bot-revolution-footer'
+          : '.footer'
+        const footer = document.querySelector(footerSelector)
         const main = document.querySelector('main') || document.querySelector('article')
         const headerBox = header?.getBoundingClientRect()
         const mainBox = main?.getBoundingClientRect()
@@ -223,18 +229,26 @@ async function main() {
       await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {})
       await page.waitForFunction(() => {
         const bodyChars = document.body.innerText.trim().length
-        return Boolean(document.querySelector('footer')) && bodyChars >= 500
+        const footerSelector = location.pathname.replace(/\/+$/, '') === '/ru/blog/bot-revolution'
+          ? '.bot-revolution-footer'
+          : '.footer'
+        return Boolean(document.querySelector(footerSelector)) && bodyChars >= 500
       }, { timeout: 4000 }).catch(() => {})
-      const data = await page.evaluate(() => ({
-        title: document.title,
-        canonical: document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '',
-        robots: document.querySelector('meta[name="robots"]')?.getAttribute('content') || '',
-        bodyChars: document.body.innerText.trim().length,
-        hasHeader: Boolean(document.querySelector('.site-header')),
-        hasFooter: Boolean(document.querySelector('footer')),
-        overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-        headerMainOverlap: false,
-      }))
+      const data = await page.evaluate(() => {
+        const footerSelector = location.pathname.replace(/\/+$/, '') === '/ru/blog/bot-revolution'
+          ? '.bot-revolution-footer'
+          : '.footer'
+        return {
+          title: document.title,
+          canonical: document.querySelector('link[rel="canonical"]')?.getAttribute('href') || '',
+          robots: document.querySelector('meta[name="robots"]')?.getAttribute('content') || '',
+          bodyChars: document.body.innerText.trim().length,
+          hasHeader: Boolean(document.querySelector('.site-header')),
+          hasFooter: Boolean(document.querySelector(footerSelector)),
+          overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+          headerMainOverlap: false,
+        }
+      })
       results.push({
         viewport: viewport.name,
         route: `${check.start} click:${check.label}`,
@@ -265,7 +279,7 @@ async function main() {
       robots: await page.locator('meta[name="robots"]').getAttribute('content') || '',
       bodyChars: (await page.locator('body').innerText()).trim().length,
       hasHeader: Boolean(await page.locator('.site-header').count()),
-      hasFooter: Boolean(await page.locator('footer').count()),
+      hasFooter: Boolean(await page.locator('.footer').count()),
       overflowX: await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
       headerMainOverlap: false,
     })
@@ -280,7 +294,7 @@ async function main() {
         robots: document.querySelector('meta[name="robots"]')?.getAttribute('content') || '',
         bodyChars: document.body.innerText.trim().length,
         hasHeader: Boolean(document.querySelector('.site-header')),
-        hasFooter: Boolean(document.querySelector('footer')),
+        hasFooter: Boolean(document.querySelector('.footer')),
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         headerMainOverlap: false,
         codeBlocks: document.querySelectorAll('.code-block').length,
