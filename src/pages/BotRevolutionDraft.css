@@ -982,7 +982,7 @@ body.bot-revolution-body .site-header-cta {
   }
 
   .bot-revolution-hero {
-    gap: var(--br-space-10);
+    gap: var(--br-space-6);
     padding: var(--br-space-12) 0 var(--br-space-16);
   }
 
