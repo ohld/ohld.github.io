@@ -258,8 +258,8 @@ export function BotRevolutionArticle() {
           </p>
 
           <p className="bot-revolution-channel-hint">
-            В личном чате контекст держит один бот. В 
-            <ExternalLink className="bot-revolution-keep-together" href="https://docs.x.ai/grok-bot/chat-and-collaboration">group chat</ExternalLink>{' '}
+            В личном чате контекст держит один бот.{' '}
+            <span className="bot-revolution-keep-together">В&nbsp;<ExternalLink href="https://docs.x.ai/grok-bot/chat-and-collaboration">group&nbsp;chat</ExternalLink></span>{' '}
             вы собираете 2–6 ботов вокруг общей задачи: они видят один разговор, пишут туда сами и передают работу друг другу.
           </p>
 
