@@ -34,7 +34,7 @@ const privacyImport = () => import('./pages/Privacy').then(m => ({ default: m.Pr
 const archiveImport = () => import('./pages/Archive').then(m => ({ default: m.Archive }))
 const telegramMapImport = () => import('./pages/TelegramMap').then(m => ({ default: m.TelegramMap }))
 const importedArticleImport = () => import('./pages/ImportedArticle').then(m => ({ default: m.ImportedArticle }))
-const botRevolutionDraftImport = () => import('./pages/BotRevolutionDraft').then(m => ({ default: m.BotRevolutionDraft }))
+const botRevolutionArticleImport = () => import('./pages/BotRevolutionDraft').then(m => ({ default: m.BotRevolutionArticle }))
 
 const BlogIndex = lazy(blogIndexImport)
 const EnglishBlogIndex = lazy(englishBlogIndexImport)
@@ -51,7 +51,7 @@ const Privacy = lazy(privacyImport)
 const Archive = lazy(archiveImport)
 const TelegramMap = lazy(telegramMapImport)
 const ImportedArticle = lazy(importedArticleImport)
-const BotRevolutionDraft = lazy(botRevolutionDraftImport)
+const BotRevolutionArticle = lazy(botRevolutionArticleImport)
 
 // Preload all chunks after home page renders so subpages open instantly
 function usePreloadChunks() {
@@ -68,6 +68,7 @@ function usePreloadChunks() {
       privacyImport()
       archiveImport()
       telegramMapImport()
+      botRevolutionArticleImport()
     }
     // requestIdleCallback not available in Telegram WebView (iOS)
     const id = typeof requestIdleCallback !== 'undefined'
@@ -180,6 +181,20 @@ function LegacyTelegramMapRedirect() {
   )
 }
 
+function LegacyBotRevolutionRedirect() {
+  const location = useLocation()
+  return (
+    <Navigate
+      to={{
+        pathname: '/ru/blog/bot-revolution/',
+        search: location.search,
+        hash: location.hash,
+      }}
+      replace
+    />
+  )
+}
+
 function App() {
   usePreloadChunks()
   usePageTracking()
@@ -202,6 +217,7 @@ function App() {
           <Route path="/en/about" element={<EnglishAbout />} />
           <Route path="/posts" element={<Navigate to="/ru/blog" replace />} />
           <Route path="/ru/blog" element={<BlogIndex />} />
+          <Route path="/ru/blog/bot-revolution" element={<BotRevolutionArticle />} />
           <Route path="/ru/blog/:slug" element={<GeneratedBlogPost />} />
           <Route path="/ru/articles" element={<ArticlesIndex />} />
           <Route path="/ru/articles/:slug" element={<ArticlePage />} />
@@ -226,7 +242,7 @@ function App() {
           <Route path="/telegram-map" element={<LegacyTelegramMapRedirect />} />
           <Route path="/karta-postov-telegram" element={<TelegramMap />} />
           <Route path="/privacy" element={<Privacy />} />
-          <Route path="/drafts/bot-revolution" element={<BotRevolutionDraft />} />
+          <Route path="/drafts/bot-revolution" element={<LegacyBotRevolutionRedirect />} />
           <Route path="/:slug" element={<ImportedArticle />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

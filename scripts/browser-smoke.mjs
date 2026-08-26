@@ -11,6 +11,7 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/en/articles/hermes-agent-vps-telegram-setup/',
   '/en/about/',
   '/ru/blog/',
+  '/ru/blog/bot-revolution/',
   '/ru/blog/ai-agents-s-chego-nachat/',
   '/ru/blog/claude-code-vs-codex-perehod/',
   '/ru/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/',
@@ -163,7 +164,7 @@ async function main() {
       const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded', timeout: 15000 })
       await page.waitForFunction(() => {
         const bodyChars = document.body.innerText.trim().length
-        return Boolean(document.querySelector('.footer')) && bodyChars >= 500
+        return Boolean(document.querySelector('footer')) && bodyChars >= 500
       }, { timeout: 4000 }).catch(() => {})
       const checkCardImages = thumbnailRoutes.has(canonicalPath(route))
       if (checkCardImages) {
@@ -172,7 +173,7 @@ async function main() {
       await forceLoadImages(page, '.article-hero-image img')
       const data = await page.evaluate(() => {
         const header = document.querySelector('.site-header')
-        const footer = document.querySelector('.footer')
+        const footer = document.querySelector('footer')
         const main = document.querySelector('main') || document.querySelector('article')
         const headerBox = header?.getBoundingClientRect()
         const mainBox = main?.getBoundingClientRect()
@@ -222,7 +223,7 @@ async function main() {
       await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {})
       await page.waitForFunction(() => {
         const bodyChars = document.body.innerText.trim().length
-        return Boolean(document.querySelector('.footer')) && bodyChars >= 500
+        return Boolean(document.querySelector('footer')) && bodyChars >= 500
       }, { timeout: 4000 }).catch(() => {})
       const data = await page.evaluate(() => ({
         title: document.title,
@@ -230,7 +231,7 @@ async function main() {
         robots: document.querySelector('meta[name="robots"]')?.getAttribute('content') || '',
         bodyChars: document.body.innerText.trim().length,
         hasHeader: Boolean(document.querySelector('.site-header')),
-        hasFooter: Boolean(document.querySelector('.footer')),
+        hasFooter: Boolean(document.querySelector('footer')),
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         headerMainOverlap: false,
       }))
@@ -264,7 +265,7 @@ async function main() {
       robots: await page.locator('meta[name="robots"]').getAttribute('content') || '',
       bodyChars: (await page.locator('body').innerText()).trim().length,
       hasHeader: Boolean(await page.locator('.site-header').count()),
-      hasFooter: Boolean(await page.locator('.footer').count()),
+      hasFooter: Boolean(await page.locator('footer').count()),
       overflowX: await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
       headerMainOverlap: false,
     })
@@ -279,7 +280,7 @@ async function main() {
         robots: document.querySelector('meta[name="robots"]')?.getAttribute('content') || '',
         bodyChars: document.body.innerText.trim().length,
         hasHeader: Boolean(document.querySelector('.site-header')),
-        hasFooter: Boolean(document.querySelector('.footer')),
+        hasFooter: Boolean(document.querySelector('footer')),
         overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth,
         headerMainOverlap: false,
         codeBlocks: document.querySelectorAll('.code-block').length,

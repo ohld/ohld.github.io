@@ -251,7 +251,7 @@ if (fs.existsSync(legacyRedirectsPath)) {
       old_path: redirect.from.endsWith('/') ? redirect.from : `${redirect.from}/`,
       new_path: redirect.to.endsWith('/') ? redirect.to : `${redirect.to}/`,
       action: '308_redirect',
-      source: 'legacy_cn_url',
+      source: redirect.source || 'legacy_cn_url',
       note: redirect.note || 'Old URL redirects to the closest maintained canonical article.',
     })
   }
