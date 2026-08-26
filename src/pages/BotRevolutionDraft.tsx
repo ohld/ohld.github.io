@@ -213,24 +213,26 @@ export function BotRevolutionDraft() {
         <div className="bot-revolution-copy">
           <h2>Один Главный —<br />сто агентов</h2>
           <p>
-            Организовать это можно как маленькую компанию.<br className="bot-revolution-mobile-break" /> Один Chief сидит во всех проектах и держит у себя общий борд.<br className="bot-revolution-mobile-break" /> Остальные боты работают в отдельных каналах по функциям.
+            Организовать это можно как маленькую компанию. Один Chief видит все проекты и держит общий борд. Остальные боты работают в каналах по функциям.
           </p>
 
           <div className="bot-revolution-org" aria-label="Как организовать AI-команду внутри Grok Bot">
-            <div className="bot-revolution-org-chief">
-              <span>single point of contact</span>
-              <strong>Chief of Staff</strong>
-              <small>общий борд · маршрутизация · контроль</small>
+            <div className="bot-revolution-org-head">
+              <span className="bot-revolution-org-index">01</span>
+              <div>
+                <small>единый вход</small>
+                <strong>Chief of Staff</strong>
+              </div>
+              <span className="bot-revolution-org-meta">общий борд / маршрутизация / контроль</span>
             </div>
-            <div className="bot-revolution-org-connector" aria-hidden="true" />
             <div className="bot-revolution-org-channels">
-              <div><strong># dev</strong><span>код и небольшие фиксы</span></div>
-              <div><strong># QA</strong><span>баги и проверка</span></div>
-              <div><strong># brainstorm</strong><span>фичи и идеи</span></div>
+              <div><span>02</span><strong>#dev</strong><p>код и небольшие фиксы</p></div>
+              <div><span>03</span><strong>#qa</strong><p>баги и проверка</p></div>
+              <div><span>04</span><strong>#brainstorm</strong><p>фичи и идеи</p></div>
             </div>
             <div className="bot-revolution-org-routine">
-              <strong>раз в час</strong>
-              <span>проверить весь борд → продолжить остановившиеся задачи</span>
+              <span>EVERY 1H</span>
+              <strong>проверить весь борд → продолжить всё, что остановилось</strong>
             </div>
           </div>
 
@@ -242,13 +244,13 @@ export function BotRevolutionDraft() {
           </p>
 
           <p>
-            Напоминание ставится только Chief.<br className="bot-revolution-mobile-break" /> Раз в час он открывает весь борд, проверяет задачи и продолжает то, что остановилось.<br className="bot-revolution-mobile-break" /> Не нужно будить каждого бота по отдельности и тратить токены во всех каналах.
+            У Chief одна часовая рутина: открыть общий борд, проверить задачи и продолжить всё, что остановилось. Не нужно отдельно будить каждого бота и тратить токены во всех каналах.
           </p>
           <p>
-            Я уже примерно так и работаю.<br className="bot-revolution-mobile-break" /> Кросс-проектные и личные запросы начинаю из OHLD — это мой единый вход.<br className="bot-revolution-mobile-break" /> Codex сам идёт в нужные папки проектов, отдаёт отдельные куски subagents и собирает мне ответ.
+            Я уже примерно так и работаю. Кросс-проектные и личные запросы начинаю в OHLD — это единый вход. Codex сам идёт в нужные папки, раздаёт работу subagents и собирает ответ.
           </p>
           <p>
-            Задачи часто не заканчиваются одной сессией.<br className="bot-revolution-mobile-break" /> Но всё, что агент сохранил в проекте, никуда не исчезает, а GBrain помогает поднять прошлые решения и результаты.<br className="bot-revolution-mobile-break" /> Поэтому новый запрос начинается не с нуля, а с того места, где мы остановились.
+            Задачи часто не заканчиваются одной сессией. Но сохранённое остаётся в проекте, а GBrain поднимает прошлые решения и результаты. Поэтому новый запрос начинается там, где мы остановились.
           </p>
 
         </div>
@@ -259,8 +261,14 @@ export function BotRevolutionDraft() {
           <h2>В Telegram уже есть почти все примитивы</h2>
         </div>
         <div>
-          <p>
-            Форумы и топики. Bot-to-bot. Managed Bots.<br className="bot-revolution-mobile-break" /> Даже текущий <ExternalLink href="https://core.telegram.org/api/config">лимит</ExternalLink> похож на размер команды: 20 ботов, с Premium 40.
+          <div className="bot-revolution-telegram-primitives" aria-label="Примитивы Telegram для AI-команды">
+            <span><ExternalLink className="bot-revolution-primitive-link" href="https://core.telegram.org/bots/features#topics-in-private-chats">Топики</ExternalLink>.</span>
+            <span><ExternalLink className="bot-revolution-primitive-link" href="https://core.telegram.org/bots/features#bot-to-bot-communication">Bot-to-bot</ExternalLink>.</span>
+            <span><ExternalLink className="bot-revolution-primitive-link" href="https://core.telegram.org/bots/features#managed-bots">Managed Bots</ExternalLink>.</span>
+          </div>
+          <p className="bot-revolution-telegram-limit">
+            Но сотню сотрудников в одном аккаунте пока не собрать:<br />
+            <ExternalLink href="https://core.telegram.org/api/config#bots-create-limit-default">лимит — 20 своих ботов, <span className="bot-revolution-keep-together">с Premium — 40</span></ExternalLink>.
           </p>
           <p>
             Поэтому особенно интересно, что соберёт{' '}
@@ -269,26 +277,35 @@ export function BotRevolutionDraft() {
                 <span>Fabrika</span>
                 <i className="verified-icon" aria-label="Верифицировано">✔</i>
               </span>
-            </ExternalLink>.<br className="bot-revolution-mobile-break" /> Проект ещё не вышел, а рефка появится только на релизе.<br className="bot-revolution-mobile-break" /> Но сам интерфейс а-ля <em>Grok Bot в Телеграмме</em> уже почти лежит на столе.
+            </ExternalLink>. Проект ещё не вышел, а рефка появится только после релиза. Но сам интерфейс <em><span className="bot-revolution-keep-together">а‑ля Grok Bot</span> в Телеграмме</em> уже почти <span className="bot-revolution-keep-together">лежит на столе</span>.
           </p>
         </div>
       </section>
 
       <section className="bot-revolution-cost">
-        <h2>А сколько это стоит?</h2>
-        <div>
+        <figure className="bot-revolution-art bot-revolution-cost-art">
+          <img
+            src="/assets/drafts/bot-revolution/cost-variants/cost-how-much-money.webp"
+            alt="А сколько это стоит — мем со Спанч Бобом и пачкой денег"
+            width="2048"
+            height="2048"
+            loading="lazy"
+          />
+        </figure>
+        <div className="bot-revolution-cost-copy">
+          <h2 className="bot-revolution-visually-hidden">А сколько это стоит?</h2>
           <p>
-            На первый взгляд Grok Bot — игрушка за <strong>$300 в месяц</strong>: столько стоит максимальный <ExternalLink href="https://x.ai/bot">SuperGrok Heavy</ExternalLink>.<br className="bot-revolution-mobile-break" /> Это дороже любой из моих AI-подписок: максимальные тарифы Codex и Claude Code, которыми я пользовался, стоили по $200.
+            Grok Bot можно попробовать через <ExternalLink href="https://cursor.com/pricing">Cursor Pro+ за $60</ExternalLink> или <ExternalLink href="https://x.ai/pricing">SuperGrok Plus за $100</ExternalLink>. <ExternalLink href="https://x.ai/bot">SuperGrok Heavy стоит $300</ExternalLink>: в нём максимальные лимиты для Chat, Imagine, Voice, Build и ботов.
           </p>
           <p>
-            Но $300 уже не входной билет.<br className="bot-revolution-mobile-break" /> Сам Grok Bot можно попробовать через <ExternalLink href="https://cursor.com/pricing">Cursor Pro+ за $60</ExternalLink> или <ExternalLink href="https://x.ai/pricing">SuperGrok Plus за $100</ExternalLink>.<br className="bot-revolution-mobile-break" /> Heavy нужен, если хочется максимальных лимитов для Chat, Imagine, Voice, Build и ботов.<br className="bot-revolution-mobile-break" /> То есть попробовать можно за $60.<br className="bot-revolution-mobile-break" /> $300 имеет смысл, только если вы хотите пересадить на это почти всю работу.
+            $300 дороже максимальных подписок на Codex и Claude Code, которыми я пользовался: обе стоили по $200. Такая цена имеет смысл, только если пересадить на этот набор <span className="bot-revolution-keep-together">почти всю работу</span>.
           </p>
         </div>
       </section>
 
       <section className="bot-revolution-prompt">
         <div className="bot-revolution-prompt-heading">
-          <h2>Спроси агента,<br />который уже тебя знает</h2>
+          <h2>Спроси агента, который тебя знает</h2>
         </div>
         <div className="bot-revolution-prompt-column">
           <div className="bot-revolution-prompt-box">
@@ -298,15 +315,36 @@ export function BotRevolutionDraft() {
               <button type="button" onClick={copyPrompt}>{copied ? 'Скопировано' : 'Копировать'}</button>
             </div>
           </div>
-          <p className="bot-revolution-prompt-note">Также работает, чтобы найти свои agent loops: какие повторяющиеся задачи уже пора отдать отдельным ботам.</p>
+          <p className="bot-revolution-prompt-note">
+            <span>Так можно найти и свои agent loops:</span>
+            <span>рутины, которые уже пора отдать ботам.</span>
+          </p>
         </div>
       </section>
 
       <footer className="bot-revolution-footer">
-        <p>Мне кажется, следующая революция не в ещё одном умном чате.<br className="bot-revolution-mobile-break" /> AI-команду наконец можно собрать как обычную: назначить Главного, раздать работу и перестать объяснять всё заново в каждой сессии.<br className="bot-revolution-mobile-break" /> Короче, сделать всё как у людей.</p>
-        <div>
-          <ExternalLink href="https://t.me/ohld_chat/45541">Обсудить в OHLD Chat</ExternalLink>
-          <ExternalLink href="https://t.me/danokhlopkov">Telegram-канал</ExternalLink>
+        <p className="bot-revolution-footer-thesis">
+          Следующая революция будет не в более умных моделях. Она будет в том, как мы с ними работаем: один Главный, сотрудники, память и рутины. Короче, сделать <span className="bot-revolution-keep-together">всё как у людей</span>.
+        </p>
+
+        <div className="bot-revolution-telegram-cards">
+          <a className="bot-revolution-telegram-card" href="https://t.me/danokhlopkov" target="_blank" rel="noopener noreferrer">
+            <div className="bot-revolution-telegram-card-profile">
+              <img src="/assets/drafts/bot-revolution/telegram-cards/dan-channel.webp" alt="Дэн Охлопков" width="320" height="320" loading="lazy" />
+              <div><span>Telegram-канал</span><strong>Дэн Охлопков</strong></div>
+            </div>
+            <p>Новые AI-инструменты, агентные лупы и мои эксперименты.</p>
+            <span className="bot-revolution-telegram-card-action">Подписаться</span>
+          </a>
+
+          <a className="bot-revolution-telegram-card" href="https://t.me/ohld_chat" target="_blank" rel="noopener noreferrer">
+            <div className="bot-revolution-telegram-card-profile">
+              <img src="/assets/drafts/bot-revolution/telegram-cards/ohld-chat.webp" alt="OHLD Chat" width="320" height="320" loading="lazy" />
+              <div><span>Telegram-чат</span><strong>OHLD Chat</strong></div>
+            </div>
+            <p>Обсудить статью и поспорить про ботов с комьюнити.</p>
+            <span className="bot-revolution-telegram-card-action">Вступить</span>
+          </a>
         </div>
       </footer>
     </main>
