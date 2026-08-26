@@ -299,9 +299,16 @@ body.bot-revolution-body .site-header-cta {
 }
 
 .bot-revolution-copy blockquote p {
+  margin-top: 10px;
   color: var(--br-copy);
   font-size: 16px;
   line-height: 1.58;
+}
+
+.bot-revolution-quote-author {
+  color: var(--br-accent);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .bot-revolution-stack {

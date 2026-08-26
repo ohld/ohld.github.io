@@ -104,12 +104,15 @@ export function BotRevolutionDraft() {
         <div className="bot-revolution-copy">
           <h2>Всё не засунуть<br />в одну сессию</h2>
           <p>
-            Опытные AI-разработчики уже поняли: всю инфу про всё не засунуть в контекст одной сессии. А так хочется иметь <code>single point of contact</code>: писать Главному, чтобы он прочитал нужное и порешал сам.
+            Опытные AI-разработчики уже поняли:<br />
+            всю инфу всех проектов не засунуть в один контекст.<br />
+            А так хочется иметь <code>single point of contact</code>:<br />
+            писать Chief of Staff, чтобы он прочитал нужное и порешал сам.
           </p>
           <p>
             <ExternalLink href="https://t.me/ohld_chat/45534">Grok Bot</ExternalLink>,{' '}
             <ExternalLink href="https://t.me/ohld_chat/45546">Hermes Bot</ExternalLink> и{' '}
-            <ExternalLink href="https://t.me/danokhlopkov/1731">Berd</ExternalLink> превращают такую специализацию в отдельного агента. У каждого своя память, инструменты, триггеры и рутины.
+            <ExternalLink href="https://t.me/danokhlopkov/1731">Berd</ExternalLink> почти синхронно релизнули новый формат общения с агентами: чат, сотрудники, каналы, лупы.
           </p>
 
           <div className="bot-revolution-loop" aria-label="Пример agent loop">
@@ -129,13 +132,17 @@ export function BotRevolutionDraft() {
           </p>
 
           <blockquote>
+            <ExternalLink href="https://t.me/ohld_chat/45541">
+              <strong className="bot-revolution-quote-author">@Medoedisrussia</strong>
+            </ExternalLink>
             <p>
-              В <ExternalLink href="https://t.me/ohld_chat/45541">OHLD Chat</ExternalLink> справедливо возразили: боты легко замыкаются в луп, иногда проще писать одному сильному агенту, а хайпа пока больше, чем результата.
+              Grok Bot мне имхо ваще не зашел (как в целом и пепер клип месяца четыре назад)<br />
+              Все также в какомто лупе боты замыкаться, ничего внятного у меня сделать не получилось(
             </p>
           </blockquote>
 
           <p>
-            Согласен. Grok Bot может не взлететь. Но это не отменяет новую парадигму: интерфейс уже сместился от «открой ещё один чат» к «собери мне команду».
+            Это пока сырой интерфейс, и Grok Bot вполне может не взлететь. Но сама идея уже сдвинулась от «открой ещё один чат» к «собери мне команду».
           </p>
           <p>
             Большую разработку с нуля всё ещё удобнее вести через Claude Code, Codex или Grok CLI. Grok Bot и Hermes интереснее на уже живом проекте: поддерживать прод, обсуждать фичи, делать небольшие фиксы.
