@@ -25,8 +25,8 @@ export interface GeneratedPostMeta {
 const generatedBlogPostMeta: GeneratedPostMeta[] = [
   {
     slug: 'bot-revolution',
-    title: 'The Bot Revolution: один Главный и сто AI-агентов',
-    description: 'Следующая ступень AI-инструментов — один Chief of Staff, постоянная память и команда специализированных ботов.',
+    title: 'The Bot Revolution',
+    description: 'Следующая ступень эволюции AI-инструментов — не один агент, а целая команда.',
     publishedAt: '2026-08-26',
     updatedAt: '2026-08-26',
     lang: 'ru',

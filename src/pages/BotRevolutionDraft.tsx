@@ -49,8 +49,8 @@ function CommunityMessage({
 }
 
 const ARTICLE_PATH = '/ru/blog/bot-revolution/'
-const ARTICLE_TITLE = 'The Bot Revolution: один Главный и сто AI-агентов'
-const ARTICLE_DESCRIPTION = 'Следующая ступень AI-инструментов — один Chief of Staff, постоянная память и команда специализированных ботов.'
+const ARTICLE_TITLE = 'The Bot Revolution'
+const ARTICLE_DESCRIPTION = 'Следующая ступень эволюции AI-инструментов — не один агент, а целая команда.'
 const ARTICLE_IMAGE = '/assets/drafts/bot-revolution/bot-weather-map.webp'
 
 export function BotRevolutionArticle() {
