@@ -73,7 +73,22 @@ function verifyCover({ filePath, meta, route }, errors) {
   assert(html.includes('<meta name="twitter:card" content="summary_large_image" />'), `${label}: twitter:card is not summary_large_image`, errors)
   assert(html.includes(`<meta name="twitter:image" content="${absoluteImage}" />`), `${label}: missing twitter:image`, errors)
   assert(html.includes(`<meta name="twitter:image:alt" content="${escapedAlt}" />`), `${label}: missing twitter:image:alt`, errors)
-  assert(html.includes(`<img src="${coverImage}" alt="${escapedAlt}"`), `${label}: rendered hero/fallback img is missing cover alt`, errors)
+  const renderedCover = [...html.matchAll(/<img\b[^>]*>/g)]
+    .map((match) => match[0])
+    .find((tag) => tag.includes(coverImage) && tag.includes(`alt="${escapedAlt}"`))
+  assert(Boolean(renderedCover), `${label}: rendered hero/fallback img is missing cover alt`, errors)
+  const renderedSrcset = renderedCover?.match(/\ssrcset="([^"]+)"/)?.[1]
+  if (renderedSrcset) {
+    const responsiveCandidates = renderedSrcset
+      .split(',')
+      .map((candidate) => candidate.trim().split(/\s+/)[0])
+      .filter((candidate) => candidate.startsWith('/'))
+    assert(responsiveCandidates.length >= 2, `${label}: responsive cover srcset has too few candidates`, errors)
+    for (const candidate of responsiveCandidates) {
+      const candidatePath = path.join('public', candidate.replace(/^\/+/, ''))
+      assert(fs.existsSync(candidatePath), `${label}: responsive cover asset missing at ${candidatePath}`, errors)
+    }
+  }
   assert(html.includes(absoluteImage), `${label}: JSON-LD or social metadata does not reference cover image`, errors)
 
   const metaPath = assetPath.replace(/\.[^.]+$/, '.meta.json')

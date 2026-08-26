@@ -279,8 +279,10 @@ const generatedBlogChecks = generatedBlogPosts.map((post) => {
   return {
     path: generatedBlogPath(post),
     title: post.title,
-    requiredText: post.slug === 'bot-revolution'
+    requiredText: post.slug === 'bot-revolution' && lang === 'ru'
       ? ['Всё не засунуть', 'Не один супер-агент', 'В Telegram уже есть почти все примитивы', 'Следующая революция']
+      : post.slug === 'bot-revolution' && lang === 'en'
+      ? ['You can’t cram everything', 'Not one super-agent', 'Telegram already has almost all the primitives', 'The next revolution']
       : lang === 'en'
       ? ['Short version:', 'Read next']
       : ['Что добавилось из обсуждений', 'Читать ещё'],
@@ -582,8 +584,9 @@ function verifyAnalyticsSnippet(html, path) {
   assert(new RegExp(`ym\\(\\s*${escapeRegExp(yandexMetrikaId)}\\s*,\\s*['"]hit['"]`).test(html), `${path}: missing inline Yandex Metrika hit`)
   assert(html.includes('__INITIAL_METRIKA_HIT_SENT__'), `${path}: missing inline Metrika hit state flag`)
   assert(html.includes('trackLinks:true'), `${path}: missing Yandex trackLinks option`)
-  assert(html.includes('clickmap:false'), `${path}: Yandex clickmap should stay disabled for Core Web Vitals`)
-  assert(html.includes('webvisor:false'), `${path}: Yandex Webvisor should stay disabled for Core Web Vitals`)
+  assert(html.includes('botRevolutionTelemetry'), `${path}: missing route-scoped Bot Revolution telemetry flag`)
+  assert(html.includes('clickmap:botRevolutionTelemetry'), `${path}: Yandex clickmap should be scoped to Bot Revolution direct entries`)
+  assert(html.includes('webvisor:botRevolutionTelemetry'), `${path}: Yandex Webvisor should be scoped to Bot Revolution direct entries`)
   assert(html.includes('setTimeout(loadAnalytics, 3500)'), `${path}: analytics loaders should stay out of the early critical path`)
   assert(!html.includes(`https://mc.yandex.ru/watch/${yandexMetrikaId}`), `${path}: Yandex noscript pixel should not create empty-alt image noise`)
 
@@ -862,13 +865,24 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
+  if (path === '/ru/blog/bot-revolution/' || path === '/en/blog/bot-revolution/') {
+    assert(/<link rel="stylesheet" crossorigin href="\/assets\/BotRevolutionDraft-[^"]+\.css" \/>/.test(html), `${path}: missing critical article stylesheet preload`)
+    const chunkPrefix = path.startsWith('/en/') ? 'EnglishBotRevolution-' : 'BotRevolutionDraft-'
+    assert(html.includes(`<link rel="modulepreload" crossorigin href="/assets/${chunkPrefix}`), `${path}: missing article module preload`)
+    assert(html.includes('imagesrcset="/assets/drafts/bot-revolution/bot-weather-map-640.webp 640w'), `${path}: missing responsive hero preload`)
+    const lead = path.startsWith('/en/')
+      ? 'The long-awaited next step in AI evolution.'
+      : 'Долгожданный следующий шаг эволюции ИИ.'
+    const visibleHtml = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
+    assert(visibleHtml.split(lead).length - 1 === 1, `${path}: static fallback duplicates the article introduction`)
+  }
   assert(html.includes('"@type": "BlogPosting"'), `${path}: missing BlogPosting JSON-LD`)
   verifyArticleContentAnalyticsMarkup(html, path)
   assert(!html.includes('"isBasedOn":'), `${path}: should not expose source Telegram URL in JSON-LD`)
   for (const phrase of nativeBlogForbiddenPhrases) {
     assert(!html.includes(phrase), `${path}: leaked source framing phrase "${phrase}"`)
   }
-  const allowsIntentionalTelegramReferences = path === '/ru/blog/bot-revolution/'
+  const allowsIntentionalTelegramReferences = path === '/ru/blog/bot-revolution/' || path === '/en/blog/bot-revolution/'
   assert(allowsIntentionalTelegramReferences || !danTelegramSourceUrlPattern.test(html), `${path}: should not link to numeric source Telegram posts`)
   assert(!html.includes('<p>&gt;</p>') && !html.includes('&gt;</p>'), `${path}: leaked bare markdown quote marker`)
   assert(!html.includes('SEO'), `${path}: leaked internal search-production label`)

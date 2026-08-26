@@ -252,6 +252,21 @@ async function waitForAnalyticsEvent(page, eventName, count = 1) {
   )
 }
 
+async function waitForGaEvent(page, eventName, expected = {}) {
+  await page.waitForFunction(
+    ({ expectedEvent, expectedParams }) => {
+      const calls = window.__GA_TEST_CALLS__ || []
+      return calls.some((call) => (
+        call[0] === 'event'
+        && call[1] === expectedEvent
+        && Object.entries(expectedParams).every(([key, value]) => call[2]?.[key] === value)
+      ))
+    },
+    { expectedEvent: eventName, expectedParams: expected },
+    { timeout: 8000 },
+  )
+}
+
 async function clickHeaderLink(page, href, expectedPath) {
   await page.locator(`.site-header-link[href="${href}"]`).first().click()
   await page.waitForFunction(
@@ -431,6 +446,206 @@ async function assertTelegramStoryViewerSourceTracking(context, baseUrl) {
   }
 }
 
+async function assertBotRevolutionReadingTracking(context, baseUrl) {
+  const page = await context.newPage({ viewport: { width: 390, height: 844 } })
+  await page.addInitScript(() => {
+    window.__COPIED_TEXT__ = ''
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error('clipboard unavailable in test')) },
+    })
+    document.execCommand = (command) => {
+      if (command !== 'copy') return false
+      window.__COPIED_TEXT__ = document.activeElement?.value || ''
+      return true
+    }
+  })
+  await page.clock.install()
+  try {
+    await page.goto(`${baseUrl}/ru/blog/bot-revolution/`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 15000,
+    })
+    await waitForPageView(page, '/ru/blog/bot-revolution/')
+    await waitForGaEvent(page, 'article_section_view', { section_id: 'hook' })
+
+    const heroImage = page.locator('.bot-revolution-hero-art img')
+    const srcset = await heroImage.getAttribute('srcset')
+    assert(srcset?.includes('bot-weather-map-640.webp 640w'), 'Bot Revolution hero: missing responsive 640w source')
+    assert(srcset?.includes('bot-weather-map-1024.webp 1024w'), 'Bot Revolution hero: missing responsive 1024w source')
+
+    const contextSection = page.locator('[data-analytics-section="context_limit"]')
+    await contextSection.scrollIntoViewIfNeeded()
+    await waitForGaEvent(page, 'article_section_view', { section_id: 'context_limit' })
+    await page.clock.runFor(5200)
+    await waitForGaEvent(page, 'article_section_read', { section_id: 'context_limit' })
+
+    await page.evaluate(() => {
+      window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true }))
+      window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }))
+    })
+    await page.clock.runFor(1100)
+    const bfcacheCalls = await getAnalyticsCalls(page)
+    assert(gaEventPayloads(bfcacheCalls, 'article_read_summary').length === 0, 'Bot Revolution: BFCache pagehide finalized the reading session')
+
+    await page.clock.runFor(10_000)
+    await waitForAnalyticsEvent(page, 'article_engaged')
+    const incompleteCalls = await getAnalyticsCalls(page)
+    assert(gaEventPayloads(incompleteCalls, 'article_read_complete').length === 0, 'Bot Revolution: completed before conclusion was reached')
+
+    const promptButton = page.locator('.bot-revolution-prompt-actions button')
+    await promptButton.scrollIntoViewIfNeeded()
+    await promptButton.click()
+    await waitForAnalyticsEvent(page, 'code_copy')
+
+    assert(await promptButton.textContent() === 'Скопировано', 'Bot Revolution prompt: missing copied state')
+    assert(
+      await page.evaluate(() => window.__COPIED_TEXT__) === 'Based on what you know about me, how would you set up GrokBot? Which bots should we set up?',
+      'Bot Revolution prompt: fallback copied the wrong text',
+    )
+    await page.clock.runFor(1900)
+    assert(await promptButton.textContent() === 'Копировать', 'Bot Revolution prompt: copied state did not reset')
+
+    const sourceLink = page.locator('a[href="https://docs.x.ai/grok-bot/chat-and-collaboration"]').first()
+    const sourcePopup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
+    await sourceLink.click({ noWaitAfter: true })
+    const openedSourcePopup = await sourcePopup
+    if (openedSourcePopup) await openedSourcePopup.close()
+    await waitForAnalyticsEvent(page, 'source_link_click')
+
+    const conclusion = page.locator('[data-analytics-section="conclusion"]')
+    await conclusion.scrollIntoViewIfNeeded()
+    await waitForGaEvent(page, 'article_section_view', { section_id: 'conclusion' })
+    await page.clock.runFor(15_000)
+    await waitForAnalyticsEvent(page, 'article_read_complete')
+
+    const channel = page.locator('[data-cta-id="bot_revolution_channel"]')
+    const channelPopup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
+    await channel.click({ noWaitAfter: true })
+    const openedChannelPopup = await channelPopup
+    if (openedChannelPopup) await openedChannelPopup.close()
+    await waitForAnalyticsEvent(page, 'telegram_subscribe_click')
+
+    const chat = page.locator('[data-cta-id="bot_revolution_chat"]')
+    const chatPopup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
+    await chat.click({ noWaitAfter: true })
+    const openedChatPopup = await chatPopup
+    if (openedChatPopup) await openedChatPopup.close()
+    await waitForAnalyticsEvent(page, 'article_cta_click')
+
+    await page.locator('.language-switcher a[href="/en/blog/bot-revolution/"]').click()
+    await page.waitForFunction(() => window.location.pathname === '/en/blog/bot-revolution/', null, { timeout: 5000 })
+    await waitForGaEvent(page, 'article_read_summary', { exit_reason: 'route_change' })
+    await waitForGaEvent(page, 'article_internal_click', { destination: '/en/blog/bot-revolution/' })
+
+    const calls = await getAnalyticsCalls(page)
+    const sectionView = gaEventPayloads(calls, 'article_section_view')
+      .find((payload) => payload.section_id === 'context_limit')
+    const sectionRead = gaEventPayloads(calls, 'article_section_read')
+      .find((payload) => payload.section_id === 'context_limit')
+    const sectionAttention = gaEventPayloads(calls, 'article_section_attention')
+      .find((payload) => payload.section_id === 'context_limit')
+    const summary = gaEventPayloads(calls, 'article_read_summary').at(-1)
+    const copyGa = gaEventPayloads(calls, 'code_copy').at(-1)
+    const copyYm = ymGoalPayloads(calls, 'code_copy').at(-1)
+    const botMetrikaInit = ymInitCalls(calls).at(-1)
+
+    assert(sectionView?.article_slug === 'bot-revolution', 'Bot Revolution section view: missing article_slug')
+    assert(sectionView?.section_count === 9, `Bot Revolution section view: expected 9 sections, got ${sectionView?.section_count}`)
+    assert(sectionRead?.attention_seconds >= 5, `Bot Revolution section read: expected >=5s, got ${sectionRead?.attention_seconds}`)
+    assert(sectionAttention?.attention_seconds >= 5, `Bot Revolution section attention: expected >=5s, got ${sectionAttention?.attention_seconds}`)
+    assert(sectionAttention?.section_pass >= 1, `Bot Revolution section attention: expected a visible pass, got ${sectionAttention?.section_pass}`)
+    assert(summary?.sections_viewed >= 2, `Bot Revolution summary: expected >=2 viewed sections, got ${summary?.sections_viewed}`)
+    assert(summary?.sections_read >= 1, `Bot Revolution summary: expected >=1 read section, got ${summary?.sections_read}`)
+    assert(summary?.exit_reason === 'route_change', `Bot Revolution summary: expected route_change, got ${summary?.exit_reason}`)
+    assert(summary?.engaged_reader === 1, 'Bot Revolution summary: reader should be engaged')
+    assert(summary?.read_complete === 1, 'Bot Revolution summary: reader should be complete')
+    assert(summary?.transport_type === 'beacon', 'Bot Revolution summary: expected beacon transport')
+    assert(copyGa?.event_label === 'bot_revolution_prompt', 'Bot Revolution prompt: bad GA4 copy label')
+    assert(copyYm?.event_label === 'bot_revolution_prompt', 'Bot Revolution prompt: bad Metrika copy label')
+    assert(botMetrikaInit?.clickmap === true, 'Bot Revolution: Metrika click map should be enabled on direct entry')
+    assert(botMetrikaInit?.webvisor === true, 'Bot Revolution: Metrika Webvisor should be enabled on direct entry')
+  } finally {
+    await page.close()
+  }
+}
+
+async function assertEnglishBotRevolutionTracking(context, baseUrl) {
+  const page = await context.newPage({ viewport: { width: 390, height: 844 } })
+  try {
+    await page.goto(`${baseUrl}/en/blog/bot-revolution/`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 15000,
+    })
+    await waitForPageView(page, '/en/blog/bot-revolution/')
+    await waitForGaEvent(page, 'article_section_view', { section_id: 'hook', article_lang: 'en' })
+    const calls = await getAnalyticsCalls(page)
+    const botMetrikaInit = ymInitCalls(calls).at(-1)
+    assert(botMetrikaInit?.clickmap === true, 'English Bot Revolution: Metrika click map should be enabled on direct entry')
+    assert(botMetrikaInit?.webvisor === true, 'English Bot Revolution: Metrika Webvisor should be enabled on direct entry')
+    assert(await page.locator('html').getAttribute('lang') === 'en', 'English Bot Revolution: wrong document language')
+    assert(await page.locator('.language-switcher a[aria-current="page"]').textContent() === 'EN', 'English Bot Revolution: EN switch should be active')
+    assert(
+      await page.locator('[data-analytics-section="chief_model"] .bot-revolution-art img').getAttribute('src') === '/assets/drafts/bot-revolution/ai-becomes-team-en.webp',
+      'English Bot Revolution: chief illustration should use an English asset',
+    )
+
+    await Promise.all([
+      page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 5000 }),
+      page.locator('.site-header-link[href="/en/blog/"]').click(),
+    ])
+    await waitForPageView(page, '/en/blog/')
+    const destinationCalls = await getAnalyticsCalls(page)
+    const destinationInit = ymInitCalls(destinationCalls).at(-1)
+    assert(destinationInit?.clickmap === false, 'English Bot Revolution: clickmap stayed enabled after leaving the article')
+    assert(destinationInit?.webvisor === false, 'English Bot Revolution: Webvisor stayed enabled after leaving the article')
+    assert(!await page.locator('body').evaluate((body) => body.classList.contains('bot-revolution-body')), 'English Bot Revolution: article body class leaked after navigation')
+  } finally {
+    await page.close()
+  }
+}
+
+async function assertBotRevolutionClipboardFailure(context, baseUrl) {
+  const page = await context.newPage({ viewport: { width: 390, height: 844 } })
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: () => Promise.reject(new Error('clipboard unavailable in test')) },
+    })
+    document.execCommand = () => false
+  })
+  try {
+    await page.goto(`${baseUrl}/en/blog/bot-revolution/`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 15000,
+    })
+    const promptButton = page.locator('.bot-revolution-prompt-actions button')
+    await promptButton.scrollIntoViewIfNeeded()
+    await promptButton.click()
+    await page.waitForTimeout(250)
+    const calls = await getAnalyticsCalls(page)
+    assert(gaEventPayloads(calls, 'code_copy').length === 0, 'Bot Revolution prompt: failed copy emitted a GA4 conversion')
+    assert(ymGoalPayloads(calls, 'code_copy').length === 0, 'Bot Revolution prompt: failed copy emitted a Metrika conversion')
+    assert(await promptButton.textContent() === 'Copy', 'Bot Revolution prompt: failed copy showed a success state')
+  } finally {
+    await page.close()
+  }
+}
+
+async function assertMissingEnglishPostStaysEnglish(context, baseUrl) {
+  const page = await context.newPage({ viewport: { width: 390, height: 844 } })
+  try {
+    await page.goto(`${baseUrl}/en/blog/__missing-post__/`, {
+      waitUntil: 'domcontentloaded',
+      timeout: 15000,
+    })
+    await page.waitForFunction(() => window.location.pathname === '/en/blog/', null, { timeout: 5000 })
+    assert(await page.locator('html').getAttribute('lang') === 'en', 'Missing English post: redirect switched to Russian')
+  } finally {
+    await page.close()
+  }
+}
+
 async function run(baseUrl) {
   const { chromium } = await loadPlaywright()
   const executablePath = findExecutable()
@@ -482,6 +697,10 @@ async function run(baseUrl) {
   await assertBackButtonTracking(context, baseUrl)
   await assertArticleTelegramSubscribeTracking(context, baseUrl)
   await assertTelegramStoryViewerSourceTracking(context, baseUrl)
+  await assertBotRevolutionReadingTracking(context, baseUrl)
+  await assertEnglishBotRevolutionTracking(context, baseUrl)
+  await assertBotRevolutionClipboardFailure(context, baseUrl)
+  await assertMissingEnglishPostStaysEnglish(context, baseUrl)
 
   await browser.close()
   console.log(`✓ analytics routing and click goals (${expectedPaths.join(', ')})`)
