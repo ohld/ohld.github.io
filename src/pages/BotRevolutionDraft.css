@@ -148,12 +148,25 @@ body.bot-revolution-body .site-header-cta {
 }
 
 .bot-revolution-lead {
+  display: grid;
+  gap: 10px;
   max-width: 580px;
   margin-top: 32px;
-  color: var(--br-copy);
-  font-size: clamp(21px, 2vw, 27px);
-  line-height: 1.42;
   letter-spacing: -0.025em;
+}
+
+.bot-revolution-lead > span {
+  color: var(--br-muted);
+  font-size: clamp(18px, 1.55vw, 21px);
+  line-height: 1.4;
+}
+
+.bot-revolution-lead > strong {
+  max-width: 21ch;
+  color: var(--br-copy);
+  font-size: clamp(25px, 2.25vw, 32px);
+  font-weight: 650;
+  line-height: 1.22;
 }
 
 .bot-revolution-art {
@@ -241,9 +254,62 @@ body.bot-revolution-body .site-header-cta {
   grid-template-columns: minmax(0, 1.07fr) minmax(340px, 0.93fr);
 }
 
-.bot-revolution-community-chapter,
+.bot-revolution-section-title {
+  grid-column: 1 / -1;
+  max-width: 1050px;
+  margin: 0 auto clamp(2px, 1vw, 12px);
+  color: var(--br-text);
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.bot-revolution-section-title > span {
+  display: block;
+  white-space: nowrap;
+}
+
+.bot-revolution-community-chapter {
+  grid-template-areas:
+    "title title"
+    "copy art"
+    "notes notes";
+  align-items: center;
+}
+
+.bot-revolution-community-chapter > .bot-revolution-section-title {
+  grid-area: title;
+}
+
+.bot-revolution-community-chapter > .bot-revolution-copy {
+  grid-area: copy;
+}
+
+.bot-revolution-community-chapter > .bot-revolution-art {
+  grid-area: art;
+  align-self: center;
+}
+
 .bot-revolution-final-chapter {
-  align-items: start;
+  grid-template-areas:
+    "title title"
+    "visual copy";
+  align-items: center;
+}
+
+.bot-revolution-final-chapter > .bot-revolution-section-title {
+  grid-area: title;
+}
+
+.bot-revolution-final-chapter > .bot-revolution-final-visual {
+  grid-area: visual;
+}
+
+.bot-revolution-final-chapter > .bot-revolution-copy {
+  grid-area: copy;
 }
 
 .bot-revolution-chapter > .bot-revolution-art {
@@ -318,10 +384,10 @@ body.bot-revolution-body .site-header-cta {
 
 .bot-revolution-community-notes {
   display: grid;
-  grid-column: 1 / -1;
+  grid-area: notes;
   gap: 9px;
-  width: 100%;
-  margin: -10px 0 0;
+  width: min(100%, 940px);
+  margin: -4px auto 0;
 }
 
 .bot-revolution-community-notes > span {
@@ -331,7 +397,7 @@ body.bot-revolution-body .site-header-cta {
 
 .bot-revolution-community-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 18px;
   align-items: start;
 }
@@ -342,6 +408,9 @@ body.bot-revolution-body .site-header-cta {
   align-items: start;
   gap: 8px;
   width: 100%;
+  color: inherit !important;
+  text-decoration: none !important;
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .bot-revolution-community-message > img {
@@ -355,8 +424,10 @@ body.bot-revolution-body .site-header-cta {
 .bot-revolution-community-message > div {
   min-width: 0;
   padding: 9px 11px 10px;
+  border: 1px solid transparent;
   border-radius: 4px 11px 11px 11px;
   background: var(--br-surface);
+  transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 160ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .bot-revolution-community-author {
@@ -373,10 +444,9 @@ body.bot-revolution-body .site-header-cta {
   font-weight: 700;
 }
 
-.bot-revolution-community-author a {
+.bot-revolution-community-author span {
   color: var(--br-muted);
   font-size: 11px;
-  text-decoration: none;
 }
 
 .bot-revolution-community-message p {
@@ -395,8 +465,7 @@ body.bot-revolution-body .site-header-cta {
 
 .bot-revolution-final-visual {
   display: grid;
-  align-self: start;
-  gap: 16px;
+  align-self: center;
   width: min(100%, 455px);
 }
 
@@ -406,118 +475,6 @@ body.bot-revolution-body .site-header-cta {
 
 .bot-revolution-final-chapter .bot-revolution-copy > p:first-of-type {
   margin-top: 0;
-}
-
-.bot-revolution-org {
-  width: 100%;
-  margin: 0;
-  border-top: 2px solid var(--br-accent);
-  border-bottom: 2px solid var(--br-accent);
-}
-
-.bot-revolution-org-head {
-  display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
-  gap: 5px 10px;
-  align-items: end;
-  padding: 16px 0 18px;
-}
-
-.bot-revolution-org-index,
-.bot-revolution-org-head small,
-.bot-revolution-org-channels > div > span,
-.bot-revolution-org-channels strong,
-.bot-revolution-org-routine > span {
-  font-family: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
-}
-
-.bot-revolution-org-index {
-  grid-row: 1 / span 2;
-  align-self: start;
-  color: var(--br-accent);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-}
-
-.bot-revolution-org-head > div {
-  min-width: 0;
-}
-
-.bot-revolution-org-head small {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--br-muted);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.bot-revolution-org-head strong {
-  display: block;
-  color: var(--br-text);
-  font-size: clamp(24px, 7vw, 34px);
-  line-height: 1;
-  letter-spacing: -0.045em;
-}
-
-.bot-revolution-org-meta {
-  grid-column: 2;
-  color: var(--br-muted);
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.bot-revolution-org-channels {
-  border-top: 1px solid var(--br-border);
-}
-
-.bot-revolution-org-channels > div {
-  display: grid;
-  grid-template-columns: 34px minmax(92px, 0.7fr) minmax(0, 1fr);
-  gap: 10px;
-  align-items: baseline;
-  padding: 11px 0;
-  border-bottom: 1px solid var(--br-border);
-}
-
-.bot-revolution-org-channels > div > span {
-  color: var(--br-muted);
-  font-size: 10px;
-}
-
-.bot-revolution-org-channels > div > strong {
-  color: var(--br-accent);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.bot-revolution-org-channels p {
-  margin: 0;
-  color: var(--br-copy);
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.bot-revolution-org-routine {
-  display: grid;
-  gap: 6px;
-  padding: 14px 0 15px;
-}
-
-.bot-revolution-org-routine > span {
-  color: var(--br-accent);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.bot-revolution-org-routine > strong {
-  color: var(--br-text);
-  font-size: 13px;
-  font-weight: 650;
-  line-height: 1.4;
 }
 
 .bot-revolution-channel-hint {
@@ -730,13 +687,16 @@ body.bot-revolution-body .site-header-cta {
 
 .bot-revolution-footer {
   display: grid;
-  gap: 42px;
-  padding-top: 42px;
+  gap: 28px;
+  padding-top: 34px;
   border-top: 1px solid var(--br-border);
 }
 
 .bot-revolution-footer-thesis {
-  max-width: 950px;
+  display: grid;
+  gap: 7px;
+  max-width: 100%;
+  margin: 0;
   color: var(--br-text);
   font-size: clamp(28px, 3.35vw, 43px);
   font-weight: 650;
@@ -744,37 +704,55 @@ body.bot-revolution-body .site-header-cta {
   letter-spacing: -0.03em;
 }
 
+.bot-revolution-footer-thesis > span,
+.bot-revolution-footer-thesis > strong {
+  display: block;
+}
+
+.bot-revolution-footer-thesis > span {
+  white-space: nowrap;
+  text-wrap: balance;
+}
+
+.bot-revolution-footer-thesis > strong {
+  margin-top: 14px;
+  color: var(--br-accent);
+  font-size: 0.72em;
+}
+
 .bot-revolution-telegram-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  gap: 10px;
+  width: min(100%, 880px);
+  margin-inline: auto;
 }
 
 .bot-revolution-telegram-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: auto 1fr;
-  align-items: end;
-  gap: 12px 18px;
-  min-height: 154px;
-  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 0;
+  padding: 12px 13px;
   border: 1px solid var(--br-border);
-  border-radius: 12px;
+  border-radius: 9px;
   background: var(--br-surface);
   color: var(--br-text) !important;
   text-decoration: none !important;
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 160ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .bot-revolution-telegram-card-profile {
-  grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 10px;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .bot-revolution-telegram-card-profile img {
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   flex: 0 0 auto;
   border: 1px solid var(--br-border);
   border-radius: 50%;
@@ -797,20 +775,14 @@ body.bot-revolution-body .site-header-cta {
   letter-spacing: -0.02em;
 }
 
-.bot-revolution-telegram-card > p {
-  max-width: 34ch;
-  color: var(--br-muted);
-  font-size: 13px;
-  line-height: 1.45;
-}
-
 .bot-revolution-telegram-card-action {
   display: inline-flex;
-  min-height: 38px;
+  min-height: 34px;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  padding: 0 14px;
-  border-radius: 6px;
+  padding: 0 11px;
+  border-radius: 5px;
   background: var(--br-accent);
   color: var(--br-bg);
   font-size: 13px;
@@ -830,11 +802,33 @@ body.bot-revolution-body .site-header-cta {
 
   .bot-revolution-telegram-card:hover {
     border-color: var(--br-accent);
+    background: oklch(0.215 0.026 255);
+    transform: translateY(-2px);
+  }
+
+  .bot-revolution-community-message:hover {
+    transform: translateY(-2px);
+  }
+
+  .bot-revolution-community-message:hover > div {
+    border-color: var(--br-border);
+    background: oklch(0.22 0.027 255);
   }
 
   .bot-revolution-prompt-actions button:hover {
     background: oklch(0.78 0.18 42);
   }
+}
+
+.bot-revolution-community-message:focus-visible,
+.bot-revolution-telegram-card:focus-visible {
+  outline: 2px solid var(--br-accent);
+  outline-offset: 4px;
+}
+
+.bot-revolution-community-message:active,
+.bot-revolution-telegram-card:active {
+  transform: scale(0.985);
 }
 
 @media (max-width: 900px) {
@@ -880,6 +874,25 @@ body.bot-revolution-body .site-header-cta {
     gap: 44px;
   }
 
+  .bot-revolution-community-chapter {
+    grid-template-areas:
+      "title"
+      "art"
+      "copy"
+      "notes";
+  }
+
+  .bot-revolution-final-chapter {
+    grid-template-areas:
+      "title"
+      "visual"
+      "copy";
+  }
+
+  .bot-revolution-section-title {
+    margin-bottom: 0;
+  }
+
   .bot-revolution-chapter-reverse .bot-revolution-copy {
     order: 2;
   }
@@ -893,6 +906,11 @@ body.bot-revolution-body .site-header-cta {
     order: 3;
     width: min(100%, 620px);
     margin: 0 auto;
+  }
+
+  .bot-revolution-community-chapter > .bot-revolution-copy,
+  .bot-revolution-community-chapter > .bot-revolution-art {
+    order: initial;
   }
 
   .bot-revolution-chapter > .bot-revolution-art {
@@ -968,9 +986,18 @@ body.bot-revolution-body .site-header-cta {
   }
 
   .bot-revolution-lead {
+    gap: 8px;
     margin-top: 25px;
-    font-size: 20px;
-    line-height: 1.46;
+  }
+
+  .bot-revolution-lead > span {
+    font-size: 17px;
+  }
+
+  .bot-revolution-lead > strong {
+    max-width: 19ch;
+    font-size: 23px;
+    line-height: 1.25;
   }
 
   .bot-revolution-hero-art,
@@ -1014,14 +1041,24 @@ body.bot-revolution-body .site-header-cta {
     line-height: 1.03;
   }
 
+  .bot-revolution-section-title {
+    font-size: 36px;
+    line-height: 1.02;
+  }
+
+  .bot-revolution-final-chapter > .bot-revolution-section-title {
+    font-size: 29px;
+  }
+
+  .bot-revolution-section-title > span,
+  .bot-revolution-footer-thesis > span {
+    white-space: normal;
+  }
+
   .bot-revolution-copy > p:not(.bot-revolution-note),
   .bot-revolution-telegram > div:last-child > p,
   .bot-revolution-cost > div > p {
     font-size: 18px;
-  }
-
-  .bot-revolution-copy code {
-    white-space: normal;
   }
 
   .bot-revolution-loop {
@@ -1103,8 +1140,18 @@ body.bot-revolution-body .site-header-cta {
   }
 
   .bot-revolution-footer {
-    gap: 24px;
-    padding-top: 28px;
+    gap: 20px;
+    padding-top: 26px;
+  }
+
+  .bot-revolution-footer-thesis {
+    gap: 6px;
+    font-size: 28px;
+    line-height: 1.18;
+  }
+
+  .bot-revolution-footer-thesis > strong {
+    margin-top: 10px;
   }
 
   .bot-revolution-telegram-cards {
@@ -1113,11 +1160,8 @@ body.bot-revolution-body .site-header-cta {
   }
 
   .bot-revolution-telegram-card {
-    display: flex;
-    align-items: center;
     gap: 10px;
-    min-height: 0;
-    padding: 11px 12px;
+    padding: 10px 11px;
     border-radius: 8px;
   }
 
@@ -1146,7 +1190,6 @@ body.bot-revolution-body .site-header-cta {
 
   .bot-revolution-telegram-card-action {
     min-height: 32px;
-    flex: 0 0 auto;
     padding: 0 10px;
     font-size: 11px;
   }
