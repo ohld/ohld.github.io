@@ -189,7 +189,7 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 ## Свежие материалы
 
-- [The Bot Revolution: один Главный и сто AI-агентов](/ru/blog/bot-revolution/)
+- [The Bot Revolution](/ru/blog/bot-revolution/)
 
 - [Карта моих постов в Telegram](/karta-postov-telegram/)
 
