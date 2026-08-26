@@ -33,6 +33,7 @@ const mvhImport = () => import('./pages/MarkdownVsHtml').then(m => ({ default: m
 const privacyImport = () => import('./pages/Privacy').then(m => ({ default: m.Privacy }))
 const archiveImport = () => import('./pages/Archive').then(m => ({ default: m.Archive }))
 const importedArticleImport = () => import('./pages/ImportedArticle').then(m => ({ default: m.ImportedArticle }))
+const botRevolutionDraftImport = () => import('./pages/BotRevolutionDraft').then(m => ({ default: m.BotRevolutionDraft }))
 
 const BlogIndex = lazy(blogIndexImport)
 const EnglishBlogIndex = lazy(englishBlogIndexImport)
@@ -48,6 +49,7 @@ const MarkdownVsHtml = lazy(mvhImport)
 const Privacy = lazy(privacyImport)
 const Archive = lazy(archiveImport)
 const ImportedArticle = lazy(importedArticleImport)
+const BotRevolutionDraft = lazy(botRevolutionDraftImport)
 
 // Preload all chunks after home page renders so subpages open instantly
 function usePreloadChunks() {
@@ -205,6 +207,7 @@ function App() {
           <Route path="/articles/markdown-vs-html" element={<MarkdownVsHtml />} />
           <Route path="/archive" element={<Archive />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/drafts/bot-revolution" element={<BotRevolutionDraft />} />
           <Route path="/:slug" element={<ImportedArticle />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
