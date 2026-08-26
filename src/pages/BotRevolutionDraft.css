@@ -9,6 +9,14 @@ body.bot-revolution-body {
   --br-accent-wash: oklch(0.72 0.19 38 / 0.1);
   --br-border: oklch(0.72 0.11 38 / 0.24);
   --br-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
+  --br-space-1: 4px;
+  --br-space-2: 8px;
+  --br-space-3: 12px;
+  --br-space-4: 16px;
+  --br-space-6: 24px;
+  --br-space-10: 40px;
+  --br-space-12: 48px;
+  --br-space-16: 64px;
   --bg: var(--br-bg);
   --text: var(--br-text);
   --accent: var(--br-muted);
@@ -35,13 +43,16 @@ body.bot-revolution-body .site-header-cta {
 
 body.bot-revolution-body .site-header-brand {
   color: var(--br-text);
-  font-weight: 650;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 body.bot-revolution-body .site-header-link,
 body.bot-revolution-body .language-switcher a {
   color: var(--br-muted);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 body.bot-revolution-body .language-switcher,
@@ -131,42 +142,42 @@ body.bot-revolution-body .site-header-cta {
 }
 
 .bot-revolution-kicker {
-  margin-bottom: 22px;
+  margin-bottom: var(--br-space-6);
   color: var(--br-accent);
   font-size: 14px;
-  font-weight: 650;
-  letter-spacing: 0.015em;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
 .bot-revolution-hero h1 {
   max-width: 650px;
   margin: 0;
   font-size: clamp(68px, 7.4vw, 112px);
-  font-weight: 720;
-  line-height: 0.88;
-  letter-spacing: -0.07em;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.035em;
 }
 
 .bot-revolution-lead {
   display: grid;
-  gap: 10px;
+  gap: var(--br-space-2);
   max-width: 580px;
-  margin-top: 32px;
-  letter-spacing: -0.025em;
+  margin-top: var(--br-space-6);
+  letter-spacing: -0.015em;
 }
 
 .bot-revolution-lead > span {
-  color: var(--br-muted);
+  color: var(--br-copy);
   font-size: clamp(18px, 1.55vw, 21px);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .bot-revolution-lead > strong {
   max-width: 21ch;
-  color: var(--br-copy);
+  color: var(--br-text);
   font-size: clamp(25px, 2.25vw, 32px);
-  font-weight: 650;
-  line-height: 1.22;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .bot-revolution-art {
@@ -957,8 +968,7 @@ body.bot-revolution-body .site-header-cta {
   body.bot-revolution-body .site-header {
     width: calc(100% - 32px);
     margin: 0 auto;
-    padding-right: 0;
-    padding-left: 0;
+    padding: var(--br-space-4) 0 var(--br-space-3);
   }
 
   body.bot-revolution-body .site-header-nav,
@@ -972,32 +982,34 @@ body.bot-revolution-body .site-header-cta {
   }
 
   .bot-revolution-hero {
-    gap: 42px;
-    padding: 52px 0 78px;
+    gap: var(--br-space-10);
+    padding: var(--br-space-12) 0 var(--br-space-16);
   }
 
   .bot-revolution-kicker {
-    margin-bottom: 17px;
+    margin-bottom: var(--br-space-4);
     font-size: 13px;
+    line-height: 20px;
   }
 
   .bot-revolution-hero h1 {
-    font-size: clamp(58px, 18vw, 76px);
+    font-size: clamp(58px, 17.5vw, 72px);
   }
 
   .bot-revolution-lead {
-    gap: 8px;
-    margin-top: 25px;
+    gap: var(--br-space-2);
+    margin-top: var(--br-space-6);
   }
 
   .bot-revolution-lead > span {
-    font-size: 17px;
+    font-size: 16px;
+    line-height: 24px;
   }
 
   .bot-revolution-lead > strong {
     max-width: 19ch;
-    font-size: 23px;
-    line-height: 1.25;
+    font-size: 21px;
+    line-height: 28px;
   }
 
   .bot-revolution-hero-art,
