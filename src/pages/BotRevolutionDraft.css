@@ -997,8 +997,8 @@ body.bot-revolution-body .site-header-cta {
   }
 
   .bot-revolution-lead {
-    gap: var(--br-space-2);
-    margin-top: var(--br-space-6);
+    gap: var(--br-space-3);
+    margin-top: var(--br-space-3);
   }
 
   .bot-revolution-lead > span {
