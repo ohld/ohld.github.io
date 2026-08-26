@@ -279,7 +279,9 @@ const generatedBlogChecks = generatedBlogPosts.map((post) => {
   return {
     path: generatedBlogPath(post),
     title: post.title,
-    requiredText: lang === 'en'
+    requiredText: post.slug === 'bot-revolution'
+      ? ['Всё не засунуть', 'Не один супер-агент', 'В Telegram уже есть почти все примитивы', 'Следующая революция']
+      : lang === 'en'
       ? ['Short version:', 'Read next']
       : ['Что добавилось из обсуждений', 'Читать ещё'],
   }
@@ -657,7 +659,7 @@ async function verifyHomepageBasics() {
   const homeArticle = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i)?.[1] || ''
   const latestSection = homeArticle.match(/<h2>Свежие материалы<\/h2>([\s\S]*)/i)?.[1] || ''
   const homeFirstHref = latestSection.match(/<a\b[^>]*href=["']([^"']+)["']/i)?.[1] || ''
-  assert(homeFirstHref === '/karta-postov-telegram/', `/: first static latest-material link should be /karta-postov-telegram/, got ${homeFirstHref || '<empty>'}`)
+  assert(homeFirstHref === '/ru/blog/bot-revolution/', `/: first static latest-material link should be /ru/blog/bot-revolution/, got ${homeFirstHref || '<empty>'}`)
   assert(/<meta\s+name=["']viewport["'][^>]+width=device-width[^>]+initial-scale=1/i.test(html), '/: missing responsive viewport')
   verifyImageAltText(html, '/')
 
@@ -866,7 +868,8 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
   for (const phrase of nativeBlogForbiddenPhrases) {
     assert(!html.includes(phrase), `${path}: leaked source framing phrase "${phrase}"`)
   }
-  assert(!danTelegramSourceUrlPattern.test(html), `${path}: should not link to numeric source Telegram posts`)
+  const allowsIntentionalTelegramReferences = path === '/ru/blog/bot-revolution/'
+  assert(allowsIntentionalTelegramReferences || !danTelegramSourceUrlPattern.test(html), `${path}: should not link to numeric source Telegram posts`)
   assert(!html.includes('<p>&gt;</p>') && !html.includes('&gt;</p>'), `${path}: leaked bare markdown quote marker`)
   assert(!html.includes('SEO'), `${path}: leaked internal search-production label`)
   assert(!html.includes('Wordstat'), `${path}: leaked internal keyword research label`)

@@ -48,19 +48,48 @@ function CommunityMessage({
   )
 }
 
-export function BotRevolutionDraft() {
+const ARTICLE_PATH = '/ru/blog/bot-revolution/'
+const ARTICLE_TITLE = 'The Bot Revolution: один Главный и сто AI-агентов'
+const ARTICLE_DESCRIPTION = 'Следующая ступень AI-инструментов — один Chief of Staff, постоянная память и команда специализированных ботов.'
+const ARTICLE_IMAGE = '/assets/drafts/bot-revolution/bot-weather-map.webp'
+
+export function BotRevolutionArticle() {
   const [copied, setCopied] = useState(false)
 
   useDocumentMeta({
-    title: 'The Bot Revolution — Даниил Охлопков',
-    description: 'Следующая ступень AI-инструментов: один Главный, постоянная память и команда специализированных ботов.',
-    canonical: absoluteUrl('/drafts/bot-revolution/'),
-    robots: 'noindex, nofollow',
-    image: absoluteUrl('/assets/drafts/bot-revolution/bot-weather-map.webp'),
+    title: `${ARTICLE_TITLE} — Даниил Охлопков`,
+    description: ARTICLE_DESCRIPTION,
+    canonical: absoluteUrl(ARTICLE_PATH),
+    lang: 'ru',
+    alternates: {
+      ru: absoluteUrl(ARTICLE_PATH),
+      'x-default': absoluteUrl(ARTICLE_PATH),
+    },
+    image: absoluteUrl(ARTICLE_IMAGE),
     imageAlt: 'The Bot Revolution: карта с командой AI-ботов',
     type: 'article',
-    section: 'AI Agents',
+    publishedTime: '2026-08-26T00:00:00+03:00',
+    modifiedTime: '2026-08-26T00:00:00+03:00',
+    section: 'Блог',
     tags: ['AI Agents', 'Grok Bot', 'Hermes Bot', 'Telegram'],
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: ARTICLE_TITLE,
+      description: ARTICLE_DESCRIPTION,
+      datePublished: '2026-08-26T00:00:00+03:00',
+      dateModified: '2026-08-26T00:00:00+03:00',
+      author: {
+        '@type': 'Person',
+        name: 'Даниил Охлопков',
+        url: absoluteUrl('/about/'),
+      },
+      mainEntityOfPage: absoluteUrl(ARTICLE_PATH),
+      image: absoluteUrl(ARTICLE_IMAGE),
+      inLanguage: 'ru',
+      articleSection: 'Блог',
+      keywords: ['AI Agents', 'Grok Bot', 'Hermes Bot', 'Telegram'],
+    },
   })
 
   useEffect(() => {
@@ -86,7 +115,7 @@ export function BotRevolutionDraft() {
   }
 
   return (
-    <main className="bot-revolution-page" lang="ru">
+    <main className="bot-revolution-page" id="article-content" lang="ru">
       <section className="bot-revolution-hero">
         <div className="bot-revolution-hero-copy">
           <p className="bot-revolution-kicker">Август 2026</p>

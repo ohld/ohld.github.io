@@ -1,5 +1,11 @@
 [
   {
+    "from": "/drafts/bot-revolution/",
+    "to": "/ru/blog/bot-revolution/",
+    "source": "published_draft",
+    "note": "The Bot Revolution draft was published as a canonical Russian blog post."
+  },
+  {
     "from": "/cn-claude-code-creator-tips-git-worktrees/",
     "to": "/en-claude-code-creator-tips-git-worktrees/",
     "note": "Old Chinese URL is not maintained; redirect to the preserved English Claude Code creator tips article."

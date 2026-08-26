@@ -189,6 +189,8 @@ const HOME_FALLBACK_MD = `# Даниил Охлопков
 
 ## Свежие материалы
 
+- [The Bot Revolution: один Главный и сто AI-агентов](/ru/blog/bot-revolution/)
+
 - [Карта моих постов в Telegram](/karta-postov-telegram/)
 
 ![Мой AI-сетап 2026](/assets/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/phone-agent-meme.webp)

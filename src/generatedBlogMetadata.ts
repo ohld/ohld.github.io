@@ -24,6 +24,18 @@ export interface GeneratedPostMeta {
 
 const generatedBlogPostMeta: GeneratedPostMeta[] = [
   {
+    slug: 'bot-revolution',
+    title: 'The Bot Revolution: один Главный и сто AI-агентов',
+    description: 'Следующая ступень AI-инструментов — один Chief of Staff, постоянная память и команда специализированных ботов.',
+    publishedAt: '2026-08-26',
+    updatedAt: '2026-08-26',
+    lang: 'ru',
+    readingTime: '7 мин',
+    tags: ['AI Agents', 'Grok Bot', 'Hermes Bot', 'Telegram'],
+    coverImage: '/assets/drafts/bot-revolution/bot-weather-map.webp',
+    coverAlt: 'The Bot Revolution — карта с командой AI-ботов',
+  },
+  {
     slug: 'ai-agents-s-chego-nachat',
     title: 'AI-агенты: с чего начать в 2026 — карта материалов, Claude Code, Codex и живые кейсы',
     description: 'Маршрут по материалам Дана Охлопкова про AI-агентов: Claude Code, Codex, промпты, Obsidian, Paperclip, реальные стримы и что читать первым.',
