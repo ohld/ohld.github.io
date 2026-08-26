@@ -13,9 +13,9 @@ const timeline = [
   ['2026.5', 'The Bot Revolution', 'AI становится командой'],
 ]
 
-function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
+function ExternalLink({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) {
   return (
-    <a href={href} target="_blank" rel="noopener noreferrer">
+    <a className={className} href={href} target="_blank" rel="noopener noreferrer">
       {children}<span aria-hidden="true">↗</span>
     </a>
   )
@@ -166,8 +166,7 @@ export function BotRevolutionDraft() {
               author="Pasha ;)"
               username="Medoedisrussia"
             >
-              Grok Bot мне имхо ваще не зашел (как в целом и пепер клип месяца четыре назад)<br />
-              Все также в какомто лупе боты замыкаться, ничего внятного у меня сделать не получилось(
+              Grok Bot мне вообще не зашёл. Боты всё так же замыкаются в каком-то лупе — ничего внятного у меня сделать не получилось.
             </CommunityMessage>
             <CommunityMessage
               href="https://t.me/ohld_chat/45546"
@@ -175,11 +174,9 @@ export function BotRevolutionDraft() {
               author="Дмитрий Малахов"
               username="Hennessy81"
             >
-              Я кстати по сути пытаюсь сделать такого Гермеса для смм и это оказывается очень сложно<br /><br />
-              Технически сложно все вместе слепить так чтобы держалось<br />
-              А продуктово сложно объяснить что с ботом можно как с человеком<br /><br />
-              И собственно сделать так чтобы бот делал как человек<br /><br />
-              Короче замкнутый круг
+              Я по сути пытаюсь сделать такого Гермеса для SMM, и это оказывается очень сложно.<br /><br />
+              Технически сложно всё слепить так, чтобы держалось. А продуктово — объяснить, что с ботом можно как с человеком.<br /><br />
+              Короче, замкнутый круг.
             </CommunityMessage>
           </div>
 
@@ -216,7 +213,36 @@ export function BotRevolutionDraft() {
         <div className="bot-revolution-copy">
           <h2>Один Главный —<br />сто агентов</h2>
           <p>
-            Павел Игнатьев собирает это буквально как маленькую компанию.<br className="bot-revolution-mobile-break" /> Один Chief сидит во всех проектах и держит у себя общий борд.<br className="bot-revolution-mobile-break" /> Часовая рутина запускается только у него: он разом проверяет все задачи и продолжает то, что где-то остановилось.
+            Организовать это можно как маленькую компанию.<br className="bot-revolution-mobile-break" /> Один Chief сидит во всех проектах и держит у себя общий борд.<br className="bot-revolution-mobile-break" /> Остальные боты работают в отдельных каналах по функциям.
+          </p>
+
+          <div className="bot-revolution-org" aria-label="Как организовать AI-команду внутри Grok Bot">
+            <div className="bot-revolution-org-chief">
+              <span>single point of contact</span>
+              <strong>Chief of Staff</strong>
+              <small>общий борд · маршрутизация · контроль</small>
+            </div>
+            <div className="bot-revolution-org-connector" aria-hidden="true" />
+            <div className="bot-revolution-org-channels">
+              <div><strong># dev</strong><span>код и небольшие фиксы</span></div>
+              <div><strong># QA</strong><span>баги и проверка</span></div>
+              <div><strong># brainstorm</strong><span>фичи и идеи</span></div>
+            </div>
+            <div className="bot-revolution-org-routine">
+              <strong>раз в час</strong>
+              <span>проверить весь борд → продолжить остановившиеся задачи</span>
+            </div>
+          </div>
+
+          <p className="bot-revolution-channel-hint">
+            <strong>Что здесь значит channel.</strong>{' '}
+            Это не ещё одна личка с ботом, а общая рабочая комната —{' '}
+            <ExternalLink href="https://forum.cursor.com/t/introducing-grok-bot/168053">group chat или thread</ExternalLink>.
+            {' '}Боты видят один контекст, пишут друг другу и передают задачу дальше.
+          </p>
+
+          <p>
+            Напоминание ставится только Chief.<br className="bot-revolution-mobile-break" /> Раз в час он открывает весь борд, проверяет задачи и продолжает то, что остановилось.<br className="bot-revolution-mobile-break" /> Не нужно будить каждого бота по отдельности и тратить токены во всех каналах.
           </p>
           <p>
             Я уже примерно так и работаю.<br className="bot-revolution-mobile-break" /> Кросс-проектные и личные запросы начинаю из OHLD — это мой единый вход.<br className="bot-revolution-mobile-break" /> Codex сам идёт в нужные папки проектов, отдаёт отдельные куски subagents и собирает мне ответ.
@@ -225,11 +251,6 @@ export function BotRevolutionDraft() {
             Задачи часто не заканчиваются одной сессией.<br className="bot-revolution-mobile-break" /> Но всё, что агент сохранил в проекте, никуда не исчезает, а GBrain помогает поднять прошлые решения и результаты.<br className="bot-revolution-mobile-break" /> Поэтому новый запрос начинается не с нуля, а с того места, где мы остановились.
           </p>
 
-          <dl className="bot-revolution-stack">
-            <div><dt>Главный</dt><dd>понимает задачу и маршрутизирует</dd></div>
-            <div><dt>Память</dt><dd>достаёт нужный контекст между сессиями</dd></div>
-            <div><dt>Агенты</dt><dd>делают узкую работу и возвращают результат</dd></div>
-          </dl>
         </div>
       </section>
 
@@ -243,9 +264,9 @@ export function BotRevolutionDraft() {
           </p>
           <p>
             Поэтому особенно интересно, что соберёт{' '}
-            <ExternalLink href="https://t.me/karfly_livestream/293">
+            <ExternalLink href="https://t.me/karfly_livestream/293" className="bot-revolution-fabrika-link">
               <span className="bot-revolution-fabrika">
-                Fabrika
+                <span>Fabrika</span>
                 <i className="verified-icon" aria-label="Верифицировано">✔</i>
               </span>
             </ExternalLink>.<br className="bot-revolution-mobile-break" /> Проект ещё не вышел, а рефка появится только на релизе.<br className="bot-revolution-mobile-break" /> Но сам интерфейс а-ля <em>Grok Bot в Телеграмме</em> уже почти лежит на столе.

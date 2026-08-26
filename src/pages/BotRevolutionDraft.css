@@ -297,6 +297,7 @@ body.bot-revolution-body .site-header-cta {
 .bot-revolution-community-notes {
   display: grid;
   gap: 10px;
+  width: min(100%, 460px);
   margin: 28px 0;
 }
 
@@ -308,14 +309,20 @@ body.bot-revolution-body .site-header-cta {
 
 .bot-revolution-community-message {
   display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
+  grid-template-columns: 34px minmax(0, 1fr);
   align-items: start;
-  gap: 10px;
+  gap: 8px;
+  width: min(92%, 420px);
+}
+
+.bot-revolution-community-message + .bot-revolution-community-message {
+  width: calc(100% - 18px);
+  margin-left: 18px;
 }
 
 .bot-revolution-community-message > img {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--br-border);
   border-radius: 50%;
   object-fit: cover;
@@ -323,7 +330,7 @@ body.bot-revolution-body .site-header-cta {
 
 .bot-revolution-community-message > div {
   min-width: 0;
-  padding: 11px 13px 12px;
+  padding: 10px 12px 11px;
   border-radius: 5px 13px 13px 13px;
   background: var(--br-surface);
 }
@@ -350,33 +357,109 @@ body.bot-revolution-body .site-header-cta {
 
 .bot-revolution-community-message p {
   color: var(--br-copy);
-  font-size: 14px;
-  line-height: 1.47;
+  font-size: 13px;
+  line-height: 1.45;
 }
 
-.bot-revolution-stack {
-  margin-top: 32px;
-  border-top: 1px solid var(--br-border);
+.bot-revolution-org {
+  width: min(100%, 500px);
+  margin: 30px 0 26px;
+  overflow: hidden;
+  border: 1px solid var(--br-border);
+  border-radius: 12px;
+  background: oklch(0.165 0.021 255);
 }
 
-.bot-revolution-stack > div {
+.bot-revolution-org-chief {
   display: grid;
-  grid-template-columns: 100px 1fr;
-  gap: 22px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--br-border);
+  gap: 3px;
+  padding: 17px 18px 18px;
+  background: var(--br-accent-wash);
 }
 
-.bot-revolution-stack dt {
+.bot-revolution-org-chief > span {
+  color: var(--br-accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.bot-revolution-org-chief > strong {
+  color: var(--br-text);
+  font-size: 20px;
+  letter-spacing: -0.03em;
+}
+
+.bot-revolution-org-chief > small {
+  color: var(--br-muted);
+  font-size: 12px;
+}
+
+.bot-revolution-org-connector {
+  width: 1px;
+  height: 18px;
+  margin: 0 auto;
+  background: var(--br-border);
+}
+
+.bot-revolution-org-channels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+
+.bot-revolution-org-channels > div {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 82px;
+  padding: 11px 10px;
+  border: 1px solid var(--br-border);
+  border-radius: 8px;
+  background: var(--br-surface);
+}
+
+.bot-revolution-org-channels strong {
   color: var(--br-accent);
   font-size: 14px;
   font-weight: 700;
 }
 
-.bot-revolution-stack dd {
+.bot-revolution-org-channels span {
   color: var(--br-muted);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.bot-revolution-org-routine {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 18px 14px;
+  border-top: 1px solid var(--br-border);
+  color: var(--br-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.bot-revolution-org-routine strong {
+  color: var(--br-text);
+  font-weight: 700;
+}
+
+.bot-revolution-channel-hint {
+  width: min(100%, 500px);
+  padding-left: 13px;
+  border-left: 2px solid var(--br-accent);
+  color: var(--br-muted) !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+.bot-revolution-channel-hint strong {
+  color: var(--br-text);
 }
 
 .bot-revolution-telegram {
@@ -411,13 +494,29 @@ body.bot-revolution-body .site-header-cta {
   vertical-align: -0.12em;
 }
 
+.bot-revolution-fabrika-link {
+  text-decoration: none !important;
+}
+
+.bot-revolution-page .bot-revolution-fabrika-link > span[aria-hidden="true"] {
+  display: none;
+}
+
+.bot-revolution-fabrika > span {
+  text-decoration: underline;
+  text-decoration-color: oklch(0.25 0.055 35 / 0.45);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 .bot-revolution-fabrika .verified-icon {
   display: inline-block;
   width: 1.08em;
   height: 1.08em;
-  overflow: hidden;
   flex: 0 0 auto;
-  background: center / contain no-repeat url("data:image/svg+xml,%3Csvg%20fill%3D%22none%22%20height%3D%2226%22%20viewBox%3D%220%200%2026%2026%22%20width%3D%2226%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22m6%206h12v12h-12z%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20clip-rule%3D%22evenodd%22%20d%3D%22m14.38%201.51%201.82%201.82c.37.37.86.57%201.38.57h2.57c1.01%200%201.85.77%201.94%201.76l.01.19v2.57c0%20.52.21%201.01.57%201.38l1.82%201.82c.71.71.76%201.84.13%202.61l-.13.15-1.82%201.82c-.37.37-.57.86-.57%201.38v2.57c0%201.01-.77%201.85-1.76%201.94l-.19.01h-2.57c-.52%200-1.01.21-1.38.57l-1.82%201.82c-.71.71-1.84.76-2.61.13l-.15-.13-1.82-1.82c-.37-.37-.86-.57-1.38-.57h-2.57c-1.01%200-1.85-.77-1.94-1.76l-.01-.19v-2.57c0-.52-.21-1.01-.57-1.38l-1.82-1.82c-.71-.71-.76-1.84-.13-2.61l.13-.15%201.82-1.82c.37-.37.57-.86.57-1.38v-2.57c0-1.08.87-1.95%201.95-1.95h2.57c.52%200%201.01-.21%201.38-.57l1.82-1.82c.76-.76%202-.76%202.76%200zm3.2%208.05c-.43-.34-1.03-.31-1.42.06l-.1.11-4.45%205.56-1.75-1.75-.11-.1c-.42-.32-1.03-.29-1.42.1s-.42.99-.1%201.42l.1.11%202.6%202.6.11.1c.42.32%201.02.29%201.4-.08l.1-.11%205.2-6.5.08-.12c.27-.46.17-1.05-.25-1.4z%22%20fill%3D%22%231c93e3%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  background: var(--br-bg);
+  -webkit-mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg%20height%3D%2226%22%20viewBox%3D%220%200%2026%2026%22%20width%3D%2226%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20clip-rule%3D%22evenodd%22%20d%3D%22m14.38%201.51%201.82%201.82c.37.37.86.57%201.38.57h2.57c1.01%200%201.85.77%201.94%201.76l.01.19v2.57c0%20.52.21%201.01.57%201.38l1.82%201.82c.71.71.76%201.84.13%202.61l-.13.15-1.82%201.82c-.37.37-.57.86-.57%201.38v2.57c0%201.01-.77%201.85-1.76%201.94l-.19.01h-2.57c-.52%200-1.01.21-1.38.57l-1.82%201.82c-.71.71-1.84.76-2.61.13l-.15-.13-1.82-1.82c-.37-.37-.86-.57-1.38-.57h-2.57c-1.01%200-1.85-.77-1.94-1.76l-.01-.19v-2.57c0-.52-.21-1.01-.57-1.38l-1.82-1.82c-.71-.71-.76-1.84-.13-2.61l.13-.15%201.82-1.82c.37-.37.57-.86.57-1.38v-2.57c0-1.08.87-1.95%201.95-1.95h2.57c.52%200%201.01-.21%201.38-.57l1.82-1.82c.76-.76%202-.76%202.76%200zm3.2%208.05c-.43-.34-1.03-.31-1.42.06l-.1.11-4.45%205.56-1.75-1.75-.11-.1c-.42-.32-1.03-.29-1.42.1s-.42.99-.1%201.42l.1.11%202.6%202.6.11.1c.42.32%201.02.29%201.4-.08l.1-.11%205.2-6.5.08-.12c.27-.46.17-1.05-.25-1.4z%22%20fill%3D%22%23000%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg%20height%3D%2226%22%20viewBox%3D%220%200%2026%2026%22%20width%3D%2226%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20clip-rule%3D%22evenodd%22%20d%3D%22m14.38%201.51%201.82%201.82c.37.37.86.57%201.38.57h2.57c1.01%200%201.85.77%201.94%201.76l.01.19v2.57c0%20.52.21%201.01.57%201.38l1.82%201.82c.71.71.76%201.84.13%202.61l-.13.15-1.82%201.82c-.37.37-.57.86-.57%201.38v2.57c0%201.01-.77%201.85-1.76%201.94l-.19.01h-2.57c-.52%200-1.01.21-1.38.57l-1.82%201.82c-.71.71-1.84.76-2.61.13l-.15-.13-1.82-1.82c-.37-.37-.86-.57-1.38-.57h-2.57c-1.01%200-1.85-.77-1.94-1.76l-.01-.19v-2.57c0-.52-.21-1.01-.57-1.38l-1.82-1.82c-.71-.71-.76-1.84-.13-2.61l.13-.15%201.82-1.82c.37-.37.57-.86.57-1.38v-2.57c0-1.08.87-1.95%201.95-1.95h2.57c.52%200%201.01-.21%201.38-.57l1.82-1.82c.76-.76%202-.76%202.76%200zm3.2%208.05c-.43-.34-1.03-.31-1.42.06l-.1.11-4.45%205.56-1.75-1.75-.11-.1c-.42-.32-1.03-.29-1.42.1s-.42.99-.1%201.42l.1.11%202.6%202.6.11.1c.42.32%201.02.29%201.4-.08l.1-.11%205.2-6.5.08-.12c.27-.46.17-1.05-.25-1.4z%22%20fill%3D%22%23000%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
   color: transparent;
   vertical-align: -0.12em;
 }
@@ -723,9 +822,45 @@ body.bot-revolution-body .site-header-cta {
     padding: 13px 0;
   }
 
-  .bot-revolution-stack > div {
-    grid-template-columns: 86px 1fr;
-    gap: 15px;
+  .bot-revolution-community-notes {
+    width: 100%;
+  }
+
+  .bot-revolution-community-message {
+    width: calc(100% - 24px);
+  }
+
+  .bot-revolution-community-message + .bot-revolution-community-message {
+    width: calc(100% - 12px);
+    margin-left: 12px;
+  }
+
+  .bot-revolution-org {
+    margin-top: 26px;
+  }
+
+  .bot-revolution-org-chief {
+    padding: 15px 15px 16px;
+  }
+
+  .bot-revolution-org-channels {
+    gap: 6px;
+    padding: 0 8px 8px;
+  }
+
+  .bot-revolution-org-channels > div {
+    min-height: 78px;
+    padding: 9px 8px;
+  }
+
+  .bot-revolution-org-channels strong {
+    font-size: 12px;
+  }
+
+  .bot-revolution-org-routine {
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 9px;
+    padding: 11px 13px 13px;
   }
 
   .bot-revolution-telegram {
