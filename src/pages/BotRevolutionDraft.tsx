@@ -122,7 +122,11 @@ export function BotRevolutionArticle() {
           <h1>The Bot<br /> Revolution</h1>
           <p className="bot-revolution-lead">
             <span>Долгожданный следующий шаг эволюции ИИ.</span>
-            <strong>Тебе нужен не один агент, а целая команда.</strong>
+            <strong>
+              Тебе нужен не один агент,
+              <br />
+              а целая команда.
+            </strong>
           </p>
         </div>
 
