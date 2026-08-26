@@ -21,6 +21,33 @@ function ExternalLink({ href, children }: { href: string; children: React.ReactN
   )
 }
 
+function CommunityMessage({
+  href,
+  avatar,
+  author,
+  username,
+  children,
+}: {
+  href: string
+  avatar: string
+  author: string
+  username: string
+  children: React.ReactNode
+}) {
+  return (
+    <article className="bot-revolution-community-message">
+      <img src={avatar} alt={author} width="256" height="256" loading="lazy" />
+      <div>
+        <div className="bot-revolution-community-author">
+          <strong>{author}</strong>
+          <a href={href} target="_blank" rel="noopener noreferrer">@{username}</a>
+        </div>
+        <p>{children}</p>
+      </div>
+    </article>
+  )
+}
+
 export function BotRevolutionDraft() {
   const [copied, setCopied] = useState(false)
 
@@ -65,7 +92,7 @@ export function BotRevolutionDraft() {
           <p className="bot-revolution-kicker">Август 2026</p>
           <h1>The Bot<br /> Revolution</h1>
           <p className="bot-revolution-lead">
-            Кажется, следующая ступень AI-инструментов уже началась. AI перестаёт быть одной дорогой сессией и превращается в команду.
+            Кажется, следующая ступень AI-инструментов уже началась.<br className="bot-revolution-mobile-break" /> AI перестаёт быть одной дорогой сессией и превращается в команду.
           </p>
         </div>
 
@@ -128,24 +155,39 @@ export function BotRevolutionDraft() {
         <div className="bot-revolution-copy">
           <h2>Не один супер-агент,<br />а нормальное разделение труда</h2>
           <p>
-            Один агент ищет, другой пишет код, третий проверяет. Главный помнит, что мы вообще пытаемся сделать, и подключает нужного. Так контекст не превращается в бесконечную дорогую вкладку с амнезией.
+            Один агент ищет, другой пишет код, третий проверяет.<br className="bot-revolution-mobile-break" /> Главный помнит, что мы вообще пытаемся сделать, и подключает нужного.<br className="bot-revolution-mobile-break" /> Так контекст не превращается в бесконечную дорогую вкладку с амнезией.
           </p>
 
-          <blockquote>
-            <ExternalLink href="https://t.me/ohld_chat/45541">
-              <strong className="bot-revolution-quote-author">@Medoedisrussia</strong>
-            </ExternalLink>
-            <p>
+          <div className="bot-revolution-community-notes">
+            <span>В OHLD Chat мне писали:</span>
+            <CommunityMessage
+              href="https://t.me/ohld_chat/45541"
+              avatar="/assets/drafts/bot-revolution/avatars/medoedisrussia.webp"
+              author="Pasha ;)"
+              username="Medoedisrussia"
+            >
               Grok Bot мне имхо ваще не зашел (как в целом и пепер клип месяца четыре назад)<br />
               Все также в какомто лупе боты замыкаться, ничего внятного у меня сделать не получилось(
-            </p>
-          </blockquote>
+            </CommunityMessage>
+            <CommunityMessage
+              href="https://t.me/ohld_chat/45546"
+              avatar="/assets/drafts/bot-revolution/avatars/dmitry-malakhov.webp"
+              author="Дмитрий Малахов"
+              username="Hennessy81"
+            >
+              Я кстати по сути пытаюсь сделать такого Гермеса для смм и это оказывается очень сложно<br /><br />
+              Технически сложно все вместе слепить так чтобы держалось<br />
+              А продуктово сложно объяснить что с ботом можно как с человеком<br /><br />
+              И собственно сделать так чтобы бот делал как человек<br /><br />
+              Короче замкнутый круг
+            </CommunityMessage>
+          </div>
 
           <p>
-            Это пока сырой интерфейс, и Grok Bot вполне может не взлететь. Но сама идея уже сдвинулась от «открой ещё один чат» к «собери мне команду».
+            Это пока сырой интерфейс, и Grok Bot вполне может не взлететь.<br className="bot-revolution-mobile-break" /> Но сама идея уже сдвинулась от «открой ещё один чат» к «собери мне команду».
           </p>
           <p>
-            Большую разработку с нуля всё ещё удобнее вести через Claude Code, Codex или Grok CLI. Grok Bot и Hermes интереснее на уже живом проекте: поддерживать прод, обсуждать фичи, делать небольшие фиксы.
+            Большую разработку с нуля всё ещё удобнее вести через Claude Code, Codex или Grok CLI.<br className="bot-revolution-mobile-break" /> Grok Bot и Hermes интереснее на уже живом проекте: поддерживать прод, обсуждать фичи, делать небольшие фиксы.
           </p>
         </div>
 
@@ -174,13 +216,13 @@ export function BotRevolutionDraft() {
         <div className="bot-revolution-copy">
           <h2>Один Главный —<br />сто агентов</h2>
           <p>
-            Павел Игнатьев собирает это буквально как маленькую компанию. Один Chief сидит во всех проектах и держит у себя общий борд. Часовая рутина запускается только у него: он разом проверяет все задачи и продолжает то, что где-то остановилось.
+            Павел Игнатьев собирает это буквально как маленькую компанию.<br className="bot-revolution-mobile-break" /> Один Chief сидит во всех проектах и держит у себя общий борд.<br className="bot-revolution-mobile-break" /> Часовая рутина запускается только у него: он разом проверяет все задачи и продолжает то, что где-то остановилось.
           </p>
           <p>
-            Я уже примерно так и работаю. Кросс-проектные и личные запросы начинаю из OHLD — это мой единый вход. Codex сам идёт в нужные папки проектов, отдаёт отдельные куски subagents и собирает мне ответ.
+            Я уже примерно так и работаю.<br className="bot-revolution-mobile-break" /> Кросс-проектные и личные запросы начинаю из OHLD — это мой единый вход.<br className="bot-revolution-mobile-break" /> Codex сам идёт в нужные папки проектов, отдаёт отдельные куски subagents и собирает мне ответ.
           </p>
           <p>
-            Задачи часто не заканчиваются одной сессией. Но всё, что агент сохранил в проекте, никуда не исчезает, а GBrain помогает поднять прошлые решения и результаты. Поэтому новый запрос начинается не с нуля, а с того места, где мы остановились.
+            Задачи часто не заканчиваются одной сессией.<br className="bot-revolution-mobile-break" /> Но всё, что агент сохранил в проекте, никуда не исчезает, а GBrain помогает поднять прошлые решения и результаты.<br className="bot-revolution-mobile-break" /> Поэтому новый запрос начинается не с нуля, а с того места, где мы остановились.
           </p>
 
           <dl className="bot-revolution-stack">
@@ -197,7 +239,7 @@ export function BotRevolutionDraft() {
         </div>
         <div>
           <p>
-            Форумы и топики. Bot-to-bot. Managed Bots. Даже текущий <ExternalLink href="https://core.telegram.org/api/config">лимит</ExternalLink> похож на размер команды: 20 ботов, с Premium 40.
+            Форумы и топики. Bot-to-bot. Managed Bots.<br className="bot-revolution-mobile-break" /> Даже текущий <ExternalLink href="https://core.telegram.org/api/config">лимит</ExternalLink> похож на размер команды: 20 ботов, с Premium 40.
           </p>
           <p>
             Поэтому особенно интересно, что соберёт{' '}
@@ -206,7 +248,7 @@ export function BotRevolutionDraft() {
                 Fabrika
                 <i className="verified-icon" aria-label="Верифицировано">✔</i>
               </span>
-            </ExternalLink>. Проект ещё не вышел, а рефка появится только на релизе. Но сам интерфейс а-ля <em>Grok Bot в Телеграмме</em> уже почти лежит на столе.
+            </ExternalLink>.<br className="bot-revolution-mobile-break" /> Проект ещё не вышел, а рефка появится только на релизе.<br className="bot-revolution-mobile-break" /> Но сам интерфейс а-ля <em>Grok Bot в Телеграмме</em> уже почти лежит на столе.
           </p>
         </div>
       </section>
@@ -215,10 +257,10 @@ export function BotRevolutionDraft() {
         <h2>А сколько это стоит?</h2>
         <div>
           <p>
-            На первый взгляд Grok Bot — игрушка за <strong>$300 в месяц</strong>: столько стоит максимальный <ExternalLink href="https://x.ai/bot">SuperGrok Heavy</ExternalLink>. Это дороже любой из моих AI-подписок: максимальные тарифы Codex и Claude Code, которыми я пользовался, стоили по $200.
+            На первый взгляд Grok Bot — игрушка за <strong>$300 в месяц</strong>: столько стоит максимальный <ExternalLink href="https://x.ai/bot">SuperGrok Heavy</ExternalLink>.<br className="bot-revolution-mobile-break" /> Это дороже любой из моих AI-подписок: максимальные тарифы Codex и Claude Code, которыми я пользовался, стоили по $200.
           </p>
           <p>
-            Но $300 уже не входной билет. Сам Grok Bot можно попробовать через <ExternalLink href="https://cursor.com/pricing">Cursor Pro+ за $60</ExternalLink> или <ExternalLink href="https://x.ai/pricing">SuperGrok Plus за $100</ExternalLink>. Heavy нужен, если хочется максимальных лимитов для Chat, Imagine, Voice, Build и ботов. То есть попробовать можно за $60. $300 имеет смысл, только если вы хотите пересадить на это почти всю работу.
+            Но $300 уже не входной билет.<br className="bot-revolution-mobile-break" /> Сам Grok Bot можно попробовать через <ExternalLink href="https://cursor.com/pricing">Cursor Pro+ за $60</ExternalLink> или <ExternalLink href="https://x.ai/pricing">SuperGrok Plus за $100</ExternalLink>.<br className="bot-revolution-mobile-break" /> Heavy нужен, если хочется максимальных лимитов для Chat, Imagine, Voice, Build и ботов.<br className="bot-revolution-mobile-break" /> То есть попробовать можно за $60.<br className="bot-revolution-mobile-break" /> $300 имеет смысл, только если вы хотите пересадить на это почти всю работу.
           </p>
         </div>
       </section>
@@ -240,7 +282,7 @@ export function BotRevolutionDraft() {
       </section>
 
       <footer className="bot-revolution-footer">
-        <p>Мне кажется, следующая революция не в ещё одном умном чате. AI-команду наконец можно собрать как обычную: назначить Главного, раздать работу и перестать объяснять всё заново в каждой сессии. Короче, сделать всё как у людей.</p>
+        <p>Мне кажется, следующая революция не в ещё одном умном чате.<br className="bot-revolution-mobile-break" /> AI-команду наконец можно собрать как обычную: назначить Главного, раздать работу и перестать объяснять всё заново в каждой сессии.<br className="bot-revolution-mobile-break" /> Короче, сделать всё как у людей.</p>
         <div>
           <ExternalLink href="https://t.me/ohld_chat/45541">Обсудить в OHLD Chat</ExternalLink>
           <ExternalLink href="https://t.me/danokhlopkov">Telegram-канал</ExternalLink>
