@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { absoluteUrl } from '../site'
+import { absoluteUrl, TELEGRAM_CHANNEL_URL } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 import './BotRevolutionDraft.css'
 
@@ -356,7 +356,7 @@ export function BotRevolutionArticle() {
         </p>
 
         <div className="bot-revolution-telegram-cards">
-          <a className="bot-revolution-telegram-card" href="https://t.me/danokhlopkov" target="_blank" rel="noopener noreferrer">
+          <a className="bot-revolution-telegram-card" href={TELEGRAM_CHANNEL_URL} target="_blank" rel="noopener noreferrer">
             <div className="bot-revolution-telegram-card-profile">
               <img src="/assets/drafts/bot-revolution/telegram-cards/dan-channel.webp" alt="Дэн Охлопков" width="320" height="320" loading="lazy" />
               <div><span>Telegram-канал</span><strong>Дэн Охлопков</strong></div>
