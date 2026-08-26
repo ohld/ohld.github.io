@@ -1,0 +1,770 @@
+body.bot-revolution-body {
+  --br-bg: oklch(0.145 0.018 255);
+  --br-surface: oklch(0.19 0.022 255);
+  --br-text: oklch(0.95 0.018 75);
+  --br-copy: oklch(0.84 0.035 70);
+  --br-muted: oklch(0.7 0.045 60);
+  --br-accent: oklch(0.72 0.19 38);
+  --br-accent-dark: oklch(0.34 0.1 35);
+  --br-accent-wash: oklch(0.72 0.19 38 / 0.1);
+  --br-border: oklch(0.72 0.11 38 / 0.24);
+  --br-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
+  --bg: var(--br-bg);
+  --text: var(--br-text);
+  --accent: var(--br-muted);
+  --border: var(--br-border);
+  --border-light: var(--br-border);
+  color-scheme: dark;
+  overflow-x: clip;
+  background: var(--br-bg);
+  color: var(--br-text);
+}
+
+body.bot-revolution-body .site-header {
+  max-width: 1100px;
+  padding-top: 18px;
+  border-bottom: 1px solid var(--br-border);
+}
+
+body.bot-revolution-body .site-header-brand,
+body.bot-revolution-body .site-header-link,
+body.bot-revolution-body .language-switcher a,
+body.bot-revolution-body .site-header-cta {
+  font-family: var(--br-font);
+}
+
+body.bot-revolution-body .site-header-brand {
+  color: var(--br-text);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+body.bot-revolution-body .site-header-link,
+body.bot-revolution-body .language-switcher a {
+  color: var(--br-muted);
+}
+
+body.bot-revolution-body .language-switcher,
+body.bot-revolution-body .language-switcher a + a {
+  border-color: var(--br-border);
+}
+
+body.bot-revolution-body .language-switcher-active {
+  background: var(--br-accent-wash);
+  color: var(--br-text) !important;
+}
+
+body.bot-revolution-body .site-header-cta {
+  border-color: var(--br-accent);
+  border-radius: 5px;
+  background: var(--br-accent);
+  color: var(--br-bg);
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.bot-revolution-page {
+  width: min(1100px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 0 0 64px;
+  color: var(--br-text);
+  font-family: var(--br-font);
+}
+
+.bot-revolution-page p,
+.bot-revolution-page dd,
+.bot-revolution-page blockquote {
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+.bot-revolution-page h1,
+.bot-revolution-page h2 {
+  text-wrap: balance;
+}
+
+.bot-revolution-mobile-break {
+  display: none;
+}
+
+.bot-revolution-page a {
+  color: var(--br-accent);
+  text-decoration: underline;
+  text-decoration-color: oklch(0.72 0.19 38 / 0.48);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color 160ms cubic-bezier(0.23, 1, 0.32, 1), text-decoration-color 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.bot-revolution-page a span[aria-hidden="true"] {
+  display: inline-block;
+  margin-left: 0.18em;
+  font-size: 0.72em;
+  text-decoration: none;
+}
+
+.bot-revolution-hero {
+  min-height: min(680px, calc(100svh - 84px));
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(390px, 0.98fr);
+  align-items: center;
+  gap: clamp(52px, 6.5vw, 82px);
+  padding: 68px 0 86px;
+}
+
+.bot-revolution-kicker {
+  margin-bottom: 22px;
+  color: var(--br-accent);
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: 0.015em;
+}
+
+.bot-revolution-hero h1 {
+  max-width: 650px;
+  margin: 0;
+  font-size: clamp(68px, 7.4vw, 112px);
+  font-weight: 720;
+  line-height: 0.88;
+  letter-spacing: -0.07em;
+}
+
+.bot-revolution-lead {
+  max-width: 580px;
+  margin-top: 32px;
+  color: var(--br-copy);
+  font-size: clamp(21px, 2vw, 27px);
+  line-height: 1.42;
+  letter-spacing: -0.025em;
+}
+
+.bot-revolution-art {
+  position: relative;
+  margin: 0;
+}
+
+.bot-revolution-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border: 1px solid var(--br-accent-dark);
+  border-radius: 12px;
+  background: var(--br-surface);
+  box-shadow: 12px 12px 0 var(--br-accent-dark);
+  object-fit: cover;
+}
+
+.bot-revolution-hero-art {
+  width: min(100%, 500px);
+  justify-self: end;
+}
+
+.bot-revolution-timeline {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 10px 0 150px;
+  border-top: 1px solid var(--br-border);
+  border-bottom: 1px solid var(--br-border);
+}
+
+.bot-revolution-timeline article {
+  position: relative;
+  min-height: 164px;
+  padding: 22px 18px 26px;
+  border-right: 1px solid var(--br-border);
+}
+
+.bot-revolution-timeline article:last-child {
+  border-right: 0;
+}
+
+.bot-revolution-timeline article.is-next {
+  box-shadow: inset 0 -3px 0 var(--br-accent);
+}
+
+.bot-revolution-year {
+  display: block;
+  margin-bottom: 34px;
+  color: var(--br-accent);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+.bot-revolution-timeline strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--br-text);
+  font-size: 17px;
+  font-weight: 680;
+  letter-spacing: -0.02em;
+}
+
+.bot-revolution-timeline .is-next strong {
+  color: var(--br-accent);
+}
+
+.bot-revolution-timeline p {
+  color: var(--br-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.bot-revolution-chapter {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.93fr) minmax(0, 1.07fr);
+  align-items: center;
+  gap: clamp(52px, 7vw, 84px);
+  margin-bottom: clamp(120px, 14vw, 170px);
+}
+
+.bot-revolution-chapter-reverse {
+  grid-template-columns: minmax(0, 1.07fr) minmax(340px, 0.93fr);
+}
+
+.bot-revolution-chapter > .bot-revolution-art {
+  width: min(100%, 455px);
+}
+
+.bot-revolution-chapter-reverse > .bot-revolution-art {
+  justify-self: end;
+}
+
+.bot-revolution-copy h2,
+.bot-revolution-telegram h2,
+.bot-revolution-cost h2,
+.bot-revolution-prompt h2 {
+  margin: 0 0 25px;
+  font-size: clamp(40px, 4.2vw, 57px);
+  font-weight: 700;
+  line-height: 1.01;
+  letter-spacing: -0.055em;
+}
+
+.bot-revolution-copy > p:not(.bot-revolution-note),
+.bot-revolution-telegram > div:last-child > p,
+.bot-revolution-cost > div > p {
+  max-width: 65ch;
+  margin-top: 18px;
+  color: var(--br-copy);
+  font-size: clamp(18px, 1.65vw, 21px);
+  line-height: 1.56;
+  letter-spacing: -0.015em;
+}
+
+.bot-revolution-copy code {
+  display: inline;
+  padding: 0.06em 0.32em;
+  border-radius: 4px;
+  background: var(--br-accent-wash);
+  color: var(--br-accent);
+  font: inherit;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.bot-revolution-loop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+  padding: 15px 0;
+  border-top: 1px solid var(--br-border);
+  border-bottom: 1px solid var(--br-border);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.bot-revolution-loop span {
+  color: var(--br-text);
+}
+
+.bot-revolution-loop i {
+  color: var(--br-accent);
+  font-style: normal;
+}
+
+.bot-revolution-note {
+  margin-top: 12px;
+  color: var(--br-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.bot-revolution-community-notes {
+  display: grid;
+  gap: 10px;
+  margin: 28px 0;
+}
+
+.bot-revolution-community-notes > span {
+  margin-bottom: 2px;
+  color: var(--br-muted);
+  font-size: 12px;
+}
+
+.bot-revolution-community-message {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+}
+
+.bot-revolution-community-message > img {
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--br-border);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.bot-revolution-community-message > div {
+  min-width: 0;
+  padding: 11px 13px 12px;
+  border-radius: 5px 13px 13px 13px;
+  background: var(--br-surface);
+}
+
+.bot-revolution-community-author {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin-bottom: 5px;
+}
+
+.bot-revolution-community-author strong {
+  color: var(--br-accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bot-revolution-community-author a {
+  color: var(--br-muted);
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.bot-revolution-community-message p {
+  color: var(--br-copy);
+  font-size: 14px;
+  line-height: 1.47;
+}
+
+.bot-revolution-stack {
+  margin-top: 32px;
+  border-top: 1px solid var(--br-border);
+}
+
+.bot-revolution-stack > div {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 22px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--br-border);
+}
+
+.bot-revolution-stack dt {
+  color: var(--br-accent);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bot-revolution-stack dd {
+  color: var(--br-muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.bot-revolution-telegram {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(52px, 8vw, 104px);
+  margin-bottom: clamp(120px, 14vw, 170px);
+  padding: clamp(38px, 5vw, 58px);
+  border-radius: 12px;
+  background: var(--br-accent);
+  color: var(--br-bg);
+}
+
+.bot-revolution-telegram h2 {
+  color: var(--br-bg);
+}
+
+.bot-revolution-telegram > div:last-child > p {
+  color: oklch(0.25 0.055 35);
+}
+
+.bot-revolution-telegram a {
+  color: var(--br-bg);
+  font-weight: 680;
+  text-decoration-color: oklch(0.25 0.055 35 / 0.45);
+}
+
+.bot-revolution-fabrika {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2em;
+  vertical-align: -0.12em;
+}
+
+.bot-revolution-fabrika .verified-icon {
+  display: inline-block;
+  width: 1.08em;
+  height: 1.08em;
+  overflow: hidden;
+  flex: 0 0 auto;
+  background: center / contain no-repeat url("data:image/svg+xml,%3Csvg%20fill%3D%22none%22%20height%3D%2226%22%20viewBox%3D%220%200%2026%2026%22%20width%3D%2226%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22m6%206h12v12h-12z%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20clip-rule%3D%22evenodd%22%20d%3D%22m14.38%201.51%201.82%201.82c.37.37.86.57%201.38.57h2.57c1.01%200%201.85.77%201.94%201.76l.01.19v2.57c0%20.52.21%201.01.57%201.38l1.82%201.82c.71.71.76%201.84.13%202.61l-.13.15-1.82%201.82c-.37.37-.57.86-.57%201.38v2.57c0%201.01-.77%201.85-1.76%201.94l-.19.01h-2.57c-.52%200-1.01.21-1.38.57l-1.82%201.82c-.71.71-1.84.76-2.61.13l-.15-.13-1.82-1.82c-.37-.37-.86-.57-1.38-.57h-2.57c-1.01%200-1.85-.77-1.94-1.76l-.01-.19v-2.57c0-.52-.21-1.01-.57-1.38l-1.82-1.82c-.71-.71-.76-1.84-.13-2.61l.13-.15%201.82-1.82c.37-.37.57-.86.57-1.38v-2.57c0-1.08.87-1.95%201.95-1.95h2.57c.52%200%201.01-.21%201.38-.57l1.82-1.82c.76-.76%202-.76%202.76%200zm3.2%208.05c-.43-.34-1.03-.31-1.42.06l-.1.11-4.45%205.56-1.75-1.75-.11-.1c-.42-.32-1.03-.29-1.42.1s-.42.99-.1%201.42l.1.11%202.6%202.6.11.1c.42.32%201.02.29%201.4-.08l.1-.11%205.2-6.5.08-.12c.27-.46.17-1.05-.25-1.4z%22%20fill%3D%22%231c93e3%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+  color: transparent;
+  vertical-align: -0.12em;
+}
+
+.bot-revolution-cost {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(48px, 7vw, 88px);
+  margin-bottom: clamp(120px, 14vw, 170px);
+  padding-top: 42px;
+  border-top: 1px solid var(--br-border);
+}
+
+.bot-revolution-cost h2 {
+  max-width: 480px;
+}
+
+.bot-revolution-cost > div > p:first-child {
+  margin-top: 0;
+}
+
+.bot-revolution-cost strong {
+  color: var(--br-text);
+  font-weight: 720;
+}
+
+.bot-revolution-prompt {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(48px, 7vw, 88px);
+  align-items: center;
+  margin-bottom: 130px;
+}
+
+.bot-revolution-prompt-box {
+  overflow: hidden;
+  border: 1px solid var(--br-accent-dark);
+  border-radius: 9px;
+  background: var(--br-surface);
+}
+
+.bot-revolution-prompt-column {
+  min-width: 0;
+}
+
+.bot-revolution-prompt-note {
+  max-width: 58ch;
+  margin: 13px 2px 0;
+  color: var(--br-muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.bot-revolution-prompt-box > code {
+  display: block;
+  padding: clamp(28px, 3.4vw, 40px);
+  color: var(--br-text);
+  font-family: "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(15px, 1.5vw, 19px);
+  line-height: 1.62;
+  white-space: normal;
+}
+
+.bot-revolution-prompt-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 14px 12px 18px;
+  border-top: 1px solid var(--br-border);
+}
+
+.bot-revolution-prompt-actions > a {
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.bot-revolution-prompt-actions button {
+  min-height: 38px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 5px;
+  background: var(--br-accent);
+  color: var(--br-bg);
+  font-family: var(--br-font);
+  font-size: 13px;
+  font-weight: 680;
+  cursor: pointer;
+  transition: transform 140ms cubic-bezier(0.23, 1, 0.32, 1), background-color 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.bot-revolution-prompt-actions button:active {
+  transform: scale(0.97);
+}
+
+.bot-revolution-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr);
+  gap: 64px;
+  padding-top: 42px;
+  border-top: 1px solid var(--br-border);
+}
+
+.bot-revolution-footer > p {
+  max-width: 720px;
+  color: var(--br-text);
+  font-size: clamp(28px, 3.35vw, 43px);
+  font-weight: 650;
+  line-height: 1.16;
+  letter-spacing: -0.045em;
+}
+
+.bot-revolution-footer > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding-top: 7px;
+  font-size: 14px;
+  font-weight: 620;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bot-revolution-page a:hover {
+    color: oklch(0.81 0.16 44);
+    text-decoration-color: currentColor;
+  }
+
+  .bot-revolution-telegram a:hover {
+    color: var(--br-bg);
+    text-decoration-color: var(--br-bg);
+  }
+
+  .bot-revolution-prompt-actions button:hover {
+    background: oklch(0.78 0.18 42);
+  }
+}
+
+@media (max-width: 900px) {
+  .bot-revolution-hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 48px;
+    padding: 70px 0 94px;
+  }
+
+  .bot-revolution-hero-art {
+    width: min(82vw, 520px);
+    justify-self: start;
+  }
+
+  .bot-revolution-timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .bot-revolution-timeline article {
+    display: grid;
+    grid-template-columns: 78px minmax(130px, 0.75fr) 1fr;
+    align-items: baseline;
+    gap: 18px;
+    min-height: 0;
+    padding: 18px 14px;
+    border-right: 0;
+    border-bottom: 1px solid var(--br-border);
+  }
+
+  .bot-revolution-timeline article:last-child {
+    border-bottom: 0;
+  }
+
+  .bot-revolution-timeline .bot-revolution-year,
+  .bot-revolution-timeline strong {
+    margin: 0;
+  }
+
+  .bot-revolution-chapter,
+  .bot-revolution-chapter-reverse {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+
+  .bot-revolution-chapter-reverse .bot-revolution-copy {
+    order: 2;
+  }
+
+  .bot-revolution-chapter-reverse .bot-revolution-art {
+    order: 1;
+    justify-self: start;
+  }
+
+  .bot-revolution-chapter > .bot-revolution-art {
+    width: min(82vw, 500px);
+  }
+
+  .bot-revolution-final-chapter > .bot-revolution-art {
+    justify-self: end;
+  }
+
+  .bot-revolution-telegram,
+  .bot-revolution-cost,
+  .bot-revolution-prompt,
+  .bot-revolution-footer {
+    grid-template-columns: 1fr;
+    gap: 38px;
+  }
+}
+
+@media (max-width: 600px) {
+  .bot-revolution-mobile-break {
+    display: block;
+  }
+
+  body.bot-revolution-body .site-header {
+    width: calc(100% - 32px);
+    margin: 0 auto;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  body.bot-revolution-body .site-header-nav,
+  body.bot-revolution-body .site-header-cta {
+    display: none;
+  }
+
+  .bot-revolution-page {
+    width: min(100% - 32px, 1100px);
+    padding-bottom: 42px;
+  }
+
+  .bot-revolution-hero {
+    gap: 42px;
+    padding: 52px 0 78px;
+  }
+
+  .bot-revolution-kicker {
+    margin-bottom: 17px;
+    font-size: 13px;
+  }
+
+  .bot-revolution-hero h1 {
+    font-size: clamp(58px, 18vw, 76px);
+  }
+
+  .bot-revolution-lead {
+    margin-top: 25px;
+    font-size: 20px;
+    line-height: 1.46;
+  }
+
+  .bot-revolution-hero-art,
+  .bot-revolution-chapter > .bot-revolution-art {
+    width: calc(100% - 8px);
+  }
+
+  .bot-revolution-hero-art {
+    justify-self: start;
+  }
+
+  .bot-revolution-art img {
+    border-radius: 9px;
+    box-shadow: 8px 8px 0 var(--br-accent-dark);
+  }
+
+  .bot-revolution-timeline {
+    margin-bottom: 110px;
+  }
+
+  .bot-revolution-timeline article {
+    grid-template-columns: 64px 1fr;
+    gap: 4px 14px;
+  }
+
+  .bot-revolution-timeline p {
+    grid-column: 2;
+  }
+
+  .bot-revolution-chapter {
+    gap: 36px;
+    margin-bottom: 112px;
+  }
+
+  .bot-revolution-copy h2,
+  .bot-revolution-telegram h2,
+  .bot-revolution-cost h2,
+  .bot-revolution-prompt h2 {
+    margin-bottom: 21px;
+    font-size: 39px;
+    line-height: 1.03;
+  }
+
+  .bot-revolution-copy > p:not(.bot-revolution-note),
+  .bot-revolution-telegram > div:last-child > p,
+  .bot-revolution-cost > div > p {
+    font-size: 18px;
+  }
+
+  .bot-revolution-copy code {
+    white-space: normal;
+  }
+
+  .bot-revolution-loop {
+    gap: 6px;
+    padding: 13px 0;
+  }
+
+  .bot-revolution-stack > div {
+    grid-template-columns: 86px 1fr;
+    gap: 15px;
+  }
+
+  .bot-revolution-telegram {
+    gap: 24px;
+    margin-bottom: 112px;
+    padding: 30px 24px 34px;
+    border-radius: 9px;
+  }
+
+  .bot-revolution-cost {
+    gap: 8px;
+    margin-bottom: 112px;
+    padding-top: 30px;
+  }
+
+  .bot-revolution-prompt {
+    gap: 30px;
+    margin-bottom: 104px;
+  }
+
+  .bot-revolution-prompt-box > code {
+    padding: 26px 22px;
+    font-size: 15px;
+  }
+
+  .bot-revolution-prompt-actions {
+    padding-left: 14px;
+  }
+
+  .bot-revolution-footer {
+    gap: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bot-revolution-page *,
+  .bot-revolution-page *::before,
+  .bot-revolution-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

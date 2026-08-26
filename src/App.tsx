@@ -34,6 +34,7 @@ const privacyImport = () => import('./pages/Privacy').then(m => ({ default: m.Pr
 const archiveImport = () => import('./pages/Archive').then(m => ({ default: m.Archive }))
 const telegramMapImport = () => import('./pages/TelegramMap').then(m => ({ default: m.TelegramMap }))
 const importedArticleImport = () => import('./pages/ImportedArticle').then(m => ({ default: m.ImportedArticle }))
+const botRevolutionDraftImport = () => import('./pages/BotRevolutionDraft').then(m => ({ default: m.BotRevolutionDraft }))
 
 const BlogIndex = lazy(blogIndexImport)
 const EnglishBlogIndex = lazy(englishBlogIndexImport)
@@ -50,6 +51,7 @@ const Privacy = lazy(privacyImport)
 const Archive = lazy(archiveImport)
 const TelegramMap = lazy(telegramMapImport)
 const ImportedArticle = lazy(importedArticleImport)
+const BotRevolutionDraft = lazy(botRevolutionDraftImport)
 
 // Preload all chunks after home page renders so subpages open instantly
 function usePreloadChunks() {
@@ -224,6 +226,7 @@ function App() {
           <Route path="/telegram-map" element={<LegacyTelegramMapRedirect />} />
           <Route path="/karta-postov-telegram" element={<TelegramMap />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/drafts/bot-revolution" element={<BotRevolutionDraft />} />
           <Route path="/:slug" element={<ImportedArticle />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
