@@ -5,11 +5,12 @@ import { TELEGRAM_CHANNEL_URL, localizedPath, sectionNavLinks, shellLangForPath 
 export function SiteHeader() {
   const location = useLocation()
   const isEnglish = shellLangForPath(location.pathname) === 'en'
+  const isBotRevolution = /^\/(?:ru|en)\/blog\/bot-revolution\/?$/.test(location.pathname)
   const homePath = isEnglish ? '/en/' : '/'
 
   return (
     <header className="site-header">
-      <Link className="site-header-brand" to={homePath} onClick={() => trackNav(homePath)}>
+      <Link className="site-header-brand" to={homePath} reloadDocument={isBotRevolution} onClick={() => trackNav(homePath)}>
         <span>okhlopkov.com</span>
       </Link>
       <nav className="site-header-nav" aria-label={isEnglish ? 'Primary navigation' : 'Основная навигация'}>
@@ -18,6 +19,7 @@ export function SiteHeader() {
             key={item.path}
             className="site-header-link"
             to={isEnglish ? item.enPath || item.path : item.path}
+            reloadDocument={isBotRevolution}
             onClick={() => trackNav(isEnglish ? item.enPath || item.path : item.path)}
           >
             {isEnglish ? item.en : item.ru}
@@ -30,6 +32,7 @@ export function SiteHeader() {
             className={!isEnglish ? 'language-switcher-active' : undefined}
             to={localizedPath(location.pathname, 'ru')}
             aria-current={!isEnglish ? 'page' : undefined}
+            onClick={() => trackNav(localizedPath(location.pathname, 'ru'))}
           >
             RU
           </Link>
@@ -37,6 +40,7 @@ export function SiteHeader() {
             className={isEnglish ? 'language-switcher-active' : undefined}
             to={localizedPath(location.pathname, 'en')}
             aria-current={isEnglish ? 'page' : undefined}
+            onClick={() => trackNav(localizedPath(location.pathname, 'en'))}
           >
             EN
           </Link>

@@ -76,12 +76,13 @@
 
       window.ym = window.ym || function(){(window.ym.a=window.ym.a||[]).push(arguments)};
       window.ym.l = window.ym.l || 1 * new Date();
+      var botRevolutionTelemetry = /^\/(?:drafts\/bot-revolution|(?:ru|en)\/blog\/bot-revolution)\/?$/.test(location.pathname);
       ym(46266270, "init", {
         defer:true,
-        clickmap:false,
+        clickmap:botRevolutionTelemetry,
         trackLinks:true,
         accurateTrackBounce:true,
-        webvisor:false
+        webvisor:botRevolutionTelemetry
       });
 
       (function () {

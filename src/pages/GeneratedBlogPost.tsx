@@ -6,10 +6,11 @@ import { markdownToPlainText } from '../structuredData'
 
 export function GeneratedBlogPost() {
   const { slug } = useParams()
-  const post = getGeneratedBlogPost(slug)
   const location = useLocation()
+  const requestedLang = location.pathname.startsWith('/en/') ? 'en' : 'ru'
+  const post = getGeneratedBlogPost(slug, requestedLang)
 
-  if (!post) return <Navigate to="/ru/blog/" replace />
+  if (!post) return <Navigate to={requestedLang === 'en' ? '/en/blog/' : '/ru/blog/'} replace />
   const canonical = generatedBlogPath(post.slug, post.lang)
   const currentPath = location.pathname.endsWith('/') ? location.pathname : `${location.pathname}/`
   if (currentPath !== canonical) return <Navigate to={canonical} replace />
@@ -24,10 +25,16 @@ export function GeneratedBlogPost() {
       publishedAt={post.publishedAt}
       updatedAt={post.updatedAt}
       readingTime={post.readingTime}
-      alternates={{
-        [post.lang]: canonical,
-        'x-default': canonical,
-      }}
+      alternates={post.slug === 'bot-revolution'
+        ? {
+            ru: generatedBlogPath(post.slug, 'ru'),
+            en: generatedBlogPath(post.slug, 'en'),
+            'x-default': generatedBlogPath(post.slug, 'ru'),
+          }
+        : {
+            [post.lang]: canonical,
+            'x-default': canonical,
+          }}
       heroImage={post.coverImage}
       heroAlt={post.coverAlt}
       tags={post.tags}
