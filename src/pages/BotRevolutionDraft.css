@@ -748,6 +748,15 @@ body.bot-revolution-body .site-header-cta {
   display: block;
 }
 
+.bot-revolution-related {
+  width: min(100%, 880px);
+  margin: 0 auto;
+  color: var(--br-muted);
+  font-size: 15px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
 .bot-revolution-footer-thesis > span {
   white-space: nowrap;
   text-wrap: balance;

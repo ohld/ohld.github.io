@@ -23,8 +23,7 @@ function ResponsiveArticleImage({
   ...props
 }: React.ImgHTMLAttributes<HTMLImageElement> & { src: string; masterWidth?: number }) {
   const variant = (width: number) => src.replace(/\.webp$/i, `-${width}.webp`)
-  const variantWidths = (masterWidth >= 1280 ? [640, 1024, 1280] : [640, 1024])
-    .filter((width) => width < masterWidth)
+  const variantWidths = [640, 768, 1024, 1280].filter((width) => width < masterWidth)
   const srcSet = [...variantWidths.map((width) => `${variant(width)} ${width}w`), `${src} ${masterWidth}w`].join(', ')
   return <img {...props} src={src} srcSet={srcSet} sizes={sizes} />
 }
@@ -52,7 +51,15 @@ function CommunityMessage({
 }) {
   return (
     <a className="bot-revolution-community-message" href={href} target="_blank" rel="noopener noreferrer">
-      <img src={avatar} alt={author} width="256" height="256" loading="lazy" />
+      <img
+        src={avatar}
+        srcSet={`${avatar.replace(/\.webp$/i, '-64.webp')} 64w, ${avatar.replace(/\.webp$/i, '-96.webp')} 96w, ${avatar.replace(/\.webp$/i, '-144.webp')} 144w, ${avatar} 256w`}
+        sizes="34px"
+        alt={author}
+        width="256"
+        height="256"
+        loading="lazy"
+      />
       <div>
         <div className="bot-revolution-community-author">
           <strong>{author}</strong>
@@ -68,6 +75,8 @@ const ARTICLE_PATH = '/en/blog/bot-revolution/'
 const RUSSIAN_ARTICLE_PATH = '/ru/blog/bot-revolution/'
 const ARTICLE_TITLE = 'The Bot Revolution'
 const ARTICLE_DESCRIPTION = 'The next step in AI tools is not one agent, but an entire team.'
+const ARTICLE_SEO_TITLE = 'AI Agent Teams: The Bot Revolution — Daniil Okhlopkov'
+const ARTICLE_SEO_DESCRIPTION = 'Why the next AI interface is not one chat but a team of agents: separate contexts, a Chief of Staff, group chats, and agent loops.'
 const ARTICLE_IMAGE = '/assets/drafts/bot-revolution/bot-weather-map.webp'
 const ARTICLE_IMAGE_ALT = 'The Bot Revolution — a weather map for a distributed team of AI bots'
 
@@ -76,8 +85,8 @@ export function EnglishBotRevolutionArticle() {
   const articleRef = useRef<HTMLElement>(null)
 
   useDocumentMeta({
-    title: `${ARTICLE_TITLE} — Daniil Okhlopkov`,
-    description: ARTICLE_DESCRIPTION,
+    title: ARTICLE_SEO_TITLE,
+    description: ARTICLE_SEO_DESCRIPTION,
     canonical: absoluteUrl(ARTICLE_PATH),
     lang: 'en',
     alternates: {
@@ -404,10 +413,14 @@ export function EnglishBotRevolutionArticle() {
           <strong>Follow along</strong>
         </p>
 
+        <p className="bot-revolution-related">
+          More: <a href="/en/articles/hermes-agent-vps-telegram-setup/">set up Hermes Agent on a VPS</a> and <a href="/en/articles/telegram-bot-api-vs-mtproto-methods/">compare the Bot API with MTProto</a>.
+        </p>
+
         <div className="bot-revolution-telegram-cards">
           <a className="bot-revolution-telegram-card" href={TELEGRAM_CHANNEL_URL} target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_channel">
             <div className="bot-revolution-telegram-card-profile">
-              <img src="/assets/drafts/bot-revolution/telegram-cards/dan-channel.webp" alt="Dan Okhlopkov" width="320" height="320" loading="lazy" />
+              <img src="/assets/drafts/bot-revolution/telegram-cards/dan-channel.webp" srcSet="/assets/drafts/bot-revolution/telegram-cards/dan-channel-64.webp 64w, /assets/drafts/bot-revolution/telegram-cards/dan-channel-96.webp 96w, /assets/drafts/bot-revolution/telegram-cards/dan-channel-144.webp 144w, /assets/drafts/bot-revolution/telegram-cards/dan-channel.webp 320w" sizes="44px" alt="Dan Okhlopkov" width="320" height="320" loading="lazy" />
               <div><span>Telegram channel</span><strong>Dan Okhlopkov</strong></div>
             </div>
             <span className="bot-revolution-telegram-card-action">Follow</span>
@@ -415,7 +428,7 @@ export function EnglishBotRevolutionArticle() {
 
           <a className="bot-revolution-telegram-card" href="https://x.com/danokhlopkov" target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_x">
             <div className="bot-revolution-telegram-card-profile">
-              <img src="/assets/drafts/bot-revolution/telegram-cards/dan-x.webp" alt="okhlopkov.ton on X" width="320" height="320" loading="lazy" />
+              <img src="/assets/drafts/bot-revolution/telegram-cards/dan-x.webp" srcSet="/assets/drafts/bot-revolution/telegram-cards/dan-x-64.webp 64w, /assets/drafts/bot-revolution/telegram-cards/dan-x-96.webp 96w, /assets/drafts/bot-revolution/telegram-cards/dan-x-144.webp 144w, /assets/drafts/bot-revolution/telegram-cards/dan-x.webp 320w" sizes="44px" alt="okhlopkov.ton on X" width="320" height="320" loading="lazy" />
               <div><span>X · @danokhlopkov</span><strong>okhlopkov.ton</strong></div>
             </div>
             <span className="bot-revolution-telegram-card-action">Follow</span>

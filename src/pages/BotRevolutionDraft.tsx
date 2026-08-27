@@ -16,16 +16,16 @@ const timeline = [
 
 const ARTICLE_IMAGE_SIZES = '(min-width: 1100px) 500px, (min-width: 760px) 46vw, calc(100vw - 44px)'
 
-function ResponsiveArticleImage({ src, sizes = ARTICLE_IMAGE_SIZES, ...props }: React.ImgHTMLAttributes<HTMLImageElement> & { src: string }) {
+function ResponsiveArticleImage({
+  src,
+  sizes = ARTICLE_IMAGE_SIZES,
+  masterWidth = 2048,
+  ...props
+}: React.ImgHTMLAttributes<HTMLImageElement> & { src: string; masterWidth?: number }) {
   const variant = (width: number) => src.replace(/\.webp$/i, `-${width}.webp`)
-  return (
-    <img
-      {...props}
-      src={src}
-      srcSet={`${variant(640)} 640w, ${variant(1024)} 1024w, ${variant(1280)} 1280w, ${src} 2048w`}
-      sizes={sizes}
-    />
-  )
+  const variantWidths = [640, 768, 1024, 1280].filter((width) => width < masterWidth)
+  const srcSet = [...variantWidths.map((width) => `${variant(width)} ${width}w`), `${src} ${masterWidth}w`].join(', ')
+  return <img {...props} src={src} srcSet={srcSet} sizes={sizes} />
 }
 
 function ExternalLink({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) {
@@ -51,7 +51,15 @@ function CommunityMessage({
 }) {
   return (
     <a className="bot-revolution-community-message" href={href} target="_blank" rel="noopener noreferrer">
-      <img src={avatar} alt={author} width="256" height="256" loading="lazy" />
+      <img
+        src={avatar}
+        srcSet={`${avatar.replace(/\.webp$/i, '-64.webp')} 64w, ${avatar.replace(/\.webp$/i, '-96.webp')} 96w, ${avatar.replace(/\.webp$/i, '-144.webp')} 144w, ${avatar} 256w`}
+        sizes="34px"
+        alt={author}
+        width="256"
+        height="256"
+        loading="lazy"
+      />
       <div>
         <div className="bot-revolution-community-author">
           <strong>{author}</strong>
@@ -66,6 +74,8 @@ function CommunityMessage({
 const ARTICLE_PATH = '/ru/blog/bot-revolution/'
 const ARTICLE_TITLE = 'The Bot Revolution'
 const ARTICLE_DESCRIPTION = 'Следующая ступень эволюции AI-инструментов — не один агент, а целая команда.'
+const ARTICLE_SEO_TITLE = 'Команда AI-агентов: The Bot Revolution — Даниил Охлопков'
+const ARTICLE_SEO_DESCRIPTION = 'Почему следующий интерфейс для ИИ — не один чат, а команда агентов: отдельные контексты, Chief of Staff, групповые чаты и agent loops.'
 const ARTICLE_IMAGE = '/assets/drafts/bot-revolution/bot-weather-map.webp'
 const ARTICLE_IMAGE_ALT = 'The Bot Revolution — карта с командой AI-ботов'
 
@@ -74,8 +84,8 @@ export function BotRevolutionArticle() {
   const articleRef = useRef<HTMLElement>(null)
 
   useDocumentMeta({
-    title: `${ARTICLE_TITLE} — Даниил Охлопков`,
-    description: ARTICLE_DESCRIPTION,
+    title: ARTICLE_SEO_TITLE,
+    description: ARTICLE_SEO_DESCRIPTION,
     canonical: absoluteUrl(ARTICLE_PATH),
     lang: 'ru',
     alternates: {
@@ -399,10 +409,14 @@ export function BotRevolutionArticle() {
           <strong>Подписывайся</strong>
         </p>
 
+        <p className="bot-revolution-related">
+          Читать ещё: <a href="/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/">как AI-агенты ведут проект в фоне</a> и <a href="/ru/articles/hermes-agent-vs-openclaw/">чем Hermes Agent отличается от OpenClaw</a>.
+        </p>
+
         <div className="bot-revolution-telegram-cards">
           <a className="bot-revolution-telegram-card" href={TELEGRAM_CHANNEL_URL} target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_channel">
             <div className="bot-revolution-telegram-card-profile">
-              <img src="/assets/drafts/bot-revolution/telegram-cards/dan-channel.webp" alt="Дэн Охлопков" width="320" height="320" loading="lazy" />
+              <img src="/assets/drafts/bot-revolution/telegram-cards/dan-channel.webp" srcSet="/assets/drafts/bot-revolution/telegram-cards/dan-channel-64.webp 64w, /assets/drafts/bot-revolution/telegram-cards/dan-channel-96.webp 96w, /assets/drafts/bot-revolution/telegram-cards/dan-channel-144.webp 144w, /assets/drafts/bot-revolution/telegram-cards/dan-channel.webp 320w" sizes="44px" alt="Дэн Охлопков" width="320" height="320" loading="lazy" />
               <div><span>Telegram-канал</span><strong>Дэн Охлопков</strong></div>
             </div>
             <span className="bot-revolution-telegram-card-action">Подписаться</span>
@@ -410,7 +424,7 @@ export function BotRevolutionArticle() {
 
           <a className="bot-revolution-telegram-card" href="https://t.me/ohld_chat" target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_chat">
             <div className="bot-revolution-telegram-card-profile">
-              <img src="/assets/drafts/bot-revolution/telegram-cards/ohld-chat.webp" alt="OHLD Chat" width="320" height="320" loading="lazy" />
+              <img src="/assets/drafts/bot-revolution/telegram-cards/ohld-chat.webp" srcSet="/assets/drafts/bot-revolution/telegram-cards/ohld-chat-64.webp 64w, /assets/drafts/bot-revolution/telegram-cards/ohld-chat-96.webp 96w, /assets/drafts/bot-revolution/telegram-cards/ohld-chat-144.webp 144w, /assets/drafts/bot-revolution/telegram-cards/ohld-chat.webp 320w" sizes="44px" alt="OHLD Chat" width="320" height="320" loading="lazy" />
               <div><span>Telegram-чат</span><strong>OHLD Chat</strong></div>
             </div>
             <span className="bot-revolution-telegram-card-action">Вступить</span>

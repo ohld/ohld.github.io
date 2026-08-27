@@ -2,6 +2,8 @@
 slug: bot-revolution
 title: The Bot Revolution
 description: The next step in AI tools is not one agent, but an entire team.
+seoTitle: AI Agent Teams: The Bot Revolution — Daniil Okhlopkov
+seoDescription: Why the next AI interface is not one chat but a team of agents: separate contexts, a Chief of Staff, group chats, and agent loops.
 publishedAt: 2026-08-26
 updatedAt: 2026-08-27
 lang: en
@@ -98,4 +100,4 @@ It will come from how we work with them.
 
 **Follow along**
 
-Explore more in the English [Blog](/en/blog/) and [Articles](/en/articles/).
+More: [set up Hermes Agent on a VPS](/en/articles/hermes-agent-vps-telegram-setup/) and [compare the Bot API with MTProto](/en/articles/telegram-bot-api-vs-mtproto-methods/).
