@@ -276,8 +276,8 @@ export function EnglishBotRevolutionArticle() {
         <div className="bot-revolution-final-visual">
           <figure className="bot-revolution-art">
             <ResponsiveArticleImage
-              src="/assets/drafts/bot-revolution/ai-becomes-team-en.webp"
-              alt="One Chief coordinates an AI team — surreal digital collage"
+              src="/assets/drafts/bot-revolution/one-main-hundred-agents-en.webp"
+              alt="One Chief coordinating one hundred AI agents across a city"
               width="1254"
               height="1254"
               masterWidth={1254}
@@ -395,12 +395,12 @@ export function EnglishBotRevolutionArticle() {
             <span className="bot-revolution-telegram-card-action">Follow</span>
           </a>
 
-          <a className="bot-revolution-telegram-card" href="https://t.me/ohld_chat" target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_chat">
+          <a className="bot-revolution-telegram-card" href="https://x.com/danokhlopkov" target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_x">
             <div className="bot-revolution-telegram-card-profile">
-              <img src="/assets/drafts/bot-revolution/telegram-cards/ohld-chat.webp" alt="OHLD Chat" width="320" height="320" loading="lazy" />
-              <div><span>Telegram chat</span><strong>OHLD Chat</strong></div>
+              <img src="/assets/drafts/bot-revolution/telegram-cards/dan-x.webp" alt="okhlopkov.ton on X" width="320" height="320" loading="lazy" />
+              <div><span>X · @danokhlopkov</span><strong>okhlopkov.ton</strong></div>
             </div>
-            <span className="bot-revolution-telegram-card-action">Join</span>
+            <span className="bot-revolution-telegram-card-action">Follow</span>
           </a>
         </div>
       </footer>
