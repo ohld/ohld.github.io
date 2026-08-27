@@ -23,7 +23,8 @@ function ResponsiveArticleImage({
   ...props
 }: React.ImgHTMLAttributes<HTMLImageElement> & { src: string; masterWidth?: number }) {
   const variant = (width: number) => src.replace(/\.webp$/i, `-${width}.webp`)
-  const variantWidths = masterWidth >= 1280 ? [640, 1024, 1280] : [640, 1024]
+  const variantWidths = (masterWidth >= 1280 ? [640, 1024, 1280] : [640, 1024])
+    .filter((width) => width < masterWidth)
   const srcSet = [...variantWidths.map((width) => `${variant(width)} ${width}w`), `${src} ${masterWidth}w`].join(', ')
   return <img {...props} src={src} srcSet={srcSet} sizes={sizes} />
 }
@@ -277,10 +278,10 @@ export function EnglishBotRevolutionArticle() {
           <figure className="bot-revolution-art">
             <ResponsiveArticleImage
               src="/assets/drafts/bot-revolution/one-main-hundred-agents-en.webp"
-              alt="One Chief coordinating one hundred AI agents across a city"
-              width="1254"
-              height="1254"
-              masterWidth={1254}
+              alt="One Boss and 100 agents — English adaptation of the original meme"
+              width="1024"
+              height="1024"
+              masterWidth={1024}
               loading="lazy"
             />
           </figure>

@@ -1,0 +1,20 @@
+{
+  "source": "reference-image-edit",
+  "workflow": "Existing Russian article asset → CheapAIAPI Nano Banana reference edit → optimized WebP",
+  "model": "nano-banana-pro",
+  "job_id": "2536d756-a083-47d0-b644-dfc03c1c907b",
+  "edit_target": "/assets/drafts/bot-revolution/one-main-hundred-agents.webp",
+  "preservation_rule": "Keep the original scene, character, composition, crop, colors, texture, and meme lettering logic; change only the embedded headline text.",
+  "text": [
+    "ONE BOSS",
+    "100 AGENTS"
+  ],
+  "prompt": "Use case: text-localization. The provided image is the exact edit target and base image. Preserve it pixel-for-pixel as much as possible: keep the same anime woman/robot, face, identity, pose, expression, hands, body, futuristic city, buildings, sky, colors, lighting, texture, crop, composition, and low-fi internet meme aesthetic. Do not create a new scene. Do not restyle, redraw, beautify, censor, cover, crop, outpaint, or replace any character or object. Do not change the aspect ratio. Change only the embedded headline text. Completely remove and inpaint the existing Russian Cyrillic headline, then replace it with this exact English text on exactly two lines: ONE BOSS / 100 AGENTS. Render line 1 exactly as ONE BOSS and line 2 exactly as 100 AGENTS. Use the same placement, two-line layout, very large bold white uppercase block letters, dark navy outline and shadow, and the same font feel as the original. Keep every letter and digit fully visible inside the image margins. No Cyrillic. No other text. No quotation marks. No extra punctuation. The final result must look like the exact same found image with only the words changed.",
+  "web_asset": {
+    "path": "/assets/drafts/bot-revolution/one-main-hundred-agents-en.webp",
+    "width": 1024,
+    "height": 1024,
+    "quality": 82
+  },
+  "visual_inspection": "Pass: original scene and composition preserved; exact two-line English text; no Cyrillic or extra text."
+}
