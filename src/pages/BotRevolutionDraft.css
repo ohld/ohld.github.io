@@ -554,7 +554,7 @@ body.bot-revolution-body .site-header-cta {
   display: inline-flex;
   align-items: center;
   gap: 0.2em;
-  vertical-align: -0.12em;
+  vertical-align: baseline;
 }
 
 .bot-revolution-fabrika-link {
@@ -609,12 +609,40 @@ body.bot-revolution-body .site-header-cta {
   font-weight: 720;
 }
 
+.bot-revolution-reflection-copy > p:first-child {
+  margin-top: 0;
+}
+
 .bot-revolution-prompt {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(42px, 5vw, 58px);
   align-items: center;
   margin-bottom: 130px;
+}
+
+@media (min-width: 901px) {
+  .bot-revolution-reflection {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 36px;
+    text-align: center;
+  }
+
+  .bot-revolution-reflection .bot-revolution-reflection-copy,
+  .bot-revolution-reflection .bot-revolution-prompt-heading {
+    width: min(100%, 780px);
+    margin-inline: auto;
+  }
+
+  .bot-revolution-reflection .bot-revolution-prompt-heading h2 {
+    max-width: none;
+    margin: 0;
+  }
+
+  .bot-revolution-reflection .bot-revolution-reflection-copy > p {
+    margin-inline: auto;
+  }
 }
 
 .bot-revolution-prompt-heading {

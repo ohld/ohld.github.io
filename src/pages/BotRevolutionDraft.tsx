@@ -87,7 +87,7 @@ export function BotRevolutionArticle() {
     imageAlt: ARTICLE_IMAGE_ALT,
     type: 'article',
     publishedTime: '2026-08-26T00:00:00+03:00',
-    modifiedTime: '2026-08-26T00:00:00+03:00',
+    modifiedTime: '2026-08-27T00:00:00+03:00',
     section: 'Блог',
     tags: ['AI Agents', 'Grok Bot', 'Hermes Bot', 'Telegram'],
     jsonLd: {
@@ -96,7 +96,7 @@ export function BotRevolutionArticle() {
       headline: ARTICLE_TITLE,
       description: ARTICLE_DESCRIPTION,
       datePublished: '2026-08-26T00:00:00+03:00',
-      dateModified: '2026-08-26T00:00:00+03:00',
+      dateModified: '2026-08-27T00:00:00+03:00',
       author: {
         '@type': 'Person',
         name: 'Даниил Охлопков',
@@ -193,14 +193,14 @@ export function BotRevolutionArticle() {
           <h2>Всё не засунуть<br />в одну сессию</h2>
           <p>
             Опытные AI-разработчики уже поняли:<br />
-            всю инфу всех проектов<br className="bot-revolution-mobile-break" /> не уместить в одном контексте.<br />
+            данные всех проектов<br className="bot-revolution-mobile-break" /> не уместить в одном контексте.<br />
             А так хочется иметь <code>single point of contact</code>:<br />
             писать Chief of Staff, чтобы он догрузил нужную инфу и порешал сам, <span className="bot-revolution-keep-together">делегируя работу субагентам.</span>
           </p>
           <p>
             <ExternalLink href="https://t.me/ohld_chat/45534">Grok Bot</ExternalLink>,{' '}
             <ExternalLink href="https://t.me/ohld_chat/45546">Hermes Bot</ExternalLink> и{' '}
-            <ExternalLink href="https://t.me/danokhlopkov/1731">Berd</ExternalLink> почти синхронно релизнули новый формат общения с агентами: личные и групповые <span className="bot-revolution-keep-together">чаты, сотрудники, лупы.</span>
+            <ExternalLink href="https://t.me/danokhlopkov/1731">Berd</ExternalLink> почти синхронно релизнули новый формат общения ИИ: личные и групповые <span className="bot-revolution-keep-together">чаты, сотрудники, лупы.</span>
           </p>
 
           <div className="bot-revolution-loop" aria-label="Пример agent loop">
@@ -220,13 +220,16 @@ export function BotRevolutionArticle() {
 
         <div className="bot-revolution-copy">
           <p>
-            Один агент ищет, другой пишет код, третий проверяет. Главный помнит, что мы вообще пытаемся сделать, и подключает нужного. Так контекст не превращается в бесконечную дорогую <span className="bot-revolution-keep-together">вкладку с амнезией.</span>
+            Раньше всё это жило в одном чате с кучей md-файлов. Потом ты упаковывал процессы в <ExternalLink href="https://t.me/danokhlopkov/1725">скиллы</ExternalLink>, автоматизируя кусок работы. Я так сделал с <ExternalLink href="https://t.me/danokhlopkov/1618">анализом данных TON Blockchain</ExternalLink>.
           </p>
           <p>
-            Это пока сырой интерфейс, и Grok Bot вполне может не взлететь. Но сама идея уже сдвинулась от «открой ещё один чат» к «собери мне команду».
+            Новая волна IDE для ИИ предлагает превратить их в отдельных сотрудников. У каждого свой контекст <span className="bot-revolution-keep-together">и своя ответственность.</span>
           </p>
           <p>
-            Большую разработку с нуля всё ещё удобнее вести через Claude Code, Codex или Grok CLI. Grok Bot и Hermes интереснее на уже живом проекте: поддерживать прод, обсуждать фичи, делать небольшие фиксы.
+            Главная инновация Grok Bot не в модели, а в интерфейсе: Telegram или Slack, только вместо людей агенты, которые могут общаться <span className="bot-revolution-keep-together">между собой.</span>
+          </p>
+          <p>
+            Прогать, конечно же, удобнее через Codex, Claude Code, Cursor и т. п. А вот поддерживать код и автоматизировать операционку когнитивно проще через знакомую до боли схему <span className="bot-revolution-keep-together">«начальник → подчинённый».</span>
           </p>
         </div>
 
@@ -285,23 +288,21 @@ export function BotRevolutionArticle() {
 
         <div className="bot-revolution-copy">
           <p>
-            Один Chief видит все проекты и держит общий борд. Остальные боты <span className="bot-revolution-keep-together">работают по своим функциям.</span>
+            Создавая агента QA, ты даёшь ему отдельный контекст: код, тесты, баги, релизы, кастомный CLI/MCP-интерфейс для дебага прода. Маркетологу всё это <span className="bot-revolution-keep-together">вряд ли нужно.</span>
+          </p>
+
+          <p>
+            Даже в стартапе из двух человек один обычно забирает техничку, второй продажи. Так просто легче <span className="bot-revolution-keep-together">менеджить ответственность.</span>
           </p>
 
           <p className="bot-revolution-channel-hint">
-            В личном чате контекст держит один бот.{' '}
+            Над ними Chief of Staff: он видит все проекты, держит общий борд и раскидывает таски.{' '}
             <span className="bot-revolution-keep-together">В&nbsp;<ExternalLink href="https://docs.x.ai/grok-bot/chat-and-collaboration">group&nbsp;chat</ExternalLink></span>{' '}
-            вы собираете 2–6 ботов вокруг общей задачи: они видят один разговор, пишут туда сами и передают работу друг другу.
+            собираете 2–6 ботов вокруг общей задачи: у них один разговор на всех, они пишут туда сами и передают работу друг другу. Именно эта архитектура завирусилась <span className="bot-revolution-keep-together">в твиттере.</span>
           </p>
 
           <p>
-            У Chief одна часовая рутина: открыть общий борд, проверить задачи и продолжить всё, что остановилось. Не нужно отдельно будить каждого бота и тратить токены во всех чатах.
-          </p>
-          <p>
-            Я уже примерно так и работаю. Кросс-проектные и личные запросы начинаю в папке на iCloud — это единый вход. Codex сам идёт в нужные папки, раздаёт работу subagents и собирает ответ.
-          </p>
-          <p>
-            Задачи часто не заканчиваются одной сессией. Но сохранённое остаётся в проекте, а <ExternalLink href="https://t.me/danokhlopkov/1685">GBrain</ExternalLink> поднимает прошлые решения и результаты. Поэтому новый запрос начинается <span className="bot-revolution-keep-together">там, где мы остановились.</span>
+            У Начальника одна рутина раз в час: проверить статус и продолжить всё, что остановилось. Не нужно отдельно будить каждого сотрудника: он сам всё <span className="bot-revolution-keep-together">замикроменеджит.</span>
           </p>
 
         </div>
@@ -347,11 +348,27 @@ export function BotRevolutionArticle() {
         <div className="bot-revolution-cost-copy">
           <h2 className="bot-revolution-visually-hidden">А сколько это стоит?</h2>
           <p>
-            Grok Bot можно попробовать через <ExternalLink href="https://cursor.com/pricing">Cursor Pro+ за $60</ExternalLink> или <ExternalLink href="https://x.ai/pricing">SuperGrok Plus за $100</ExternalLink>. <ExternalLink href="https://x.ai/bot">SuperGrok Heavy стоит $300</ExternalLink>:<br />
-            <span className="bot-revolution-cost-detail">в нём максимальные лимиты для Chat, Imagine, Voice, Build <span className="bot-revolution-keep-together">и ботов.</span></span>
+            Ну а я планирую брать <ExternalLink href="https://x.ai/bot">SuperGrok Heavy за $300</ExternalLink>: <ExternalLink href="https://cursor.com/help/grok-bot/plans">максимальные лимиты Grok Bot идут в подарок</ExternalLink>. В итоге и прогать можно норм через Grok CLI, и операционку автоматизировать <span className="bot-revolution-keep-together">в знакомом чате.</span>
           </p>
           <p>
-            $300 кусается сильнее максимальных Codex и Claude Code за $200. Лимитов по $100 мне уже не хватает, поэтому я сразу go $300. Будем пытаться реимбурсить 👹
+            $300 кусается сильнее максимальных Codex и Claude Code за $200. Но на тарифах по $100 я уже постоянно упираюсь в потолок. Жду, когда у меня закончатся лимиты в Codex, чтобы таки депнуть Гроку. Правда, <ExternalLink href="https://t.me/ohld_chat/45884">Tibo</ExternalLink> всё ресетит <span className="bot-revolution-keep-together">и ресетит. Лол.</span>
+          </p>
+        </div>
+      </section>
+
+      <section className="bot-revolution-prompt bot-revolution-reflection" data-analytics-section="reflection" data-analytics-title="Нужна ли мне команда AI-сотрудников">
+        <div className="bot-revolution-prompt-heading">
+          <h2>А я точно хочу такую команду?</h2>
+        </div>
+        <div className="bot-revolution-copy bot-revolution-reflection-copy">
+          <p>
+            Человековские иерархии могут быть неидеальными для ИИ-агентов. Но начать можно с того, <span className="bot-revolution-keep-together">что реально работает.</span>
+          </p>
+          <p>
+            <ExternalLink href="https://x.com/simonw/status/2075996740717871125?s=20">Создатель Django</ExternalLink> (топ либа для питона) думает, что сама идея «ИИ-сотрудника» унижает человеков (лол). Но живой менеджер всё ещё нужен: кто-то должен <span className="bot-revolution-keep-together">взять ответственность.</span>
+          </p>
+          <p>
+            <ExternalLink href="https://www.gatesnotes.com/home/home-page-topic/reader/a-turbulent-ai-era-and-critical-choices-to-make">Билл Гейтс недавно писал</ExternalLink>, что пора брать налог с AI-токенов и роботов. Я готов платить, если команда за $300/мес когда-нибудь заменит человека за $3000. Только пока непонятно, с чего: с токенов, результата <span className="bot-revolution-keep-together">или сэкономленной зарплаты.</span>
           </p>
         </div>
       </section>

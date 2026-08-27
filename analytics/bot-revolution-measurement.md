@@ -24,7 +24,7 @@ Do not set an arbitrary success target before launch. Establish the baseline aft
 
 ## Section funnel
 
-The article has nine stable section IDs:
+The article has ten stable section IDs:
 
 1. `hook`
 2. `evolution`
@@ -33,8 +33,9 @@ The article has nine stable section IDs:
 5. `chief_model`
 6. `telegram_primitives`
 7. `pricing`
-8. `personal_prompt`
-9. `conclusion`
+8. `reflection`
+9. `personal_prompt`
+10. `conclusion`
 
 For every section, report:
 
