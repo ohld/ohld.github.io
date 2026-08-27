@@ -585,10 +585,34 @@ async function assertEnglishBotRevolutionTracking(context, baseUrl) {
     assert(botMetrikaInit?.webvisor === true, 'English Bot Revolution: Metrika Webvisor should be enabled on direct entry')
     assert(await page.locator('html').getAttribute('lang') === 'en', 'English Bot Revolution: wrong document language')
     assert(await page.locator('.language-switcher a[aria-current="page"]').textContent() === 'EN', 'English Bot Revolution: EN switch should be active')
+    const contextIllustration = await page.locator('[data-analytics-section="context_limit"] .bot-revolution-art img').getAttribute('src')
+    const chiefIllustration = await page.locator('[data-analytics-section="chief_model"] .bot-revolution-art img').getAttribute('src')
     assert(
-      await page.locator('[data-analytics-section="chief_model"] .bot-revolution-art img').getAttribute('src') === '/assets/drafts/bot-revolution/ai-becomes-team-en.webp',
-      'English Bot Revolution: chief illustration should use an English asset',
+      chiefIllustration === '/assets/drafts/bot-revolution/one-main-hundred-agents-en.webp',
+      'English Bot Revolution: chief illustration should use the translated chief asset',
     )
+    assert(chiefIllustration !== contextIllustration, 'English Bot Revolution: chief illustration duplicates the context-limit image')
+
+    const xCard = page.locator('[data-cta-id="bot_revolution_x"]')
+    assert(await xCard.getAttribute('href') === 'https://x.com/danokhlopkov', 'English Bot Revolution: X card points to the wrong profile')
+    assert((await xCard.textContent())?.includes('@danokhlopkov'), 'English Bot Revolution: X card is missing the username')
+    assert((await xCard.textContent())?.includes('okhlopkov.ton'), 'English Bot Revolution: X card is missing the display name')
+    assert(
+      await xCard.locator('img').getAttribute('src') === '/assets/drafts/bot-revolution/telegram-cards/dan-x.webp',
+      'English Bot Revolution: X card is missing the current avatar',
+    )
+
+    const xPopup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
+    await xCard.click({ noWaitAfter: true })
+    const openedXPopup = await xPopup
+    if (openedXPopup) await openedXPopup.close()
+    await waitForAnalyticsEvent(page, 'article_cta_click')
+    const xCalls = await getAnalyticsCalls(page)
+    const xGa = gaEventPayloads(xCalls, 'article_cta_click').at(-1)
+    const xYm = ymGoalPayloads(xCalls, 'article_cta_click').at(-1)
+    assert(xGa?.cta_id === 'bot_revolution_x', 'English Bot Revolution: X click has the wrong GA4 cta_id')
+    assert(xYm?.cta_id === 'bot_revolution_x', 'English Bot Revolution: X click has the wrong Metrika cta_id')
+    assert(xGa?.link_domain === 'x.com', 'English Bot Revolution: X click has the wrong GA4 link domain')
 
     await Promise.all([
       page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 5000 }),

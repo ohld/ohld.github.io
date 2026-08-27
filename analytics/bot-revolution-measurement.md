@@ -64,7 +64,7 @@ Use `last_section_id` only for qualified readers when diagnosing drop-off. Bounc
 | --- | --- | --- |
 | Copy the personal setup prompt | `code_copy` | `bot_revolution_prompt` |
 | Click the Telegram channel card | `telegram_subscribe_click` | `bot_revolution_channel` |
-| Click the OHLD Chat card | `article_cta_click` | `bot_revolution_chat` |
+| Click the secondary footer card | `article_cta_click` | `bot_revolution_chat` (RU) / `bot_revolution_x` (EN) |
 | Click an article source | `source_link_click` | link text and domain |
 | Switch language | `article_internal_click` | EN/RU destination |
 
