@@ -586,12 +586,17 @@ async function assertEnglishBotRevolutionTracking(context, baseUrl) {
     assert(await page.locator('html').getAttribute('lang') === 'en', 'English Bot Revolution: wrong document language')
     assert(await page.locator('.language-switcher a[aria-current="page"]').textContent() === 'EN', 'English Bot Revolution: EN switch should be active')
     const contextIllustration = await page.locator('[data-analytics-section="context_limit"] .bot-revolution-art img').getAttribute('src')
-    const chiefIllustration = await page.locator('[data-analytics-section="chief_model"] .bot-revolution-art img').getAttribute('src')
+    const chiefImage = page.locator('[data-analytics-section="chief_model"] .bot-revolution-art img')
+    const chiefIllustration = await chiefImage.getAttribute('src')
+    const chiefSrcset = await chiefImage.getAttribute('srcset')
     assert(
       chiefIllustration === '/assets/drafts/bot-revolution/one-main-hundred-agents-en.webp',
       'English Bot Revolution: chief illustration should use the translated chief asset',
     )
     assert(chiefIllustration !== contextIllustration, 'English Bot Revolution: chief illustration duplicates the context-limit image')
+    assert(chiefSrcset?.includes('one-main-hundred-agents-en-640.webp 640w'), 'English Bot Revolution: chief illustration is missing its 640w variant')
+    assert(chiefSrcset?.includes('one-main-hundred-agents-en.webp 1024w'), 'English Bot Revolution: chief illustration is missing its native 1024w master')
+    assert(!chiefSrcset?.includes('one-main-hundred-agents-en-1024.webp'), 'English Bot Revolution: chief illustration has a duplicate 1024w descriptor')
 
     const xCard = page.locator('[data-cta-id="bot_revolution_x"]')
     assert(await xCard.getAttribute('href') === 'https://x.com/danokhlopkov', 'English Bot Revolution: X card points to the wrong profile')
