@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { startArticleReadingTracking, trackCodeCopy } from '../analytics'
 import { absoluteUrl, TELEGRAM_CHANNEL_URL } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 import './BotRevolutionDraft.css'
@@ -12,6 +13,20 @@ const timeline = [
   ['2026', 'OpenClaw', 'AI интегрируется с сервисами'],
   ['2026.5', 'The Bot Revolution', 'AI становится командой'],
 ]
+
+const ARTICLE_IMAGE_SIZES = '(min-width: 1100px) 500px, (min-width: 760px) 46vw, calc(100vw - 44px)'
+
+function ResponsiveArticleImage({ src, sizes = ARTICLE_IMAGE_SIZES, ...props }: React.ImgHTMLAttributes<HTMLImageElement> & { src: string }) {
+  const variant = (width: number) => src.replace(/\.webp$/i, `-${width}.webp`)
+  return (
+    <img
+      {...props}
+      src={src}
+      srcSet={`${variant(640)} 640w, ${variant(1024)} 1024w, ${variant(1280)} 1280w, ${src} 2048w`}
+      sizes={sizes}
+    />
+  )
+}
 
 function ExternalLink({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) {
   return (
@@ -52,9 +67,11 @@ const ARTICLE_PATH = '/ru/blog/bot-revolution/'
 const ARTICLE_TITLE = 'The Bot Revolution'
 const ARTICLE_DESCRIPTION = 'Следующая ступень эволюции AI-инструментов — не один агент, а целая команда.'
 const ARTICLE_IMAGE = '/assets/drafts/bot-revolution/bot-weather-map.webp'
+const ARTICLE_IMAGE_ALT = 'The Bot Revolution — карта с командой AI-ботов'
 
 export function BotRevolutionArticle() {
   const [copied, setCopied] = useState(false)
+  const articleRef = useRef<HTMLElement>(null)
 
   useDocumentMeta({
     title: `${ARTICLE_TITLE} — Даниил Охлопков`,
@@ -63,10 +80,11 @@ export function BotRevolutionArticle() {
     lang: 'ru',
     alternates: {
       ru: absoluteUrl(ARTICLE_PATH),
+      en: absoluteUrl('/en/blog/bot-revolution/'),
       'x-default': absoluteUrl(ARTICLE_PATH),
     },
     image: absoluteUrl(ARTICLE_IMAGE),
-    imageAlt: 'The Bot Revolution: карта с командой AI-ботов',
+    imageAlt: ARTICLE_IMAGE_ALT,
     type: 'article',
     publishedTime: '2026-08-26T00:00:00+03:00',
     modifiedTime: '2026-08-26T00:00:00+03:00',
@@ -97,9 +115,16 @@ export function BotRevolutionArticle() {
     return () => document.body.classList.remove('bot-revolution-body')
   }, [])
 
+  useEffect(() => {
+    if (!articleRef.current) return
+    return startArticleReadingTracking(articleRef.current)
+  }, [])
+
   async function copyPrompt() {
+    let copiedSuccessfully = false
     try {
       await navigator.clipboard.writeText(PROMPT)
+      copiedSuccessfully = true
     } catch {
       const field = document.createElement('textarea')
       field.value = PROMPT
@@ -107,16 +132,18 @@ export function BotRevolutionArticle() {
       field.style.opacity = '0'
       document.body.appendChild(field)
       field.select()
-      document.execCommand('copy')
+      copiedSuccessfully = document.execCommand('copy')
       field.remove()
     }
+    if (!copiedSuccessfully) return
+    trackCodeCopy('bot_revolution_prompt')
     setCopied(true)
     window.setTimeout(() => setCopied(false), 1800)
   }
 
   return (
-    <main className="bot-revolution-page" id="article-content" lang="ru">
-      <section className="bot-revolution-hero">
+    <main ref={articleRef} className="bot-revolution-page" id="article-content" lang="ru">
+      <section className="bot-revolution-hero" data-analytics-section="hook" data-analytics-title="The Bot Revolution">
         <div className="bot-revolution-hero-copy">
           <p className="bot-revolution-kicker">Август 2026</p>
           <h1>The Bot<br /> Revolution</h1>
@@ -131,9 +158,9 @@ export function BotRevolutionArticle() {
         </div>
 
         <figure className="bot-revolution-art bot-revolution-hero-art">
-          <img
+          <ResponsiveArticleImage
             src="/assets/drafts/bot-revolution/bot-weather-map.webp"
-            alt="The Bot Revolution — ведущая показывает карту с распределёнными AI-ботами"
+            alt={ARTICLE_IMAGE_ALT}
             width="2048"
             height="2048"
             fetchPriority="high"
@@ -141,7 +168,7 @@ export function BotRevolutionArticle() {
         </figure>
       </section>
 
-      <section className="bot-revolution-timeline" id="timeline" aria-label="Таймлайн AI-инструментов">
+      <section className="bot-revolution-timeline" id="timeline" aria-label="Таймлайн AI-инструментов" data-analytics-section="evolution" data-analytics-title="Эволюция AI-инструментов">
         {timeline.map(([year, tool, take], index) => (
           <article className={index === timeline.length - 1 ? 'is-next' : undefined} key={year}>
             <span className="bot-revolution-year">{year}</span>
@@ -151,9 +178,9 @@ export function BotRevolutionArticle() {
         ))}
       </section>
 
-      <section className="bot-revolution-chapter">
+      <section className="bot-revolution-chapter" data-analytics-section="context_limit" data-analytics-title="Всё не засунуть в одну сессию">
         <figure className="bot-revolution-art">
-          <img
+          <ResponsiveArticleImage
             src="/assets/drafts/bot-revolution/ai-becomes-team.webp"
             alt="AI превращается в команду — сюрреалистичный коллаж"
             width="2048"
@@ -185,7 +212,7 @@ export function BotRevolutionArticle() {
         </div>
       </section>
 
-      <section className="bot-revolution-chapter bot-revolution-chapter-reverse bot-revolution-community-chapter">
+      <section className="bot-revolution-chapter bot-revolution-chapter-reverse bot-revolution-community-chapter" data-analytics-section="team_structure" data-analytics-title="Разделение труда между агентами">
         <h2 className="bot-revolution-section-title">
           <span>Не один супер-агент,</span>
           <span>а нормальное разделение труда</span>
@@ -204,7 +231,7 @@ export function BotRevolutionArticle() {
         </div>
 
         <figure className="bot-revolution-art">
-          <img
+          <ResponsiveArticleImage
             src="/assets/drafts/bot-revolution/bot-trinity.webp"
             alt="The Bot Trinity — три специализированных AI-бота"
             width="2048"
@@ -238,7 +265,7 @@ export function BotRevolutionArticle() {
         </div>
       </section>
 
-      <section className="bot-revolution-chapter bot-revolution-final-chapter">
+      <section className="bot-revolution-chapter bot-revolution-final-chapter" data-analytics-section="chief_model" data-analytics-title="Один Chief и команда агентов">
         <h2 className="bot-revolution-section-title">
           <span>Организовать это можно</span>
           <span>как маленькую компанию.</span>
@@ -246,7 +273,7 @@ export function BotRevolutionArticle() {
 
         <div className="bot-revolution-final-visual">
           <figure className="bot-revolution-art">
-            <img
+            <ResponsiveArticleImage
               src="/assets/drafts/bot-revolution/one-main-hundred-agents.webp"
               alt="Один Главный и сто агентов — гигантский AI над городом"
               width="2048"
@@ -280,7 +307,7 @@ export function BotRevolutionArticle() {
         </div>
       </section>
 
-      <section className="bot-revolution-telegram">
+      <section className="bot-revolution-telegram" data-analytics-section="telegram_primitives" data-analytics-title="Примитивы Telegram для AI-команды">
         <div>
           <h2>В Telegram уже есть почти все примитивы</h2>
         </div>
@@ -307,9 +334,9 @@ export function BotRevolutionArticle() {
         </div>
       </section>
 
-      <section className="bot-revolution-cost">
+      <section className="bot-revolution-cost" data-analytics-section="pricing" data-analytics-title="Сколько стоит AI-команда">
         <figure className="bot-revolution-art bot-revolution-cost-art">
-          <img
+          <ResponsiveArticleImage
             src="/assets/drafts/bot-revolution/cost-variants/cost-how-much-money.webp"
             alt="А сколько это стоит — мем со Спанч Бобом и пачкой денег"
             width="2048"
@@ -329,7 +356,7 @@ export function BotRevolutionArticle() {
         </div>
       </section>
 
-      <section className="bot-revolution-prompt">
+      <section className="bot-revolution-prompt" data-analytics-section="personal_prompt" data-analytics-title="Промпт для настройки команды">
         <div className="bot-revolution-prompt-heading">
           <h2>Спроси агента, который тебя знает</h2>
         </div>
@@ -348,7 +375,7 @@ export function BotRevolutionArticle() {
         </div>
       </section>
 
-      <footer className="bot-revolution-footer">
+      <footer className="bot-revolution-footer" data-analytics-section="conclusion" data-analytics-title="Вывод и подписка">
         <p className="bot-revolution-footer-thesis">
           <span>Следующая революция будет<br className="bot-revolution-mobile-break" /> не в более умных моделях.</span>
           <span>Она будет в том, как мы с ними работаем.</span>
@@ -356,7 +383,7 @@ export function BotRevolutionArticle() {
         </p>
 
         <div className="bot-revolution-telegram-cards">
-          <a className="bot-revolution-telegram-card" href={TELEGRAM_CHANNEL_URL} target="_blank" rel="noopener noreferrer">
+          <a className="bot-revolution-telegram-card" href={TELEGRAM_CHANNEL_URL} target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_channel">
             <div className="bot-revolution-telegram-card-profile">
               <img src="/assets/drafts/bot-revolution/telegram-cards/dan-channel.webp" alt="Дэн Охлопков" width="320" height="320" loading="lazy" />
               <div><span>Telegram-канал</span><strong>Дэн Охлопков</strong></div>
@@ -364,7 +391,7 @@ export function BotRevolutionArticle() {
             <span className="bot-revolution-telegram-card-action">Подписаться</span>
           </a>
 
-          <a className="bot-revolution-telegram-card" href="https://t.me/ohld_chat" target="_blank" rel="noopener noreferrer">
+          <a className="bot-revolution-telegram-card" href="https://t.me/ohld_chat" target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_chat">
             <div className="bot-revolution-telegram-card-profile">
               <img src="/assets/drafts/bot-revolution/telegram-cards/ohld-chat.webp" alt="OHLD Chat" width="320" height="320" loading="lazy" />
               <div><span>Telegram-чат</span><strong>OHLD Chat</strong></div>

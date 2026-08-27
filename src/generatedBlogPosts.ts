@@ -7,6 +7,7 @@ import aiSetupFromTelegram from '../content/blog-posts/my-ai-setup-2026-claude-c
 import tmaVibecodingFromTelegram from '../content/blog-posts/vibecoding-telegram-mini-app-claude-code.md?raw'
 import vacationAgentsFromTelegram from '../content/blog-posts/business-on-ai-agent-claude-code-paperclip-gstack.md?raw'
 import botRevolution from '../content/blog-posts/bot-revolution.md?raw'
+import botRevolutionEn from '../content/blog-posts/bot-revolution-en.md?raw'
 import aiReelsSeoPipelineArticle from '../content/seo-articles/ai-reels-seo-pipeline-telegram-claude-code.md?raw'
 import claudeCodeSkillsArticle from '../content/seo-articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok.md?raw'
 import hermesVsOpenClawArticle from '../content/seo-articles/hermes-agent-vs-openclaw.md?raw'
@@ -49,6 +50,7 @@ export interface GeneratedBlogPost {
 
 const sources = [
   botRevolution,
+  botRevolutionEn,
   aiAgentsFromTelegram,
   claudeVsCodexFromTelegram,
   gstackGoalFromTelegram,
@@ -146,8 +148,8 @@ export const generatedRussianBlogItems: BlogListItem[] = generatedBlogPosts
     thumbnail: post.coverImage,
   }))
 
-export function getGeneratedBlogPost(slug: string | undefined) {
-  return generatedBlogPosts.find((post) => post.slug === slug)
+export function getGeneratedBlogPost(slug: string | undefined, lang?: string) {
+  return generatedBlogPosts.find((post) => post.slug === slug && (!lang || post.lang === lang))
 }
 
 export function generatedBlogPath(slug: string, lang = 'ru') {

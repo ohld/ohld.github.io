@@ -40,6 +40,7 @@ const staticLocalizedPairs: Array<{ ru: string; en: string }> = [
   { ru: '/blog/', en: '/en/blog/' },
   { ru: '/articles/', en: '/en/articles/' },
   { ru: '/about/', en: '/en/about/' },
+  { ru: '/ru/blog/bot-revolution/', en: '/en/blog/bot-revolution/' },
 ]
 const articleLocalizedPairs = (localizedGroups as LocalizedArticleGroup[])
   .filter((group): group is LocalizedArticleGroup & { ru: string; en: string } => Boolean(group.ru && group.en))

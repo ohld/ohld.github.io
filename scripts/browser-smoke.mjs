@@ -7,6 +7,7 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/',
   '/en/',
   '/en/blog/',
+  '/en/blog/bot-revolution/',
   '/en/articles/',
   '/en/articles/hermes-agent-vps-telegram-setup/',
   '/en/about/',
@@ -44,6 +45,8 @@ const clickChecks = [
   { start: '/en/', selector: '.home-latest-section .article-preview-hitarea', label: 'en home latest card' },
   { start: '/ru/articles/hermes-agent-vps-telegram-ustanovka/', selector: '.language-switcher a[href="/en/articles/hermes-agent-vps-telegram-setup/"]', label: 'Hermes article RU to EN', expectedHref: '/en/articles/hermes-agent-vps-telegram-setup/' },
   { start: '/en/articles/hermes-agent-vps-telegram-setup/', selector: '.language-switcher a[href="/ru/articles/hermes-agent-vps-telegram-ustanovka/"]', label: 'Hermes article EN to RU', expectedHref: '/ru/articles/hermes-agent-vps-telegram-ustanovka/' },
+  { start: '/ru/blog/bot-revolution/', selector: '.language-switcher a[href="/en/blog/bot-revolution/"]', label: 'Bot Revolution RU to EN', expectedHref: '/en/blog/bot-revolution/' },
+  { start: '/en/blog/bot-revolution/', selector: '.language-switcher a[href="/ru/blog/bot-revolution/"]', label: 'Bot Revolution EN to RU', expectedHref: '/ru/blog/bot-revolution/' },
   { start: '/', selector: '.page-header-bio a', label: 'home about link' },
 ]
 
@@ -150,6 +153,14 @@ async function main() {
 
   for (const viewport of viewports) {
     const page = await browser.newPage({ viewport })
+    await page.addInitScript(() => {
+      window.__SMOKE_CLS__ = 0
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if (!entry.hadRecentInput) window.__SMOKE_CLS__ += entry.value
+        }
+      }).observe({ type: 'layout-shift', buffered: true })
+    })
     const errors = []
     page.on('console', (message) => {
       const text = message.text()
@@ -164,7 +175,7 @@ async function main() {
       const response = await page.goto(`${baseUrl}${route}`, { waitUntil: 'domcontentloaded', timeout: 15000 })
       await page.waitForFunction(() => {
         const bodyChars = document.body.innerText.trim().length
-        const footerSelector = location.pathname.replace(/\/+$/, '') === '/ru/blog/bot-revolution'
+        const footerSelector = location.pathname.replace(/\/+$/, '').endsWith('/blog/bot-revolution')
           ? '.bot-revolution-footer'
           : '.footer'
         return Boolean(document.querySelector(footerSelector)) && bodyChars >= 500
@@ -173,10 +184,11 @@ async function main() {
       if (checkCardImages) {
         await forceLoadImages(page, '.article-preview-thumb, .blog-card-thumb')
       }
-      await forceLoadImages(page, '.article-hero-image img')
+      await forceLoadImages(page, '.article-hero-image img, .bot-revolution-art img')
+      await page.waitForTimeout(100)
       const data = await page.evaluate(() => {
         const header = document.querySelector('.site-header')
-        const footerSelector = location.pathname.replace(/\/+$/, '') === '/ru/blog/bot-revolution'
+        const footerSelector = location.pathname.replace(/\/+$/, '').endsWith('/blog/bot-revolution')
           ? '.bot-revolution-footer'
           : '.footer'
         const footer = document.querySelector(footerSelector)
@@ -185,6 +197,10 @@ async function main() {
         const mainBox = main?.getBoundingClientRect()
         const thumbnails = [...document.querySelectorAll('.article-preview-thumb, .blog-card-thumb')]
         const heroImages = [...document.querySelectorAll('.article-hero-image img')]
+        const botRevolutionImages = [...document.querySelectorAll('.bot-revolution-art img')]
+        const botRevolutionTransfers = performance.getEntriesByType('resource')
+          .filter((entry) => entry.initiatorType === 'img' && entry.name.includes('/bot-revolution/'))
+          .reduce((sum, entry) => sum + entry.transferSize, 0)
         const homeLatestHrefs = [...document.querySelectorAll('.home-latest-section .article-preview-hitarea')]
           .map((link) => link.getAttribute('href') || '')
           .filter(Boolean)
@@ -207,6 +223,10 @@ async function main() {
           duplicateHomeLatestHrefs,
           heroImageCount: heroImages.length,
           brokenHeroImages: heroImages.filter((img) => !img.currentSrc || img.naturalWidth <= 0 || img.naturalHeight <= 0).length,
+          botRevolutionImageCount: botRevolutionImages.length,
+          brokenBotRevolutionImages: botRevolutionImages.filter((img) => !img.currentSrc || img.naturalWidth <= 0 || img.naturalHeight <= 0).length,
+          botRevolutionImageTransferKb: Math.round(botRevolutionTransfers / 1024),
+          cls: Number((window.__SMOKE_CLS__ || 0).toFixed(4)),
         }
       })
       results.push({
@@ -229,13 +249,13 @@ async function main() {
       await page.waitForLoadState('domcontentloaded', { timeout: 15000 }).catch(() => {})
       await page.waitForFunction(() => {
         const bodyChars = document.body.innerText.trim().length
-        const footerSelector = location.pathname.replace(/\/+$/, '') === '/ru/blog/bot-revolution'
+        const footerSelector = location.pathname.replace(/\/+$/, '').endsWith('/blog/bot-revolution')
           ? '.bot-revolution-footer'
           : '.footer'
         return Boolean(document.querySelector(footerSelector)) && bodyChars >= 500
       }, { timeout: 4000 }).catch(() => {})
       const data = await page.evaluate(() => {
-        const footerSelector = location.pathname.replace(/\/+$/, '') === '/ru/blog/bot-revolution'
+        const footerSelector = location.pathname.replace(/\/+$/, '').endsWith('/blog/bot-revolution')
           ? '.bot-revolution-footer'
           : '.footer'
         return {
@@ -337,6 +357,12 @@ async function main() {
       if (result.duplicateHomeLatestHrefs?.length) issues.push(`duplicate home latest hrefs ${result.duplicateHomeLatestHrefs.join(', ')}`)
     }
     if (result.heroImageCount && result.brokenHeroImages) issues.push(`broken hero images ${result.brokenHeroImages}`)
+    if (canonicalPath(result.route).endsWith('/blog/bot-revolution/')) {
+      if (result.botRevolutionImageCount !== 5) issues.push(`article images ${result.botRevolutionImageCount || 0} != 5`)
+      if (result.brokenBotRevolutionImages) issues.push(`broken article images ${result.brokenBotRevolutionImages}`)
+      if (result.botRevolutionImageTransferKb > 600) issues.push(`article image transfer ${result.botRevolutionImageTransferKb}KB > 600KB`)
+      if (result.cls > 0.05) issues.push(`CLS ${result.cls} > 0.05`)
+    }
     if (result.expectedCodeBlocks && result.codeBlocks < result.expectedCodeBlocks) issues.push(`code blocks ${result.codeBlocks || 0} < ${result.expectedCodeBlocks}`)
     if (result.expectedCodeBlocks && result.copyButtons < result.expectedCodeBlocks) issues.push(`copy buttons ${result.copyButtons || 0} < ${result.expectedCodeBlocks}`)
     if (result.expectedHref && result.clickedHref !== result.expectedHref) issues.push(`first-card href ${result.clickedHref || '<empty>'} != ${result.expectedHref}`)

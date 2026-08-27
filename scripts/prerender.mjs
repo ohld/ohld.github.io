@@ -28,6 +28,17 @@ const ARTICLE_SEO_ENHANCEMENTS_PATH = path.join('content', 'articles', 'seo-enha
 const LEGACY_REDIRECTS_PATH = path.join('content', 'articles', 'legacy-redirects.json')
 const TOPIC_HUBS_PATH = path.join('content', 'topic-hubs.json')
 const HOME_IMAGE_PRELOAD = '    <link rel="preload" as="image" href="/assets/articles/gde-deshevle-kupit-telegram-stars/telegram-stars-cover-card.webp" fetchpriority="high" />\n'
+const BOT_REVOLUTION_IMAGE = '/assets/drafts/bot-revolution/bot-weather-map.webp'
+const BOT_REVOLUTION_IMAGE_SIZES = '(min-width: 1100px) 500px, (min-width: 760px) 46vw, calc(100vw - 44px)'
+
+function builtAssetHref(prefix, extension) {
+  const assetsDir = path.join(dist, 'assets')
+  if (!fs.existsSync(assetsDir)) return ''
+  const file = fs.readdirSync(assetsDir).find((entry) => entry.startsWith(prefix) && entry.endsWith(extension))
+  return file ? `/assets/${file}` : ''
+}
+
+const BOT_REVOLUTION_CSS_HREF = builtAssetHref('BotRevolutionDraft-', '.css')
 
 function readJsonFile(filePath, fallback) {
   return fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : fallback
@@ -494,16 +505,26 @@ const ROUTES = [
 
 for (const post of GENERATED_BLOG_POSTS) {
   const postLang = post.lang || 'ru'
+  const localizedPosts = GENERATED_BLOG_POSTS.filter((candidate) => candidate.slug === post.slug)
+  const russianPost = localizedPosts.find((candidate) => (candidate.lang || 'ru') === 'ru')
+  const englishPost = localizedPosts.find((candidate) => candidate.lang === 'en')
+  const alternates = russianPost && englishPost
+    ? {
+        ru: `${SITE_URL}${generatedBlogPath(russianPost)}/`,
+        en: `${SITE_URL}${generatedBlogPath(englishPost)}/`,
+        'x-default': `${SITE_URL}${generatedBlogPath(russianPost)}/`,
+      }
+    : {
+        [postLang]: `${SITE_URL}${generatedBlogPath(post)}/`,
+        'x-default': `${SITE_URL}${generatedBlogPath(post)}/`,
+      }
   ROUTES.push({
     path: generatedBlogPath(post),
-    slug: `blog-${post.slug}`,
+    slug: postLang === 'en' ? `blog-en-${post.slug}` : `blog-${post.slug}`,
     title: post.title,
     description: post.description,
     lang: postLang,
-    alternates: {
-      [postLang]: `${SITE_URL}${generatedBlogPath(post)}/`,
-      'x-default': `${SITE_URL}${generatedBlogPath(post)}/`,
-    },
+    alternates,
     kind: 'generated-blog-post',
     publishedAt: post.publishedAt,
     updatedAt: post.updatedAt,
@@ -1228,6 +1249,90 @@ function buildGeneratedBlogFallback(route) {
   </article><nav>${nav}</nav><footer>${socials}</footer>`
 }
 
+function isBotRevolutionRoute(route) {
+  return route.path === '/ru/blog/bot-revolution' || route.path === '/en/blog/bot-revolution'
+}
+
+function buildBotRevolutionHeader(lang) {
+  const english = lang === 'en'
+  const homePath = english ? '/en/' : '/'
+  const nav = english
+    ? [['/en/blog/', 'Blog'], ['/en/articles/', 'Articles'], ['/en/about/', 'About']]
+    : [['/ru/blog/', 'Блог'], ['/ru/articles/', 'Статьи'], ['/about', 'Обо мне']]
+  const ruPath = '/ru/blog/bot-revolution/'
+  const enPath = '/en/blog/bot-revolution/'
+  return `<header class="site-header">
+    <a class="site-header-brand" href="${homePath}"><span>okhlopkov.com</span></a>
+    <nav class="site-header-nav" aria-label="${english ? 'Primary navigation' : 'Основная навигация'}">
+      ${nav.map(([href, label]) => `<a class="site-header-link" href="${href}">${label}</a>`).join('')}
+    </nav>
+    <div class="site-header-actions">
+      <nav class="language-switcher" aria-label="${english ? 'Language' : 'Выбор языка'}">
+        <a${english ? '' : ' class="language-switcher-active" aria-current="page"'} href="${ruPath}">RU</a>
+        <a${english ? ' class="language-switcher-active" aria-current="page"' : ''} href="${enPath}">EN</a>
+      </nav>
+      <a class="site-header-cta" href="${TELEGRAM_CHANNEL_URL}" target="_blank" rel="noopener noreferrer">@danokhlopkov</a>
+    </div>
+  </header>`
+}
+
+function buildBotRevolutionFallback(route) {
+  const english = route.lang === 'en'
+  const nav = fallbackNav(route.lang)
+  const socials = fallbackSocials()
+  const firstChapter = english
+    ? '## You can’t cram everything into one session'
+    : '## Всё не засунуть в одну сессию'
+  const firstChapterIndex = (route.markdown || '').indexOf(firstChapter)
+  const articleMarkdown = firstChapterIndex >= 0
+    ? route.markdown.slice(firstChapterIndex)
+    : route.markdown || ''
+  const article = mdToHtml(articleMarkdown)
+  const image640 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-640.webp')
+  const image1024 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-1024.webp')
+  const image1280 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-1280.webp')
+  const imageSrcset = `${image640} 640w, ${image1024} 1024w, ${image1280} 1280w, ${BOT_REVOLUTION_IMAGE} 2048w`
+  const timeline = english
+    ? [
+        ['2023', 'ChatGPT', 'AI searches better'],
+        ['2024', 'Cursor', 'AI helps you code'],
+        ['2025', 'Claude Code', 'AI codes better'],
+        ['2026', 'OpenClaw', 'AI plugs into services'],
+        ['2026.5', 'The Bot Revolution', 'AI becomes a team'],
+      ]
+    : [
+        ['2023', 'ChatGPT', 'AI лучше гуглит'],
+        ['2024', 'Cursor', 'AI помогает прогать'],
+        ['2025', 'Claude Code', 'AI лучше прогает'],
+        ['2026', 'OpenClaw', 'AI интегрируется с сервисами'],
+        ['2026.5', 'The Bot Revolution', 'AI становится командой'],
+      ]
+  const heroAlt = route.imageAlt || (english
+    ? 'The Bot Revolution — a weather map for a distributed team of AI bots'
+    : 'The Bot Revolution — карта с командой AI-ботов')
+
+  return `${buildBotRevolutionHeader(route.lang)}
+  <main class="bot-revolution-page" id="article-content" lang="${english ? 'en' : 'ru'}">
+    <section class="bot-revolution-hero" data-analytics-section="hook" data-analytics-title="The Bot Revolution">
+      <div class="bot-revolution-hero-copy">
+        <p class="bot-revolution-kicker">${english ? 'August 2026' : 'Август 2026'}</p>
+        <h1>The Bot<br /> Revolution</h1>
+        <p class="bot-revolution-lead">
+          <span>${english ? 'The long-awaited next step in AI evolution.' : 'Долгожданный следующий шаг эволюции ИИ.'}</span>
+          <strong>${english ? 'You don’t need one agent.<br />You need a whole team.' : 'Тебе нужен не один агент,<br />а целая команда.'}</strong>
+        </p>
+      </div>
+      <figure class="bot-revolution-art bot-revolution-hero-art">
+        <img src="${image640}" srcset="${imageSrcset}" sizes="${BOT_REVOLUTION_IMAGE_SIZES}" alt="${heroAlt}" width="2048" height="2048" fetchpriority="high" />
+      </figure>
+    </section>
+    <section class="bot-revolution-timeline" id="timeline" aria-label="${english ? 'AI tools timeline' : 'Таймлайн AI-инструментов'}" data-analytics-section="evolution">
+      ${timeline.map(([year, tool, take], index) => `<article${index === timeline.length - 1 ? ' class="is-next"' : ''}><span class="bot-revolution-year">${year}</span><strong>${tool}</strong><p>${take}</p></article>`).join('')}
+    </section>
+    <section class="generated-blog-body bot-revolution-static-fallback-body">${article}</section>
+  </main><nav>${nav}</nav><footer>${socials}</footer>`
+}
+
 function getRouteMd(route) {
   if (route.markdown) return route.markdown.replace(/^#\s+[^\n]*\n+/, '')
   if (route.kind === 'generated-blog-post' || route.kind === 'generated-article-post' || route.kind === 'topic-page' || route.kind === 'article-page') {
@@ -1428,7 +1533,10 @@ function rewrite(html, route) {
   const escapedDescription = escape(description)
   const escapedImageAlt = escape(imageAlt)
   const mdBody = getRouteMd(route)
-  const fallback = route.kind === 'article-page'
+  const botRevolutionRoute = isBotRevolutionRoute(route)
+  const fallback = botRevolutionRoute
+    ? buildBotRevolutionFallback(route)
+    : route.kind === 'article-page'
     ? buildArticleFallback(route)
     : route.kind === 'generated-blog-post' || route.kind === 'generated-article-post'
       ? buildGeneratedBlogFallback(route)
@@ -1465,6 +1573,21 @@ function rewrite(html, route) {
       }
     })
     .replace('<!-- body-fallback -->', fallback)
+  if (botRevolutionRoute) {
+    const image640 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-640.webp')
+    const image1024 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-1024.webp')
+    const image1280 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-1280.webp')
+    const imageSrcset = `${image640} 640w, ${image1024} 1024w, ${image1280} 1280w, ${BOT_REVOLUTION_IMAGE} 2048w`
+    const pageScript = builtAssetHref(route.lang === 'en' ? 'EnglishBotRevolution-' : 'BotRevolutionDraft-', '.js')
+    const performanceHints = [
+      BOT_REVOLUTION_CSS_HREF && `<link rel="stylesheet" crossorigin href="${BOT_REVOLUTION_CSS_HREF}" />`,
+      pageScript && `<link rel="modulepreload" crossorigin href="${pageScript}" />`,
+      `<link rel="preload" as="image" href="${image640}" imagesrcset="${imageSrcset}" imagesizes="${BOT_REVOLUTION_IMAGE_SIZES}" fetchpriority="high" />`,
+    ].filter(Boolean).map((tag) => `  ${tag}`).join('\n')
+    out = out
+      .replace('<body>', '<body class="bot-revolution-body">')
+      .replace('</head>', `${performanceHints}\n  </head>`)
+  }
   const extraSchema = route.kind === 'generated-blog-post'
     ? generatedBlogPostSchema(route)
     : route.kind === 'generated-article-post'

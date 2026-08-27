@@ -24,6 +24,8 @@ const METRIKA_GOAL_EVENTS = new Set([
   'source_link_click',
   'code_copy',
   'navigation_back_click',
+  'article_engaged',
+  'article_read_complete',
 ])
 
 type EventParamValue = string | number | undefined
@@ -210,8 +212,8 @@ function ensurePageViewBeforeEvent(path = `${location.pathname}${location.search
   }
 }
 
-function send(event: string, params?: EventParams) {
-  if (event !== 'page_view') ensurePageViewBeforeEvent()
+function send(event: string, params?: EventParams, options: { ensurePageView?: boolean } = {}) {
+  if (event !== 'page_view' && options.ensurePageView !== false) ensurePageViewBeforeEvent()
   const payload = cleanParams({ ...contentContext(), ...experimentContext(), ...params })
   if (window.gtag) {
     window.gtag('event', event, payload)
@@ -356,9 +358,10 @@ export function trackDocumentLinkClick(link: HTMLAnchorElement) {
   const isArticleCta = link.classList.contains('cta-btn')
     || link.classList.contains('cta-btn-secondary')
     || link.classList.contains('article-cta-link')
+    || Boolean(link.dataset.ctaId)
   const event = isArticleCta
     ? 'article_cta_click'
-    : link.closest('.blog-article, .generated-blog-body, .mvh-page')
+    : link.closest('.blog-article, .generated-blog-body, .mvh-page, .bot-revolution-page')
     ? 'source_link_click'
     : 'article_outbound_click'
   send(event, params)
@@ -370,6 +373,292 @@ export function trackCodeCopy(language: string) {
     event_label: language,
     click_text: 'copy',
   })
+}
+
+type ArticleSectionState = {
+  element: HTMLElement
+  id: string
+  title: string
+  index: number
+  wordCount: number
+  visible: boolean
+  viewed: boolean
+  read: boolean
+  attentionMs: number
+  emittedAttentionMs: number
+  passes: number
+}
+
+type ArticleReadingTrackerOptions = {
+  sectionSelector?: string
+  sectionReadSeconds?: number
+  engagedSeconds?: number
+  completeSeconds?: number
+}
+
+function substantialVisibility(element: HTMLElement) {
+  const rect = element.getBoundingClientRect()
+  if (rect.width <= 0 || rect.height <= 0) return { visible: false, visiblePixels: 0 }
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+  const visiblePixels = Math.max(0, Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0))
+  const requiredPixels = Math.min(rect.height * 0.5, viewportHeight * 0.45)
+  return { visible: visiblePixels >= Math.max(1, requiredPixels), visiblePixels }
+}
+
+function currentScrollPercent() {
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
+  if (scrollHeight <= 0) return 100
+  return Math.max(0, Math.min(100, Math.round((scrollTop / scrollHeight) * 100)))
+}
+
+/**
+ * Measure meaningful article reading, not just scroll position.
+ *
+ * Sections are considered read after cumulative active, substantially-visible
+ * time. Attention pauses when the tab is hidden or the reader is idle for 30s.
+ */
+export function startArticleReadingTracking(
+  root: HTMLElement,
+  options: ArticleReadingTrackerOptions = {},
+) {
+  const selector = options.sectionSelector || '[data-analytics-section]'
+  const sectionReadMs = (options.sectionReadSeconds || 5) * 1000
+  const engagedMs = (options.engagedSeconds || 15) * 1000
+  const completeMs = (options.completeSeconds || 30) * 1000
+  const articleContext = contentContext()
+  const startedAt = performance.now()
+  let lastTickAt = startedAt
+  let lastActivityAt = startedAt
+  let activeMs = 0
+  let maxScrollPercent = currentScrollPercent()
+  let maxSectionIndex = 0
+  let currentSectionId = ''
+  let engaged = false
+  let completed = false
+  let finalized = false
+  let frame: number | null = null
+
+  const sections: ArticleSectionState[] = Array.from(root.querySelectorAll<HTMLElement>(selector)).map((element, index) => ({
+    element,
+    id: element.dataset.analyticsSection || `section_${index + 1}`,
+    title: (element.dataset.analyticsTitle || element.querySelector('h1, h2')?.textContent || `Section ${index + 1}`)
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, 100),
+    index: index + 1,
+    wordCount: (element.textContent || '').trim().split(/\s+/u).filter(Boolean).length,
+    visible: false,
+    viewed: false,
+    read: false,
+    attentionMs: 0,
+    emittedAttentionMs: 0,
+    passes: 0,
+  }))
+
+  if (sections.length === 0) return () => {}
+
+  const sendReadingEvent = (event: string, params: EventParams) => {
+    send(event, params, { ensurePageView: !finalized })
+  }
+
+  const sharedSectionParams = (section: ArticleSectionState): EventParams => ({
+    ...articleContext,
+    event_category: 'article_reading',
+    section_id: section.id,
+    section_title: section.title,
+    section_index: section.index,
+    section_count: sections.length,
+    section_words: section.wordCount,
+    section_progress_percent: Math.round((section.index / sections.length) * 100),
+  })
+
+  const flushSectionAttention = (section: ArticleSectionState) => {
+    const unreportedMs = section.attentionMs - section.emittedAttentionMs
+    const attentionSeconds = Math.floor(unreportedMs / 1000)
+    if (attentionSeconds < 1) return
+    section.emittedAttentionMs += attentionSeconds * 1000
+    sendReadingEvent('article_section_attention', {
+      ...sharedSectionParams(section),
+      attention_seconds: attentionSeconds,
+      attention_total_seconds: Math.floor(section.attentionMs / 1000),
+      section_pass: section.passes,
+    })
+  }
+
+  const maybeMarkEngaged = () => {
+    if (engaged || activeMs < engagedMs || sections.filter((section) => section.viewed).length < 2) return
+    engaged = true
+    sendReadingEvent('article_engaged', {
+      ...articleContext,
+      event_category: 'article_reading',
+      active_seconds: Math.floor(activeMs / 1000),
+      sections_viewed: sections.filter((section) => section.viewed).length,
+      sections_read: sections.filter((section) => section.read).length,
+      max_scroll_percent: maxScrollPercent,
+    })
+  }
+
+  const maybeMarkComplete = () => {
+    const conclusion = sections.at(-1)
+    if (
+      completed
+      || activeMs < completeMs
+      || maxScrollPercent < 75
+      || !conclusion?.viewed
+    ) return
+    completed = true
+    sendReadingEvent('article_read_complete', {
+      ...articleContext,
+      event_category: 'article_reading',
+      active_seconds: Math.floor(activeMs / 1000),
+      sections_viewed: sections.filter((section) => section.viewed).length,
+      sections_read: sections.filter((section) => section.read).length,
+      section_count: sections.length,
+      max_scroll_percent: maxScrollPercent,
+      completion_method: 'conclusion_reached',
+    })
+  }
+
+  const activeThresholds = [10, 30, 60, 120, 180, 300]
+  const firedActiveThresholds = new Set<number>()
+
+  const refresh = () => {
+    frame = null
+    if (finalized) return
+    const now = performance.now()
+    const elapsed = Math.min(1500, Math.max(0, now - lastTickAt))
+    const isActive = document.visibilityState === 'visible' && now - lastActivityAt <= 30_000
+    lastTickAt = now
+    maxScrollPercent = Math.max(maxScrollPercent, currentScrollPercent())
+
+    if (isActive) activeMs += elapsed
+
+    let currentSection: ArticleSectionState | undefined
+    let currentVisiblePixels = -1
+
+    for (const section of sections) {
+      const { visible, visiblePixels } = substantialVisibility(section.element)
+      if (visible && !section.visible) section.passes += 1
+      if (!visible && section.visible) flushSectionAttention(section)
+      section.visible = visible
+
+      if (visible && visiblePixels > currentVisiblePixels) {
+        currentSection = section
+        currentVisiblePixels = visiblePixels
+      }
+
+      if (!visible) continue
+      if (isActive) section.attentionMs += elapsed
+
+      if (!section.viewed) {
+        section.viewed = true
+        maxSectionIndex = Math.max(maxSectionIndex, section.index)
+        sendReadingEvent('article_section_view', {
+          ...sharedSectionParams(section),
+          max_scroll_percent: maxScrollPercent,
+        })
+      }
+
+      if (!section.read && section.attentionMs >= sectionReadMs) {
+        section.read = true
+        sendReadingEvent('article_section_read', {
+          ...sharedSectionParams(section),
+          attention_seconds: Math.floor(section.attentionMs / 1000),
+          active_seconds: Math.floor(activeMs / 1000),
+        })
+      }
+    }
+
+    if (currentSection) currentSectionId = currentSection.id
+
+    for (const threshold of activeThresholds) {
+      if (activeMs < threshold * 1000 || firedActiveThresholds.has(threshold)) continue
+      firedActiveThresholds.add(threshold)
+      sendReadingEvent('article_active_time', {
+        ...articleContext,
+        event_category: 'article_reading',
+        active_seconds: threshold,
+        sections_viewed: sections.filter((section) => section.viewed).length,
+        sections_read: sections.filter((section) => section.read).length,
+        max_scroll_percent: maxScrollPercent,
+      })
+    }
+
+    maybeMarkEngaged()
+    maybeMarkComplete()
+  }
+
+  const scheduleRefresh = () => {
+    if (finalized) return
+    lastActivityAt = performance.now()
+    if (frame === null) frame = window.requestAnimationFrame(refresh)
+  }
+
+  const onVisibilityChange = () => {
+    refresh()
+    if (document.visibilityState === 'hidden') {
+      sections.forEach(flushSectionAttention)
+    } else {
+      lastActivityAt = performance.now()
+    }
+  }
+
+  const finalize = (reason: 'pagehide' | 'route_change') => {
+    if (finalized) return
+    refresh()
+    sections.forEach(flushSectionAttention)
+    finalized = true
+    sendReadingEvent('article_read_summary', {
+      ...articleContext,
+      event_category: 'article_reading',
+      active_seconds: Math.floor(activeMs / 1000),
+      elapsed_seconds: Math.floor((performance.now() - startedAt) / 1000),
+      sections_viewed: sections.filter((section) => section.viewed).length,
+      sections_read: sections.filter((section) => section.read).length,
+      section_count: sections.length,
+      max_section_index: maxSectionIndex,
+      last_section_id: currentSectionId,
+      max_scroll_percent: maxScrollPercent,
+      engaged_reader: engaged ? 1 : 0,
+      read_complete: completed ? 1 : 0,
+      exit_reason: reason,
+      transport_type: 'beacon',
+    })
+  }
+
+  const onPageHide = (event: PageTransitionEvent) => {
+    if (event.persisted) {
+      refresh()
+      sections.forEach(flushSectionAttention)
+      lastTickAt = performance.now()
+      return
+    }
+    finalize('pagehide')
+  }
+  const onPageShow = (event: PageTransitionEvent) => {
+    if (!event.persisted || finalized) return
+    lastTickAt = performance.now()
+    lastActivityAt = lastTickAt
+    scheduleRefresh()
+  }
+  const interval = window.setInterval(refresh, 1000)
+  const activityEvents: Array<keyof WindowEventMap> = ['scroll', 'resize', 'pointerdown', 'keydown', 'touchstart']
+  activityEvents.forEach((event) => window.addEventListener(event, scheduleRefresh, { passive: true }))
+  document.addEventListener('visibilitychange', onVisibilityChange)
+  window.addEventListener('pagehide', onPageHide)
+  window.addEventListener('pageshow', onPageShow)
+  scheduleRefresh()
+
+  return () => {
+    window.clearInterval(interval)
+    if (frame !== null) window.cancelAnimationFrame(frame)
+    activityEvents.forEach((event) => window.removeEventListener(event, scheduleRefresh))
+    document.removeEventListener('visibilitychange', onVisibilityChange)
+    window.removeEventListener('pagehide', onPageHide)
+    window.removeEventListener('pageshow', onPageShow)
+    finalize('route_change')
+  }
 }
 
 /**

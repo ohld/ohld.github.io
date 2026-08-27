@@ -35,6 +35,7 @@ const archiveImport = () => import('./pages/Archive').then(m => ({ default: m.Ar
 const telegramMapImport = () => import('./pages/TelegramMap').then(m => ({ default: m.TelegramMap }))
 const importedArticleImport = () => import('./pages/ImportedArticle').then(m => ({ default: m.ImportedArticle }))
 const botRevolutionArticleImport = () => import('./pages/BotRevolutionDraft').then(m => ({ default: m.BotRevolutionArticle }))
+const englishBotRevolutionArticleImport = () => import('./pages/EnglishBotRevolution').then(m => ({ default: m.EnglishBotRevolutionArticle }))
 
 const BlogIndex = lazy(blogIndexImport)
 const EnglishBlogIndex = lazy(englishBlogIndexImport)
@@ -52,6 +53,7 @@ const Archive = lazy(archiveImport)
 const TelegramMap = lazy(telegramMapImport)
 const ImportedArticle = lazy(importedArticleImport)
 const BotRevolutionArticle = lazy(botRevolutionArticleImport)
+const EnglishBotRevolutionArticle = lazy(englishBotRevolutionArticleImport)
 
 // Preload all chunks after home page renders so subpages open instantly
 function usePreloadChunks() {
@@ -210,6 +212,7 @@ function App() {
           <Route path="/ru" element={<Navigate to="/" replace />} />
           <Route path="/en" element={<EnglishHome />} />
           <Route path="/en/blog" element={<EnglishBlogIndex />} />
+          <Route path="/en/blog/bot-revolution" element={<EnglishBotRevolutionArticle />} />
           <Route path="/en/blog/:slug" element={<GeneratedBlogPost />} />
           <Route path="/en/articles" element={<EnglishArticlesIndex />} />
           <Route path="/en/articles/:slug" element={<ArticlePage />} />
