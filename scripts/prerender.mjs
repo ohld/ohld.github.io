@@ -523,6 +523,8 @@ for (const post of GENERATED_BLOG_POSTS) {
     slug: postLang === 'en' ? `blog-en-${post.slug}` : `blog-${post.slug}`,
     title: post.title,
     description: post.description,
+    seoTitle: post.seoTitle,
+    seoDescription: post.seoDescription,
     lang: postLang,
     alternates,
     kind: 'generated-blog-post',
@@ -1289,9 +1291,10 @@ function buildBotRevolutionFallback(route) {
     : route.markdown || ''
   const article = mdToHtml(articleMarkdown)
   const image640 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-640.webp')
+  const image768 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-768.webp')
   const image1024 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-1024.webp')
   const image1280 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-1280.webp')
-  const imageSrcset = `${image640} 640w, ${image1024} 1024w, ${image1280} 1280w, ${BOT_REVOLUTION_IMAGE} 2048w`
+  const imageSrcset = `${image640} 640w, ${image768} 768w, ${image1024} 1024w, ${image1280} 1280w, ${BOT_REVOLUTION_IMAGE} 2048w`
   const timeline = english
     ? [
         ['2023', 'ChatGPT', 'AI searches better'],
@@ -1516,7 +1519,9 @@ function buildArticleOgMeta(route) {
 }
 
 function rewrite(html, route) {
-  const { path: routePath, slug, title, description } = route
+  const { path: routePath, slug } = route
+  const title = route.seoTitle || route.title
+  const description = route.seoDescription || route.description
   // Trailing slash = canonical form on GitHub Pages (served as 200 directly;
   // non-slash variant 301-redirects). Must match sitemap.xml.
   const url = routePath === '/' ? `${SITE_URL}/` : `${SITE_URL}${routePath}/`
@@ -1575,9 +1580,10 @@ function rewrite(html, route) {
     .replace('<!-- body-fallback -->', fallback)
   if (botRevolutionRoute) {
     const image640 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-640.webp')
+    const image768 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-768.webp')
     const image1024 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-1024.webp')
     const image1280 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-1280.webp')
-    const imageSrcset = `${image640} 640w, ${image1024} 1024w, ${image1280} 1280w, ${BOT_REVOLUTION_IMAGE} 2048w`
+    const imageSrcset = `${image640} 640w, ${image768} 768w, ${image1024} 1024w, ${image1280} 1280w, ${BOT_REVOLUTION_IMAGE} 2048w`
     const pageScript = builtAssetHref(route.lang === 'en' ? 'EnglishBotRevolution-' : 'BotRevolutionDraft-', '.js')
     const performanceHints = [
       BOT_REVOLUTION_CSS_HREF && `<link rel="stylesheet" crossorigin href="${BOT_REVOLUTION_CSS_HREF}" />`,

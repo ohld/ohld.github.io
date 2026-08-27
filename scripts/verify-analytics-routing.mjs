@@ -460,7 +460,6 @@ async function assertBotRevolutionReadingTracking(context, baseUrl) {
       return true
     }
   })
-  await page.clock.install()
   try {
     await page.goto(`${baseUrl}/ru/blog/bot-revolution/`, {
       waitUntil: 'domcontentloaded',
@@ -468,27 +467,36 @@ async function assertBotRevolutionReadingTracking(context, baseUrl) {
     })
     await waitForPageView(page, '/ru/blog/bot-revolution/')
     await waitForGaEvent(page, 'article_section_view', { section_id: 'hook' })
+    assert(await page.title() === 'Команда AI-агентов: The Bot Revolution — Даниил Охлопков', 'Bot Revolution: wrong RU SEO title')
+
+    const analyticsScriptsBeforeActivity = await page.locator('script[src*="googletagmanager.com/gtag/js"], script[src*="mc.yandex.ru/metrika/tag.js"]').count()
+    assert(analyticsScriptsBeforeActivity === 0, 'Bot Revolution: analytics libraries loaded before activity or fallback timeout')
+    await page.dispatchEvent('body', 'pointerdown')
+    await page.waitForFunction(() => (
+      document.querySelectorAll('script[src*="googletagmanager.com/gtag/js"], script[src*="mc.yandex.ru/metrika/tag.js"]').length === 2
+    ), null, { timeout: 3000 })
 
     const heroImage = page.locator('.bot-revolution-hero-art img')
     const srcset = await heroImage.getAttribute('srcset')
     assert(srcset?.includes('bot-weather-map-640.webp 640w'), 'Bot Revolution hero: missing responsive 640w source')
+    assert(srcset?.includes('bot-weather-map-768.webp 768w'), 'Bot Revolution hero: missing responsive 768w source')
     assert(srcset?.includes('bot-weather-map-1024.webp 1024w'), 'Bot Revolution hero: missing responsive 1024w source')
 
     const contextSection = page.locator('[data-analytics-section="context_limit"]')
     await contextSection.scrollIntoViewIfNeeded()
     await waitForGaEvent(page, 'article_section_view', { section_id: 'context_limit' })
-    await page.clock.runFor(5200)
+    await page.waitForTimeout(5200)
     await waitForGaEvent(page, 'article_section_read', { section_id: 'context_limit' })
 
     await page.evaluate(() => {
       window.dispatchEvent(new PageTransitionEvent('pagehide', { persisted: true }))
       window.dispatchEvent(new PageTransitionEvent('pageshow', { persisted: true }))
     })
-    await page.clock.runFor(1100)
+    await page.waitForTimeout(1100)
     const bfcacheCalls = await getAnalyticsCalls(page)
     assert(gaEventPayloads(bfcacheCalls, 'article_read_summary').length === 0, 'Bot Revolution: BFCache pagehide finalized the reading session')
 
-    await page.clock.runFor(10_000)
+    await page.waitForTimeout(10_000)
     await waitForAnalyticsEvent(page, 'article_engaged')
     const incompleteCalls = await getAnalyticsCalls(page)
     assert(gaEventPayloads(incompleteCalls, 'article_read_complete').length === 0, 'Bot Revolution: completed before conclusion was reached')
@@ -503,7 +511,7 @@ async function assertBotRevolutionReadingTracking(context, baseUrl) {
       await page.evaluate(() => window.__COPIED_TEXT__) === 'Based on what you know about me, how would you set up GrokBot? Which bots should we set up?',
       'Bot Revolution prompt: fallback copied the wrong text',
     )
-    await page.clock.runFor(1900)
+    await page.waitForTimeout(1900)
     assert(await promptButton.textContent() === 'Копировать', 'Bot Revolution prompt: copied state did not reset')
 
     const sourceLink = page.locator('a[href="https://docs.x.ai/grok-bot/chat-and-collaboration"]').first()
@@ -516,8 +524,16 @@ async function assertBotRevolutionReadingTracking(context, baseUrl) {
     const conclusion = page.locator('[data-analytics-section="conclusion"]')
     await conclusion.scrollIntoViewIfNeeded()
     await waitForGaEvent(page, 'article_section_view', { section_id: 'conclusion' })
-    await page.clock.runFor(15_000)
+    await page.evaluate(() => {
+      window.scrollTo(0, document.documentElement.scrollHeight)
+      window.dispatchEvent(new Event('scroll'))
+    })
+    await waitForGaEvent(page, 'article_scroll_depth', { scroll_threshold: 100 })
+    await page.waitForTimeout(15_000)
     await waitForAnalyticsEvent(page, 'article_read_complete')
+
+    const relatedLink = page.locator('.bot-revolution-related a[href="/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/"]')
+    assert(await relatedLink.count() === 1, 'Bot Revolution: missing contextual RU internal link')
 
     const channel = page.locator('[data-cta-id="bot_revolution_channel"]')
     const channelPopup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
@@ -546,6 +562,8 @@ async function assertBotRevolutionReadingTracking(context, baseUrl) {
     const sectionAttention = gaEventPayloads(calls, 'article_section_attention')
       .find((payload) => payload.section_id === 'context_limit')
     const summary = gaEventPayloads(calls, 'article_read_summary').at(-1)
+    const scrollThresholds = gaEventPayloads(calls, 'article_scroll_depth')
+      .map((payload) => payload.scroll_threshold)
     const copyGa = gaEventPayloads(calls, 'code_copy').at(-1)
     const copyYm = ymGoalPayloads(calls, 'code_copy').at(-1)
     const botMetrikaInit = ymInitCalls(calls).at(-1)
@@ -561,6 +579,9 @@ async function assertBotRevolutionReadingTracking(context, baseUrl) {
     assert(summary?.engaged_reader === 1, 'Bot Revolution summary: reader should be engaged')
     assert(summary?.read_complete === 1, 'Bot Revolution summary: reader should be complete')
     assert(summary?.transport_type === 'beacon', 'Bot Revolution summary: expected beacon transport')
+    for (const threshold of [25, 50, 75, 100]) {
+      assert(scrollThresholds.includes(threshold), `Bot Revolution scroll depth: missing ${threshold}% event`)
+    }
     assert(copyGa?.event_label === 'bot_revolution_prompt', 'Bot Revolution prompt: bad GA4 copy label')
     assert(copyYm?.event_label === 'bot_revolution_prompt', 'Bot Revolution prompt: bad Metrika copy label')
     assert(botMetrikaInit?.clickmap === true, 'Bot Revolution: Metrika click map should be enabled on direct entry')
@@ -579,6 +600,7 @@ async function assertEnglishBotRevolutionTracking(context, baseUrl) {
     })
     await waitForPageView(page, '/en/blog/bot-revolution/')
     await waitForGaEvent(page, 'article_section_view', { section_id: 'hook', article_lang: 'en' })
+    assert(await page.title() === 'AI Agent Teams: The Bot Revolution — Daniil Okhlopkov', 'English Bot Revolution: wrong SEO title')
     const calls = await getAnalyticsCalls(page)
     const botMetrikaInit = ymInitCalls(calls).at(-1)
     assert(botMetrikaInit?.clickmap === true, 'English Bot Revolution: Metrika click map should be enabled on direct entry')
@@ -595,8 +617,13 @@ async function assertEnglishBotRevolutionTracking(context, baseUrl) {
     )
     assert(chiefIllustration !== contextIllustration, 'English Bot Revolution: chief illustration duplicates the context-limit image')
     assert(chiefSrcset?.includes('one-main-hundred-agents-en-640.webp 640w'), 'English Bot Revolution: chief illustration is missing its 640w variant')
+    assert(chiefSrcset?.includes('one-main-hundred-agents-en-768.webp 768w'), 'English Bot Revolution: chief illustration is missing its 768w variant')
     assert(chiefSrcset?.includes('one-main-hundred-agents-en.webp 1024w'), 'English Bot Revolution: chief illustration is missing its native 1024w master')
     assert(!chiefSrcset?.includes('one-main-hundred-agents-en-1024.webp'), 'English Bot Revolution: chief illustration has a duplicate 1024w descriptor')
+    assert(
+      await page.locator('.bot-revolution-related a[href="/en/articles/hermes-agent-vps-telegram-setup/"]').count() === 1,
+      'English Bot Revolution: missing contextual EN internal link',
+    )
 
     const xCard = page.locator('[data-cta-id="bot_revolution_x"]')
     assert(await xCard.getAttribute('href') === 'https://x.com/danokhlopkov', 'English Bot Revolution: X card points to the wrong profile')

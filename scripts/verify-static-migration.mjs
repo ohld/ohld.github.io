@@ -193,7 +193,7 @@ const staticPages = [
     const lang = post.lang || 'ru'
     return {
       path: generatedBlogPath(post),
-      title: post.title,
+      title: post.seoTitle || post.title,
       lang,
       ogLocale: lang === 'en' ? 'en_US' : 'ru_RU',
       hreflangs: [lang, 'x-default'],
@@ -870,6 +870,7 @@ async function verifyGeneratedBlogPost({ path, requiredText }) {
     const chunkPrefix = path.startsWith('/en/') ? 'EnglishBotRevolution-' : 'BotRevolutionDraft-'
     assert(html.includes(`<link rel="modulepreload" crossorigin href="/assets/${chunkPrefix}`), `${path}: missing article module preload`)
     assert(html.includes('imagesrcset="/assets/drafts/bot-revolution/bot-weather-map-640.webp 640w'), `${path}: missing responsive hero preload`)
+    assert(html.includes('/assets/drafts/bot-revolution/bot-weather-map-768.webp 768w'), `${path}: missing responsive 768w hero preload`)
     const lead = path.startsWith('/en/')
       ? 'The long-awaited next step in AI evolution.'
       : 'Долгожданный следующий шаг эволюции ИИ.'

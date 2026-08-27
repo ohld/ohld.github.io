@@ -113,6 +113,7 @@ function shouldIgnoreConsoleMessage(text) {
     'Failed to load resource: net::ERR_CONNECTION_CLOSED',
     'Failed to load resource: net::ERR_BLOCKED_BY_CLIENT',
     'Failed to load resource: net::ERR_ABORTED',
+    'Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID',
     'Ignoring Event: localhost',
   ].some((pattern) => text.includes(pattern))
 }

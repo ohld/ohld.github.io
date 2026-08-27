@@ -31,6 +31,8 @@ export interface GeneratedBlogPost {
   slug: string
   title: string
   description: string
+  seoTitle?: string
+  seoDescription?: string
   publishedAt: string
   updatedAt: string
   lang: string
@@ -88,6 +90,8 @@ function parseFrontmatter(raw: string): GeneratedBlogPost {
     slug: meta.slug,
     title: meta.title,
     description: meta.description,
+    seoTitle: meta.seoTitle,
+    seoDescription: meta.seoDescription,
     publishedAt: meta.publishedAt,
     updatedAt: meta.updatedAt,
     lang: meta.lang || 'ru',

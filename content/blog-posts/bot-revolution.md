@@ -2,6 +2,8 @@
 slug: bot-revolution
 title: The Bot Revolution
 description: Следующая ступень эволюции AI-инструментов — не один агент, а целая команда.
+seoTitle: Команда AI-агентов: The Bot Revolution — Даниил Охлопков
+seoDescription: Почему следующий интерфейс для ИИ — не один чат, а команда агентов: отдельные контексты, Chief of Staff, групповые чаты и agent loops.
 publishedAt: 2026-08-26
 updatedAt: 2026-08-27
 readingTime: 7 мин

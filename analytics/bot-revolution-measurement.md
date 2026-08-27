@@ -59,6 +59,8 @@ A section is considered substantially visible when at least half of it, capped a
 
 Use `last_section_id` only for qualified readers when diagnosing drop-off. Bounces with a few seconds of active time are acquisition quality, not a content-section failure.
 
+`article_scroll_depth` is also emitted once at 25%, 50%, 75%, and 100%. Use it as a simple funnel and a cross-check for the section events, not as proof that the text was read.
+
 ## Conversion events
 
 | Action | Event | ID / label |
@@ -76,7 +78,8 @@ Register these event-scoped custom dimensions:
 - `article_slug`, `article_lang`;
 - `section_id`, `section_title`;
 - `last_section_id`, `exit_reason`;
-- `cta_id`, `link_domain`.
+- `cta_id`, `link_domain`;
+- `scroll_threshold`.
 
 Register these event-scoped custom metrics:
 
@@ -100,3 +103,5 @@ Build one exploration filtered to `article_slug = bot-revolution`:
 Keep Core Web Vitals beside the content KPIs. A drop in completion after a heavier release may be a loading regression rather than weaker writing.
 
 Yandex click maps and Webvisor are enabled for direct Bot Revolution entries as a qualitative audit layer, while remaining off across the rest of the site for performance. Use them to inspect unusual section drop-offs, not as the primary KPI source: section events are stable and comparable, while replay review is manual and sample-based.
+
+The GA4 and Metrika libraries stay off the critical rendering path. On a direct Bot Revolution entry they start loading on the reader’s first scroll, tap, click, or key press; the 3.5-second timer remains as a fallback. Events queued before the libraries arrive are preserved and sent after initialization.

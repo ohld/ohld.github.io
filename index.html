@@ -87,6 +87,7 @@
 
       (function () {
         var loaded = false;
+        var activityEvents = ['pointerdown', 'keydown', 'touchstart', 'scroll'];
 
         function loadScript(src) {
           var script = document.createElement('script');
@@ -98,10 +99,18 @@
         function loadAnalytics() {
           if (loaded) return;
           loaded = true;
+          activityEvents.forEach(function (eventName) {
+            window.removeEventListener(eventName, loadAnalytics);
+          });
           loadScript('https://www.googletagmanager.com/gtag/js?id=G-9Z5T725JJD');
           loadScript('https://mc.yandex.ru/metrika/tag.js');
         }
 
+        if (botRevolutionTelemetry) {
+          activityEvents.forEach(function (eventName) {
+            window.addEventListener(eventName, loadAnalytics, { passive: true });
+          });
+        }
         window.setTimeout(loadAnalytics, 3500);
       }());
     </script>
