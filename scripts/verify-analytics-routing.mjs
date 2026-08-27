@@ -551,7 +551,7 @@ async function assertBotRevolutionReadingTracking(context, baseUrl) {
     const botMetrikaInit = ymInitCalls(calls).at(-1)
 
     assert(sectionView?.article_slug === 'bot-revolution', 'Bot Revolution section view: missing article_slug')
-    assert(sectionView?.section_count === 9, `Bot Revolution section view: expected 9 sections, got ${sectionView?.section_count}`)
+    assert(sectionView?.section_count === 10, `Bot Revolution section view: expected 10 sections, got ${sectionView?.section_count}`)
     assert(sectionRead?.attention_seconds >= 5, `Bot Revolution section read: expected >=5s, got ${sectionRead?.attention_seconds}`)
     assert(sectionAttention?.attention_seconds >= 5, `Bot Revolution section attention: expected >=5s, got ${sectionAttention?.attention_seconds}`)
     assert(sectionAttention?.section_pass >= 1, `Bot Revolution section attention: expected a visible pass, got ${sectionAttention?.section_pass}`)

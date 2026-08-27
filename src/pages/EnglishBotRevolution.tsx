@@ -89,7 +89,7 @@ export function EnglishBotRevolutionArticle() {
     imageAlt: ARTICLE_IMAGE_ALT,
     type: 'article',
     publishedTime: '2026-08-26T00:00:00+03:00',
-    modifiedTime: '2026-08-26T00:00:00+03:00',
+    modifiedTime: '2026-08-27T00:00:00+03:00',
     section: 'Blog',
     tags: ['AI Agents', 'Grok Bot', 'Hermes Bot', 'Telegram'],
     jsonLd: {
@@ -98,7 +98,7 @@ export function EnglishBotRevolutionArticle() {
       headline: ARTICLE_TITLE,
       description: ARTICLE_DESCRIPTION,
       datePublished: '2026-08-26T00:00:00+03:00',
-      dateModified: '2026-08-26T00:00:00+03:00',
+      dateModified: '2026-08-27T00:00:00+03:00',
       author: {
         '@type': 'Person',
         name: 'Daniil Okhlopkov',
@@ -196,14 +196,14 @@ export function EnglishBotRevolutionArticle() {
           <h2>You can’t cram everything<br />into one session</h2>
           <p>
             Experienced AI developers already know this:<br />
-            you can’t fit every project<br className="bot-revolution-mobile-break" /> into one context.<br />
+            you can’t fit data from every project<br className="bot-revolution-mobile-break" /> into one context.<br />
             But you still want a <code>single point of contact</code>:<br />
             message a Chief of Staff, have it load the right context, solve the problem, and <span className="bot-revolution-keep-together">delegate the work to subagents.</span>
           </p>
           <p>
             <ExternalLink href="https://t.me/ohld_chat/45534">Grok Bot</ExternalLink>,{' '}
             <ExternalLink href="https://t.me/ohld_chat/45546">Hermes Bot</ExternalLink>, and{' '}
-            <ExternalLink href="https://t.me/danokhlopkov/1731">Berd</ExternalLink> almost simultaneously shipped a new way to work with agents: DMs and group chats, employees, and loops.
+            <ExternalLink href="https://t.me/danokhlopkov/1731">Berd</ExternalLink> almost simultaneously shipped a new way to talk to AI: DMs, group chats, employees, and loops.
           </p>
 
           <div className="bot-revolution-loop" aria-label="Example agent loop">
@@ -223,13 +223,16 @@ export function EnglishBotRevolutionArticle() {
 
         <div className="bot-revolution-copy">
           <p>
-            One agent researches, one codes, one reviews. The Chief remembers what we’re trying to do and pulls in the right specialist. The context no longer becomes one endlessly expensive <span className="bot-revolution-keep-together">tab with amnesia.</span>
+            At first, all of this lived in one chat with a pile of Markdown files. Then you packaged the workflows into <ExternalLink href="https://t.me/danokhlopkov/1725">skills</ExternalLink>, automating one slice of work at a time. That’s what I did with <ExternalLink href="https://t.me/danokhlopkov/1618">TON Blockchain data analysis</ExternalLink>.
           </p>
           <p>
-            The interface is still raw, and Grok Bot may well fail. But the idea has already shifted from “open another chat” to “build me a team.”
+            Now a new wave of AI IDEs wants to turn those workflows into separate employees. Each gets its own context <span className="bot-revolution-keep-together">and responsibilities.</span>
           </p>
           <p>
-            Greenfield development is still easier in Claude Code, Codex, or Grok CLI. Grok Bot and Hermes are more interesting on a live project: keeping prod running, discussing features, and shipping small fixes.
+            The interesting bit in Grok Bot is the interface: Telegram or Slack, except the coworkers are agents and they can talk <span className="bot-revolution-keep-together">to each other.</span>
+          </p>
+          <p>
+            For actual coding, Codex, Claude Code, and Cursor still win. But maintaining code and automating ops is cognitively easier in the painfully familiar <span className="bot-revolution-keep-together">boss → direct report setup.</span>
           </p>
         </div>
 
@@ -289,23 +292,21 @@ export function EnglishBotRevolutionArticle() {
 
         <div className="bot-revolution-copy">
           <p>
-            One Chief sees every project and keeps the shared board. The other bots <span className="bot-revolution-keep-together">work within their own functions.</span>
+            When you create a QA agent, you give it its own context: code, tests, bugs, releases, plus custom CLI and MCP tooling for debugging prod. A marketer probably needs <span className="bot-revolution-keep-together">none of that.</span>
+          </p>
+
+          <p>
+            Even in a two-person startup, one founder usually takes tech and the other sales. Different contexts, <span className="bot-revolution-keep-together">cleaner ownership.</span>
           </p>
 
           <p className="bot-revolution-channel-hint">
-            In a DM, one bot holds the context.{' '}
+            A Chief of Staff sits above them. It sees every project, keeps the shared board, and sends tasks to the right person.{' '}
             <span className="bot-revolution-keep-together">In a&nbsp;<ExternalLink href="https://docs.x.ai/grok-bot/chat-and-collaboration">group&nbsp;chat</ExternalLink></span>{' '}
-            you bring 2–6 bots around one shared task: they see the same conversation, post on their own, and hand work to one another.
+            you pull in 2–6 bots around one job. They share the same thread, post on their own, and hand work to each other. This is the setup that went viral <span className="bot-revolution-keep-together">on Twitter.</span>
           </p>
 
           <p>
-            The Chief has one hourly routine: open the shared board, check every task, and continue anything that stopped. No need to wake each bot separately and burn tokens in every chat.
-          </p>
-          <p>
-            This is already close to how I work. I start cross-project and personal requests from my iCloud folder — it’s the single entry point. Codex goes into the right project folders, delegates work to subagents, and assembles the answer.
-          </p>
-          <p>
-            Tasks often take more than one session. But saved work stays in the project, and <ExternalLink href="https://t.me/danokhlopkov/1685">GBrain</ExternalLink> brings back past decisions and results. So every new request starts <span className="bot-revolution-keep-together">where we left off.</span>
+            The Boss has one hourly ritual: check the status and restart whatever stalled. No need to wake every employee one by one. It micromanages <span className="bot-revolution-keep-together">the rest for you.</span>
           </p>
         </div>
       </section>
@@ -352,11 +353,27 @@ export function EnglishBotRevolutionArticle() {
         <div className="bot-revolution-cost-copy">
           <h2 className="bot-revolution-visually-hidden">So how much does it cost?</h2>
           <p>
-            You can try Grok Bot with <ExternalLink href="https://cursor.com/pricing">Cursor Pro+ for $60</ExternalLink> or <ExternalLink href="https://x.ai/pricing">SuperGrok Plus for $100</ExternalLink>. <ExternalLink href="https://x.ai/bot">SuperGrok Heavy costs $300</ExternalLink>:<br />
-            <span className="bot-revolution-cost-detail">it comes with the highest limits for Chat, Imagine, Voice, Build, <span className="bot-revolution-keep-together">and bots.</span></span>
+            I’m probably getting <ExternalLink href="https://x.ai/bot">SuperGrok Heavy for $300</ExternalLink>: <ExternalLink href="https://cursor.com/help/grok-bot/plans">the highest Grok Bot limits come with it</ExternalLink>. That means I can code properly with Grok CLI and automate ops <span className="bot-revolution-keep-together">in a familiar chat UI.</span>
           </p>
           <p>
-            $300 stings more than the top Codex and Claude Code plans at $200. The $100 limits are already too tight for me, so I’m going straight to $300. Time to try getting that reimbursed 👹
+            $300 stings more than the top Codex and Claude Code plans at $200. But I keep hitting the ceiling on $100 plans. I’m waiting for my Codex limits to finally run out so I can give Grok my money. Except <ExternalLink href="https://t.me/ohld_chat/45884">Tibo</ExternalLink> keeps resetting <span className="bot-revolution-keep-together">them. Lol.</span>
+          </p>
+        </div>
+      </section>
+
+      <section className="bot-revolution-prompt bot-revolution-reflection" data-analytics-section="reflection" data-analytics-title="Do I want a team of AI employees">
+        <div className="bot-revolution-prompt-heading">
+          <h2>Do I actually want a team like this?</h2>
+        </div>
+        <div className="bot-revolution-copy bot-revolution-reflection-copy">
+          <p>
+            Human org charts may be a weird fit for AI agents. Still, they work, so that’s <span className="bot-revolution-keep-together">a decent place to start.</span>
+          </p>
+          <p>
+            <ExternalLink href="https://x.com/simonw/status/2075996740717871125?s=20">Django co-creator Simon Willison</ExternalLink> thinks the whole “AI employee” idea demeans humans (lol). Still, you need a human manager. Someone has to <span className="bot-revolution-keep-together">own the outcome.</span>
+          </p>
+          <p>
+            <ExternalLink href="https://www.gatesnotes.com/home/home-page-topic/reader/a-turbulent-ai-era-and-critical-choices-to-make">Bill Gates recently wrote</ExternalLink> that AI tokens and robots should be taxed. I’m happy to pay if a $300/month team ever replaces a $3,000/month employee. I just don’t know what gets taxed: the tokens, the output, or <span className="bot-revolution-keep-together">the salary I no longer pay.</span>
           </p>
         </div>
       </section>
