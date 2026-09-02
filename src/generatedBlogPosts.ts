@@ -16,6 +16,7 @@ import telegramStarsArticle from '../content/seo-articles/gde-deshevle-kupit-tel
 import telegramBotMtprotoArticle from '../content/seo-articles/telegram-bot-api-vs-mtproto-methods.md?raw'
 import hermesVpsTelegramRuArticle from '../content/seo-articles/hermes-agent-vps-telegram-ustanovka.md?raw'
 import hermesVpsTelegramEnArticle from '../content/seo-articles/hermes-agent-vps-telegram-setup.md?raw'
+import telegramBotsMiniAppsTrendsArticle from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026.md?raw'
 
 interface BlogListItem {
   path: string
@@ -64,6 +65,7 @@ const sources = [
 ]
 
 const articleSources = [
+  telegramBotsMiniAppsTrendsArticle,
   hermesVpsTelegramRuArticle,
   hermesVpsTelegramEnArticle,
   telegramBotMtprotoArticle,

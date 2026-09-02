@@ -1,0 +1,13 @@
+{
+  "source": "user-authored-habr-asset",
+  "provider": "habrastorage.org",
+  "reference": "https://habrastorage.org/getpro/habr/upload_files/eb9/a1b/e6f/eb9a1be6f8f8e97490f9c9c5c4f3cbd0.png",
+  "purpose": "retention chart for /ru/articles/telegram-bots-mini-apps-trends-august-2026/",
+  "web_asset": {
+    "path": "/assets/articles/telegram-bots-mini-apps-trends-august-2026/mopsstars-freebie-retention.webp",
+    "width": 2480,
+    "height": 1520,
+    "quality": 84,
+    "bytes": 61446
+  }
+}

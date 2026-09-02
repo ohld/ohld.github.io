@@ -153,6 +153,18 @@ const generatedBlogPostMeta: GeneratedPostMeta[] = [
 
 const generatedArticlePostMeta: GeneratedPostMeta[] = [
   {
+    slug: 'telegram-bots-mini-apps-trends-august-2026',
+    title: 'Тренды Telegram-ботов и Mini Apps: август 2026',
+    description: 'Разобрал тренды Telegram-ботов и Mini Apps за август 2026: казино на подарках +104%, реселлеры Stars −39% и 104 бота-дорвея на 20,3 млн MAU.',
+    publishedAt: '2026-09-01',
+    updatedAt: '2026-09-02',
+    lang: 'ru',
+    readingTime: '8 мин',
+    tags: ['Telegram', 'Telegram Bots', 'Mini Apps', 'Data Analytics', 'Marketing'],
+    coverImage: '/assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-gift-casinos-growth.webp',
+    coverAlt: 'График трендов Telegram-ботов за август 2026: казино на подарках выросли на 104%, реселлеры Stars упали на 39%',
+  },
+  {
     slug: 'telegram-bot-api-vs-mtproto-methods',
     title: 'Telegram Bot API vs MTProto: Methods Available to Bots',
     description: 'Which MTProto methods can Telegram bots call? A production-tested Bot API comparison with bot-token methods, user-only limits, and Telethon examples.',
