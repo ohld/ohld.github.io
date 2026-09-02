@@ -1,0 +1,13 @@
+{
+  "source": "user-authored-habr-asset",
+  "provider": "habrastorage.org",
+  "reference": "https://habrastorage.org/getpro/habr/upload_files/f0d/240/ae1/f0d240ae1c2ad06ed9a14370ed53b167.png",
+  "purpose": "GroupHelp clone chart for /ru/articles/telegram-bots-mini-apps-trends-august-2026/",
+  "web_asset": {
+    "path": "/assets/articles/telegram-bots-mini-apps-trends-august-2026/grouphelp-bot-clones.webp",
+    "width": 2480,
+    "height": 1520,
+    "quality": 84,
+    "bytes": 55024
+  }
+}

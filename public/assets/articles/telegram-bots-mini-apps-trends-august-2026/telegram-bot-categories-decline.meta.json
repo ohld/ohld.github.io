@@ -1,0 +1,13 @@
+{
+  "source": "user-authored-habr-asset",
+  "provider": "habrastorage.org",
+  "reference": "https://habrastorage.org/getpro/habr/upload_files/b6b/7ca/c36/b6b7cac36f00a60b8c2c2624e8b2b06a.png",
+  "purpose": "declining category chart for /ru/articles/telegram-bots-mini-apps-trends-august-2026/",
+  "web_asset": {
+    "path": "/assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-bot-categories-decline.webp",
+    "width": 2480,
+    "height": 1520,
+    "quality": 84,
+    "bytes": 82370
+  }
+}

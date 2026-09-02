@@ -1,0 +1,13 @@
+{
+  "source": "user-authored-habr-asset",
+  "provider": "habrastorage.org",
+  "reference": "https://habrastorage.org/getpro/habr/upload_files/b2c/a2a/f94/b2ca2af9469b1d40a4dd514d233834d1.png",
+  "purpose": "bot doorway chart for /ru/articles/telegram-bots-mini-apps-trends-august-2026/",
+  "web_asset": {
+    "path": "/assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-bot-doorways.webp",
+    "width": 2480,
+    "height": 1520,
+    "quality": 84,
+    "bytes": 49838
+  }
+}

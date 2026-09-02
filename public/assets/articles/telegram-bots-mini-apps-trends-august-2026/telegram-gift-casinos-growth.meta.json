@@ -1,0 +1,13 @@
+{
+  "source": "user-authored-habr-asset",
+  "provider": "habrastorage.org",
+  "reference": "https://habrastorage.org/getpro/habr/upload_files/c6e/175/8c6/c6e1758c64306d4f22ac6876e6f4a702.jpg",
+  "purpose": "coverImage, social preview and first chart for /ru/articles/telegram-bots-mini-apps-trends-august-2026/",
+  "web_asset": {
+    "path": "/assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-gift-casinos-growth.webp",
+    "width": 1600,
+    "height": 900,
+    "quality": 84,
+    "bytes": 72648
+  }
+}
