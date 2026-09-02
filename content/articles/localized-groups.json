@@ -22,5 +22,6 @@
   { "ru": "/vtoroj-mozg-ai-assistent-obsidian-claude-code/", "en": "/en-second-brain-obsidian-claude-code-assistant/", "zh": "/cn-second-brain-obsidian-claude-code-assistant/", "xDefault": "ru" },
   { "en": "/en-fake-claude-code-phishing-site-google/", "zh": "/cn-fake-claude-code-phishing-site-google/", "xDefault": "en" },
   { "en": "/en-telegram-ads-61k-search-queries-analysis/", "zh": "/cn-telegram-ads-61k-search-queries-analysis/", "xDefault": "en" },
-  { "ru": "/ru/articles/hermes-agent-vps-telegram-ustanovka/", "en": "/en/articles/hermes-agent-vps-telegram-setup/", "xDefault": "ru" }
+  { "ru": "/ru/articles/hermes-agent-vps-telegram-ustanovka/", "en": "/en/articles/hermes-agent-vps-telegram-setup/", "xDefault": "ru" },
+  { "ru": "/ru/articles/telegram-bots-mini-apps-trends-august-2026/", "en": "/en/articles/telegram-bot-trends-august-2026/", "xDefault": "ru" }
 ]

@@ -203,7 +203,7 @@ const staticPages = [
     const lang = article.lang || 'ru'
     return {
       path: generatedArticlePath(article),
-      title: article.title,
+      title: article.seoTitle || article.title,
       lang,
       ogLocale: lang === 'en' ? 'en_US' : 'ru_RU',
       hreflangs: [lang, 'x-default'],
@@ -291,11 +291,13 @@ const generatedBlogChecks = generatedBlogPosts.map((post) => {
 
 const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
   path: generatedArticlePath(article),
-  title: article.title,
+  title: article.seoTitle || article.title,
   requiredText: article.slug === 'hermes-agent-vps-telegram-ustanovka'
     ? ['Что получится', 'Сначала заставить работать модель', 'Сделать проверку после перезагрузки', 'Если Telegram-бот молчит']
     : article.slug === 'telegram-bots-mini-apps-trends-august-2026'
     ? ['Карта трендов Telegram-ботов за август 2026', 'Казино на Telegram-подарках', 'Дорвеи', 'Что беру на карандаш к сентябрю']
+    : article.slug === 'telegram-bot-trends-august-2026'
+    ? ['Telegram bot trends in August 2026', 'Telegram bot market map', 'Doorway bots captured Telegram search traffic', 'Frequently asked questions']
     : article.slug === 'hermes-agent-vps-telegram-setup'
     ? ['The result', 'Prove the model works before adding Telegram', 'Reboot and test from the phone again', 'Troubleshooting a silent bot']
     : article.slug === 'hermes-agent-vs-openclaw'

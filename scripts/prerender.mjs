@@ -555,6 +555,8 @@ for (const article of GENERATED_SEO_ARTICLES) {
     slug: `article-${article.slug}`,
     title: article.title,
     description: article.description,
+    seoTitle: article.seoTitle,
+    seoDescription: article.seoDescription,
     lang: articleLang,
     alternates: importedArticleAlternates(articlePath, articleLang),
     kind: 'generated-article-post',

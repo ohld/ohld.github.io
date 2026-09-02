@@ -1,0 +1,13 @@
+{
+  "source": "localized-from-user-authored-habr-asset",
+  "provider": "openai-imagegen-text-localization",
+  "reference": "/assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-gift-casinos-growth.webp",
+  "purpose": "English cover image and social preview for /en/articles/telegram-bots-mini-apps-trends-august-2026/",
+  "web_asset": {
+    "path": "/assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-gift-casinos-growth-en.webp",
+    "width": 1672,
+    "height": 941,
+    "quality": 84,
+    "bytes": 77720
+  }
+}
