@@ -153,6 +153,20 @@ const generatedBlogPostMeta: GeneratedPostMeta[] = [
 
 const generatedArticlePostMeta: GeneratedPostMeta[] = [
   {
+    slug: 'how-to-analyze-ton-users-and-token-flows-on-dune',
+    title: 'How to Analyze TON Users and Token Flows on Dune: A Practical Guide',
+    description: 'Learn TON on-chain data analysis on Dune with SQL for real users, historical balances, token flows, Telegram Stars, and NFT marketplace volume estimates.',
+    seoTitle: 'TON On-Chain Data Analysis on Dune: Advanced SQL Guide',
+    seoDescription: 'Learn TON on-chain data analysis on Dune with SQL for real users, historical balances, token flows, Telegram Stars, and NFT marketplace volume estimates.',
+    publishedAt: '2025-07-31',
+    updatedAt: '2025-07-31',
+    lang: 'en',
+    readingTime: '15 min',
+    tags: ['TON', 'Dune Analytics', 'On-Chain Analytics', 'SQL', 'Telegram Stars', 'NFT Data'],
+    coverImage: '/assets/articles/how-to-analyze-ton-users-and-token-flows-on-dune/ton-users-token-flows-dune-guide.webp',
+    coverAlt: 'TON on-chain data analysis on Dune guide covering users, balances, token flows, Telegram Stars, and NFT volumes',
+  },
+  {
     slug: 'telegram-bots-mini-apps-trends-august-2026',
     title: 'Тренды Telegram-ботов и Mini Apps: август 2026',
     description: 'Разобрал тренды Telegram-ботов и Mini Apps за август 2026: казино на подарках +104%, реселлеры Stars −39% и 104 бота-дорвея на 20,3 млн MAU.',

@@ -310,6 +310,8 @@ const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
     ? ['Бот против рабочего интерфейса', 'Архитектура нормального Telegram-агента', 'Day-30 тест', 'Минимальный чеклист запуска']
     : article.slug === 'telegram-bot-api-vs-mtproto-methods'
     ? ['Quick answer', 'The method matrix', 'Decision guide', 'Frequently asked questions']
+    : article.slug === 'how-to-analyze-ton-users-and-token-flows-on-dune'
+    ? ['Quick Answer', 'Identifying Real Users', 'Calculating TVL and Balances', 'Related TON Data Guides']
     : article.lang === 'en'
     ? ['Quick answer', 'The wrong way to choose', 'Read next']
     : ['Суть пайплайна', 'SEO-теги', 'Источники'],

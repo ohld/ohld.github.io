@@ -19,6 +19,8 @@ export function GeneratedBlogPost() {
     <ArticleLayout
       title={post.title}
       description={post.description}
+      seoTitle={post.seoTitle}
+      seoDescription={post.seoDescription}
       canonical={canonical}
       lang={post.lang}
       date={post.updatedAt}
