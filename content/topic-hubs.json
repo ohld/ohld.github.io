@@ -77,7 +77,7 @@
       "title": "TON-данные",
       "description": "On-chain analytics, TON research, Dune, EVAA, USDT и AI-ассистенты для анализа данных.",
       "aliases": ["ton", "data", "analytics", "dune"],
-      "articlePaths": ["/en/articles/how-to-analyze-ton-users-and-token-flows-on-dune/", "/ton-analyst-ai-skill-ton-blockchain-dune/", "/en-ton-analyst-open-source-ai-skill-dune/", "/avtomatizaciya-analiza-dannyh-ton-ai-agent-habr/", "/en-automated-ton-data-analysis-ai-agent-habr/", "/evaa-strategies-onchain-research/", "/ru/articles/gde-deshevle-kupit-telegram-stars/"]
+      "articlePaths": ["/en/articles/ton-on-chain-data-analysis-dune/", "/en/articles/how-to-analyze-ton-users-and-token-flows-on-dune/", "/ton-analyst-ai-skill-ton-blockchain-dune/", "/en-ton-analyst-open-source-ai-skill-dune/", "/avtomatizaciya-analiza-dannyh-ton-ai-agent-habr/", "/en-automated-ton-data-analysis-ai-agent-habr/", "/evaa-strategies-onchain-research/", "/ru/articles/gde-deshevle-kupit-telegram-stars/"]
     },
     {
       "slug": "telegram-automation",

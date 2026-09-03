@@ -4,6 +4,13 @@ interface ImageDimensions {
 }
 
 const IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
+  '/assets/articles/ton-on-chain-data-analysis-dune/ton-on-chain-data-analysis-dune-cover.webp': { width: 1080, height: 640 },
+  '/assets/articles/ton-on-chain-data-analysis-dune/dune-new-query.webp': { width: 766, height: 264 },
+  '/assets/articles/ton-on-chain-data-analysis-dune/ton-transactions-tables.webp': { width: 1600, height: 426 },
+  '/assets/articles/ton-on-chain-data-analysis-dune/ton-message-directions.webp': { width: 1600, height: 1245 },
+  '/assets/articles/ton-on-chain-data-analysis-dune/ton-address-finder.webp': { width: 1600, height: 936 },
+  '/assets/articles/ton-on-chain-data-analysis-dune/ton-usdt-volume-active-wallets.webp': { width: 1600, height: 657 },
+  '/assets/articles/ton-on-chain-data-analysis-dune/ton-dex-traders-volume.webp': { width: 1600, height: 598 },
   '/assets/articles/how-to-analyze-ton-users-and-token-flows-on-dune/ton-users-token-flows-dune-guide.webp': { width: 2160, height: 1280 },
   '/assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-gift-casinos-growth.webp': { width: 1600, height: 900 },
   '/assets/articles/telegram-bots-mini-apps-trends-august-2026/mopsstars-freebie-retention.webp': { width: 2480, height: 1520 },

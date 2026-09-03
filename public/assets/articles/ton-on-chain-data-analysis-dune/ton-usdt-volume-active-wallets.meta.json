@@ -1,0 +1,12 @@
+{
+  "source": "restored-ton-blog-article",
+  "original_article_url": "https://blog.ton.org/ton-on-chain-data-analysis-dune",
+  "archive_url": "https://web.archive.org/web/20251110020346/https://blog.ton.org/ton-on-chain-data-analysis-dune",
+  "original_image_url": "https://storage.googleapis.com/ton-strapi/5_17dd9fd5e0/5_17dd9fd5e0.png",
+  "restored_at": "2026-09-03",
+  "article_slug": "ton-on-chain-data-analysis-dune",
+  "public_article_url": "https://okhlopkov.com/en/articles/ton-on-chain-data-analysis-dune/",
+  "asset_role": "inline",
+  "source_asset": { "width": 1600, "height": 657, "format": "png", "bytes": 154304, "sha256": "f3967b6c0307e7a6632aca85b47cb8e4b04d416a7b88a3bbc6a677b0eb9843b2" },
+  "web_asset": { "path": "/assets/articles/ton-on-chain-data-analysis-dune/ton-usdt-volume-active-wallets.webp", "width": 1600, "height": 657, "format": "webp", "lossless": true, "bytes": 78348, "sha256": "2cec3960f37164ce24678ebb0017b654e3ce8f9f371529f8461abc187771b862" }
+}

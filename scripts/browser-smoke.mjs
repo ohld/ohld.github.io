@@ -9,6 +9,7 @@ const routeList = (process.env.SMOKE_ROUTES || [
   '/en/blog/',
   '/en/blog/bot-revolution/',
   '/en/articles/',
+  '/en/articles/ton-on-chain-data-analysis-dune/',
   '/en/articles/how-to-analyze-ton-users-and-token-flows-on-dune/',
   '/en/articles/hermes-agent-vps-telegram-setup/',
   '/en/about/',
@@ -52,6 +53,7 @@ const clickChecks = [
 ]
 
 const codeBlockChecks = [
+  { route: '/en/articles/ton-on-chain-data-analysis-dune/', min: 4, label: 'TON Dune SQL quickstart examples' },
   { route: '/en/articles/how-to-analyze-ton-users-and-token-flows-on-dune/', min: 10, label: 'TON Dune analysis SQL examples' },
   { route: '/en/articles/hermes-agent-vps-telegram-setup/', min: 8, label: 'Hermes Telegram setup code blocks' },
   { route: '/ru/articles/hermes-agent-vps-telegram-ustanovka/', min: 8, label: 'Hermes Telegram setup code blocks' },

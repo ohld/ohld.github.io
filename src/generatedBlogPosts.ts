@@ -19,6 +19,7 @@ import hermesVpsTelegramEnArticle from '../content/seo-articles/hermes-agent-vps
 import telegramBotsMiniAppsTrendsArticle from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026.md?raw'
 import telegramBotsMiniAppsTrendsEnArticle from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026-en.md?raw'
 import tonUsersTokenFlowsDuneArticle from '../content/seo-articles/how-to-analyze-ton-users-and-token-flows-on-dune.md?raw'
+import tonOnChainDataAnalysisDuneArticle from '../content/seo-articles/ton-on-chain-data-analysis-dune.md?raw'
 
 interface BlogListItem {
   path: string
@@ -70,6 +71,7 @@ const articleSources = [
   telegramBotsMiniAppsTrendsArticle,
   telegramBotsMiniAppsTrendsEnArticle,
   tonUsersTokenFlowsDuneArticle,
+  tonOnChainDataAnalysisDuneArticle,
   hermesVpsTelegramRuArticle,
   hermesVpsTelegramEnArticle,
   telegramBotMtprotoArticle,

@@ -153,6 +153,20 @@ const generatedBlogPostMeta: GeneratedPostMeta[] = [
 
 const generatedArticlePostMeta: GeneratedPostMeta[] = [
   {
+    slug: 'ton-on-chain-data-analysis-dune',
+    title: 'TON on-chain data analysis: quickstart on Dune',
+    description: 'Learn TON on-chain data analysis on Dune with SQL examples for transactions, messages, addresses, jettons, DEX trades, prices, labels, and faster queries.',
+    seoTitle: 'TON On-Chain Data Analysis on Dune: SQL Quickstart',
+    seoDescription: 'Learn TON on-chain data analysis on Dune with SQL examples for transactions, messages, addresses, jettons, DEX trades, prices, labels, and faster queries.',
+    publishedAt: '2025-02-25',
+    updatedAt: '2025-02-25',
+    lang: 'en',
+    readingTime: '10 min',
+    tags: ['TON', 'Dune Analytics', 'On-Chain Analytics', 'SQL', 'Jettons', 'DEX Data'],
+    coverImage: '/assets/articles/ton-on-chain-data-analysis-dune/ton-on-chain-data-analysis-dune-cover.webp',
+    coverAlt: 'Blue glass blockchain cubes representing TON on-chain data analysis on Dune',
+  },
+  {
     slug: 'how-to-analyze-ton-users-and-token-flows-on-dune',
     title: 'How to Analyze TON Users and Token Flows on Dune: A Practical Guide',
     description: 'Learn TON on-chain data analysis on Dune with SQL for real users, historical balances, token flows, Telegram Stars, and NFT marketplace volume estimates.',
