@@ -1,0 +1,12 @@
+{
+  "source": "restored-ton-blog-article",
+  "original_article_url": "https://blog.ton.org/ton-on-chain-data-analysis-dune",
+  "archive_url": "https://web.archive.org/web/20251110020346/https://blog.ton.org/ton-on-chain-data-analysis-dune",
+  "original_image_url": "https://storage.googleapis.com/ton-strapi/6_9c6c441d22/6_9c6c441d22.png",
+  "restored_at": "2026-09-03",
+  "article_slug": "ton-on-chain-data-analysis-dune",
+  "public_article_url": "https://okhlopkov.com/en/articles/ton-on-chain-data-analysis-dune/",
+  "asset_role": "inline",
+  "source_asset": { "width": 1600, "height": 598, "format": "png", "bytes": 245595, "sha256": "480e4dfa358646635101f7cfb494309d779de7e7f42793ca63392f4b98343f6a" },
+  "web_asset": { "path": "/assets/articles/ton-on-chain-data-analysis-dune/ton-dex-traders-volume.webp", "width": 1600, "height": 598, "format": "webp", "lossless": true, "bytes": 112332, "sha256": "aae380279d1719ea839a3d6859c6ad7a1c35617bdc9c064518440ce742dea8de" }
+}

@@ -312,6 +312,8 @@ const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
     ? ['Quick answer', 'The method matrix', 'Decision guide', 'Frequently asked questions']
     : article.slug === 'how-to-analyze-ton-users-and-token-flows-on-dune'
     ? ['Quick Answer', 'Identifying Real Users', 'Calculating TVL and Balances', 'Related TON Data Guides']
+    : article.slug === 'ton-on-chain-data-analysis-dune'
+    ? ['Quick Answer', 'TON Blockchain: architectural features', 'Querying TON transactions', 'Related TON Data Guides']
     : article.lang === 'en'
     ? ['Quick answer', 'The wrong way to choose', 'Read next']
     : ['Суть пайплайна', 'SEO-теги', 'Источники'],

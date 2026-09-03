@@ -24,7 +24,7 @@ reactions:
 
 This is the second part of our guide to TON on-chain data analysis on Dune. This installment demonstrates how to analyze balances and value flows between real blockchain users.
 
-[Read the archived first part here](https://web.archive.org/web/20251110020346/https://blog.ton.org/ton-on-chain-data-analysis-dune), or use the [current TON analytics documentation](https://docs.ton.org/ecosystem/analytics) for up-to-date table references.
+[Read the first part on TON architecture, Dune tables, and SQL fundamentals](/en/articles/ton-on-chain-data-analysis-dune/), or use the [current TON analytics documentation](https://docs.ton.org/onboarding/analytics) for up-to-date table references.
 
 ## **Quick Answer**
 
@@ -569,6 +569,5 @@ Stay tuned for additional practical guides covering advanced analytics, fraud de
 - [TON data: all guides and research](/topics/ton-data/)
 - [ton-analyst: an open-source AI skill for TON analysis on Dune](/en-ton-analyst-open-source-ai-skill-dune/)
 - [How I automated TON blockchain data analysis with an AI agent](/en-automated-ton-data-analysis-ai-agent-habr/)
-- [Official TON analytics and data providers documentation](https://docs.ton.org/ecosystem/analytics)
+- [Official TON analytics and data providers documentation](https://docs.ton.org/onboarding/analytics)
 - [Dune TON data catalog](https://docs.dune.com/data-catalog/ton/overview)
-

@@ -1,0 +1,12 @@
+{
+  "source": "restored-ton-blog-article",
+  "original_article_url": "https://blog.ton.org/ton-on-chain-data-analysis-dune",
+  "archive_url": "https://web.archive.org/web/20251110020346/https://blog.ton.org/ton-on-chain-data-analysis-dune",
+  "original_image_url": "https://storage.googleapis.com/ton-strapi/Blog_Animal_Village_2_9ba0e4ba7f/Blog_Animal_Village_2_9ba0e4ba7f.png",
+  "restored_at": "2026-09-03",
+  "article_slug": "ton-on-chain-data-analysis-dune",
+  "public_article_url": "https://okhlopkov.com/en/articles/ton-on-chain-data-analysis-dune/",
+  "asset_role": "hero",
+  "source_asset": { "width": 1080, "height": 640, "format": "png", "bytes": 370918, "sha256": "8efb17da4d987ecd65e264e5dde49bfd37b7a679f5dffaaabfbbc7b38efe781d" },
+  "web_asset": { "path": "/assets/articles/ton-on-chain-data-analysis-dune/ton-on-chain-data-analysis-dune-cover.webp", "width": 1080, "height": 640, "format": "webp", "quality": 84, "bytes": 23150, "sha256": "b5876a1ac1c6dfd55bfcf206506d167e31b6d8b5265fda03c6556a8318b4d6ac" }
+}
