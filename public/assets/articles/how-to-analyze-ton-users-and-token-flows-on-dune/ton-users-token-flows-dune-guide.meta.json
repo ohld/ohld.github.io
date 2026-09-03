@@ -1,0 +1,25 @@
+{
+  "source": "restored-ton-blog-article",
+  "original_article_url": "https://blog.ton.org/how-to-analyze-ton-users-and-token-flows-on-dune",
+  "archive_url": "https://web.archive.org/web/20251110020346/https://blog.ton.org/how-to-analyze-ton-users-and-token-flows-on-dune",
+  "original_image_url": "https://storage.googleapis.com/ton-strapi/How_to_Analyze_TON_Users_and_Token_Flows_on_Dune_abe82e64d9/How_to_Analyze_TON_Users_and_Token_Flows_on_Dune_abe82e64d9.png",
+  "restored_at": "2026-09-03",
+  "article_slug": "how-to-analyze-ton-users-and-token-flows-on-dune",
+  "public_article_url": "https://okhlopkov.com/en/articles/how-to-analyze-ton-users-and-token-flows-on-dune/",
+  "asset_role": "hero",
+  "source_asset": {
+    "width": 2160,
+    "height": 1280,
+    "format": "png",
+    "bytes": 385994,
+    "sha256": "8bea28949be1ddea7c69148613952282a4717ff12652f6a4f42bf00c44d6a1a6"
+  },
+  "web_asset": {
+    "path": "/assets/articles/how-to-analyze-ton-users-and-token-flows-on-dune/ton-users-token-flows-dune-guide.webp",
+    "width": 2160,
+    "height": 1280,
+    "format": "webp",
+    "bytes": 50546,
+    "sha256": "b41976ca4ead000c42278f813c0368057952a43bd072ab36b8329e71328f0986"
+  }
+}

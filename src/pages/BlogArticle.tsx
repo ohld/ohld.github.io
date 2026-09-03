@@ -37,6 +37,8 @@ export function BlogArticle() {
       <ArticleLayout
         title={generatedArticle.title}
         description={generatedArticle.description}
+        seoTitle={generatedArticle.seoTitle}
+        seoDescription={generatedArticle.seoDescription}
         canonical={canonical}
         lang={generatedArticle.lang}
         date={generatedArticle.updatedAt}

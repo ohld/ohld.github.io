@@ -10,6 +10,8 @@ import { useDocumentMeta } from '../useDocumentMeta'
 interface ArticleLayoutProps {
   title: string
   description: string
+  seoTitle?: string
+  seoDescription?: string
   canonical: string
   lang?: string
   date: string
@@ -31,6 +33,8 @@ interface ArticleLayoutProps {
 export function ArticleLayout({
   title,
   description,
+  seoTitle,
+  seoDescription,
   canonical,
   lang = 'ru',
   date,
@@ -68,8 +72,8 @@ export function ArticleLayout({
   })
 
   useDocumentMeta({
-    title: `${title} — ${lang === 'en' ? 'Daniil Okhlopkov' : 'Даниил Охлопков'}`,
-    description,
+    title: seoTitle || `${title} — ${lang === 'en' ? 'Daniil Okhlopkov' : 'Даниил Охлопков'}`,
+    description: seoDescription || description,
     canonical: canonicalUrl,
     lang,
     image: structuredImage ? absoluteUrl(structuredImage) : undefined,
