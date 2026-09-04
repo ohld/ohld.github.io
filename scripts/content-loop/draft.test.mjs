@@ -132,13 +132,27 @@ test('draft cannot rename article or write public handoff artifacts', (t) => {
 test('Watch explicitly carries missing demand without creating a public page', (t) => {
   const { options, job, saveJob, git } = fixture(t)
   job.decision = 'Watch'
+  job.intended_ru_url = null
   job.query_demand = null
   job.missing_evidence = ['Collect current URL/query baseline before choosing a rewrite.']
   saveJob()
   const result = runDraft({ ...options, body: undefined })
   assert.deepEqual(result.changed_files, [])
+  assert.equal(result.intended_ru_url, null)
   assert.throws(() => runDraft({ ...options, body: undefined, apply: true }), /only supports Update/)
   assert.equal(git('status', '--porcelain'), '')
+})
+
+test('unknown canonical target is accepted only for Watch', (t) => {
+  const { options, job, saveJob, git } = fixture(t)
+  job.intended_ru_url = null
+  for (const decision of ['Update', 'New']) {
+    job.decision = decision
+    saveJob()
+    assert.throws(() => runDraft(options), /Expected exact canonical/)
+  }
+  assert.equal(git('status', '--porcelain'), '')
+  assert.equal(fs.existsSync(options.outputDir), false)
 })
 
 test('Candidate export preserves dossier identity and canonical source mapping', (t) => {

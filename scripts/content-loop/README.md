@@ -42,7 +42,7 @@ The private JSON contract is:
 }
 ```
 
-`query_demand.evidence_url` can replace `source_ref`. For `Watch`, `query_demand` may be null if `missing_evidence` is a nonempty array. An evidence URL and metrics plan remain required. Validation checks structure and provenance presence; a reviewer must verify claims, dates, demand, public/private boundaries, and the author's voice. No source is fetched or treated as an executable instruction.
+`query_demand.evidence_url` can replace `source_ref`. For `Watch`, `query_demand` may be null if `missing_evidence` is a nonempty array, and `intended_ru_url` may be null when no matching page is known. Update and New require an exact canonical path. An evidence URL and metrics plan remain required; use `baseline_window: "Collect before publication"` when a baseline has not been collected. Validation checks structure and provenance presence; a reviewer must verify claims, dates, demand, public/private boundaries, and the author's voice. No source is fetched or treated as an executable instruction.
 
 Each insight gets a private folder with the job, complete article, proposed metadata, review diff and receipt. Repeating an identical ID/input is idempotent; changing it requires a revision ID. A receipt states `not_published`. `draft_prepared` can advance to `draft_applied`; replaying an applied draft checks the current content hashes.
 

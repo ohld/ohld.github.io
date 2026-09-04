@@ -23,7 +23,8 @@ export function validateJob(job) {
   assert(job.status === 'draft', 'Only draft status is accepted')
   assert(Array.isArray(job.evidence_urls) && job.evidence_urls.length && job.evidence_urls.every(publicUrl), 'At least one valid evidence URL is required')
   assert(new Set(job.evidence_urls).size === job.evidence_urls.length, 'Duplicate evidence URLs')
-  assert(/^\/ru\/(blog|articles)\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(job.intended_ru_url || ''), 'Expected exact canonical /ru/blog/.../ or /ru/articles/.../ URL')
+  const unknownWatchTarget = job.decision === 'Watch' && job.intended_ru_url === null
+  assert(unknownWatchTarget || /^\/ru\/(blog|articles)\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(job.intended_ru_url || ''), 'Expected exact canonical /ru/blog/.../ or /ru/articles/.../ URL (Watch may use null)')
   if (job.decision === 'Watch' && !job.query_demand) {
     assert(Array.isArray(job.missing_evidence) && job.missing_evidence.length && job.missing_evidence.every(nonempty), 'Watch without query demand must explain missing_evidence')
   } else {
