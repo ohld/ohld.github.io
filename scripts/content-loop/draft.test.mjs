@@ -179,3 +179,20 @@ test('dirty target and duplicate card registration cannot be applied', (t) => {
   assert.throws(() => runDraft({ ...options, apply: true }), /exactly once in the card/)
   assert.equal(fs.readFileSync(path.join(root, articleFile), 'utf8'), markdown)
 })
+
+test('a failed metadata write rolls back the already-written article', (t) => {
+  const { root, options, git } = fixture(t)
+  const write = fs.writeFileSync
+  let injected = false
+  fs.writeFileSync = function (file, ...args) {
+    if (!injected && file === path.join(root, 'src/generatedBlogMetadata.ts')) {
+      injected = true
+      throw new Error('Injected metadata write failure')
+    }
+    return write.call(this, file, ...args)
+  }
+  try { assert.throws(() => runDraft({ ...options, apply: true }), /Injected metadata write failure/) }
+  finally { fs.writeFileSync = write }
+  assert.equal(git('status', '--porcelain'), '')
+  assert.equal(fs.existsSync(path.join(options.outputDir, 'test-handoff/receipt.json')), false)
+})

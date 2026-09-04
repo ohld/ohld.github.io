@@ -126,7 +126,7 @@ export function runDraft({ root, input, candidate, body, outputDir, apply = fals
     try {
       for (const [file, original] of Object.entries(plan.originals)) assert(fs.readFileSync(path.join(root, file), 'utf8') === original, 'Source changed while preparing draft; retry')
       for (const [file, text] of Object.entries(plan.changes)) { written.push(file); fs.writeFileSync(path.join(root, file), text) }
-      result.applied_hashes = Object.fromEntries(Object.entries(plan.changes).map(([file, text]) => [file, sha(text)]))
+      result.applied_hashes = Object.fromEntries(Object.entries({ ...plan.originals, ...plan.changes }).map(([file, text]) => [file, sha(text)]))
       writePrivate('receipt.json', JSON.stringify(result, null, 2) + '\n')
     } catch (error) {
       for (const file of written) fs.writeFileSync(path.join(root, file), plan.originals[file])
