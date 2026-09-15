@@ -56,6 +56,11 @@ function normalizeImportedArticleHtml(html: string, fallbackAlt: string) {
       /\bhref=(["'])(?![a-z][a-z0-9+.-]*:|[/?#]|mailto:|tel:)([^"'\s>]+?\.[a-z]{2,}(?:[/?#][^"']*)?)\1/gi,
       (_match, quote: string, href: string) => `href=${quote}https://${href}${quote}`,
     )
+    // ArticleLayout already renders the article title as the page H1. Legacy
+    // Ghost bodies sometimes used H1 for sections, so keep their hierarchy
+    // without producing multiple page-level headings.
+    .replace(/<h1\b/gi, '<h2')
+    .replace(/<\/h1>/gi, '</h2>')
   return addMissingImageAlts(normalized, fallbackAlt)
 }
 
