@@ -1197,7 +1197,7 @@
     "description": "Use Sentence Transformers in Python to create embeddings, compare text with cosine similarity, and find nearest matches in a practical Crunchbase example.",
     "lang": "en",
     "publishedAt": "2021-07-28",
-    "updatedAt": "2026-08-10",
+    "updatedAt": "2026-10-01",
     "readingTime": "3 min",
     "tags": [
       "Analytics"
