@@ -94,7 +94,7 @@ const generatedBlogPostMeta: GeneratedPostMeta[] = [
     title: 'Claude Code или Codex: что выбрать для вайбкодинга и агентной разработки',
     description: 'Decision page: когда выбирать Claude Code, когда Codex, как делить роли между агентами, что делать с контекстом, MCP, skills, ревью и долгими задачами.',
     publishedAt: '2026-05-14',
-    updatedAt: '2026-07-07',
+    updatedAt: '2026-10-08',
     lang: 'ru',
     readingTime: '15 мин',
     tags: ['Claude Code', 'Codex', 'AI Coding'],
