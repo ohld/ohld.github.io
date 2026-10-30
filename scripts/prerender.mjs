@@ -590,6 +590,8 @@ for (const article of IMPORTED_ARTICLES) {
     slug,
     title: article.title || 'Daniil Okhlopkov',
     description: article.description || '',
+    seoTitle: article.seoTitle,
+    seoDescription: article.seoDescription,
     lang: article.lang || 'ru',
     kind: 'article-page',
     publishedAt: article.publishedAt,

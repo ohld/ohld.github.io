@@ -727,11 +727,12 @@ async function verifyRootVerificationMeta() {
   console.log('✓ baidu verification meta')
 }
 
-async function verifyImportedArticle({ path, title, lang = 'ru', updatedAt, publishedAt }) {
+async function verifyImportedArticle({ path, title, seoTitle, seoDescription, lang = 'ru', updatedAt, publishedAt }) {
   const res = await fetchManual(path)
   assert(res.status === 200, `${path}: expected 200, got ${res.status}`)
   const html = await res.text()
-  if (title) assert(readTitle(html) === normalizeText(title), `${path}: title mismatch`)
+  if (title) assert(readTitle(html) === normalizeText(seoTitle || title), `${path}: title mismatch`)
+  if (seoDescription) assert(readMeta(html, 'description') === seoDescription, `${path}: SEO description mismatch`)
   assert(readMeta(html, 'canonical') === canonicalUrl(path), `${path}: canonical mismatch`)
   assert(readMeta(html, 'robots') === 'index, follow', `${path}: robots mismatch`)
   assert(readHtmlLang(html) === lang, `${path}: html lang mismatch`)

@@ -12,6 +12,8 @@ export interface ImportedArticle {
   path: string
   slug: string
   title: string
+  seoTitle?: string
+  seoDescription?: string
   description: string
   lang: 'ru' | 'en' | 'zh'
   publishedAt: string

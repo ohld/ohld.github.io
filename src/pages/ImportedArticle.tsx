@@ -38,6 +38,8 @@ export function ImportedArticle() {
   return (
     <ArticleLayout
       title={article.title}
+      seoTitle={article.seoTitle}
+      seoDescription={article.seoDescription}
       description={article.description}
       canonical={article.path}
       lang={article.lang}

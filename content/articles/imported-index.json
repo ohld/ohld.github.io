@@ -171,6 +171,8 @@
     "path": "/claude-code-compaction-kak-rabotaet/",
     "slug": "claude-code-compaction-kak-rabotaet",
     "title": "/compact в Claude Code: как работает сжатие контекста",
+    "seoTitle": "/compact в Claude Code: когда запускать и что теряется",
+    "seoDescription": "Как пользоваться /compact в Claude Code: когда сжимать контекст вручную, чем команда отличается от /clear и как сохранить важные правила в CLAUDE.md.",
     "description": "Что делает /compact в Claude Code: как сжимается контекст, что переживает compaction, что теряется, когда запускать вручную и как страховаться через CLAUDE.md, skills и hooks.",
     "lang": "ru",
     "publishedAt": "2026-03-31",
