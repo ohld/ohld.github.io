@@ -46,11 +46,51 @@ function git(root, args) {
 function externalPath(root, candidate) {
   let existing = path.resolve(candidate)
   const suffix = []
-  while (!fs.existsSync(existing)) { suffix.unshift(path.basename(existing)); existing = path.dirname(existing) }
+  while (!fs.lstatSync(existing, { throwIfNoEntry: false })) { suffix.unshift(path.basename(existing)); existing = path.dirname(existing) }
   const resolved = path.join(fs.realpathSync(existing), ...suffix)
   const relative = path.relative(fs.realpathSync(root), resolved)
   assert(relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative), 'Private inputs and output must stay outside the public repository')
   return resolved
+}
+
+function assertOutsideWorktree(directory) {
+  for (let parent = directory;; parent = path.dirname(parent)) {
+    assert(!fs.lstatSync(path.join(parent, '.git'), { throwIfNoEntry: false }), 'Private output must stay outside all Git worktrees')
+    if (parent === path.dirname(parent)) return
+  }
+}
+
+function assertPrivateFile(file) {
+  const entry = fs.lstatSync(file, { throwIfNoEntry: false })
+  assert(!entry || (entry.isFile() && entry.nlink === 1), `Unsafe private artifact path: ${file}`)
+  return Boolean(entry)
+}
+
+function readPrivateReceipt(file) {
+  if (!assertPrivateFile(file)) return null
+  const fd = fs.openSync(file, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW)
+  try {
+    const entry = fs.fstatSync(fd)
+    assert(entry.isFile() && entry.nlink === 1, `Unsafe private receipt path: ${file}`)
+    return JSON.parse(fs.readFileSync(fd, 'utf8'))
+  } finally {
+    fs.closeSync(fd)
+  }
+}
+
+function writePrivateFile(file, text) {
+  assertPrivateFile(file)
+  // Write to a new private file before replacing the artifact. Rename does not
+  // follow a symlink at the destination and leaves a complete receipt on retry.
+  const temporary = fs.mkdtempSync(path.join(path.dirname(file), '.write-'))
+  const staged = path.join(temporary, 'artifact')
+  try {
+    fs.writeFileSync(staged, text, { flag: 'wx', mode: 0o600 })
+    fs.renameSync(staged, file)
+  } finally {
+    if (fs.existsSync(staged)) fs.unlinkSync(staged)
+    fs.rmdirSync(temporary)
+  }
 }
 
 export function runDraft({ root, input, candidate, body, outputDir, apply = false }) {
@@ -58,6 +98,7 @@ export function runDraft({ root, input, candidate, body, outputDir, apply = fals
   assert(!candidate || !body, '--candidate includes the article body; do not also pass --body')
   const inputPath = externalPath(root, input || candidate)
   const output = externalPath(root, outputDir)
+  assertOutsideWorktree(output)
   const document = JSON.parse(fs.readFileSync(inputPath, 'utf8'))
   const job = candidate ? document.site_handoff : document
   assert(job && typeof job === 'object', 'Candidate requires site_handoff')
@@ -72,8 +113,11 @@ export function runDraft({ root, input, candidate, body, outputDir, apply = fals
   const draft = candidate ? (seo?.body || '') : body ? fs.readFileSync(externalPath(root, body), 'utf8') : ''
   const fingerprint = sha(JSON.stringify(job) + '\n' + draft)
   const directory = path.join(output, job.insight_id)
+  const existingDirectory = fs.lstatSync(directory, { throwIfNoEntry: false })
+  assert(!existingDirectory || existingDirectory.isDirectory(), 'Private insight path must be a directory, not a symlink')
+  assertOutsideWorktree(directory)
   const receiptPath = path.join(directory, 'receipt.json')
-  const receipt = fs.existsSync(receiptPath) ? JSON.parse(fs.readFileSync(receiptPath, 'utf8')) : null
+  const receipt = readPrivateReceipt(receiptPath)
   if (receipt) {
     assert(receipt.fingerprint === fingerprint, 'insight_id already exists with different content; use a new revision ID')
     if (!apply || receipt.status === 'draft_applied') {
@@ -95,9 +139,15 @@ export function runDraft({ root, input, candidate, body, outputDir, apply = fals
     assert(branch.startsWith('codex/'), 'Apply requires an isolated codex/* review branch')
     assert(!git(root, ['status', '--porcelain', '--', ...Object.keys(plan.originals)]), 'Target article or registries have uncommitted changes')
   }
+  const artifactNames = ['handoff.json', 'receipt.json', ...(draft ? ['article.md'] : [])]
+  if (plan) {
+    artifactNames.push('review.diff')
+    for (const file of Object.keys(plan.changes)) artifactNames.push(path.basename(file), `.before-${path.basename(file)}`)
+  }
+  for (const name of artifactNames) assertPrivateFile(path.join(directory, name))
   fs.mkdirSync(directory, { recursive: true, mode: 0o700 })
   fs.chmodSync(directory, 0o700)
-  const writePrivate = (name, text) => fs.writeFileSync(path.join(directory, name), text, { mode: 0o600 })
+  const writePrivate = (name, text) => writePrivateFile(path.join(directory, name), text)
   writePrivate('handoff.json', JSON.stringify(job, null, 2) + '\n')
   if (draft) writePrivate('article.md', draft)
   if (plan) {
@@ -105,7 +155,7 @@ export function runDraft({ root, input, candidate, body, outputDir, apply = fals
     const diffs = []
     for (const [file, text] of Object.entries(plan.changes)) {
       const original = path.join(directory, `.before-${path.basename(file)}`)
-      fs.writeFileSync(original, plan.originals[file], { mode: 0o600 })
+      writePrivate(path.basename(original), plan.originals[file])
       try {
         const changed = path.join(directory, path.basename(file))
         try { diffs.push(execFileSync('git', ['diff', '--no-index', '--no-ext-diff', '--', original, changed], { encoding: 'utf8' })) }

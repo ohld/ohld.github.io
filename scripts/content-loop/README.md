@@ -1,6 +1,6 @@
 # Evidence-backed article drafts
 
-This CLI prepares an existing Russian Markdown article update for review. It never commits, pushes, deploys, or sends Telegram messages. Keep the job, source material and output outside this public repository. Only the reviewed public article and synchronized card metadata can be applied to a `codex/*` branch.
+This CLI prepares an existing Russian Markdown article update for review. It never commits, pushes, deploys, or sends Telegram messages. Keep the job and source material outside this public repository. The output folder must be outside all Git worktrees and cannot contain symlinked insight directories or artifact files. Only the reviewed public article and synchronized card metadata can be applied to a `codex/*` branch.
 
 ```sh
 npm run --silent content-loop:inventory
@@ -13,7 +13,7 @@ npm run preflight:okhlopkov
 
 The inventory includes canonical paths, article metadata, source paths and formats. It includes imported legacy articles for URL matching, but the update command only accepts registered Markdown articles. Preserve existing canonical URLs when the intent matches. `New` and `Watch` produce private handoffs without registering a page; they cannot use `--apply`.
 
-`--body` is the **complete final Markdown**, including the current frontmatter. Copy the canonical source file, make the reviewed edit, and update `updatedAt`. Preserve `slug`, language and `publishedAt`. Runtime body registration must already exist exactly once. The command updates all supported card fields from frontmatter, preserving unrelated metadata fields, and validates the unchanged runtime registration. The article and metadata are applied together, with rollback if a write fails. Dirty target files are refused.
+`--body` is the **complete final Markdown**, including the current frontmatter. Copy the canonical source file, make the reviewed edit, and update `updatedAt`. Preserve `slug`, language and `publishedAt`. The CLI derives the canonical path, source file, format and section from the repository, so those inventory fields are reserved in draft frontmatter. Runtime body registration must already exist exactly once. The command updates all supported card fields from frontmatter, preserving unrelated metadata fields, and validates the unchanged runtime registration. The article and metadata are applied together, with rollback if a write fails. Dirty target files are refused.
 
 The private JSON contract is:
 

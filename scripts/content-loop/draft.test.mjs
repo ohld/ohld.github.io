@@ -129,6 +129,58 @@ test('draft cannot rename article or write public handoff artifacts', (t) => {
   assert.throws(() => runDraft({ ...options, outputDir: path.join(root, 'content/private') }), /outside the public repository/)
 })
 
+test('private output refuses a symlinked insight directory', (t) => {
+  const { root, options, git } = fixture(t)
+  fs.mkdirSync(options.outputDir)
+  fs.symlinkSync(path.join(root, 'content'), path.join(options.outputDir, 'test-handoff'), 'dir')
+  assert.throws(() => runDraft(options), /insight path must be a directory/)
+  assert.equal(git('status', '--porcelain'), '')
+  assert.equal(fs.existsSync(path.join(root, 'content/handoff.json')), false)
+})
+
+test('private output refuses symlinked receipts, handoffs and review backups', (t) => {
+  const { root, options, git } = fixture(t)
+  const directory = path.join(options.outputDir, 'test-handoff')
+  const publicFile = path.join(root, articleFile)
+  fs.mkdirSync(directory, { recursive: true })
+  for (const name of ['receipt.json', 'handoff.json', '.before-agent-handoff.md']) {
+    const link = path.join(directory, name)
+    fs.symlinkSync(publicFile, link)
+    assert.throws(() => runDraft({ ...options, apply: true }), /Unsafe private artifact path/)
+    assert.equal(fs.readFileSync(publicFile, 'utf8'), markdown)
+    assert.equal(git('status', '--porcelain'), '')
+    assert.deepEqual(fs.readdirSync(directory), [name])
+    fs.unlinkSync(link)
+  }
+})
+
+test('private output refuses another worktree with a Git pointer file', (t) => {
+  const { root, options, git } = fixture(t)
+  const sibling = path.join(path.dirname(root), 'sibling')
+  git('worktree', 'add', '-b', 'codex/sibling', sibling)
+  assert.equal(fs.statSync(path.join(sibling, '.git')).isFile(), true)
+  const outputDir = path.join(sibling, 'private', 'nested')
+  assert.throws(() => runDraft({ ...options, outputDir }), /outside all Git worktrees/)
+  assert.equal(fs.existsSync(path.join(sibling, 'private')), false)
+})
+
+test('frontmatter cannot poison inventory structure or an applied draft', (t) => {
+  const { root, options, git } = fixture(t)
+  const spoof = 'canonical_path: /ru/blog/unrelated/\ncontent_file: src/unrelated.ts\nformat: legacy\nsection: articles\n'
+  const addSpoof = (text) => text.replace('---\n', '---\n' + spoof)
+  fs.writeFileSync(path.join(root, articleFile), addSpoof(markdown))
+  const [target] = inventory(root)
+  assert.equal(target.canonical_path, `/ru/blog/${slug}/`)
+  assert.equal(target.content_file, articleFile)
+  assert.equal(target.format, 'markdown')
+  assert.equal(target.section, 'blog')
+  fs.writeFileSync(path.join(root, articleFile), markdown)
+  fs.writeFileSync(options.body, addSpoof(fs.readFileSync(options.body, 'utf8')))
+  assert.throws(() => runDraft({ ...options, apply: true }), /Reserved inventory field/)
+  assert.equal(fs.existsSync(options.outputDir), false)
+  assert.equal(git('status', '--porcelain'), '')
+})
+
 test('Watch explicitly carries missing demand without creating a public page', (t) => {
   const { options, job, saveJob, git } = fixture(t)
   job.decision = 'Watch'
@@ -209,4 +261,23 @@ test('a failed metadata write rolls back the already-written article', (t) => {
   finally { fs.writeFileSync = write }
   assert.equal(git('status', '--porcelain'), '')
   assert.equal(fs.existsSync(path.join(options.outputDir, 'test-handoff/receipt.json')), false)
+})
+
+
+test('a failed applied receipt replacement preserves the prepared receipt and rolls back the source', (t) => {
+  const { options, git } = fixture(t)
+  const prepared = runDraft(options)
+  const receipt = path.join(prepared.artifact_dir, 'receipt.json')
+  const originalReceipt = fs.readFileSync(receipt, 'utf8')
+  const rename = fs.renameSync
+  fs.renameSync = function (from, to) {
+    if (to === receipt) throw new Error('Injected receipt replacement failure')
+    return rename.call(this, from, to)
+  }
+  try { assert.throws(() => runDraft({ ...options, apply: true }), /Injected receipt replacement failure/) }
+  finally { fs.renameSync = rename }
+  assert.equal(fs.readFileSync(receipt, 'utf8'), originalReceipt)
+  assert.equal(git('status', '--porcelain'), '')
+  assert.equal(fs.readdirSync(prepared.artifact_dir).some((name) => name.startsWith('.write-')), false)
+  assert.equal(runDraft({ ...options, apply: true }).status, 'draft_applied')
 })
