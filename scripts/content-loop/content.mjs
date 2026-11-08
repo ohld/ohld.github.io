@@ -9,7 +9,7 @@ export function assert(ok, message) {
 export function parseMarkdown(text) {
   const match = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]+)$/)
   assert(match, 'Expected complete article Markdown with frontmatter and body')
-  const meta = {}
+  const meta = Object.create(null)
   for (const line of match[1].split('\n')) {
     const i = line.indexOf(':')
     assert(i > 0, 'Frontmatter supports one key: value per line')
@@ -37,7 +37,7 @@ export function inventory(root) {
     for (const name of fs.readdirSync(path.join(root, 'content', directory)).filter((x) => x.endsWith('.md')).sort()) {
       const content_file = `content/${directory}/${name}`
       const { meta } = parseMarkdown(fs.readFileSync(path.join(root, content_file), 'utf8'))
-      items.push({ canonical_path: `/${meta.lang}/${section}/${meta.slug}/`, content_file, format: 'markdown', section, ...meta })
+      items.push({ ...meta, canonical_path: `/${meta.lang}/${section}/${meta.slug}/`, content_file, format: 'markdown', section })
     }
   }
   const legacy = JSON.parse(fs.readFileSync(path.join(root, 'content/articles/imported-index.json'), 'utf8'))
@@ -87,6 +87,7 @@ export function prepareUpdate(root, target, draft) {
   const runtimePath = 'src/generatedBlogPosts.ts'
   const originals = Object.fromEntries([bodyPath, metadataPath, runtimePath].map((p) => [p, fs.readFileSync(path.join(root, p), 'utf8')]))
   const { meta } = parseMarkdown(draft)
+  for (const field of ['canonical_path', 'content_file', 'format', 'section']) assert(!(field in meta), `Reserved inventory field cannot appear in draft frontmatter: ${field}`)
   for (const field of ['insight_id', 'evidence_urls', 'query_demand', 'metrics_plan', 'site_handoff', 'status']) assert(!(field in meta), `Private handoff field cannot enter public frontmatter: ${field}`)
   assert(meta.lang === 'ru' && meta.slug === target.slug, 'Draft identity does not match the intended RU URL')
   assert(meta.publishedAt === target.publishedAt, 'Update must preserve publishedAt')
