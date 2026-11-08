@@ -1,7 +1,7 @@
 /** GA4 + Yandex Metrika event helper. */
 
 import seoExperiments from '../content/seo-experiments.json'
-import { SITE_URL } from './site'
+import { SITE_URL, TELEGRAM_CHANNEL_URL } from './site'
 
 const YM_COUNTER = 46266270
 const SENSITIVE_QUERY_PREFIXES = ['tgWebApp']
@@ -180,9 +180,10 @@ function isInternalUrl(url: URL) {
 
 function isTelegramSubscribeUrl(url: URL) {
   const hostname = url.hostname.replace(/^www\./, '').toLowerCase()
-  const pathname = url.pathname.replace(/\/+$/, '').toLowerCase()
+  const pathname = url.pathname.replace(/\/+$/, '')
+  const channelInvitePath = new URL(TELEGRAM_CHANNEL_URL).pathname.replace(/\/+$/, '')
   return ['t.me', 'telegram.me'].includes(hostname)
-    && (pathname === '/danokhlopkov' || pathname.startsWith('/+'))
+    && (pathname.toLowerCase() === '/danokhlopkov' || pathname === channelInvitePath)
 }
 
 function rememberRouteView(route: RouteContext) {
@@ -275,9 +276,7 @@ export function trackClick(category: string, label: string, url: string) {
       ? 'social_follow_click'
       : category === 'cta'
         ? 'article_cta_click'
-        : category.startsWith('about')
-          ? 'lead_contact_click'
-          : 'article_outbound_click'
+        : 'article_outbound_click'
   send(event, {
     event_category: category,
     event_label: label,

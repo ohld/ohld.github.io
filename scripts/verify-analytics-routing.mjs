@@ -314,6 +314,7 @@ function assertSharedEventPayload(payload, eventName, expected) {
 }
 
 async function assertHeaderCtaTracking(page) {
+  const before = await getAnalyticsCalls(page)
   const href = await page.locator('.site-header-cta').first().getAttribute('href')
   assert(href === 'https://t.me/+klIZiMe4w30zZTgy', `header CTA href mismatch: ${href}`)
 
@@ -321,23 +322,72 @@ async function assertHeaderCtaTracking(page) {
   await page.locator('.site-header-cta').first().click({ noWaitAfter: true })
   const openedPopup = await popup
   if (openedPopup) await openedPopup.close()
-  await waitForAnalyticsEvent(page, 'lead_contact_click')
+  await waitForAnalyticsEvent(page, 'telegram_subscribe_click')
 
   const calls = await getAnalyticsCalls(page)
   const expected = {
-    event_category: 'about_header',
+    event_category: 'subscribe',
     event_label: 'telegram_channel_invite',
     click_text: 'telegram_channel_invite',
     cta_id: 'telegram_channel_invite',
     link_url: 'https://t.me/+klIZiMe4w30zZTgy',
     link_domain: 't.me',
   }
-  const gaPayload = gaEventPayloads(calls, 'lead_contact_click').at(-1)
-  const ymPayload = ymGoalPayloads(calls, 'lead_contact_click').at(-1)
-  assert(gaPayload, 'header CTA: missing GA4 lead_contact_click')
-  assert(ymPayload, 'header CTA: missing Metrika lead_contact_click goal')
-  assertSharedEventPayload(gaPayload, 'GA4 lead_contact_click', expected)
-  assertSharedEventPayload(ymPayload, 'Metrika lead_contact_click', expected)
+  const gaPayload = gaEventPayloads(calls, 'telegram_subscribe_click').at(-1)
+  const ymPayload = ymGoalPayloads(calls, 'telegram_subscribe_click').at(-1)
+  assert(gaPayload, 'header CTA: missing GA4 telegram_subscribe_click')
+  assert(ymPayload, 'header CTA: missing Metrika telegram_subscribe_click goal')
+  assertSharedEventPayload(gaPayload, 'GA4 telegram_subscribe_click', expected)
+  assertSharedEventPayload(ymPayload, 'Metrika telegram_subscribe_click', expected)
+  assert(gaEventPayloads(calls, 'telegram_subscribe_click').length === gaEventPayloads(before, 'telegram_subscribe_click').length + 1, 'header CTA: expected exactly one subscribe click')
+  assert(gaEventPayloads(calls, 'lead_contact_click').length === gaEventPayloads(before, 'lead_contact_click').length, 'header CTA: channel click is not a contact inquiry')
+}
+
+async function assertAcquisitionClickClassification(context, baseUrl) {
+  const page = await context.newPage({ viewport: { width: 390, height: 844 } })
+  try {
+    await page.goto(`${baseUrl}/about/`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await waitForPageView(page, '/about/')
+    const popup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
+    await page.locator('.footer-socials a[aria-label="Telegram"]').click({ noWaitAfter: true })
+    const openedPopup = await popup
+    if (openedPopup) await openedPopup.close()
+    await waitForAnalyticsEvent(page, 'telegram_subscribe_click')
+    let calls = await getAnalyticsCalls(page)
+    assert(gaEventPayloads(calls, 'telegram_subscribe_click').length === 1, 'footer Telegram: expected one subscribe click')
+    assert(ymGoalPayloads(calls, 'telegram_subscribe_click').length === 1, 'footer Telegram: expected one Metrika subscribe goal')
+    assert(gaEventPayloads(calls, 'social_follow_click').length === 0, 'footer Telegram: should use the channel subscribe event')
+
+    // Clicking a portfolio reference opens a source; it is not an inquiry.
+    await page.evaluate(() => { window.open = () => null })
+    await page.locator('.experience-link').first().click()
+    await waitForGaEvent(page, 'article_outbound_click', { event_category: 'about' })
+    calls = await getAnalyticsCalls(page)
+    assert(gaEventPayloads(calls, 'lead_contact_click').length === 0, 'portfolio reference must not be counted as a lead')
+    assert(ymGoalPayloads(calls, 'lead_contact_click').length === 0, 'portfolio reference must not emit a lead goal')
+
+    // Third-party Telegram invites are sources, not subscriptions to Dan's channel.
+    // The mock Telegram route prevents a real external request.
+    await page.goto(`${baseUrl}/web-scraping-ai-agents-2026/`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+    await page.locator('.blog-article').first().waitFor()
+    const sourcePopup = page.waitForEvent('popup', { timeout: 1000 }).catch(() => null)
+    await page.evaluate(() => {
+      const link = document.createElement('a')
+      link.href = 'https://t.me/+third-party-test-invite'
+      link.textContent = 'Example community'
+      link.target = '_blank'
+      document.querySelector('.blog-article').append(link)
+      link.click()
+    })
+    const openedSourcePopup = await sourcePopup
+    if (openedSourcePopup) await openedSourcePopup.close()
+    await waitForAnalyticsEvent(page, 'source_link_click')
+    calls = await getAnalyticsCalls(page)
+    assert(gaEventPayloads(calls, 'telegram_subscribe_click').length === 0, 'third-party invite must not count as a channel subscription')
+    assert(gaEventPayloads(calls, 'source_link_click').some((payload) => payload.link_url === 'https://t.me/+third-party-test-invite'), 'third-party invite should be tracked as an article source')
+  } finally {
+    await page.close()
+  }
 }
 
 async function assertBackButtonTracking(context, baseUrl) {
@@ -750,6 +800,7 @@ async function run(baseUrl) {
   }
 
   await assertHeaderCtaTracking(page)
+  await assertAcquisitionClickClassification(context, baseUrl)
   await assertBackButtonTracking(context, baseUrl)
   await assertArticleTelegramSubscribeTracking(context, baseUrl)
   await assertTelegramStoryViewerSourceTracking(context, baseUrl)
