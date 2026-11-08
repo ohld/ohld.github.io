@@ -50,7 +50,7 @@ export function SiteHeader() {
           href={TELEGRAM_CHANNEL_URL}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => trackClick('about_header', 'telegram_channel_invite', TELEGRAM_CHANNEL_URL)}
+          onClick={() => trackClick('subscribe', 'telegram_channel_invite', TELEGRAM_CHANNEL_URL)}
         >
           @danokhlopkov
         </a>

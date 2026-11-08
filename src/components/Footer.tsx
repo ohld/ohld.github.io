@@ -19,7 +19,7 @@ function handleSocialClick(event: MouseEvent<HTMLAnchorElement>, url: string, la
     return
   }
   event.preventDefault()
-  openUrl(url, 'social', label)
+  openUrl(url, label === 'Telegram' ? 'subscribe' : 'social', label)
 }
 
 export function Footer() {
