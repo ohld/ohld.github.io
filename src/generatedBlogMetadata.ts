@@ -177,6 +177,18 @@ const generatedArticlePostMeta: GeneratedPostMeta[] = [
     coverAlt: 'Мем-обложка с подписью Прости, я AI-рилз, меня собрали по метрикам',
   },
   {
+    slug: 'dizayn-skilly-claude-code-codex',
+    title: 'Дизайн-скиллы для Claude Code и Codex: сайты без AI slop',
+    description: 'Подборка из 8 дизайн-скиллов для Claude Code и Codex: установка, примеры запросов, ограничения и порядок работы над сайтами, интерфейсами и графикой игр.',
+    publishedAt: '2026-11-17',
+    updatedAt: '2026-11-17',
+    lang: 'ru',
+    readingTime: '10 мин',
+    tags: ['AI Agents', 'Claude Code', 'Codex', 'Skills', 'Дизайн'],
+    coverImage: '/assets/articles/dizayn-skilly-claude-code-codex/hero.webp',
+    coverAlt: 'Глитч-постер в сине-фиолетовых тонах с надписью «ДИЗАЙН-СКИЛЛЫ»',
+  },
+  {
     slug: 'gde-deshevle-kupit-telegram-stars',
     title: 'Где дешевле купить Telegram Stars: боты, Split, Fragment и СБП',
     description: 'Сравнил цены Telegram Stars у Split, StarsZakup, STARSEi, BuynStars и ботов: СБП, карты, крипта, рефки и риски. Срез на 3 июня 2026.',
