@@ -375,6 +375,20 @@
     "heroImage": "/content/images/2026/02/en-show-me-ai-setup-ghostty-ownyourchat-descript-1.png"
   },
   {
+    "path": "/beads-gastown-framework-ai-agenty/",
+    "slug": "beads-gastown-framework-ai-agenty",
+    "title": "Beads vs Gastown: стоит ли использовать чужие фреймворки для AI агентов?",
+    "description": "Анализ Beads (таск-трекер для агентов) и Gastown (оркестрация). Почему лучше собирать своего агента самому и не брать чужое legacy.",
+    "lang": "ru",
+    "publishedAt": "2026-01-23",
+    "updatedAt": "2026-05-25",
+    "readingTime": "1 мин",
+    "tags": [
+      "Telegram"
+    ],
+    "heroImage": "/content/images/2026/02/beads-gastown-framework-ai-agenty-1.png"
+  },
+  {
     "path": "/vtoroj-mozg-ai-assistent-obsidian-claude-code/",
     "slug": "vtoroj-mozg-ai-assistent-obsidian-claude-code",
     "title": "Второй мозг: как создать личного AI ассистента с Obsidian и Claude Code",
