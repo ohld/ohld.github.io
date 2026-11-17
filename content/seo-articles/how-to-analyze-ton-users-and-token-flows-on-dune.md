@@ -12,7 +12,7 @@ tags: TON, Dune Analytics, On-Chain Analytics, SQL, Telegram Stars, NFT Data
 coverImage: /assets/articles/how-to-analyze-ton-users-and-token-flows-on-dune/ton-users-token-flows-dune-guide.webp
 coverAlt: TON on-chain data analysis on Dune guide covering users, balances, token flows, Telegram Stars, and NFT volumes
 sourceTelegramId: 1538
-primaryKeyword: TON on-chain data analysis on Dune
+primaryKeyword: TON users and token flows on Dune
 secondaryKeywords: TON Dune SQL; analyze TON users; TON token flows; Telegram Stars Dune; TON NFT trading volume
 views: 11268
 forwards: 116
@@ -390,7 +390,7 @@ Star withdrawals manifest as TON transfers from Fragment addresses to user walle
 
 This data enables estimation of Telegram Stars volume flowing through individual addresses and quantification of users engaging in Star transactions.
 
-**Source:** https://dune.com/queries/4896663
+**Source:** [Telegram Stars Volumes](https://dune.com/queries/4896663)
 
 ## **4. Calculating On-Chain & Off-Chain NFT Trade Volumes**
 
