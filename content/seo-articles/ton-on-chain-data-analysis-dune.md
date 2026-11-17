@@ -231,7 +231,7 @@ When working with multiple tokens, determining their USD or TON values is essent
 
 ## Bonus: labels
 
-At TON Foundation, we find and label addresses that belong to popular DeFi, GameFi, and other apps built on TON. All labels are stored in [github](https://github.com/ton-studio/ton-labels) and uploaded to Dune (table dune.ton_foundation.dataset_labels).
+At TON Foundation, we labeled addresses that belong to popular DeFi, GameFi, and other apps built on TON. All labels are stored in [github](https://github.com/ton-studio/ton-labels) and uploaded to Dune (table dune.ton_foundation.dataset_labels).
 
 You can use the labels like this:
 ```javascript

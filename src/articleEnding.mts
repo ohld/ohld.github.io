@@ -88,7 +88,7 @@ const copy = {
   ru: {
     about: '/about/',
     author: 'Даниил Охлопков',
-    bio: 'Руководит аналитикой в TON Foundation. Пишет об AI-агентах, данных и автоматизации в Telegram.',
+    bio: 'Strategic Analytics Lead @ TOP.co. Пишет об AI-агентах, данных и автоматизации в Telegram.',
     related: 'Читать ещё',
     channel: 'Telegram-канал',
     chat: 'Telegram-чат',
@@ -96,7 +96,7 @@ const copy = {
   en: {
     about: '/en/about/',
     author: 'Daniil Okhlopkov',
-    bio: 'Leads analytics at TON Foundation and writes about AI agents, on-chain data, and Telegram automation.',
+    bio: 'Strategic Analytics Lead @ TOP.co. Writes about AI agents, on-chain data, and Telegram automation.',
     related: 'Read next',
     channel: 'Telegram channel',
     chat: 'Telegram chat',
@@ -126,7 +126,11 @@ export function articleEndingHtml(path: string) {
   return `<aside class="article-ending">
     <div class="article-ending-author">
       <img src="/assets/drafts/bot-revolution/telegram-cards/dan-channel-96.webp" alt="${text.author}" width="48" height="48" loading="lazy" />
-      <div><a href="${text.about}"><strong>${text.author}</strong></a><p>${text.bio}</p></div>
+      <div>
+        <a href="${text.about}"><strong>${text.author}</strong></a> ·
+        <a href="https://www.linkedin.com/in/danokhlopkov/">LinkedIn</a>
+        <p>${text.bio}</p>
+      </div>
     </div>
     <nav class="article-ending-related" aria-label="${text.related}">
       <strong>${text.related}</strong>

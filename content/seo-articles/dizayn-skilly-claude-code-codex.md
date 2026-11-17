@@ -149,7 +149,7 @@ npx skills add gamedev-skills/awesome-gamedev-agent-skills --skill create-game-a
 npx skills add gamedev-skills/awesome-gamedev-agent-skills --skill game-ui-ux
 ```
 
-**Когда пропустить.** Меню работает, а проблема в балансе уровня или в том, что герой сливается с фоном.
+**Когда пропустить.** Если тебе нужно поправить баланс уровня или сделать героя заметнее на фоне, этот скилл не поможет. Он проверяет меню и HUD.
 
 ## Как совместить скиллы в одной задаче
 

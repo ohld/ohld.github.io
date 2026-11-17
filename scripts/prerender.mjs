@@ -393,7 +393,7 @@ const ROUTES = [
     path: '/en/about',
     slug: 'en-about',
     title: 'Daniil Okhlopkov — AI Agents, TON Analytics and Telegram',
-    description: 'Daniil Okhlopkov leads analytics at TON Foundation and writes about AI agents, on-chain analytics, Telegram workflows, data products and startups.',
+    description: 'Daniil Okhlopkov is Strategic Analytics Lead at TOP.co and writes about AI agents, on-chain analytics, Telegram workflows, data products and startups.',
     lang: 'en',
     alternates: {
       ru: `${SITE_URL}/about/`,
@@ -405,7 +405,7 @@ const ROUTES = [
     path: '/about',
     slug: 'about',
     title: 'Даниил Охлопков — AI-агенты, TON-аналитика и Telegram',
-    description: 'Даниил Охлопков: Head of Analytics @ TON Foundation, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.',
+    description: 'Даниил Охлопков: Strategic Analytics Lead @ TOP.co, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.',
     alternates: {
       ru: `${SITE_URL}/about/`,
       en: `${SITE_URL}/en/about/`,
@@ -948,11 +948,11 @@ const AUTHOR_SCHEMA = {
   name: 'Даниил Охлопков',
   alternateName: 'Daniil Okhlopkov',
   url: `${SITE_URL}/about/`,
-  jobTitle: 'Head of Analytics',
+  jobTitle: 'Strategic Analytics Lead',
   worksFor: {
     '@type': 'Organization',
-    name: 'TON Foundation',
-    url: 'https://ton.org/',
+    name: 'TOP.co',
+    url: 'https://top.co/',
   },
   sameAs: [
     'https://t.me/danokhlopkov',

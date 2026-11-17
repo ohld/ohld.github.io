@@ -47,7 +47,7 @@
     "faqHtml": "<h2>FAQ</h2><h3>Can MeiliSearch run as a simple Dokku app?</h3><p>Yes, but only if you persist the data directory and configure the master key. Otherwise a redeploy or dyno reset can wipe the index.</p><h3>Should the frontend call MeiliSearch directly?</h3><p>Only with a restricted search key. Admin keys and indexing keys should stay server-side.</p>"
   },
   "/about-ru/": {
-    "description": "Дан Охлопков: Head of Analytics @ TON Foundation, Forbes 30 under 30, автор про AI-агентов, Telegram, on-chain analytics и личную AI-инфраструктуру в 2026 году.",
+    "description": "Дан Охлопков: Strategic Analytics Lead @ TOP.co, Forbes 30 under 30, автор про AI-агентов, Telegram, on-chain analytics и личную AI-инфраструктуру в 2026 году.",
     "summaryHtml": "<p><strong>Коротко:</strong> это старая био-страница Дана Охлопкова. Каноничная версия сейчас живет на странице «Обо мне», но здесь сохранен контекст: TON Foundation, AI-агенты, Telegram, on-chain analytics, старые проекты и публичные ссылки.</p><ul><li>Для актуального профиля лучше идти на /about/.</li><li>Для E-E-A-T важны роли, публичные проекты и ссылки на соцсети.</li><li>Старый тон сохранен, но метаданные теперь нормальные для поиска.</li></ul>",
     "faqHtml": "<h2>FAQ</h2><h3>Где актуальная страница о Дане?</h3><p>Актуальная версия находится на <a href='/about/'>/about/</a>: там собраны опыт, проекты, ссылки и английская версия.</p><h3>Почему эта страница еще существует?</h3><p>У нее могли быть старые ссылки и история индексации. Проще сохранить ее с нормальным canonical-сигналом, чем ломать маршрут без причины.</p>"
   },
