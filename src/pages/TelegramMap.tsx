@@ -3,7 +3,14 @@ import { BackButton } from '../components/BackButton'
 import { Footer } from '../components/Footer'
 import { absoluteUrl } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
+import { markdownToHtml } from '../markdown'
+import mapMeta from '../../content/telegram-map/meta.json'
+import intro from '../../content/telegram-map/intro.md?raw'
+import notes from '../../content/telegram-map/notes.md?raw'
 import './TelegramMap.css'
+
+const introHtml = markdownToHtml(intro)
+const notesHtml = markdownToHtml(notes)
 
 type Neighbor = { id: number; similarity: number }
 type AtlasPost = {
@@ -798,8 +805,8 @@ export function TelegramMap() {
 
 
   useDocumentMeta({
-    title: 'Карта моих постов в Telegram — Даниил Охлопков',
-    description: 'Интерактивная карта 1 556 постов @danokhlopkov за 2020–2026 годы: темы, связи, поиск и эволюция интересов.',
+    title: mapMeta.title,
+    description: mapMeta.description,
     canonical: absoluteUrl('/karta-postov-telegram/'),
     lang: 'ru',
     alternates: { ru: absoluteUrl('/karta-postov-telegram/'), 'x-default': absoluteUrl('/karta-postov-telegram/') },
@@ -1023,7 +1030,8 @@ export function TelegramMap() {
       <header className="atlas-header">
         <BackButton />
         <div>
-          <h1>Карта моих постов в Telegram</h1>
+          <h1>{mapMeta.title}</h1>
+          <div className="atlas-copy" dangerouslySetInnerHTML={{ __html: introHtml }} />
           <p className="sr-only">
             Интерактивная карта тем, связей и эволюции публикаций. Перемещайте временную шкалу,
             чтобы увидеть главные темы выбранного периода, их доли и карьерный контекст автора.
@@ -1212,6 +1220,7 @@ export function TelegramMap() {
             </section>
           </div>
         )}
+        <section className="atlas-notes atlas-copy" dangerouslySetInnerHTML={{ __html: notesHtml }} />
       </main>
       <Footer />
     </div>

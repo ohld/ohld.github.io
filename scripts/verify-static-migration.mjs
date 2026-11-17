@@ -176,7 +176,8 @@ const staticPages = [
   },
   {
     path: '/karta-postov-telegram/',
-    title: 'Карта моих постов в Telegram — Даниил Охлопков',
+    title: 'Карта постов Telegram-канала @danokhlopkov',
+    updatedAt: '2026-11-17',
     lang: 'ru',
     ogLocale: 'ru_RU',
     hreflangs: ['ru', 'x-default'],

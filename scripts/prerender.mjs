@@ -189,10 +189,11 @@ function importedArticleAlternates(pathname, lang) {
   return alternates
 }
 
+const telegramMapMeta = JSON.parse(fs.readFileSync('content/telegram-map/meta.json', 'utf8'))
 const TELEGRAM_MAP_FALLBACK_ITEM = {
   path: '/karta-postov-telegram/',
-  title: 'Карта моих постов в Telegram',
-  description: 'Интерактивная карта 1 556 постов @danokhlopkov за 2020–2026 годы: темы, связи, поиск и эволюция интересов.',
+  title: telegramMapMeta.title,
+  description: telegramMapMeta.description,
 }
 
 const HOME_FALLBACK_MD = `# Даниил Охлопков
@@ -841,8 +842,7 @@ ROUTES.push({
 ROUTES.push({
   path: '/karta-postov-telegram',
   slug: 'karta-postov-telegram',
-  title: 'Карта моих постов в Telegram — Даниил Охлопков',
-  description: 'Интерактивная карта 1 556 постов @danokhlopkov за 2020–2026 годы: темы, связи, поиск и эволюция интересов.',
+  ...telegramMapMeta,
   lang: 'ru',
   alternates: {
     ru: `${SITE_URL}/karta-postov-telegram/`,
@@ -852,11 +852,11 @@ ROUTES.push({
   imageAlt: 'Два графика с подписями «Мои посты» и «Карта Telegram»',
   ...imageMetadataForUrl('/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp'),
   image: `${SITE_URL}/assets/blog/karta-postov-telegram/telegram-posts-map-cover-20260720.webp`,
-  markdown: `# Карта моих постов в Telegram
-
-Все 1 556 постов [@danokhlopkov](https://t.me/danokhlopkov) разложены по смыслу. Ищите тему, выбирайте точку и переходите к похожим публикациям.
-
-Для интерактивной карты нужен JavaScript.`,
+  markdown: [
+    fs.readFileSync('content/telegram-map/intro.md', 'utf8').trim(),
+    'Для интерактивной карты нужен JavaScript.',
+    fs.readFileSync('content/telegram-map/notes.md', 'utf8').trim(),
+  ].join('\n\n'),
 })
 
 function escape(s) {

@@ -35,6 +35,32 @@ body.atlas-map-active {
   letter-spacing: -0.05em;
 }
 
+.atlas-copy {
+  max-width: 68ch;
+  line-height: 1.5;
+}
+
+.atlas-copy p {
+  margin: 0.7em 0 0;
+}
+
+.atlas-copy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.atlas-notes {
+  margin: 2rem clamp(14px, 3vw, 44px);
+}
+
+.atlas-notes pre {
+  white-space: pre-wrap;
+  padding: 1em;
+  background: #17181d;
+  user-select: all;
+}
+
 .atlas-page .back-nav {
   margin-top: 5px;
   color: rgba(244, 244, 241, 0.68);

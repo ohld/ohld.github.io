@@ -1,3 +1,4 @@
+import mapMeta from '../content/telegram-map/meta.json'
 import {
   generatedEnglishArticleItems,
   generatedEnglishBlogItems,
@@ -66,8 +67,8 @@ function withoutItemPaths(items: BlogListItem[], excludedItems: BlogListItem[]):
 export const russianBlogItems: BlogListItem[] = [
   {
     path: '/karta-postov-telegram/',
-    title: 'Карта моих постов в Telegram',
-    description: 'Интерактивная карта 1 556 постов @danokhlopkov за 2020–2026 годы: темы, связи, поиск и эволюция интересов.',
+    title: mapMeta.title,
+    description: mapMeta.description,
     publishedAt: '2026-07-20',
     readingTime: 'Интерактивная карта',
     tags: ['Telegram', 'Данные', 'Личный архив'],
