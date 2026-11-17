@@ -1,6 +1,24 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { execFileSync } from 'node:child_process'
 import ts from 'typescript'
+
+export const MARKDOWN_SECTIONS = { 'content/blog-posts': 'blog', 'content/seo-articles': 'articles' }
+
+export function git(root, ...args) {
+  return execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })
+}
+
+export function contentBase(root) {
+  try { return git(root, 'merge-base', 'origin/main', 'HEAD').trim() } catch { return null }
+}
+
+export function changedMarkdownFiles(root, base) {
+  const dirs = Object.keys(MARKDOWN_SECTIONS)
+  const tracked = git(root, 'diff', '--name-only', '--diff-filter=d', '-z', base, '--', ...dirs)
+  const untracked = git(root, 'ls-files', '--others', '--exclude-standard', '-z', '--', ...dirs)
+  return [...new Set((tracked + untracked).split('\0').filter((file) => file.endsWith('.md')))]
+}
 
 export function assert(ok, message) {
   if (!ok) throw new Error(message)
@@ -52,9 +70,9 @@ export function renderCard(meta, previous = {}) {
 
 export function inventory(root) {
   const items = []
-  for (const [directory, section] of [['blog-posts', 'blog'], ['seo-articles', 'articles']]) {
-    for (const name of fs.readdirSync(path.join(root, 'content', directory)).filter((x) => x.endsWith('.md')).sort()) {
-      const content_file = `content/${directory}/${name}`
+  for (const [directory, section] of Object.entries(MARKDOWN_SECTIONS)) {
+    for (const name of fs.readdirSync(path.join(root, directory)).filter((x) => x.endsWith('.md')).sort()) {
+      const content_file = `${directory}/${name}`
       const { meta } = parseMarkdown(fs.readFileSync(path.join(root, content_file), 'utf8'))
       items.push({ ...meta, canonical_path: `/${meta.lang}/${section}/${meta.slug}/`, content_file, format: 'markdown', section })
     }

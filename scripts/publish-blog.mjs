@@ -6,17 +6,16 @@
 //   npm run check:blog-registry        (fails when a registry differs from the Markdown files)
 import fs from 'node:fs'
 import path from 'node:path'
-import { execFileSync } from 'node:child_process'
 import ts from 'typescript'
 import { fileURLToPath } from 'node:url'
-import { PRIVATE_FIELDS, arrayDeclaration, assert, inventory, objectValue, parseMarkdown, renderCard, sourceFile } from './content-loop/content.mjs'
+import { MARKDOWN_SECTIONS, PRIVATE_FIELDS, arrayDeclaration, assert, changedMarkdownFiles, contentBase, inventory, objectValue, parseMarkdown, renderCard, sourceFile } from './content-loop/content.mjs'
 import { staticPrerenderRoutes } from './prerender-routes.mjs'
 
 const RUNTIME = 'src/generatedBlogPosts.ts'
 const METADATA = 'src/generatedBlogMetadata.ts'
 const SECTIONS = [
-  { dir: 'content/blog-posts', section: 'blog', prefix: 'blog', runtimeArray: 'sources', metaArray: 'generatedBlogPostMeta' },
-  { dir: 'content/seo-articles', section: 'articles', prefix: 'article', runtimeArray: 'articleSources', metaArray: 'generatedArticlePostMeta' },
+  { dir: 'content/blog-posts', prefix: 'blog', runtimeArray: 'sources', metaArray: 'generatedBlogPostMeta' },
+  { dir: 'content/seo-articles', prefix: 'article', runtimeArray: 'articleSources', metaArray: 'generatedArticlePostMeta' },
 ]
 const binding = (prefix, name) => prefix + name.replace(/\.md$/, '').split(/[^a-zA-Z0-9]+/).filter(Boolean).map((part) => part[0].toUpperCase() + part.slice(1)).join('')
 const normalizeKeyword = (value = '') => value.toLowerCase().replace(/ё/g, 'е').replace(/\s+/g, ' ').trim()
@@ -75,8 +74,7 @@ export function generateRegistries(root) {
 
 // Validates one post against the rest of the content inventory. Throws on errors, returns warnings.
 export function validatePost(root, contentFile) {
-  const config = SECTIONS.find(({ dir }) => path.dirname(contentFile) === dir)
-  assert(config && contentFile.endsWith('.md'), '--file must be a Markdown file in content/blog-posts/ or content/seo-articles/')
+  assert(Object.hasOwn(MARKDOWN_SECTIONS, path.dirname(contentFile)) && contentFile.endsWith('.md'), '--file must be a Markdown file in content/blog-posts/ or content/seo-articles/')
   const raw = fs.readFileSync(path.join(root, contentFile), 'utf8')
   const { meta } = parseMarkdown(raw)
   assert(/^lang:\s*(ru|en)\s*$/m.test(raw.split('\n---\n')[0]), 'Explicit lang must be ru or en')
@@ -87,7 +85,7 @@ export function validatePost(root, contentFile) {
   if (meta.coverImage) {
     assert(meta.coverAlt, 'coverImage requires coverAlt')
     assert(meta.coverImage.startsWith('/') && !meta.coverImage.startsWith('//') && path.posix.normalize(meta.coverImage) === meta.coverImage && !meta.coverImage.includes('\\'), 'coverImage must be a canonical root-relative public path')
-    assert(meta.coverImage.startsWith('/') && fs.existsSync(path.join(root, 'public', meta.coverImage)), `Cover asset is missing: public${meta.coverImage}`)
+    assert(fs.statSync(path.join(root, 'public', meta.coverImage), { throwIfNoEntry: false })?.isFile(), `Cover asset is missing or is not a file: public${meta.coverImage}`)
   }
 
   const items = inventory(root) // also rejects duplicate canonical URLs
@@ -125,14 +123,13 @@ export function publish(root, file) {
 // Full generation must not register a second, unvalidated draft as a side effect.
 // Untouched legacy posts may have pre-existing keyword conflicts; validate this run's changes.
 export function validateChangedPosts(root, selectedFile) {
-  const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim()
-  let base
-  try { base = git('merge-base', 'origin/main', 'HEAD') } catch { /* standalone fixtures: validate every post */ }
-  const dirs = SECTIONS.map(({ dir }) => dir)
+  const base = contentBase(root)
   const files = base
-    ? [...git('diff', '--name-only', '--diff-filter=d', base, '--', ...dirs).split('\n'), ...git('ls-files', '--others', '--exclude-standard', '--', ...dirs).split('\n')]
-    : dirs.flatMap((dir) => markdownFiles(root, dir).map((name) => `${dir}/${name}`))
-  for (const file of new Set(files.filter((file) => file.endsWith('.md') && file !== selectedFile))) validatePost(root, file)
+    ? changedMarkdownFiles(root, base)
+    : Object.keys(MARKDOWN_SECTIONS).flatMap((dir) => markdownFiles(root, dir).map((name) => `${dir}/${name}`))
+  for (const file of files) {
+    if (file !== selectedFile) validatePost(root, file)
+  }
 }
 
 function staleRegistries(root) {
