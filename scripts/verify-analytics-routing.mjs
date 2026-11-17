@@ -582,7 +582,7 @@ async function assertBotRevolutionReadingTracking(context, baseUrl) {
     await page.waitForTimeout(15_000)
     await waitForAnalyticsEvent(page, 'article_read_complete')
 
-    const relatedLink = page.locator('.bot-revolution-related a[href="/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/"]')
+    const relatedLink = page.locator('.article-ending-related a[href="/ru/blog/business-on-ai-agent-claude-code-paperclip-gstack/"]')
     assert(await relatedLink.count() === 1, 'Bot Revolution: missing contextual RU internal link')
 
     const channel = page.locator('[data-cta-id="bot_revolution_channel"]')
@@ -671,7 +671,7 @@ async function assertEnglishBotRevolutionTracking(context, baseUrl) {
     assert(chiefSrcset?.includes('one-main-hundred-agents-en.webp 1024w'), 'English Bot Revolution: chief illustration is missing its native 1024w master')
     assert(!chiefSrcset?.includes('one-main-hundred-agents-en-1024.webp'), 'English Bot Revolution: chief illustration has a duplicate 1024w descriptor')
     assert(
-      await page.locator('.bot-revolution-related a[href="/en/articles/hermes-agent-vps-telegram-setup/"]').count() === 1,
+      await page.locator('.article-ending-related a[href="/en/articles/hermes-agent-vps-telegram-setup/"]').count() === 1,
       'English Bot Revolution: missing contextual EN internal link',
     )
 

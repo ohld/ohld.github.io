@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs'
+import { checkArticleTemplates } from './article-template-smoke.mjs'
 
 const baseUrl = (process.env.SMOKE_BASE_URL || 'http://127.0.0.1:4174').replace(/\/+$/, '')
 const siteUrl = (process.env.SITE_URL || 'https://okhlopkov.com').replace(/\/+$/, '')
@@ -337,6 +338,7 @@ async function main() {
       })
     }
 
+    await checkArticleTemplates(browser, baseUrl, viewport)
     await page.close()
   }
 

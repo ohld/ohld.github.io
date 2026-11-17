@@ -76,7 +76,7 @@ function highlightCode(value: string, language: string) {
   return value.split('\n').map((line) => highlightLine(line, language)).join('\n')
 }
 
-async function copyToClipboard(value: string) {
+export async function copyToClipboard(value: string) {
   if (navigator.clipboard?.writeText) {
     await navigator.clipboard.writeText(value)
     return
@@ -86,10 +86,15 @@ async function copyToClipboard(value: string) {
   textarea.setAttribute('readonly', '')
   textarea.style.position = 'fixed'
   textarea.style.top = '-9999px'
+  const focused = document.activeElement
   document.body.appendChild(textarea)
   textarea.select()
-  document.execCommand('copy')
-  textarea.remove()
+  try {
+    if (!document.execCommand('copy')) throw new Error('Copy failed')
+  } finally {
+    textarea.remove()
+    if (focused instanceof HTMLElement) focused.focus({ preventScroll: true })
+  }
 }
 
 function copyLabels() {

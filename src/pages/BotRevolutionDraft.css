@@ -102,16 +102,6 @@ body.bot-revolution-body .site-header-cta {
   white-space: nowrap;
 }
 
-.bot-revolution-visually-hidden {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  overflow: hidden !important;
-  clip: rect(0 0 0 0) !important;
-  clip-path: inset(50%) !important;
-  white-space: nowrap !important;
-}
-
 .bot-revolution-mobile-break {
   display: none;
 }
@@ -210,6 +200,15 @@ body.bot-revolution-body .site-header-cta {
   border-bottom: 1px solid var(--br-border);
 }
 
+.bot-revolution-timeline-title {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 8px 18px;
+  border-bottom: 1px solid var(--br-border);
+  color: var(--br-text);
+  font-size: 18px;
+}
+
 .bot-revolution-timeline article {
   position: relative;
   min-height: 164px;
@@ -278,7 +277,7 @@ body.bot-revolution-body .site-header-cta {
   text-wrap: balance;
 }
 
-.bot-revolution-section-title > span {
+.bot-revolution-section-title > span:not(.article-section-control) {
   display: block;
   white-space: nowrap;
 }
@@ -748,15 +747,6 @@ body.bot-revolution-body .site-header-cta {
   display: block;
 }
 
-.bot-revolution-related {
-  width: min(100%, 880px);
-  margin: 0 auto;
-  color: var(--br-muted);
-  font-size: 15px;
-  line-height: 1.55;
-  text-wrap: pretty;
-}
-
 .bot-revolution-footer-thesis > span {
   white-space: nowrap;
   text-wrap: balance;
@@ -1099,7 +1089,7 @@ body.bot-revolution-body .site-header-cta {
     font-size: 29px;
   }
 
-  .bot-revolution-section-title > span,
+  .bot-revolution-section-title > span:not(.article-section-control),
   .bot-revolution-footer-thesis > span {
     white-space: normal;
   }

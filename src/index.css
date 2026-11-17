@@ -2257,3 +2257,133 @@ html, body {
     color: var(--bg);
   }
 }
+
+/* Section links and author block for article pages. */
+html:has(#article-content :is(h2, h3):target) {
+  scroll-behavior: auto;
+}
+
+#article-content :is(h2, h3)[id] {
+  scroll-margin-top: 20px;
+}
+
+.article-section-control {
+  position: relative;
+  display: inline-block;
+  margin-inline-start: 0.25em;
+  vertical-align: middle;
+}
+
+.article-section-link {
+  appearance: none;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  min-width: 24px;
+  min-height: 24px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.article-section-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.article-section-status:not(:empty) {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 100%;
+  inset-inline-end: 0;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: normal;
+  white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .article-section-link {
+    opacity: 0;
+  }
+
+  :is(h2, h3):hover .article-section-link,
+  .article-section-link:focus,
+  .article-section-control:has(.article-section-status:not(:empty)) .article-section-link {
+    opacity: 1;
+  }
+}
+
+@media (any-pointer: coarse) {
+  .article-section-link {
+    opacity: 1;
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+.article-ending {
+  display: grid;
+  gap: 20px;
+  margin-block-start: 38px;
+  padding-block-start: 20px;
+  border-top: 1px solid var(--br-border, var(--border-light));
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.article-ending-author,
+.article-ending-telegram {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.article-ending-author img {
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.article-ending a {
+  color: var(--br-accent, var(--link));
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.article-ending-author p,
+.article-ending-related ul {
+  margin: 4px 0 0;
+}
+
+.article-ending-author p {
+  color: var(--br-muted, var(--accent));
+}
+
+.article-ending-related ul {
+  padding-inline-start: 20px;
+}
+
+.article-ending-telegram {
+  flex-wrap: wrap;
+}
+
+.article-ending-telegram a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+}
+
+.bot-revolution-footer .article-ending {
+  margin-block-start: 0;
+  padding-block-start: 0;
+  border-top: 0;
+}
