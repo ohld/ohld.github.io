@@ -9,8 +9,7 @@ import intro from '../../content/telegram-map/intro.md?raw'
 import notes from '../../content/telegram-map/notes.md?raw'
 import './TelegramMap.css'
 
-const introHtml = markdownToHtml(intro)
-const notesHtml = markdownToHtml(notes)
+const notesHtml = markdownToHtml(`${intro.trim()}\n\n${notes}`)
 
 type Neighbor = { id: number; similarity: number }
 type AtlasPost = {
@@ -1031,7 +1030,6 @@ export function TelegramMap() {
         <BackButton />
         <div>
           <h1>{mapMeta.title}</h1>
-          <div className="atlas-copy" dangerouslySetInnerHTML={{ __html: introHtml }} />
           <p className="sr-only">
             Интерактивная карта тем, связей и эволюции публикаций. Перемещайте временную шкалу,
             чтобы увидеть главные темы выбранного периода, их доли и карьерный контекст автора.
@@ -1220,7 +1218,7 @@ export function TelegramMap() {
             </section>
           </div>
         )}
-        <section className="atlas-notes atlas-copy" dangerouslySetInnerHTML={{ __html: notesHtml }} />
+        <section className="atlas-notes" dangerouslySetInnerHTML={{ __html: notesHtml }} />
       </main>
       <Footer />
     </div>
