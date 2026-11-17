@@ -90,6 +90,34 @@ for (const entry of publicEntries) {
   }
 }
 
+// Published files must not carry local machine paths (cover sidecars used to leak the reference file path).
+const textFile = /\.(json|md|txt|html|xml|csv|svg|js|css|ya?ml|webmanifest)$/i
+for (const entry of [...listRepoEntries('public'), ...listRepoEntries('content')]) {
+  const fullPath = path.join(root, String(entry))
+  if (!textFile.test(fullPath) || !fs.statSync(fullPath).isFile()) continue
+  const content = fs.readFileSync(fullPath, 'utf8')
+  // These two existing tutorials intentionally document the container's workspace.
+  // Exempt only their exact code examples, never a username across all public files.
+  let scanned = content
+  if (entry === 'content/articles/imported-content.json') {
+    const tutorials = new Set(['/ai-agent-na-servere-24-7/', '/always-on-ai-agent-server-setup/'])
+    const articles = JSON.parse(content)
+    scanned = JSON.stringify(articles.map((article) => tutorials.has(article.path)
+      ? { ...article, bodyHtml: article.bodyHtml.replace(/<code>\/home\/agent\/workspace\/(?:memory\.md)?<\/code>/g, '<code>container workspace</code>') }
+      : article))
+  }
+  if (['public/generated/imported-articles/ai-agent-na-servere-24-7.json', 'public/generated/imported-articles/always-on-ai-agent-server-setup.json'].includes(entry)) {
+    const article = JSON.parse(content)
+    scanned = JSON.stringify({ ...article, bodyHtml: article.bodyHtml.replace(/<code>\/home\/agent\/workspace\/(?:memory\.md)?<\/code>/g, '<code>container workspace</code>') })
+  }
+  // A URL pathname such as https://example.com/home/topic/ is not a local path.
+  scanned = scanned.replace(/https?:\/\/[^\s<>"'`\\]+/gi, '')
+  for (const match of scanned.matchAll(/(?<![\w.-])(?:\/(?:Users|home)\/[^\s/<>"'`\\]+|[a-z]:\\{1,2}Users\\{1,2}[^\s\\<>"'`]+)(?=[/\\\s<>"'`]|$)/gi)) {
+    fail(`${entry} contains an absolute home path`)
+  }
+  if (/\.meta\.json$/.test(fullPath) && /"reference_path"/.test(content)) fail(`${entry} exposes "reference_path"`)
+}
+
 if (!process.exitCode) {
   console.log('Public safety check passed')
 }

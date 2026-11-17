@@ -1,0 +1,100 @@
+{
+  "_comment": "Banned phrases for check:editorial. Each entry is a case-insensitive regular expression matched on whole words; text is compared with ё folded to е. Sources: Dan's generation protocol (hard fails) and the infostyle stop-word lists. error blocks the merge, warn is printed.",
+  "error": {
+    "filler opener": [
+      "давайте раз(беремся|бираться)",
+      "в мире,? где",
+      "в современном мире",
+      "в эпоху (ии|ai|искусственного интеллекта|цифровизации|перемен)",
+      "не секрет,? что",
+      "let'?s dive (in|into)",
+      "let'?s unpack",
+      "in today'?s (fast-paced|digital|rapidly)[^.]{0,30}(world|landscape|age)",
+      "in the (ever-evolving|rapidly evolving|fast-paced) (world|landscape)"
+    ],
+    "LinkedIn tone": [
+      "(рад|рада|спешу|счастлив) поделиться",
+      "делюсь инсайтами",
+      "меня(ет|ют) правила игры",
+      "(выводит|вывести|выйти) на новый уровень",
+      "изменит вашу жизнь",
+      "не имеет аналогов",
+      "без преувеличения",
+      "(excited|thrilled|delighted|humbled|honored|honoured) to (share|announce)",
+      "game[- ]chang(er|ing)",
+      "unlock(s|ing)? the (full )?(power|potential)",
+      "to the next level",
+      "ultimate guide",
+      "delve"
+    ],
+    "editorial mechanics": [
+      "decision page",
+      "primary ?keyword",
+      "secondary ?keywords?",
+      "(эта|данная) (статья|страница) (отвечает на|оптимизирована под) запрос",
+      "this (page|article) (targets|is optimized for)",
+      "as an ai( language model)?",
+      "как (языковая модель|ии-ассистент)",
+      "content loop",
+      "контент-луп"
+    ]
+  },
+  "warn": {
+    "«не X, а Y» construction": [
+      "не [^.!?\\n,;:()]{2,60}, а",
+      "это не просто [^.!?\\n]{2,60}",
+      "not (just |only |merely )?[^.!?\\n,;:()]{2,60},? but",
+      "(isn'?t|is not|aren'?t|are not) (just|only|merely)",
+      "it'?s not about [^.!?\\n]{2,60}"
+    ],
+    "editorial mechanics": [
+      "seo[- ]статья",
+      "seo article",
+      "search intent",
+      "поисков(ый|ого|ом) интент(а|е)?",
+      "целев(ой|ого) запрос(а)?",
+      "wordstat"
+    ],
+    "summary cliché": [
+      "в заключение",
+      "подводя итог(и)?",
+      "ключевые выводы",
+      "key takeaways",
+      "in conclusion",
+      "it'?s worth noting",
+      "стоит отметить"
+    ],
+    "corporate stamp": [
+      "индивидуальный подход",
+      "высокий профессионализм",
+      "лидирующая компания",
+      "динамично развивающ\\S+",
+      "команда профессионалов",
+      "широкий ассортимент",
+      "выгодные условия",
+      "комплексн(ые|ое) решени(я|е)",
+      "гибкая система скидок",
+      "клиентоориентированн\\S+",
+      "полный спектр услуг",
+      "в лучших традициях",
+      "краеугольный камень",
+      "бросить вызов",
+      "на стыке",
+      "на передовой",
+      "поживем[- ]увидим"
+    ],
+    "officialese": [
+      "в настоящее время",
+      "в настоящий момент",
+      "на данный момент",
+      "в данный момент",
+      "в наше время",
+      "представляет собой",
+      "является",
+      "осуществля\\S+",
+      "в целях",
+      "в соответствии с",
+      "в рамках"
+    ]
+  }
+}
