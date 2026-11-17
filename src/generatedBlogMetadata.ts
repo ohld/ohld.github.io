@@ -183,7 +183,7 @@ const generatedArticlePostMeta: GeneratedPostMeta[] = [
     publishedAt: '2026-11-17',
     updatedAt: '2026-11-17',
     lang: 'ru',
-    readingTime: '10 мин',
+    readingTime: '7 мин',
     tags: ['AI Agents', 'Claude Code', 'Codex', 'Skills', 'Дизайн'],
     coverImage: '/assets/articles/dizayn-skilly-claude-code-codex/hero.webp',
     coverAlt: 'Глитч-постер в сине-фиолетовых тонах с надписью «ДИЗАЙН-СКИЛЛЫ»',
