@@ -78,6 +78,14 @@ test('updates need two distinct destinations; self links and images do not count
   assert.ok(result.errors.includes('1 internal links to existing pages; a post needs at least 2'))
 })
 
+test('a link to the same slug in another section counts', () => {
+  const routes = new Set(['/ru/blog/sample/', '/ru/articles/sample/', '/ru/blog/first/'])
+  const body = '- [блог](/ru/blog/sample/) [статья](/ru/articles/sample/)'
+  assert.deepEqual(check(`${body} [другая](/ru/blog/first/)`, { isNew: false, routes }).errors, [])
+  assert.deepEqual(check(`${body} [другая](/ru/blog/first/)`, { isNew: false, routes, section: 'articles' }).errors, [])
+  assert.match(check(body, { isNew: false, routes }).errors[0], /^1 internal links/)
+})
+
 test('code fences close only on a matching marker of sufficient length', () => {
   const result = check(`${good}\n\n\`\`\`\`markdown\n\`\`\`\n~~~\nДавайте разберемся https://example.com\n\`\`\`\`\n\nКод \`\`https://example.com и \`delve\`\` здесь.`)
   assert.deepEqual(result.errors, [])
@@ -93,10 +101,11 @@ test('other H1 forms fail and bare URLs in metadata fail', () => {
 })
 
 test('reference definitions and HTML attributes cannot hide broken internal links', () => {
-  const result = check(`${good}\n\n[данные][source]\n\n[source]: /ru/blog/missing/\n\n<a href="/ru/articles/missing/">Руководство</a>`)
+  const result = check(`${good}\n\n[данные][source]\n\n[source]: /ru/blog/missing/\n\n<a href = "/ru/articles/missing/">Руководство</a>`)
   for (const target of ['/ru/blog/missing/', '/ru/articles/missing/']) {
     assert.ok(result.errors.some((error) => error.includes(`not in the route inventory: ${target}`)))
   }
+  assert.ok(check(`${good}\n\nhref = "https://example.com"`).errors.some((error) => /bare URL/.test(error)))
 })
 
 test('an HTTPS link to a different hostname is external; protocol-relative site links are checked', () => {

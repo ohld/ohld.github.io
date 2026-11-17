@@ -5,12 +5,10 @@
 //   npm run check:editorial -- --changed     (posts added or modified since origin/main; used by preflight)
 import fs from 'node:fs'
 import path from 'node:path'
-import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { inventory, parseMarkdown } from './content-loop/content.mjs'
+import { MARKDOWN_SECTIONS, changedMarkdownFiles, contentBase, git, inventory, parseMarkdown } from './content-loop/content.mjs'
 import { staticPrerenderRoutes } from './prerender-routes.mjs'
 
-const CONTENT_DIRS = ['content/blog-posts', 'content/seo-articles']
 const MIN_WORDS = 600
 const SITE = /^(?:https?:)?\/\/(www\.)?okhlopkov\.com(?=\/|$)/i
 const PRICE = /[$€₽]\s?\d|\d\s?(₽|руб|usd|eur|€|\$)|\/(мес|mo|month)(?![\p{L}])|per month|в месяц/iu
@@ -47,7 +45,7 @@ function proseLines(body) {
   })
 }
 
-export function checkEditorial(text, { isNew = true, routes = new Set(), rules = loadRules(), assetExists = () => true } = {}) {
+export function checkEditorial(text, { isNew = true, section = 'blog', routes = new Set(), rules = loadRules(), assetExists = () => true } = {}) {
   const errors = []
   const warnings = []
   let parsed
@@ -57,7 +55,7 @@ export function checkEditorial(text, { isNew = true, routes = new Set(), rules =
   const at = (index) => `line ${index + 1 + offset}`
   const lines = proseLines(body)
   const prose = lines.join('\n')
-  const selfPath = `/${meta.lang}/`
+  const selfPath = `/${meta.lang}/${section}/${meta.slug}/`
 
   const words = (prose.replace(/\]\([^)]*\)/g, ']').match(/[\p{L}\p{N}]+(?:[-'’][\p{L}\p{N}]+)*/gu) || []).length
   if (words < MIN_WORDS) (isNew ? errors : warnings).push(`body has ${words} words; a new post needs at least ${MIN_WORDS}`)
@@ -92,17 +90,16 @@ export function checkEditorial(text, { isNew = true, routes = new Set(), rules =
   // Definitions are still checked, so reference-style Markdown cannot hide a broken target.
   const internal = new Set()
   const checkTarget = (target, where, count = true) => {
-      const local = target.replace(SITE, '') || '/'
-      if (local.startsWith('/') && !local.startsWith('//')) {
-        const pathname = local.split(/[?#]/)[0]
-        if (/\.[a-z0-9]+$/i.test(pathname)) {
-          if (!assetExists(pathname)) errors.push(`linked file does not exist: ${pathname} (${where})`)
-        } else {
-          const route = pathname.endsWith('/') ? pathname : `${pathname}/`
-          if (!routes.has(route)) errors.push(`internal link is not in the route inventory: ${route} (${where})`)
-          else if (count && route !== `${selfPath}blog/${meta.slug}/` && route !== `${selfPath}articles/${meta.slug}/`) internal.add(route)
-        }
-      }
+    const local = target.replace(SITE, '') || '/'
+    if (!local.startsWith('/') || local.startsWith('//')) return
+    const pathname = local.split(/[?#]/)[0]
+    if (/\.[a-z0-9]+$/i.test(pathname)) {
+      if (!assetExists(pathname)) errors.push(`linked file does not exist: ${pathname} (${where})`)
+    } else {
+      const route = pathname.endsWith('/') ? pathname : `${pathname}/`
+      if (!routes.has(route)) errors.push(`internal link is not in the route inventory: ${route} (${where})`)
+      else if (count && route !== selfPath) internal.add(route)
+    }
   }
   lines.forEach((line, index) => {
     const definition = line.match(/^ {0,3}\[[^\]]+\]:\s*(\S+)/)
@@ -111,7 +108,8 @@ export function checkEditorial(text, { isNew = true, routes = new Set(), rules =
       if (/^https?:\/\//i.test(label.trim())) errors.push(`bare URL as link text (${at(index)}): give the link a readable label`)
       checkTarget(target, at(index), !image)
       return ' '
-    }).replace(/(href|src)=["']([^"']*)["']/gi, (_match, _attribute, target) => { checkTarget(target, at(index), false); return ' ' })
+    }).replace(/<[a-z][\w:-]*(?:[^<>"']|"[^"]*"|'[^']*')*>/gi, (tag) =>
+      tag.replace(/(?:href|src)\s*=\s*(["'])(.*?)\1/gi, (_match, _quote, target) => { checkTarget(target, at(index), false); return ' ' }))
     if (/https?:\/\/\S/i.test(withoutLinks)) errors.push(`bare URL (${at(index)}): write a Markdown link with a readable label`)
   })
   if (internal.size < 2) errors.push(`${internal.size} internal links to existing pages; a post needs at least 2`)
@@ -130,20 +128,15 @@ export function checkEditorial(text, { isNew = true, routes = new Set(), rules =
   return { errors, warnings, words }
 }
 
-function git(root, args) {
-  return execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim()
-}
-
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   try {
     const root = path.resolve(fileURLToPath(new URL('..', import.meta.url)))
     const args = process.argv.slice(2)
-    let base = null
-    try { base = git(root, ['merge-base', 'origin/main', 'HEAD']) } catch { /* no origin/main: every file counts as new */ }
-    let files = args.filter((arg) => arg !== '--changed').map((file) => path.relative(root, path.resolve(file)))
+    const base = contentBase(root)
+    let files = args.filter((arg) => arg !== '--changed').map((file) => path.relative(root, path.resolve(file)).split(path.sep).join('/'))
     if (args.includes('--changed')) {
       if (!base) throw new Error('check:editorial --changed needs origin/main; fetch it first (CI: actions/checkout with fetch-depth: 0)')
-      files = [...git(root, ['diff', '--name-only', '--diff-filter=d', base, '--', ...CONTENT_DIRS]).split('\n'), ...git(root, ['ls-files', '--others', '--exclude-standard', '--', ...CONTENT_DIRS]).split('\n')].filter((file) => file.endsWith('.md'))
+      files = changedMarkdownFiles(root, base)
     }
     if (!files.length && !args.includes('--changed')) throw new Error('Usage: npm run check:editorial -- <post.md ...> | --changed')
     const routes = routeInventory(root)
@@ -151,8 +144,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     let failed = 0
     for (const file of files) {
       let isNew = true
-      try { if (base) { git(root, ['cat-file', '-e', `${base}:${file}`]); isNew = false } } catch { /* not on origin/main */ }
-      const { errors, warnings, words } = checkEditorial(fs.readFileSync(path.join(root, file), 'utf8'), { isNew, routes, rules, assetExists: (asset) => fs.existsSync(path.join(root, 'public', asset)) })
+      try { if (base) { git(root, 'cat-file', '-e', `${base}:${file}`); isNew = false } } catch { /* not on origin/main */ }
+      const section = MARKDOWN_SECTIONS[path.dirname(file)]
+      const { errors, warnings, words } = checkEditorial(fs.readFileSync(path.join(root, file), 'utf8'), { isNew, section, routes, rules, assetExists: (asset) => fs.existsSync(path.join(root, 'public', asset)) })
       console.log(`${errors.length ? '✗' : '✓'} ${file} (${isNew ? 'new' : 'update'}, ${words} words, ${errors.length} errors, ${warnings.length} warnings)`)
       for (const error of errors) console.log(`  error: ${error}`)
       for (const warning of warnings) console.log(`  warn:  ${warning}`)

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
+import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { generateRegistries, publish, validateChangedPosts } from './publish-blog.mjs'
 import { inventory, prepareUpdate } from './content-loop/content.mjs'
@@ -134,4 +135,27 @@ test('full generation cannot silently register an invalid second draft', (t) => 
   assert.throws(() => publish(root, 'content/blog-posts/first.md'), /primaryKeyword/)
   assert.throws(() => validateChangedPosts(root), /primaryKeyword/)
   assert.equal(read('src/generatedBlogPosts.ts'), before)
+})
+
+test('validation includes changed Markdown paths that Git would quote', (t) => {
+  const { root, write, read } = fixture(t)
+  const git = (...args) => execFileSync('git', args, { cwd: root, stdio: 'pipe' })
+  git('init', '-q')
+  git('add', '.')
+  git('-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.com', 'commit', '-qm', 'Base')
+  git('update-ref', 'refs/remotes/origin/main', 'HEAD')
+  const file = 'content/blog-posts/tab\tname.md'
+  write(file, post({ slug: 'second', primaryKeyword: '' }))
+  const before = read('src/generatedBlogPosts.ts')
+  assert.throws(() => publish(root, 'content/blog-posts/first.md'), /primaryKeyword/)
+  git('add', file)
+  assert.throws(() => validateChangedPosts(root), /primaryKeyword/)
+  assert.equal(read('src/generatedBlogPosts.ts'), before)
+})
+
+test('a cover must be a file', (t) => {
+  const { root, write } = fixture(t)
+  write('content/blog-posts/first.md', post({ coverImage: '/assets/cover.webp', coverAlt: 'Cover' }))
+  fs.mkdirSync(path.join(root, 'public/assets/cover.webp'))
+  assert.throws(() => publish(root, 'content/blog-posts/first.md'), /Cover asset is missing/)
 })

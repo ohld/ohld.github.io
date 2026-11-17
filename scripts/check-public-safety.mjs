@@ -75,13 +75,10 @@ function listRepoEntries(relativeDir) {
   return fs.readdirSync(fullDir, { recursive: true }).map((p) => `${relativeDir}/${p}`)
 }
 
-const publicEntries = [
-  ...listRepoEntries('public'),
-  ...listRepoEntries('migration'),
-  ...listRepoEntries('content'),
-]
+const publicEntries = listRepoEntries('public')
+const contentEntries = listRepoEntries('content')
 
-for (const entry of publicEntries) {
+for (const entry of [...publicEntries, ...listRepoEntries('migration'), ...contentEntries]) {
   const normalized = String(entry).toLowerCase()
   for (const hint of forbiddenPathHints) {
     if (normalized.includes(hint)) {
@@ -92,23 +89,20 @@ for (const entry of publicEntries) {
 
 // Published files must not carry local machine paths (cover sidecars used to leak the reference file path).
 const textFile = /\.(json|md|txt|html|xml|csv|svg|js|css|ya?ml|webmanifest)$/i
-for (const entry of [...listRepoEntries('public'), ...listRepoEntries('content')]) {
+// These two existing tutorials intentionally document the container's workspace.
+// Exempt only their exact code examples, never a username across all public files.
+const tutorials = ['ai-agent-na-servere-24-7', 'always-on-ai-agent-server-setup']
+const scrubTutorial = (article) => ({ ...article, bodyHtml: article.bodyHtml.replace(/<code>\/home\/agent\/workspace\/(?:memory\.md)?<\/code>/g, '<code>container workspace</code>') })
+for (const entry of [...publicEntries, ...contentEntries]) {
   const fullPath = path.join(root, String(entry))
   if (!textFile.test(fullPath) || !fs.statSync(fullPath).isFile()) continue
   const content = fs.readFileSync(fullPath, 'utf8')
-  // These two existing tutorials intentionally document the container's workspace.
-  // Exempt only their exact code examples, never a username across all public files.
   let scanned = content
   if (entry === 'content/articles/imported-content.json') {
-    const tutorials = new Set(['/ai-agent-na-servere-24-7/', '/always-on-ai-agent-server-setup/'])
-    const articles = JSON.parse(content)
-    scanned = JSON.stringify(articles.map((article) => tutorials.has(article.path)
-      ? { ...article, bodyHtml: article.bodyHtml.replace(/<code>\/home\/agent\/workspace\/(?:memory\.md)?<\/code>/g, '<code>container workspace</code>') }
-      : article))
-  }
-  if (['public/generated/imported-articles/ai-agent-na-servere-24-7.json', 'public/generated/imported-articles/always-on-ai-agent-server-setup.json'].includes(entry)) {
-    const article = JSON.parse(content)
-    scanned = JSON.stringify({ ...article, bodyHtml: article.bodyHtml.replace(/<code>\/home\/agent\/workspace\/(?:memory\.md)?<\/code>/g, '<code>container workspace</code>') })
+    scanned = JSON.stringify(JSON.parse(content).map((article) =>
+      tutorials.some((slug) => article.path === `/${slug}/`) ? scrubTutorial(article) : article))
+  } else if (tutorials.some((slug) => entry === `public/generated/imported-articles/${slug}.json`)) {
+    scanned = JSON.stringify(scrubTutorial(JSON.parse(content)))
   }
   // A URL pathname such as https://example.com/home/topic/ is not a local path.
   scanned = scanned.replace(/https?:\/\/[^\s<>"'`\\]+/gi, '')

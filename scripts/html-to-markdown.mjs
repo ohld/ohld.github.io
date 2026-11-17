@@ -9,18 +9,35 @@ const decode = (text) => text
   }).replace(/&amp;/g, '&')
 const strip = (html) => html.replace(/<[^>]+>/g, '')
 
+function backtickFence(text, minimum) {
+  let length = minimum
+  for (const [run] of text.matchAll(/`+/g)) length = Math.max(length, run.length + 1)
+  return '`'.repeat(length)
+}
+
 export function htmlToMarkdown(html = '') {
   const stash = []
   const keep = (text) => `\u0000${stash.push(text) - 1}\u0000`
   const restore = (text) => text.replace(/\u0000(\d+)\u0000/g, (_match, index) => stash[index])
-  const attr = (tag, name) => decode(tag.match(new RegExp(`\\b${name}=(["'])(.*?)\\1`, 'i'))?.[2] || '')
+  const attr = (tag, name) => {
+    for (const [, key, doubleQuoted, singleQuoted, unquoted] of tag.matchAll(/\s+([\w:-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g)) {
+      if (key.toLowerCase() === name) return decode(doubleQuoted ?? singleQuoted ?? unquoted)
+    }
+    return ''
+  }
   const lists = []
   const inline = (text) => text
-    .replace(/<code\b[^>]*>([\s\S]*?)<\/code>/gi, (_match, code) => keep(`\`${decode(strip(code))}\``))
+    .replace(/<code\b[^>]*>([\s\S]*?)<\/code>/gi, (_match, code) => {
+      const text = decode(strip(code))
+      const fence = backtickFence(text, 1)
+      const padded = text.startsWith(' ') && text.endsWith(' ') && text.trim()
+      const pad = text.startsWith('`') || text.endsWith('`') || padded ? ' ' : ''
+      return keep(`${fence}${pad}${text}${pad}${fence}`)
+    })
     .replace(/<(strong|b)\b[^>]*>([\s\S]*?)<\/\1>/gi, (_match, _tag, value) => value.trim() ? `**${value.trim()}**` : '')
     .replace(/<(em|i)\b[^>]*>([\s\S]*?)<\/\1>/gi, (_match, _tag, value) => value.trim() ? `*${value.trim()}*` : '')
-    .replace(/<img\b[^>]*>/gi, (tag) => keep(`![${attr(tag, 'alt')}](${attr(tag, 'src')})`))
-    .replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, (tag, label) => {
+    .replace(/<img\b(?:[^<>"']|"[^"]*"|'[^']*')*>/gi, (tag) => keep(`![${attr(tag, 'alt')}](${attr(tag, 'src')})`))
+    .replace(/(<a\b(?:[^<>"']|"[^"]*"|'[^']*')*>)([\s\S]*?)<\/a>/gi, (_match, tag, label) => {
       const href = attr(tag, 'href')
       const text = strip(label).replace(/\s+/g, ' ').trim()
       return href && text ? `[${text}](${keep(href)})` : text
@@ -32,12 +49,12 @@ export function htmlToMarkdown(html = '') {
     .replace(/<pre\b[^>]*>([\s\S]*?)<\/pre>/gi, (_match, code) => {
       const language = code.match(/class="[^"]*language-([\w-]+)/)?.[1] || ''
       const text = decode(strip(code)).replace(/\n+$/, '')
-      const fence = '`'.repeat(Math.max(3, ...[...text.matchAll(/`+/g)].map((match) => match[0].length + 1)))
+      const fence = backtickFence(text, 3)
       return `\n\n${keep(`${fence}${language}\n${text}\n${fence}`)}\n\n`
     })
     .replace(/<table\b[^>]*>([\s\S]*?)<\/table>/gi, (_match, table) => {
       const rows = [...table.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map((row) =>
-        [...row[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map((cell) => restore(restore(decode(strip(inline(cell[1]))))).replace(/\s+/g, ' ').replace(/\|/g, '\\|').trim()))
+        [...row[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map((cell) => restore(decode(strip(inline(cell[1])))).replace(/\s+/g, ' ').replace(/\|/g, '\\|').trim()))
       if (!rows.length) return ''
       const line = (cells) => `| ${cells.join(' | ')} |`
       return `\n\n${keep([line(rows[0]), line(rows[0].map(() => '---')), ...rows.slice(1).map(line)].join('\n'))}\n\n`
@@ -62,5 +79,5 @@ export function htmlToMarkdown(html = '') {
     .replace(/<hr\b[^>]*>/gi, '\n\n---\n\n')
     .replace(/<\/?(p|div|section|figure|figcaption|ul|article|header|footer)\b[^>]*>/gi, '\n\n')
 
-  return restore(restore(decode(strip(inline(markdown))).replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim()))
+  return restore(decode(strip(inline(markdown))).replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim())
 }

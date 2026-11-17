@@ -33,6 +33,15 @@ test('code containing Markdown fences stays inside a longer fence', () => {
   assert.equal(htmlToMarkdown('<pre><code>```sh\necho &#x1f44b;\n```</code></pre>'), '````\n```sh\necho 👋\n```\n````')
 })
 
+test('inline code preserves literal backticks and leading and trailing spaces', () => {
+  assert.equal(htmlToMarkdown('<p>Use <code>`ls`</code> and <code> padded </code>.</p>'), 'Use `` `ls` `` and `  padded  `.')
+})
+
+test('links use the href on the opening tag with optional spaces around equals', () => {
+  const html = `<a data-href="/tracking/" title='x href="/tooltip/"' href = '/article/'><span title="href='/nested/'">Article</span></a>`
+  assert.equal(htmlToMarkdown(html), '[Article](/article/)')
+})
+
 test('real imported articles retain every section heading', () => {
   const articles = JSON.parse(fs.readFileSync(new URL('../content/articles/imported-content.json', import.meta.url), 'utf8'))
   let checked = 0
