@@ -10,6 +10,7 @@ import { execFileSync } from 'node:child_process'
 import ts from 'typescript'
 import { fileURLToPath } from 'node:url'
 import { PRIVATE_FIELDS, arrayDeclaration, assert, inventory, objectValue, parseMarkdown, renderCard, sourceFile } from './content-loop/content.mjs'
+import { staticPrerenderRoutes } from './prerender-routes.mjs'
 
 const RUNTIME = 'src/generatedBlogPosts.ts'
 const METADATA = 'src/generatedBlogMetadata.ts'
@@ -89,13 +90,18 @@ export function validatePost(root, contentFile) {
     assert(meta.coverImage.startsWith('/') && fs.existsSync(path.join(root, 'public', meta.coverImage)), `Cover asset is missing: public${meta.coverImage}`)
   }
 
-  const items = inventory(root).filter((item) => item.format === 'markdown') // also rejects duplicate canonical URLs
+  const items = inventory(root) // also rejects duplicate canonical URLs
   const self = items.find((item) => item.content_file === contentFile)
-  // The article renderer looks posts up by slug alone, so an article slug must be unique across languages.
-  const sameSlug = items.find((item) => item !== self && item.section === 'articles' && self.section === 'articles' && item.slug === self.slug)
+  // The article renderer looks generated posts up by slug before custom articles. Reserve all
+  // article identities, including imported and prerendered custom pages, across languages.
+  const customArticles = [...staticPrerenderRoutes(root)].flatMap((canonical_path) => {
+    const match = canonical_path.match(/^\/(?:ru\/|en\/)?articles\/([^/]+)\/$/)
+    return match ? [{ slug: match[1], canonical_path, section: 'articles' }] : []
+  })
+  const sameSlug = [...items, ...customArticles].find((item) => item !== self && (item.section === 'articles' || item.format === 'legacy') && self.section === 'articles' && item.slug === self.slug)
   assert(!sameSlug, `Article slug is already used by ${sameSlug?.canonical_path}`)
   // Dates are editable, so they cannot grant a new URL ownership over an existing one.
-  const owner = items.find((item) => item !== self && item.lang === self.lang && normalizeKeyword(item.primaryKeyword) === normalizeKeyword(self.primaryKeyword))
+  const owner = items.find((item) => item !== self && item.format === 'markdown' && item.lang === self.lang && normalizeKeyword(item.primaryKeyword) === normalizeKeyword(self.primaryKeyword))
   assert(!owner, `primaryKeyword "${self.primaryKeyword}" is already owned by ${owner?.canonical_path}; resolve the conflict before registering this page`)
 
   const warnings = []

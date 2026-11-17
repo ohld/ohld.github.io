@@ -1,6 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { checkEditorial } from './check-editorial.mjs'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { checkEditorial, routeInventory } from './check-editorial.mjs'
+import { staticPrerenderRoutes } from './prerender-routes.mjs'
 
 const routes = new Set(['/ru/blog/', '/ru/blog/first/', '/ru/articles/second/'])
 const filler = Array.from({ length: 130 }, (_, i) => `Проверил шаг ${i} на живом сервере руками.`).join(' ')
@@ -103,4 +108,29 @@ test('numeric limits need a date or source hint; vague limits are left to review
   const result = check(`${good}\n\nЛимит 100 запросов.\n\nQuota: 20 calls.\n\n100 requests/minute.\n\nЛимит 50 запросов по [документации](https://example.com).\n\nЛимиты бывают разными.`)
   assert.deepEqual(result.errors, [])
   assert.equal(result.warnings.filter((warning) => /price, version or limit/.test(warning)).length, 3)
+})
+
+test('links to the existing private channel pass the editorial gate', () => {
+  const root = fileURLToPath(new URL('..', import.meta.url))
+  const publicRoutes = routeInventory(root)
+  const body = `${filler}\n\n- [Канал](/private-channel/)\n- [Обо мне](/about/)`
+  assert.deepEqual(check(body, { routes: publicRoutes }).errors, [])
+  for (const route of staticPrerenderRoutes(root)) assert.ok(publicRoutes.has(route), route)
+})
+
+test('the route inventory follows static prerender declarations, including appended routes', (t) => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-editorial-routes-'))
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }))
+  for (const directory of ['scripts', 'content/blog-posts', 'content/seo-articles', 'content/articles']) fs.mkdirSync(path.join(root, directory), { recursive: true })
+  const write = (file, text) => fs.writeFileSync(path.join(root, file), text)
+  write('content/articles/imported-index.json', '[]')
+  write('content/articles/legacy-redirects.json', '[]')
+  write('content/topic-hubs.json', '{"hubs": []}')
+  write('scripts/prerender.mjs', `
+    const unrelated = { path: '/not-a-route' }
+    const ROUTES = [{ path: '/' }, { path: '/new-static-page' }]
+    ROUTES.push({ path: '/appended-static-page/' })
+    ROUTES.push({ path: dynamicPath })
+  `)
+  assert.deepEqual([...routeInventory(root)], ['/', '/new-static-page/', '/appended-static-page/'])
 })

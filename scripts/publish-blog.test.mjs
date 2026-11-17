@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { generateRegistries, publish, validateChangedPosts } from './publish-blog.mjs'
 import { inventory, prepareUpdate } from './content-loop/content.mjs'
 
@@ -11,10 +12,11 @@ const post = (fields) => `---\n${Object.entries({ slug: 'first', title: 'Пер�
 function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'site-publish-blog-'))
   t.after(() => fs.rmSync(root, { recursive: true, force: true }))
-  for (const folder of ['content/blog-posts', 'content/seo-articles', 'content/articles', 'src', 'public/assets']) fs.mkdirSync(path.join(root, folder), { recursive: true })
+  for (const folder of ['content/blog-posts', 'content/seo-articles', 'content/articles', 'src', 'public/assets', 'scripts']) fs.mkdirSync(path.join(root, folder), { recursive: true })
   const write = (file, text) => fs.writeFileSync(path.join(root, file), text)
   const read = (file) => fs.readFileSync(path.join(root, file), 'utf8')
   write('content/articles/imported-index.json', '[]')
+  write('scripts/prerender.mjs', "const ROUTES = [{ path: '/' }]\n")
   write('content/blog-posts/first.md', post({}))
   write('src/generatedBlogPosts.ts', "import old from '../content/blog-posts/first.md?raw'\n\nconst sources = [old]\nconst articleSources = []\nexport const all = [...sources, ...articleSources]\n")
   write('src/generatedBlogMetadata.ts', "const generatedBlogPostMeta = [{ slug: 'first', lang: 'ru', title: 'Stale', thumbnailImage: '/assets/card.webp' }]\nconst generatedArticlePostMeta = []\nexport const all = [generatedBlogPostMeta, generatedArticlePostMeta]\n")
@@ -47,6 +49,33 @@ test('an updated post refreshes its card', (t) => {
   write('content/blog-posts/first.md', post({ updatedAt: '2026-02-01', title: 'Новый заголовок' }))
   assert.deepEqual(publish(root, 'content/blog-posts/first.md').changed_files, ['src/generatedBlogMetadata.ts'])
   assert.match(read('src/generatedBlogMetadata.ts'), /title: 'Новый заголовок',[\s\S]*updatedAt: '2026-02-01',/)
+})
+
+test('custom article slugs cannot be shadowed by a new English article', (t) => {
+  const { root, write, read } = fixture(t)
+  write('scripts/prerender.mjs', fs.readFileSync(fileURLToPath(new URL('./prerender.mjs', import.meta.url)), 'utf8'))
+  const files = ['src/generatedBlogPosts.ts', 'src/generatedBlogMetadata.ts']
+  const before = files.map(read)
+  for (const [slug, canonical] of [
+    ['ai-tools-for-designers-design-engineering-agents', '/ru/articles/ai-tools-for-designers-design-engineering-agents/'],
+    ['markdown-vs-html', '/articles/markdown-vs-html/'],
+  ]) {
+    write('content/seo-articles/custom-en.md', post({ slug, lang: 'en', primaryKeyword: 'custom guide' }))
+    assert.throws(() => publish(root, 'content/seo-articles/custom-en.md'), { message: `Article slug is already used by ${canonical}` })
+    assert.throws(() => validateChangedPosts(root), /Article slug is already used by/)
+    assert.deepEqual(files.map(read), before)
+  }
+})
+
+test('imported article identities participate in slug uniqueness across languages', (t) => {
+  const { root, write, read } = fixture(t)
+  write('content/articles/imported-index.json', JSON.stringify([{ path: '/imported-guide/', slug: 'imported-guide', lang: 'ru', title: 'Imported guide' }]))
+  write('content/seo-articles/imported-en.md', post({ slug: 'imported-guide', lang: 'en', primaryKeyword: 'imported guide' }))
+  const files = ['src/generatedBlogPosts.ts', 'src/generatedBlogMetadata.ts']
+  const before = files.map(read)
+  assert.throws(() => publish(root, 'content/seo-articles/imported-en.md'), /Article slug is already used by \/imported-guide\//)
+  assert.throws(() => validateChangedPosts(root), /Article slug is already used by/)
+  assert.deepEqual(files.map(read), before)
 })
 
 test('invalid posts are refused before any registry write', (t) => {

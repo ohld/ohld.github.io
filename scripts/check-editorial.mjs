@@ -8,9 +8,9 @@ import path from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { inventory, parseMarkdown } from './content-loop/content.mjs'
+import { staticPrerenderRoutes } from './prerender-routes.mjs'
 
 const CONTENT_DIRS = ['content/blog-posts', 'content/seo-articles']
-const STATIC_ROUTES = ['/', '/en/', '/about/', '/en/about/', '/ru/blog/', '/en/blog/', '/ru/articles/', '/en/articles/', '/archive/', '/karta-postov-telegram/', '/privacy/', '/articles/markdown-vs-html/', '/ru/articles/ai-tools-for-designers-design-engineering-agents/']
 const MIN_WORDS = 600
 const SITE = /^(?:https?:)?\/\/(www\.)?okhlopkov\.com(?=\/|$)/i
 const PRICE = /[$€₽]\s?\d|\d\s?(₽|руб|usd|eur|€|\$)|\/(мес|mo|month)(?![\p{L}])|per month|в месяц/iu
@@ -27,7 +27,7 @@ export function routeInventory(root) {
   const read = (file) => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'))
   const redirected = new Set(read('content/articles/legacy-redirects.json').map((redirect) => redirect.from))
   return new Set([
-    ...STATIC_ROUTES,
+    ...staticPrerenderRoutes(root),
     ...read('content/topic-hubs.json').hubs.map((hub) => `/topics/${hub.slug}/`),
     ...inventory(root).map((item) => item.canonical_path).filter((route) => !redirected.has(route)),
   ])
