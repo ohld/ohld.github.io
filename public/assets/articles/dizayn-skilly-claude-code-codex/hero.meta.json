@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-11-17",
+  "caption": "ДИЗАЙН-СКИЛЛЫ",
+  "alt": "Глитч-постер в сине-фиолетовых тонах с надписью «ДИЗАЙН-СКИЛЛЫ»",
+  "generation": {
+    "model": "nano-banana-pro-2k",
+    "method": "Pinterest reference edit with source-lettering repair"
+  },
+  "reference": {
+    "pinUrl": "https://www.pinterest.com/pin/839569555579668498/"
+  },
+  "output": {
+    "path": "/assets/articles/dizayn-skilly-claude-code-codex/hero.webp",
+    "format": "webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 167346,
+    "sha256": "b466ecc8ebd497185ec3a7a1d87a1444f7868f18fb9bd98c466256cc284df6a3"
+  }
+}

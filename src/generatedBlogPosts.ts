@@ -10,6 +10,7 @@ import blogMyAiSetup2026ClaudeCodeCursorSpokenlyGhostty from '../content/blog-po
 import blogVibecodingTelegramMiniAppClaudeCode from '../content/blog-posts/vibecoding-telegram-mini-app-claude-code.md?raw'
 import articleAiAgentVTelegramRabochiyInterfeis from '../content/seo-articles/ai-agent-v-telegram-rabochiy-interfeis.md?raw'
 import articleAiReelsSeoPipelineTelegramClaudeCode from '../content/seo-articles/ai-reels-seo-pipeline-telegram-claude-code.md?raw'
+import articleDizaynSkillyClaudeCodeCodex from '../content/seo-articles/dizayn-skilly-claude-code-codex.md?raw'
 import articleGdeDeshevleKupitTelegramStars from '../content/seo-articles/gde-deshevle-kupit-telegram-stars.md?raw'
 import articleHermesAgentVpsTelegramSetup from '../content/seo-articles/hermes-agent-vps-telegram-setup.md?raw'
 import articleHermesAgentVpsTelegramUstanovka from '../content/seo-articles/hermes-agent-vps-telegram-ustanovka.md?raw'
@@ -70,6 +71,7 @@ const sources = [
 const articleSources = [
   articleAiAgentVTelegramRabochiyInterfeis,
   articleAiReelsSeoPipelineTelegramClaudeCode,
+  articleDizaynSkillyClaudeCodeCodex,
   articleGdeDeshevleKupitTelegramStars,
   articleHermesAgentVpsTelegramSetup,
   articleHermesAgentVpsTelegramUstanovka,
