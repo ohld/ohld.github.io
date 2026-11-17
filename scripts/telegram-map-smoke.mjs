@@ -23,15 +23,19 @@ const boxesOverlap = (left, right) => (
 
 async function assertMapLabels(page, expectedCount) {
   await page.waitForFunction(count => document.querySelectorAll('.atlas-map-label').length === count, expectedCount)
-  const canvasBox = await page.locator('.atlas-canvas-wrap').boundingBox()
-  const labelBoxes = await page.locator('.atlas-map-label').evaluateAll(elements => elements.map(element => {
-    const box = element.getBoundingClientRect()
-    return { text: element.textContent || '', left: box.left, right: box.right, top: box.top, bottom: box.bottom }
+  // Read all bounds in one frame; smooth scrolling can move the map between browser calls.
+  const { canvas, labelBoxes } = await page.locator('.atlas-canvas-wrap').evaluate(element => ({
+    canvas: element.getBoundingClientRect().toJSON(),
+    labelBoxes: Array.from(element.querySelectorAll('.atlas-map-label'), label => ({
+      text: label.textContent,
+      ...label.getBoundingClientRect().toJSON(),
+    })),
   }))
-  assert.ok(canvasBox, 'map must have bounds')
+  assert.ok(canvas.width > 0 && canvas.height > 0, 'map must have visible bounds')
+  assert.equal(labelBoxes.length, expectedCount, 'all map labels must be inside the canvas wrapper')
   for (const label of labelBoxes) {
-    assert.ok(label.left >= canvasBox.x && label.right <= canvasBox.x + canvasBox.width, `${label.text} must fit horizontally inside the map`)
-    assert.ok(label.top >= canvasBox.y && label.bottom <= canvasBox.y + canvasBox.height, `${label.text} must fit vertically inside the map`)
+    assert.ok(label.left >= canvas.left && label.right <= canvas.right, `${label.text} must fit horizontally inside the map`)
+    assert.ok(label.top >= canvas.top && label.bottom <= canvas.bottom, `${label.text} must fit vertically inside the map`)
   }
   for (let leftIndex = 0; leftIndex < labelBoxes.length; leftIndex += 1) {
     for (let rightIndex = leftIndex + 1; rightIndex < labelBoxes.length; rightIndex += 1) {

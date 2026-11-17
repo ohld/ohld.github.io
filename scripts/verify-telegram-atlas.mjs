@@ -67,6 +67,9 @@ for (const post of data.posts) {
 const bytes = Buffer.byteLength(raw)
 assert.ok(bytes < 6_000_000, `atlas JSON is too large: ${bytes} bytes`)
 
+const mapMeta = JSON.parse(await readFile('content/telegram-map/meta.json', 'utf8'))
+assert.equal(mapMeta.title, 'Карта постов Telegram-канала @danokhlopkov')
+
 const [blogSource, appSource, pageSource, prerenderSource] = await Promise.all([
   readFile(resolve(process.cwd(), 'src/blog.ts'), 'utf8'),
   readFile(resolve(process.cwd(), 'src/App.tsx'), 'utf8'),
@@ -75,14 +78,14 @@ const [blogSource, appSource, pageSource, prerenderSource] = await Promise.all([
 ])
 
 assert.match(blogSource, /path:\s*['"]\/karta-postov-telegram\/['"]/, 'Russian blog list must include the Telegram posts map')
-assert.match(blogSource, /title:\s*['"]Карта моих постов в Telegram['"]/, 'Blog card must use the explicit map title')
+assert.match(blogSource, /title:\s*mapMeta\.title/, 'Blog card must use the explicit map title')
 assert.match(blogSource, /thumbnail:\s*['"]\/assets\/blog\/karta-postov-telegram\/telegram-posts-map-cover-20260720\.webp['"]/, 'Blog card must use the dedicated cover')
 assert.match(appSource, /path=['"]\/karta-postov-telegram['"][^>]+element=\{<TelegramMap\s*\/>\}/, 'App must serve the atlas at the explicit route')
 assert.match(appSource, /function LegacyTelegramMapRedirect\(\)/, 'The old route must use a query-preserving redirect component')
 assert.match(appSource, /pathname:\s*['"]\/karta-postov-telegram\/['"][\s\S]+search:\s*location\.search[\s\S]+hash:\s*location\.hash/, 'The SPA redirect must preserve query parameters and hashes')
-assert.match(pageSource, /title:\s*['"]Карта моих постов в Telegram — Даниил Охлопков['"]/, 'Atlas metadata must use the explicit page title')
+assert.match(pageSource, /title:\s*mapMeta\.title/, 'Atlas metadata must use the explicit page title')
 assert.match(pageSource, /canonical:\s*absoluteUrl\(['"]\/karta-postov-telegram\/['"]\)/, 'Atlas metadata must use the new canonical URL')
-assert.match(pageSource, /<h1>Карта моих постов в Telegram<\/h1>/, 'Visible atlas heading must explain whose posts are mapped')
+assert.match(pageSource, /<h1>\{mapMeta\.title\}<\/h1>/, 'Visible atlas heading must explain whose posts are mapped')
 assert.doesNotMatch(pageSource, /<img[^>]+telegram-posts-map-cover-20260720/, 'The cover belongs only in listings and metadata, not inside the atlas page DOM')
 assert.match(prerenderSource, /path:\s*['"]\/karta-postov-telegram['"]/, 'Prerender must emit the new canonical route')
 assert.match(prerenderSource, /from:\s*['"]\/telegram-map['"][^}]+to:\s*['"]\/karta-postov-telegram\/['"]/, 'Prerender must emit an old-route redirect')
