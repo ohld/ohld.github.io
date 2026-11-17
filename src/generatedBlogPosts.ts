@@ -1,25 +1,25 @@
-import aiAgentsFromTelegram from '../content/blog-posts/ai-agents-s-chego-nachat.md?raw'
-import claudeVsCodexFromTelegram from '../content/blog-posts/claude-code-vs-codex-perehod.md?raw'
-import gstackGoalFromTelegram from '../content/blog-posts/gstack-goal-office-hours-ai-workflow.md?raw'
-import companyContextFromTelegram from '../content/blog-posts/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain.md?raw'
-import improveArchitectureFromTelegram from '../content/blog-posts/improve-codebase-architecture-prompt.md?raw'
-import aiSetupFromTelegram from '../content/blog-posts/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty.md?raw'
-import tmaVibecodingFromTelegram from '../content/blog-posts/vibecoding-telegram-mini-app-claude-code.md?raw'
-import vacationAgentsFromTelegram from '../content/blog-posts/business-on-ai-agent-claude-code-paperclip-gstack.md?raw'
-import botRevolution from '../content/blog-posts/bot-revolution.md?raw'
-import botRevolutionEn from '../content/blog-posts/bot-revolution-en.md?raw'
-import aiReelsSeoPipelineArticle from '../content/seo-articles/ai-reels-seo-pipeline-telegram-claude-code.md?raw'
-import claudeCodeSkillsArticle from '../content/seo-articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok.md?raw'
-import hermesVsOpenClawArticle from '../content/seo-articles/hermes-agent-vs-openclaw.md?raw'
-import telegramAgentInterfaceArticle from '../content/seo-articles/ai-agent-v-telegram-rabochiy-interfeis.md?raw'
-import telegramStarsArticle from '../content/seo-articles/gde-deshevle-kupit-telegram-stars.md?raw'
-import telegramBotMtprotoArticle from '../content/seo-articles/telegram-bot-api-vs-mtproto-methods.md?raw'
-import hermesVpsTelegramRuArticle from '../content/seo-articles/hermes-agent-vps-telegram-ustanovka.md?raw'
-import hermesVpsTelegramEnArticle from '../content/seo-articles/hermes-agent-vps-telegram-setup.md?raw'
-import telegramBotsMiniAppsTrendsArticle from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026.md?raw'
-import telegramBotsMiniAppsTrendsEnArticle from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026-en.md?raw'
-import tonUsersTokenFlowsDuneArticle from '../content/seo-articles/how-to-analyze-ton-users-and-token-flows-on-dune.md?raw'
-import tonOnChainDataAnalysisDuneArticle from '../content/seo-articles/ton-on-chain-data-analysis-dune.md?raw'
+import blogAiAgentsSChegoNachat from '../content/blog-posts/ai-agents-s-chego-nachat.md?raw'
+import blogAiTransformaciyaKompaniiObshchiyKontekstSkillsGbrain from '../content/blog-posts/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain.md?raw'
+import blogBotRevolutionEn from '../content/blog-posts/bot-revolution-en.md?raw'
+import blogBotRevolution from '../content/blog-posts/bot-revolution.md?raw'
+import blogBusinessOnAiAgentClaudeCodePaperclipGstack from '../content/blog-posts/business-on-ai-agent-claude-code-paperclip-gstack.md?raw'
+import blogClaudeCodeVsCodexPerehod from '../content/blog-posts/claude-code-vs-codex-perehod.md?raw'
+import blogGstackGoalOfficeHoursAiWorkflow from '../content/blog-posts/gstack-goal-office-hours-ai-workflow.md?raw'
+import blogImproveCodebaseArchitecturePrompt from '../content/blog-posts/improve-codebase-architecture-prompt.md?raw'
+import blogMyAiSetup2026ClaudeCodeCursorSpokenlyGhostty from '../content/blog-posts/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty.md?raw'
+import blogVibecodingTelegramMiniAppClaudeCode from '../content/blog-posts/vibecoding-telegram-mini-app-claude-code.md?raw'
+import articleAiAgentVTelegramRabochiyInterfeis from '../content/seo-articles/ai-agent-v-telegram-rabochiy-interfeis.md?raw'
+import articleAiReelsSeoPipelineTelegramClaudeCode from '../content/seo-articles/ai-reels-seo-pipeline-telegram-claude-code.md?raw'
+import articleGdeDeshevleKupitTelegramStars from '../content/seo-articles/gde-deshevle-kupit-telegram-stars.md?raw'
+import articleHermesAgentVpsTelegramSetup from '../content/seo-articles/hermes-agent-vps-telegram-setup.md?raw'
+import articleHermesAgentVpsTelegramUstanovka from '../content/seo-articles/hermes-agent-vps-telegram-ustanovka.md?raw'
+import articleHermesAgentVsOpenclaw from '../content/seo-articles/hermes-agent-vs-openclaw.md?raw'
+import articleHowToAnalyzeTonUsersAndTokenFlowsOnDune from '../content/seo-articles/how-to-analyze-ton-users-and-token-flows-on-dune.md?raw'
+import articleKakPravilnoPisatSkillyClaudeCode7Oshibok from '../content/seo-articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok.md?raw'
+import articleTelegramBotApiVsMtprotoMethods from '../content/seo-articles/telegram-bot-api-vs-mtproto-methods.md?raw'
+import articleTelegramBotsMiniAppsTrendsAugust2026En from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026-en.md?raw'
+import articleTelegramBotsMiniAppsTrendsAugust2026 from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026.md?raw'
+import articleTonOnChainDataAnalysisDune from '../content/seo-articles/ton-on-chain-data-analysis-dune.md?raw'
 
 interface BlogListItem {
   path: string
@@ -55,31 +55,31 @@ export interface GeneratedBlogPost {
 }
 
 const sources = [
-  botRevolution,
-  botRevolutionEn,
-  aiAgentsFromTelegram,
-  claudeVsCodexFromTelegram,
-  gstackGoalFromTelegram,
-  companyContextFromTelegram,
-  improveArchitectureFromTelegram,
-  aiSetupFromTelegram,
-  tmaVibecodingFromTelegram,
-  vacationAgentsFromTelegram,
+  blogAiAgentsSChegoNachat,
+  blogAiTransformaciyaKompaniiObshchiyKontekstSkillsGbrain,
+  blogBotRevolutionEn,
+  blogBotRevolution,
+  blogBusinessOnAiAgentClaudeCodePaperclipGstack,
+  blogClaudeCodeVsCodexPerehod,
+  blogGstackGoalOfficeHoursAiWorkflow,
+  blogImproveCodebaseArchitecturePrompt,
+  blogMyAiSetup2026ClaudeCodeCursorSpokenlyGhostty,
+  blogVibecodingTelegramMiniAppClaudeCode,
 ]
 
 const articleSources = [
-  telegramBotsMiniAppsTrendsArticle,
-  telegramBotsMiniAppsTrendsEnArticle,
-  tonUsersTokenFlowsDuneArticle,
-  tonOnChainDataAnalysisDuneArticle,
-  hermesVpsTelegramRuArticle,
-  hermesVpsTelegramEnArticle,
-  telegramBotMtprotoArticle,
-  aiReelsSeoPipelineArticle,
-  claudeCodeSkillsArticle,
-  hermesVsOpenClawArticle,
-  telegramAgentInterfaceArticle,
-  telegramStarsArticle,
+  articleAiAgentVTelegramRabochiyInterfeis,
+  articleAiReelsSeoPipelineTelegramClaudeCode,
+  articleGdeDeshevleKupitTelegramStars,
+  articleHermesAgentVpsTelegramSetup,
+  articleHermesAgentVpsTelegramUstanovka,
+  articleHermesAgentVsOpenclaw,
+  articleHowToAnalyzeTonUsersAndTokenFlowsOnDune,
+  articleKakPravilnoPisatSkillyClaudeCode7Oshibok,
+  articleTelegramBotApiVsMtprotoMethods,
+  articleTelegramBotsMiniAppsTrendsAugust2026En,
+  articleTelegramBotsMiniAppsTrendsAugust2026,
+  articleTonOnChainDataAnalysisDune,
 ]
 
 function parseFrontmatter(raw: string): GeneratedBlogPost {
