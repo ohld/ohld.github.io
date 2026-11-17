@@ -1,4 +1,4 @@
-import seoEnhancements from '../content/articles/seo-enhancements.json'
+import seoEnhancements from '../content/articles/seo-enhancements.json' with { type: 'json' }
 
 interface ArticleSeoEnhancement {
   title?: string

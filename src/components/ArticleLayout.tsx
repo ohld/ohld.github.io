@@ -1,10 +1,12 @@
-import { useEffect, type ReactNode } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
+import { ArticleEnding } from './ArticleEnding'
 import { BackButton } from './BackButton'
 import { Footer } from './Footer'
 import { enhanceCodeBlocks } from '../codeBlocks'
 import { imageDimensionsForUrl } from '../imageMetadata'
 import { absoluteUrl } from '../site'
 import { buildArticleStructuredData, faqItemsFromHtml, htmlToPlainText } from '../structuredData'
+import { useArticleSectionLinks } from '../useArticleSectionLinks'
 import { useDocumentMeta } from '../useDocumentMeta'
 
 interface ArticleLayoutProps {
@@ -52,6 +54,8 @@ export function ArticleLayout({
   section = lang === 'en' ? 'Blog' : 'Блог',
   children,
 }: ArticleLayoutProps) {
+  const articleRef = useRef<HTMLElement>(null)
+
   const canonicalUrl = absoluteUrl(canonical)
   const structuredImage = schemaImage || heroImage
   const heroDimensions = imageDimensionsForUrl(heroImage)
@@ -93,9 +97,11 @@ export function ArticleLayout({
     enhanceCodeBlocks(document)
   }, [canonical, bodyHtml])
 
+  useArticleSectionLinks(articleRef, canonical, lang, bodyHtml)
+
   return (
     <div className="page">
-      <article id="article-content" className="blog-article generated-blog-post article-engine" data-article-engine="article">
+      <article ref={bodyHtml ? articleRef : undefined} id="article-content" className="blog-article generated-blog-post article-engine" data-article-engine="article">
         <div className="subpage-header">
           <BackButton to={backTo} />
           <div className="blog-article-meta">
@@ -125,6 +131,7 @@ export function ArticleLayout({
             dangerouslySetInnerHTML={{ __html: bodyHtml }}
           />
         ) : children}
+        {bodyHtml && <ArticleEnding path={canonical} />}
       </article>
 
       <Footer />

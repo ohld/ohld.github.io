@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { startArticleReadingTracking, trackCodeCopy } from '../analytics'
-import { absoluteUrl, TELEGRAM_CHANNEL_URL } from '../site'
+import { ArticleEnding } from '../components/ArticleEnding'
+import { useArticleSectionLinks } from '../useArticleSectionLinks'
+import { absoluteUrl } from '../site'
 import { useDocumentMeta } from '../useDocumentMeta'
 import './BotRevolutionDraft.css'
 
@@ -83,6 +85,7 @@ const ARTICLE_IMAGE_ALT = 'The Bot Revolution — a weather map for a distribute
 export function EnglishBotRevolutionArticle() {
   const [copied, setCopied] = useState(false)
   const articleRef = useRef<HTMLElement>(null)
+  useArticleSectionLinks(articleRef, ARTICLE_PATH, 'en')
 
   useDocumentMeta({
     title: ARTICLE_SEO_TITLE,
@@ -180,6 +183,7 @@ export function EnglishBotRevolutionArticle() {
       </section>
 
       <section className="bot-revolution-timeline" id="timeline" aria-label="AI tools timeline" data-analytics-section="evolution" data-analytics-title="The evolution of AI tools">
+        <h2 className="bot-revolution-timeline-title">A short timeline of AI revolutions</h2>
         {timeline.map(([year, tool, take], index) => (
           <article className={index === timeline.length - 1 ? 'is-next' : undefined} key={year}>
             <span className="bot-revolution-year">{year}</span>
@@ -226,7 +230,7 @@ export function EnglishBotRevolutionArticle() {
 
       <section className="bot-revolution-chapter bot-revolution-chapter-reverse bot-revolution-community-chapter" data-analytics-section="team_structure" data-analytics-title="Division of labor between agents">
         <h2 className="bot-revolution-section-title">
-          <span>Not one super-agent,</span>
+          <span>Not one super-agent,</span>{' '}
           <span>but actual division of labor</span>
         </h2>
 
@@ -282,7 +286,7 @@ export function EnglishBotRevolutionArticle() {
 
       <section className="bot-revolution-chapter bot-revolution-final-chapter" data-analytics-section="chief_model" data-analytics-title="One Chief and a team of agents">
         <h2 className="bot-revolution-section-title">
-          <span>You can organize it</span>
+          <span>You can organize it</span>{' '}
           <span>like a small company.</span>
         </h2>
 
@@ -360,7 +364,7 @@ export function EnglishBotRevolutionArticle() {
           />
         </figure>
         <div className="bot-revolution-cost-copy">
-          <h2 className="bot-revolution-visually-hidden">So how much does it cost?</h2>
+          <h2>So how much does it cost?</h2>
           <p>
             I’m probably getting <ExternalLink href="https://x.ai/bot">SuperGrok Heavy for $300</ExternalLink>: <ExternalLink href="https://cursor.com/help/grok-bot/plans">the highest Grok Bot limits come with it</ExternalLink>. That means I can code properly with Grok CLI and automate ops <span className="bot-revolution-keep-together">in a familiar chat UI.</span>
           </p>
@@ -413,19 +417,8 @@ export function EnglishBotRevolutionArticle() {
           <strong>Follow along</strong>
         </p>
 
-        <p className="bot-revolution-related">
-          More: <a href="/en/articles/hermes-agent-vps-telegram-setup/">set up Hermes Agent on a VPS</a> and <a href="/en/articles/telegram-bot-api-vs-mtproto-methods/">compare the Bot API with MTProto</a>.
-        </p>
-
+        <ArticleEnding path={ARTICLE_PATH} />
         <div className="bot-revolution-telegram-cards">
-          <a className="bot-revolution-telegram-card" href={TELEGRAM_CHANNEL_URL} target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_channel">
-            <div className="bot-revolution-telegram-card-profile">
-              <img src="/assets/drafts/bot-revolution/telegram-cards/dan-channel.webp" srcSet="/assets/drafts/bot-revolution/telegram-cards/dan-channel-64.webp 64w, /assets/drafts/bot-revolution/telegram-cards/dan-channel-96.webp 96w, /assets/drafts/bot-revolution/telegram-cards/dan-channel-144.webp 144w, /assets/drafts/bot-revolution/telegram-cards/dan-channel.webp 320w" sizes="44px" alt="Dan Okhlopkov" width="320" height="320" loading="lazy" />
-              <div><span>Telegram channel</span><strong>Dan Okhlopkov</strong></div>
-            </div>
-            <span className="bot-revolution-telegram-card-action">Follow</span>
-          </a>
-
           <a className="bot-revolution-telegram-card" href="https://x.com/danokhlopkov" target="_blank" rel="noopener noreferrer" data-cta-id="bot_revolution_x">
             <div className="bot-revolution-telegram-card-profile">
               <img src="/assets/drafts/bot-revolution/telegram-cards/dan-x.webp" srcSet="/assets/drafts/bot-revolution/telegram-cards/dan-x-64.webp 64w, /assets/drafts/bot-revolution/telegram-cards/dan-x-96.webp 96w, /assets/drafts/bot-revolution/telegram-cards/dan-x-144.webp 144w, /assets/drafts/bot-revolution/telegram-cards/dan-x.webp 320w" sizes="44px" alt="okhlopkov.ton on X" width="320" height="320" loading="lazy" />

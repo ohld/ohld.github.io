@@ -12,6 +12,8 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { articleEndingHtml, articleEndingMarkdown } from '../src/articleEnding.mts'
+import { withSectionLinks } from '../src/articleSections.mts'
 import { htmlToMarkdown } from './html-to-markdown.mjs'
 
 const dist = 'dist'
@@ -1227,7 +1229,7 @@ function buildFallback(title, mdBody, withArticleContentId = false, lang = 'ru')
   return `<header><h1>${escape(title)}</h1></header><article${articleId}>${article}</article><nav>${nav}</nav><footer>${socials}</footer>`
 }
 
-function buildArticleFallback(route) {
+function buildArticleFallback(route, bodyHtml) {
   const nav = fallbackNav(route.lang)
   const socials = fallbackSocials()
   const imageAlt = route.imageAlt || route.title
@@ -1237,22 +1239,8 @@ function buildArticleFallback(route) {
       ${route.description ? `<p>${escape(route.description)}</p>` : ''}
     </header>
     ${route.heroImage ? `<figure class="article-hero-image"><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" ${imageHtmlAttributes(route.heroImage, { priority: true })} /></figure>` : ''}
-    <section>${route.bodyHtml || ''}</section>
-  </article><nav>${nav}</nav><footer>${socials}</footer>`
-}
-
-function buildGeneratedBlogFallback(route) {
-  const article = mdToHtml(route.markdown || '')
-  const nav = fallbackNav(route.lang)
-  const socials = fallbackSocials()
-  const imageAlt = route.imageAlt || route.title
-  return `<article id="article-content" data-article-engine="article">
-    <header>
-      <h1>${escape(route.title)}</h1>
-      ${route.description ? `<p>${escape(route.description)}</p>` : ''}
-    </header>
-    ${route.heroImage ? `<figure class="article-hero-image"><img src="${escape(route.heroImage)}" alt="${escape(imageAlt)}" ${imageHtmlAttributes(route.heroImage, { priority: true })} /></figure>` : ''}
-    <section>${article}</section>
+    <section>${withSectionLinks(bodyHtml, route.lang)}</section>
+    ${articleEndingHtml(route.path)}
   </article><nav>${nav}</nav><footer>${socials}</footer>`
 }
 
@@ -1294,7 +1282,9 @@ function buildBotRevolutionFallback(route) {
   const articleMarkdown = firstChapterIndex >= 0
     ? route.markdown.slice(firstChapterIndex)
     : route.markdown || ''
-  const article = mdToHtml(articleMarkdown)
+  const timelineTitle = english ? 'A short timeline of AI revolutions' : 'Короткий таймлайн AI-революций'
+  const timelineHeading = withSectionLinks(`<h2 class="bot-revolution-timeline-title">${timelineTitle}</h2>`, route.lang)
+  const article = withSectionLinks(mdToHtml(articleMarkdown), route.lang)
   const image640 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-640.webp')
   const image768 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-768.webp')
   const image1024 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-1024.webp')
@@ -1335,9 +1325,11 @@ function buildBotRevolutionFallback(route) {
       </figure>
     </section>
     <section class="bot-revolution-timeline" id="timeline" aria-label="${english ? 'AI tools timeline' : 'Таймлайн AI-инструментов'}" data-analytics-section="evolution">
+      ${timelineHeading}
       ${timeline.map(([year, tool, take], index) => `<article${index === timeline.length - 1 ? ' class="is-next"' : ''}><span class="bot-revolution-year">${year}</span><strong>${tool}</strong><p>${take}</p></article>`).join('')}
     </section>
     <section class="generated-blog-body bot-revolution-static-fallback-body">${article}</section>
+    ${articleEndingHtml(route.path)}
   </main><nav>${nav}</nav><footer>${socials}</footer>`
 }
 
@@ -1547,9 +1539,9 @@ function rewrite(html, route) {
   const fallback = botRevolutionRoute
     ? buildBotRevolutionFallback(route)
     : route.kind === 'article-page'
-    ? buildArticleFallback(route)
+    ? buildArticleFallback(route, route.bodyHtml || '')
     : route.kind === 'generated-blog-post' || route.kind === 'generated-article-post'
-      ? buildGeneratedBlogFallback(route)
+      ? buildArticleFallback(route, mdToHtml(route.markdown || ''))
       : mdBody ? buildFallback(title, mdBody, articleRoute, lang) : buildFallback(title, '', articleRoute, lang)
   let out = applySiteUrl(html)
     .replace(/<html lang="[^"]+">/, `<html lang="${lang}">`)
@@ -1582,7 +1574,7 @@ function rewrite(html, route) {
         return `${open}${json}${close}`
       }
     })
-    .replace('<!-- body-fallback -->', fallback)
+    .replace('<!-- body-fallback -->', () => fallback)
   if (botRevolutionRoute) {
     const image640 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-640.webp')
     const image768 = BOT_REVOLUTION_IMAGE.replace(/\.webp$/i, '-768.webp')
@@ -1677,7 +1669,7 @@ for (const route of ROUTES) {
   const src = path.join(templatesDir, `${route.slug}.md`)
   const dest = path.join(dist, `${route.slug}.md`)
   if (route.markdown) {
-    fs.writeFileSync(dest, `# ${route.title}\n\n${route.markdown}\n`)
+    fs.writeFileSync(dest, `# ${route.title}\n\n${route.markdown}${articleEndingMarkdown(route.path)}\n`)
   } else {
     fs.copyFileSync(src, dest)
   }
