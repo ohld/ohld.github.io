@@ -119,7 +119,7 @@ AI-рилзы для SEO в рабочем варианте выглядят к�
 Для AI-agent тем аналогичные штуки:
 
 - Claude Code setup checker -> ссылка на [гайд по Claude Code, MCP, hooks и skills](/claude-code-nastrojka-mcp-hooks-skills-2026/);
-- Telegram channel wrapped -> рядом с ресерчем про [183 AI-бота в Telegram](/183-ai-bots-telegram-research/);
+- Telegram channel wrapped -> рядом с ресерчем про [183 AI-бота в Telegram](/183-ai-bots-telegram-44m-users/) (на английском);
 - prompt-to-agent checklist -> внутренняя ссылка в [AI agents hub](/ru/blog/ai-agents-s-chego-nachat/);
 - source pack из трендов -> отдельная [HTML/Markdown-страница](/articles/markdown-vs-html/), которую можно скормить агенту;
 - GBrain context map -> страница в [GBrain topic](/topics/gbrain/).

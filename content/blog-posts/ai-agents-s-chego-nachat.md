@@ -37,7 +37,7 @@ reactions: 49
 - [AI-агент в Telegram: где заканчивается бот и начинается рабочий интерфейс](/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/)
 - Флоу работы с AI coding agent: идея → спека → plan mode → новый чат без context rot
 - [Что кидать агенту, когда очевидные таски закончились: “почисти код, сделай лучше”](/ru/blog/improve-codebase-architecture-prompt/)
-- [Промпты, которые улучшили мой опыт работы с AI агентами](/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/)
+- Промпты, которые улучшили мой опыт работы с AI агентами
 - 21 неудобный вопрос для агента — проверка мышления поверх скорости кодинга
 - [Claude Code + Obsidian + голосовой ввод — всё, я в 2030](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
 - Paperclip: AI-организация, где промпты превращаются в найм агентов
@@ -94,5 +94,4 @@ reactions: 49
 - [Claude Code vs Codex: почему я на две недели перешёл на Codex](/ru/blog/claude-code-vs-codex-perehod/)
 - [Что попросить AI-агента сделать, когда задачи закончились](/ru/blog/improve-codebase-architecture-prompt/)
 - [Второй мозг: Obsidian и Claude Code](/vtoroj-mozg-ai-assistent-obsidian-claude-code/)
-- [Промпты, которые улучшили опыт работы с AI-агентами](/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/)
 - [AI-инструменты для дизайнеров: design engineering и агенты](/ru/articles/ai-tools-for-designers-design-engineering-agents/)

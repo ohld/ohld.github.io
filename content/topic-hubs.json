@@ -17,7 +17,7 @@
       "title": "Claude Code",
       "description": "Сетап, skills, MCP, compaction, workflow и реальные ограничения Claude Code.",
       "aliases": ["claude code", "skills"],
-      "articlePaths": ["/claude-code-nastrojka-mcp-hooks-skills-2026/", "/claude-code-setup-mcp-hooks-skills-2026/", "/claude-code-compaction-kak-rabotaet/", "/claude-code-compaction-explained/", "/ru/blog/claude-code-vs-codex-perehod/", "/ru/articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok/", "/en-write-claude-code-skills-7-mistakes/"],
+      "articlePaths": ["/claude-code-nastrojka-mcp-hooks-skills-2026/", "/claude-code-setup-mcp-hooks-skills-2026/", "/claude-code-compaction-kak-rabotaet/", "/claude-code-compaction-explained/", "/ru/blog/claude-code-vs-codex-perehod/", "/ru/articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok/"],
       "featuredLinks": [{ "href": "/web-scraping-ai-agents-2026/", "label": "browser agents for data extraction", "description": "Практический пример, где Claude Code выбирает между API, XHR и browser automation." }]
     },
     {
@@ -26,7 +26,7 @@
       "title": "Codex",
       "description": "Переходы между Codex и Claude Code, review loops, desktop app и context hygiene.",
       "aliases": ["codex", "review"],
-      "articlePaths": ["/claude-codex-dual-review/", "/en-claude-codex-dual-review/", "/ru/blog/claude-code-vs-codex-perehod/", "/legalnyj-ai-setup-claude-codex-crontab/"]
+      "articlePaths": ["/claude-codex-dual-review/", "/ru/blog/claude-code-vs-codex-perehod/"]
     },
     {
       "slug": "mcp",
@@ -34,7 +34,7 @@
       "title": "MCP",
       "description": "MCP-серверы, agent-browser, Telegram/Coolify интеграции и практическое расширение агентных инструментов.",
       "aliases": ["mcp"],
-      "articlePaths": ["/luchshie-skills-mcp-claude-code-agent-browser/", "/en-best-skills-mcp-claude-code-agent-browser/", "/telegram-mcp-server-kak-sdelat/", "/telegram-mcp-server-guide/", "/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/", "/claude-code-nastrojka-mcp-hooks-skills-2026/"],
+      "articlePaths": ["/luchshie-skills-mcp-claude-code-agent-browser/", "/telegram-mcp-server-kak-sdelat/", "/telegram-mcp-server-guide/", "/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/", "/claude-code-nastrojka-mcp-hooks-skills-2026/"],
       "featuredLinks": [{ "href": "/web-scraping-ai-agents-2026/", "label": "AI agents for web scraping", "description": "Где agent-browser помогает, а где лучше оставить прямой JSON/API слой." }]
     },
     {
@@ -51,7 +51,7 @@
       "title": "AI-инструменты",
       "description": "Инструменты для агентного рабочего флоу: что пробовать, что выкидывать, где реальная польза.",
       "aliases": ["ai tools", "dev setup", "productivity"],
-      "articlePaths": ["/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/", "/claude-code-setup-mcp-hooks-skills-2026/", "/web-scraping-ai-agents-2026/", "/en-best-skills-mcp-claude-code-agent-browser/", "/ai-tools-setup-january-2026/", "/ai-tools-march-2026-honest-review/", "/ai-tools-march-2026-review/", "/ru/articles/hermes-agent-vs-openclaw/", "/ru/articles/ai-tools-for-designers-design-engineering-agents/", "/cn-ai-tools-march-2026/"],
+      "articlePaths": ["/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/", "/claude-code-setup-mcp-hooks-skills-2026/", "/web-scraping-ai-agents-2026/", "/ai-tools-setup-january-2026/", "/ai-tools-march-2026-honest-review/", "/ai-tools-march-2026-review/", "/ru/articles/hermes-agent-vs-openclaw/", "/ru/articles/ai-tools-for-designers-design-engineering-agents/", "/cn-ai-tools-march-2026/"],
       "featuredLinks": [{ "href": "/web-scraping-ai-agents-2026/", "label": "AI agents for web scraping", "description": "Практический тест: где агент помогает с API/XHR, Playwright и LLM extraction." }]
     },
     {
@@ -60,7 +60,7 @@
       "title": "Second Brain",
       "description": "Obsidian, markdown vaults, wiki-ссылки, raw notes и персональный рабочий контекст для агентов.",
       "aliases": ["second brain", "obsidian", "gbrain"],
-      "articlePaths": ["/vtoroj-mozg-ai-assistent-obsidian-claude-code/", "/second-brain-obsidian-claude-code/", "/en-second-brain-obsidian-claude-code-assistant/", "/cn-second-brain-obsidian-claude-code-assistant/", "/ru/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/"]
+      "articlePaths": ["/vtoroj-mozg-ai-assistent-obsidian-claude-code/", "/second-brain-obsidian-claude-code/", "/ru/blog/ai-transformaciya-kompanii-obshchiy-kontekst-skills-gbrain/"]
     },
     {
       "slug": "web-scraping",
@@ -77,7 +77,7 @@
       "title": "TON-данные",
       "description": "On-chain analytics, TON research, Dune, EVAA, USDT и AI-ассистенты для анализа данных.",
       "aliases": ["ton", "data", "analytics", "dune"],
-      "articlePaths": ["/en/articles/ton-on-chain-data-analysis-dune/", "/en/articles/how-to-analyze-ton-users-and-token-flows-on-dune/", "/ton-analyst-ai-skill-ton-blockchain-dune/", "/en-ton-analyst-open-source-ai-skill-dune/", "/avtomatizaciya-analiza-dannyh-ton-ai-agent-habr/", "/en-automated-ton-data-analysis-ai-agent-habr/", "/evaa-strategies-onchain-research/", "/ru/articles/gde-deshevle-kupit-telegram-stars/"]
+      "articlePaths": ["/en/articles/ton-on-chain-data-analysis-dune/", "/en/articles/how-to-analyze-ton-users-and-token-flows-on-dune/", "/evaa-strategies-onchain-research/", "/ru/articles/gde-deshevle-kupit-telegram-stars/"]
     },
     {
       "slug": "telegram-automation",
@@ -85,7 +85,7 @@
       "title": "Telegram-автоматизация",
       "description": "Telegram bots, Mini Apps, voice workflows, AI-агенты в чатах и автоматизация через Telegram.",
       "aliases": ["telegram", "telegram automation", "telegram mini apps", "telegram stars"],
-      "articlePaths": ["/ru/blog/vibecoding-telegram-mini-app-claude-code/", "/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/", "/telegram-mini-app-llms-txt-claude-code-stream/", "/telegram-mcp-server-kak-sdelat/", "/telegram-mcp-server-guide/", "/183-ai-bots-telegram-research/", "/183-ai-bots-telegram-44m-users/", "/en-telegram-ads-61k-search-queries-analysis/", "/how-to-get-a-telegram-channel-subscribers-list-in-python/"],
+      "articlePaths": ["/ru/blog/vibecoding-telegram-mini-app-claude-code/", "/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/", "/telegram-mcp-server-kak-sdelat/", "/telegram-mcp-server-guide/", "/183-ai-bots-telegram-44m-users/", "/how-to-get-a-telegram-channel-subscribers-list-in-python/"],
       "featuredLinks": [{ "href": "/web-scraping-ai-agents-2026/", "label": "browser agents for data extraction", "description": "Что делать, когда Telegram-задача упирается в данные с внешнего сайта." }]
     },
     {
@@ -102,7 +102,7 @@
       "title": "Data products",
       "description": "Практические data products: аналитика, боты, Dune, Metabase, Amplitude, embeddings и инфраструктура вокруг данных.",
       "aliases": ["data products", "analytics", "metabase", "amplitude", "embeddings"],
-      "articlePaths": ["/run-metabase-with-dokku/", "/integrate-amplitude-with-telegram-bot/", "/measure-texts-simularity/", "/kaggle-tricks-from-grandmaster-hft-quant/", "/ton-analyst-ai-skill-ton-blockchain-dune/", "/en-ton-analyst-open-source-ai-skill-dune/", "/evaa-strategies-onchain-research/", "/183-ai-bots-telegram-research/"]
+      "articlePaths": ["/run-metabase-with-dokku/", "/integrate-amplitude-with-telegram-bot/", "/measure-texts-simularity/", "/kaggle-tricks-from-grandmaster-hft-quant/", "/evaa-strategies-onchain-research/"]
     },
     {
       "slug": "design-engineering",
@@ -120,7 +120,7 @@
     { "slug": "frameworks", "label": "Frameworks", "title": "Фреймворки для агентов", "description": "Beads, Gastown, first-party tools and the cost of adopting someone else’s agent framework.", "aliases": ["frameworks"] },
     { "slug": "workflow", "label": "Workflow", "title": "Workflow", "description": "Agent workflows: setup, context, review loops, progress artifacts and daily usage.", "aliases": ["workflow", "setup", "context", "review"] },
     { "slug": "community", "label": "Community", "title": "Community", "description": "Telegram-чаты, обсуждения, community insights and the feedback loop around AI-agent content.", "aliases": ["community"] },
-    { "slug": "openclaw", "label": "OpenClaw", "title": "OpenClaw", "description": "Заготовка под OpenClaw hub: practical setup, Codex/Hermes сравнения и skills flow.", "aliases": ["openclaw"], "articlePaths": ["/ru/articles/hermes-agent-vs-openclaw/", "/legalnyj-ai-setup-claude-codex-crontab/"] },
+    { "slug": "openclaw", "label": "OpenClaw", "title": "OpenClaw", "description": "Заготовка под OpenClaw hub: practical setup, Codex/Hermes сравнения и skills flow.", "aliases": ["openclaw"], "articlePaths": ["/ru/articles/hermes-agent-vs-openclaw/"] },
     { "slug": "hermes-agent", "label": "Hermes Agent", "title": "Hermes Agent", "description": "Hermes Agent, Telegram/VPS, skills, memory и self-hosted personal AI workflows.", "aliases": ["hermes agent", "hermes"], "articlePaths": ["/ru/articles/hermes-agent-vps-telegram-ustanovka/", "/en/articles/hermes-agent-vps-telegram-setup/", "/ru/articles/hermes-agent-vs-openclaw/", "/ru/articles/ai-agent-v-telegram-rabochiy-interfeis/", "/ai-agent-na-servere-24-7/", "/always-on-ai-agent-server-setup/"] }
   ]
 }

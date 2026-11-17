@@ -256,7 +256,6 @@ const EN_HOME_FALLBACK_MD = `# Daniil Okhlopkov
 - [Claude Code Setup 2026: MCP Servers, Hooks, Skills](/claude-code-setup-mcp-hooks-skills-2026/)
 - [Web Scraping AI Agents: What Actually Works in 2026](/web-scraping-ai-agents-2026/)
 - [My AI Dev Tools in 2026: What I Actually Use Daily](/ai-tools-setup-january-2026/)
-- [Best Claude Code Skills and MCP Servers for Agent Workflows](/en-best-skills-mcp-claude-code-agent-browser/)
 - [Show Me Your AI Setup #1: Ghostty, ownyourchat, Descript, Spokenly](/en-show-me-ai-setup-ghostty-ownyourchat-descript/)
 
 [Blog](/en/blog/) · [Articles](/en/articles/)

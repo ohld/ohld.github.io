@@ -272,7 +272,7 @@ Stay updated with the latest news, integrations, and data insights. The TON Data
 
 - [Advanced TON users, balances, and token-flow analysis on Dune](/en/articles/how-to-analyze-ton-users-and-token-flows-on-dune/)
 - [TON Data topic hub](/topics/ton-data/)
-- [ton-analyst: an open-source AI skill for TON analysis on Dune](/en-ton-analyst-open-source-ai-skill-dune/)
-- [Automated TON data analysis with an AI agent](/en-automated-ton-data-analysis-ai-agent-habr/)
+- [ton-analyst: an open-source AI skill for TON analysis on Dune](https://github.com/ohld/ton-analyst)
+- [Automated TON data analysis with an AI agent (Habr, in Russian)](https://habr.com/ru/articles/996958/)
 - [Current TON analytics documentation](https://docs.ton.org/onboarding/analytics)
 - [Dune TON data catalog](https://docs.dune.com/data-catalog/ton/overview)

@@ -567,7 +567,7 @@ Stay tuned for additional practical guides covering advanced analytics, fraud de
 ## **Related TON Data Guides**
 
 - [TON data: all guides and research](/topics/ton-data/)
-- [ton-analyst: an open-source AI skill for TON analysis on Dune](/en-ton-analyst-open-source-ai-skill-dune/)
-- [How I automated TON blockchain data analysis with an AI agent](/en-automated-ton-data-analysis-ai-agent-habr/)
+- [ton-analyst: an open-source AI skill for TON analysis on Dune](https://github.com/ohld/ton-analyst)
+- [How I automated TON blockchain data analysis with an AI agent (Habr, in Russian)](https://habr.com/ru/articles/996958/)
 - [Official TON analytics and data providers documentation](https://docs.ton.org/onboarding/analytics)
 - [Dune TON data catalog](https://docs.dune.com/data-catalog/ton/overview)
