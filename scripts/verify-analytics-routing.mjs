@@ -738,15 +738,29 @@ async function assertBotRevolutionClipboardFailure(context, baseUrl) {
   }
 }
 
-async function assertMissingEnglishPostStaysEnglish(context, baseUrl) {
+async function assertMissingPagesStayNotFound(context, baseUrl) {
   const page = await context.newPage({ viewport: { width: 390, height: 844 } })
   try {
-    await page.goto(`${baseUrl}/en/blog/__missing-post__/`, {
-      waitUntil: 'domcontentloaded',
-      timeout: 15000,
+    for (const pathname of ['/en/blog/__missing-post__/', '/__missing-imported-article__/']) {
+      const response = await page.goto(`${baseUrl}${pathname}`, {
+        waitUntil: 'domcontentloaded',
+        timeout: 15000,
+      })
+      assert(response.status() === 404, `${pathname}: expected HTTP 404`)
+      assert(new URL(page.url()).pathname === pathname, `${pathname}: missing page redirected`)
+      assert((await page.locator('h1').textContent()).includes('404'), `${pathname}: missing not-found heading`)
+      assert(await page.locator('meta[name="robots"]').getAttribute('content') === 'noindex, follow', `${pathname}: missing noindex`)
+      assert(await page.locator('a[href="/en/blog/"]').count() === 1, `${pathname}: missing English recovery link`)
+    }
+    await page.goto(baseUrl, { waitUntil: 'domcontentloaded' })
+    await waitForPageView(page, '/')
+    await page.evaluate(() => {
+      history.pushState({}, '', '/__missing-imported-article__/')
+      window.dispatchEvent(new PopStateEvent('popstate'))
     })
-    await page.waitForFunction(() => window.location.pathname === '/en/blog/', null, { timeout: 5000 })
-    assert(await page.locator('html').getAttribute('lang') === 'en', 'Missing English post: redirect switched to Russian')
+    await page.waitForFunction(() => document.querySelector('h1')?.textContent.includes('404'), null, { timeout: 5000 })
+    assert(new URL(page.url()).pathname === '/__missing-imported-article__/', 'SPA missing article redirected')
+    assert(await page.locator('meta[name="robots"]').getAttribute('content') === 'noindex, follow', 'SPA missing article: missing noindex')
   } finally {
     await page.close()
   }
@@ -807,7 +821,7 @@ async function run(baseUrl) {
   await assertBotRevolutionReadingTracking(context, baseUrl)
   await assertEnglishBotRevolutionTracking(context, baseUrl)
   await assertBotRevolutionClipboardFailure(context, baseUrl)
-  await assertMissingEnglishPostStaysEnglish(context, baseUrl)
+  await assertMissingPagesStayNotFound(context, baseUrl)
 
   await browser.close()
   console.log(`✓ analytics routing and click goals (${expectedPaths.join(', ')})`)

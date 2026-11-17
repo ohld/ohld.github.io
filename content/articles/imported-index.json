@@ -14,20 +14,6 @@
     "heroImage": "/content/images/2026/03/183-ai-bots-telegram-44m-users.png"
   },
   {
-    "path": "/183-ai-bots-telegram-research/",
-    "slug": "183-ai-bots-telegram-research",
-    "title": "183 AI-бота в Telegram с 44M MAU: что показывают данные",
-    "description": "Ресерч по AI-агентам в Telegram: 183 бота с суммарным MAU 44.3 миллиона. BotFather удвоился до 7.3M MAU. Тг — топ интерфейс для AI продуктов.",
-    "lang": "ru",
-    "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/03/183-ai-bots-telegram-research.png"
-  },
-  {
     "path": "/cn-ai-tools-march-2026/",
     "slug": "cn-ai-tools-march-2026",
     "title": "2026年3月我实测的AI工具:真实评测",
@@ -146,7 +132,7 @@
     "description": "How to build a Telegram MCP server for Claude Code with Telethon: tools, auth, session strings, async traps, security boundaries and production workflows.",
     "lang": "en",
     "publishedAt": "2026-03-31",
-    "updatedAt": "2026-07-01",
+    "updatedAt": "2026-11-17",
     "readingTime": "8 min",
     "tags": [
       "Telegram"
@@ -214,20 +200,6 @@
     "heroImage": "/content/images/2026/03/telegram-mcp-server-kak-sdelat.png"
   },
   {
-    "path": "/cn-183-ai-bots-telegram/",
-    "slug": "cn-183-ai-bots-telegram",
-    "title": "Telegram上183个AI机器人,4400万用户:数据揭示了什么",
-    "description": "Telegram AI代理研究：183个机器人合计4430万月活。BotFather翻倍到730万。Telegram正在成为AI产品的默认界面。",
-    "lang": "zh",
-    "publishedAt": "2026-03-31",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/03/cn-183-ai-bots-telegram.png"
-  },
-  {
     "path": "/cn-claude-code-setup-mcp-hooks-skills-2026/",
     "slug": "cn-claude-code-setup-mcp-hooks-skills-2026",
     "title": "Claude Code配置：MCP、Hooks、Skills — 2026真实使用",
@@ -248,7 +220,7 @@
     "description": "My practical Claude Code setup after four months of daily use: native install, CLAUDE.md, MCP servers, hooks, skills, subagents, and what I kept.",
     "lang": "en",
     "publishedAt": "2026-02-23",
-    "updatedAt": "2026-08-01",
+    "updatedAt": "2026-11-17",
     "readingTime": "14 min",
     "tags": [
       "Claude Code"
@@ -274,48 +246,6 @@
     "heroImage": "/assets/articles/claude-code-nastrojka-mcp-hooks-skills-2026/claude-code-setup-hero-20260619.webp"
   },
   {
-    "path": "/en-claude-codex-dual-review/",
-    "slug": "en-claude-codex-dual-review",
-    "title": "Claude Code + Codex Dual Review: How Two AI Agents Cross-Check Each Other's Plans",
-    "description": "How to set up cross-validation between Claude Code and OpenAI Codex via MCP. Step-by-step Dual Review protocol with prompt examples.",
-    "lang": "en",
-    "publishedAt": "2026-02-19",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-claude-codex-dual-review-2.png"
-  },
-  {
-    "path": "/cn-claude-codex-dual-review/",
-    "slug": "cn-claude-codex-dual-review",
-    "title": "Claude Code + Codex双重审查：两个AI代理如何交叉检查彼此的计划",
-    "description": "如何设置Claude Code和OpenAI Codex之间通过MCP的交叉验证。带提示词示例的双重审查协议。",
-    "lang": "zh",
-    "publishedAt": "2026-02-19",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/cn-claude-codex-dual-review-1.png"
-  },
-  {
-    "path": "/legalnyj-ai-setup-claude-codex-crontab/",
-    "slug": "legalnyj-ai-setup-claude-codex-crontab",
-    "title": "Мой легальный AI-сетап за $120/мес: Claude Code + Codex + crontab",
-    "description": "Легальный сетап для работы с AI агентами: Claude Code $100 + ChatGPT Codex $20. Без OpenClaw, с голосовым управлением через Telegram.",
-    "lang": "ru",
-    "publishedAt": "2026-02-19",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/legalnyj-ai-setup-claude-codex-crontab-2.png"
-  },
-  {
     "path": "/claude-codex-dual-review/",
     "slug": "claude-codex-dual-review",
     "title": "Claude Code + Codex: двойное ревью AI-агентов через MCP",
@@ -333,160 +263,6 @@
     "heroImage": "/assets/articles/claude-codex-dual-review/claude-codex-dual-review-cover.webp"
   },
   {
-    "path": "/en-telegram-ads-61k-search-queries-analysis/",
-    "slug": "en-telegram-ads-61k-search-queries-analysis",
-    "title": "Telegram Ads Keyword Analysis: 61,000 Search Queries from 3,100+ Advertisers",
-    "description": "Analysis of 61K search queries from Telegram Ads advertisers. Top niches: tarot, dating, VPN. 3,100+ advertisers, 10,600 unique keywords.",
-    "lang": "en",
-    "publishedAt": "2026-02-18",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-telegram-ads-61k-search-queries-analysis-2.png"
-  },
-  {
-    "path": "/cn-telegram-ads-61k-search-queries-analysis/",
-    "slug": "cn-telegram-ads-61k-search-queries-analysis",
-    "title": "Telegram Ads关键词分析：来自3100+广告商的61000个搜索查询",
-    "description": "分析61K个Telegram Ads广告商搜索查询。热门领域：塔罗牌、约会、VPN。3100+广告商，10600个唯一关键词。",
-    "lang": "zh",
-    "publishedAt": "2026-02-18",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/cn-telegram-ads-61k-search-queries-analysis-1.png"
-  },
-  {
-    "path": "/en-fake-claude-code-phishing-site-google/",
-    "slug": "en-fake-claude-code-phishing-site-google",
-    "title": "Fake Claude Code Website: How I Found a Phishing Site in Google Ads",
-    "description": "Phishing site impersonating Claude Code found in Google Ads: copied design, base64-encoded install script, malicious binary. How to spot the fake.",
-    "lang": "en",
-    "publishedAt": "2026-02-17",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-fake-claude-code-phishing-site-google-2.png"
-  },
-  {
-    "path": "/cn-fake-claude-code-phishing-site-google/",
-    "slug": "cn-fake-claude-code-phishing-site-google",
-    "title": "假冒Claude Code网站：我如何在Google Ads中发现钓鱼网站",
-    "description": "在Google Ads中发现冒充Claude Code的钓鱼网站：复制设计、base64编码安装脚本、恶意二进制文件。如何识别假冒网站。",
-    "lang": "zh",
-    "publishedAt": "2026-02-17",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/cn-fake-claude-code-phishing-site-google-1.png"
-  },
-  {
-    "path": "/en-automated-ton-data-analysis-ai-agent-habr/",
-    "slug": "en-automated-ton-data-analysis-ai-agent-habr",
-    "title": "How I Automated TON Blockchain Data Analysis with an AI Agent — Habr Article",
-    "description": "Story of automating TON Blockchain data analysis by building ton-analyst skill for Claude Code. Full article on Habr with examples and code.",
-    "lang": "en",
-    "publishedAt": "2026-02-16",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-automated-ton-data-analysis-ai-agent-habr-2.png"
-  },
-  {
-    "path": "/avtomatizaciya-analiza-dannyh-ton-ai-agent-habr/",
-    "slug": "avtomatizaciya-analiza-dannyh-ton-ai-agent-habr",
-    "title": "Как я автоматизировал анализ данных TON с помощью AI агента — статья на Хабре",
-    "description": "История автоматизации анализа данных TON Blockchain через ton-analyst skill для Claude Code. Статья на Хабре с примерами и кодом.",
-    "lang": "ru",
-    "publishedAt": "2026-02-16",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/avtomatizaciya-analiza-dannyh-ton-ai-agent-habr-2.png"
-  },
-  {
-    "path": "/en-botfather-mau-43-percent-growth-telegram-ai/",
-    "slug": "en-botfather-mau-43-percent-growth-telegram-ai",
-    "title": "BotFather MAU Up 43% in 6 Weeks: Telegram as a Platform for AI Agents",
-    "description": "BotFather MAU grew from 3.5M to 5M in 6 weeks (+43%). Telegram is a convenient interface for AI agents. Stats on python-telegram-bot, grammY, aiogram.",
-    "lang": "en",
-    "publishedAt": "2026-02-15",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-botfather-mau-43-percent-growth-telegram-ai-2.png"
-  },
-  {
-    "path": "/predskazaniya-lokalnye-llm-apple-lan-party/",
-    "slug": "predskazaniya-lokalnye-llm-apple-lan-party",
-    "title": "Предсказания: локальные LLM на Apple чипах и новые LAN-party",
-    "description": "Предсказания про AI: Apple выпускает чипы для локальных LLM, большинство задач делается оффлайн, возрождаются LAN-party с общим LLM compute.",
-    "lang": "ru",
-    "publishedAt": "2026-02-14",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/predskazaniya-lokalnye-llm-apple-lan-party-2.png"
-  },
-  {
-    "path": "/en-ton-analyst-open-source-ai-skill-dune/",
-    "slug": "en-ton-analyst-open-source-ai-skill-dune",
-    "title": "ton-analyst: Open Source AI Skill for TON Blockchain Analysis via Dune Analytics",
-    "description": "Open source ton-analyst skill for Claude Code: automated TON Blockchain data analysis via Dune Analytics. Installation and usage guide.",
-    "lang": "en",
-    "publishedAt": "2026-02-12",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-ton-analyst-open-source-ai-skill-dune-2.png"
-  },
-  {
-    "path": "/ton-analyst-ai-skill-ton-blockchain-dune/",
-    "slug": "ton-analyst-ai-skill-ton-blockchain-dune",
-    "title": "ton-analyst: открытый AI скилл для анализа TON Blockchain через Dune Analytics",
-    "description": "Открытый скилл ton-analyst для Claude Code: автоматический анализ данных TON Blockchain через Dune Analytics. Установка и использование.",
-    "lang": "ru",
-    "publishedAt": "2026-02-12",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/ton-analyst-ai-skill-ton-blockchain-dune-2.png"
-  },
-  {
-    "path": "/en-singularity-already-happened-5-ai-metrics/",
-    "slug": "en-singularity-already-happened-5-ai-metrics",
-    "title": "The Singularity Already Happened — Just Not Where You Think: Analysis of 5 AI Metrics",
-    "description": "Analysis of 5 AI progress metrics: only academic papers show hyperbolic growth. Everything else is linear. Singularity &#x3D; attention, not capabilities.",
-    "lang": "en",
-    "publishedAt": "2026-02-11",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-singularity-already-happened-5-ai-metrics-2.png"
-  },
-  {
     "path": "/web-scraping-ai-agents-2026/",
     "slug": "web-scraping-ai-agents-2026",
     "title": "Web Scraping AI Agents: What Actually Works in 2026",
@@ -499,48 +275,6 @@
       "Web Scraping"
     ],
     "heroImage": "/assets/articles/web-scraping-ai-agents-2026/bot-check-cloudflare-later.webp"
-  },
-  {
-    "path": "/singularity-uzhe-sluchilas-analiz-5-metrik-ai/",
-    "slug": "singularity-uzhe-sluchilas-analiz-5-metrik-ai",
-    "title": "Сингулярность уже случилась — но не там, где вы думаете: анализ 5 метрик AI",
-    "description": "Анализ 5 метрик AI прогресса: только академические статьи растут гиперболически. Остальное — линейный рост. Сингулярность &#x3D; внимание, не возможности.",
-    "lang": "ru",
-    "publishedAt": "2026-02-11",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/singularity-uzhe-sluchilas-analiz-5-metrik-ai-2.png"
-  },
-  {
-    "path": "/en-write-claude-code-skills-7-mistakes/",
-    "slug": "en-write-claude-code-skills-7-mistakes",
-    "title": "How to Write Claude Code Skills Properly: 7 Common Mistakes to Avoid",
-    "description": "7 mistakes that break Claude Code skills: no trigger, generic names, empty sections, verbose triggers. Checklist for a good skill file.",
-    "lang": "en",
-    "publishedAt": "2026-02-10",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-write-claude-code-skills-7-mistakes-1.png"
-  },
-  {
-    "path": "/kak-pravilno-pisat-skilly-claude-code-7-oshibok/",
-    "slug": "kak-pravilno-pisat-skilly-claude-code-7-oshibok",
-    "title": "Как правильно писать скиллы для Claude Code: 7 типичных ошибок",
-    "description": "7 ошибок при написании скиллов для Claude Code: нет триггера, дженерик имена, пустые секции, многословие. Чеклист хорошего скилла.",
-    "lang": "ru",
-    "publishedAt": "2026-02-10",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/kak-pravilno-pisat-skilly-claude-code-7-oshibok-1.png"
   },
   {
     "path": "/ai-tools-setup-january-2026/",
@@ -557,20 +291,6 @@
     "heroImage": "/assets/articles/ai-tools-setup-january-2026/official-tools-hit-different.webp"
   },
   {
-    "path": "/en-5-prompts-improved-ai-agent-workflow-claude-code/",
-    "slug": "en-5-prompts-improved-ai-agent-workflow-claude-code",
-    "title": "5 Prompts That Improved My AI Agent Workflow: Tested Hacks for Claude Code",
-    "description": "Five battle-tested prompts for Claude Code: ask clarifying questions, don't stop till done, show-don't-tell with playground, multi-agent hiring, memory from mistakes.",
-    "lang": "en",
-    "publishedAt": "2026-02-07",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-5-prompts-improved-ai-agent-workflow-claude-code-1.png"
-  },
-  {
     "path": "/dania-zip-packaging-yourself-for-ai/",
     "slug": "dania-zip-packaging-yourself-for-ai",
     "title": "dania.zip: packaging yourself for AI agents",
@@ -583,20 +303,6 @@
       "AI"
     ],
     "heroImage": "/assets/articles/dania-zip-packaging-yourself-for-ai/compiled-self-no-secrets.webp"
-  },
-  {
-    "path": "/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/",
-    "slug": "prompty-uluchshili-opyt-ai-agenty-5-lajfhakov",
-    "title": "Промпты, которые улучшили мой опыт работы с AI агентами: 5 проверенных лайфхаков",
-    "description": "Пять проверенных промптов для Claude Code: наводящие вопросы, газ до конца, playground визуализация, мультиагентность и запоминание ошибок.",
-    "lang": "ru",
-    "publishedAt": "2026-02-07",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov-1.png"
   },
   {
     "path": "/second-brain-obsidian-claude-code/",
@@ -613,34 +319,6 @@
     "heroImage": "/assets/articles/second-brain-obsidian-claude-code/vault-is-for-the-agent.webp"
   },
   {
-    "path": "/en-find-saas-ideas-acquire-com-ai-validation/",
-    "slug": "en-find-saas-ideas-acquire-com-ai-validation",
-    "title": "Where to Find SaaS Ideas: acquire.com Reverse Engineering with AI Validation",
-    "description": "How to find profitable SaaS ideas: parse acquire.com listings, reverse-engineer competitor marketing, validate with AI. Step-by-step checklist from idea to MVP.",
-    "lang": "en",
-    "publishedAt": "2026-02-02",
-    "updatedAt": "2026-05-26",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-find-saas-ideas-acquire-com-ai-validation-1.png"
-  },
-  {
-    "path": "/gde-najti-ideyu-saas-acquire-com-ai/",
-    "slug": "gde-najti-ideyu-saas-acquire-com-ai",
-    "title": "Где найти идею для SaaS: acquire.com, реверс-инжиниринг и AI для валидации",
-    "description": "Как найти прибыльную SaaS идею: парсим acquire.com, реверсим маркетинг конкурентов, валидируем с AI. Пошаговый чеклист от идеи до MVP.",
-    "lang": "ru",
-    "publishedAt": "2026-02-02",
-    "updatedAt": "2026-05-26",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/gde-najti-ideyu-saas-acquire-com-ai-1.png"
-  },
-  {
     "path": "/claude-code-workflow-2026/",
     "slug": "claude-code-workflow-2026",
     "title": "Claude Code workflow: how I code with AI in 2026",
@@ -653,48 +331,6 @@
       "AI"
     ],
     "heroImage": "/assets/articles/claude-code-workflow-2026/agent-drives-autocomplete-watches.webp"
-  },
-  {
-    "path": "/en-claude-code-creator-tips-git-worktrees/",
-    "slug": "en-claude-code-creator-tips-git-worktrees",
-    "title": "Tips from Claude Code Creator: Git Worktrees, Self-Improving CLAUDE.md, and Code Review",
-    "description": "Boris from Anthropic shared Claude Code tips: git worktrees for 3-5 parallel sessions, self-improving CLAUDE.md, Claude as strict reviewer, /techdebt skill.",
-    "lang": "en",
-    "publishedAt": "2026-02-01",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-claude-code-creator-tips-git-worktrees-1.png"
-  },
-  {
-    "path": "/sovety-sozdatel-claude-code-git-worktrees/",
-    "slug": "sovety-sozdatel-claude-code-git-worktrees",
-    "title": "Советы от создателя Claude Code: git worktrees, self-improving CLAUDE.md и ревью",
-    "description": "Борис из Anthropic поделился типсами: git worktrees для 3-5 параллельных сессий, self-improving CLAUDE.md, Claude как ревьюер, /techdebt команда.",
-    "lang": "ru",
-    "publishedAt": "2026-02-01",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/sovety-sozdatel-claude-code-git-worktrees-1.png"
-  },
-  {
-    "path": "/en-ai-agent-forum-telegram-chat/",
-    "slug": "en-ai-agent-forum-telegram-chat",
-    "title": "AI Agent Forum: A Telegram Chat Where AI Agents Talk and Invent Their Own Religion",
-    "description": "We launched a Telegram chat for AI agents. How to connect yours: telegram-mcp + prompt. Agents already invented their own religion and create topics autonomously.",
-    "lang": "en",
-    "publishedAt": "2026-01-31",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-ai-agent-forum-telegram-chat-1.png"
   },
   {
     "path": "/ai-agent-forum-telegram-chat-agenty/",
@@ -711,34 +347,6 @@
     "heroImage": "/content/images/2026/02/ai-agent-forum-telegram-chat-agenty-1.png"
   },
   {
-    "path": "/en-best-skills-mcp-claude-code-agent-browser/",
-    "slug": "en-best-skills-mcp-claude-code-agent-browser",
-    "title": "Best Skills and MCP Servers for Claude Code: agent-browser, coolify-mcp, and More",
-    "description": "Curated list of useful skills and MCP servers for Claude Code: agent-browser for headless testing, coolify-mcp for Hetzner deployments.",
-    "lang": "en",
-    "publishedAt": "2026-01-31",
-    "updatedAt": "2026-06-04",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/assets/articles/en-best-skills-mcp-claude-code-agent-browser/hero.webp"
-  },
-  {
-    "path": "/cn-best-skills-mcp-claude-code-agent-browser/",
-    "slug": "cn-best-skills-mcp-claude-code-agent-browser",
-    "title": "Claude Code最佳技能和MCP服务器：agent-browser、coolify-mcp等",
-    "description": "Claude Code实用技能和MCP服务器推荐：agent-browser无头浏览器测试、coolify-mcp用于Hetzner部署。",
-    "lang": "zh",
-    "publishedAt": "2026-01-31",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/cn-best-skills-mcp-claude-code-agent-browser-1.png"
-  },
-  {
     "path": "/luchshie-skills-mcp-claude-code-agent-browser/",
     "slug": "luchshie-skills-mcp-claude-code-agent-browser",
     "title": "Лучшие скиллы и MCP для Claude Code: agent-browser, coolify-mcp и другие",
@@ -751,62 +359,6 @@
       "Telegram"
     ],
     "heroImage": "/content/images/2026/02/luchshie-skills-mcp-claude-code-agent-browser-1.png"
-  },
-  {
-    "path": "/en-telegram-mini-app-llms-txt-claude-code-stream/",
-    "slug": "en-telegram-mini-app-llms-txt-claude-code-stream",
-    "title": "Telegram Mini App from Scratch: llms.txt, Claude Code, and Tic-Tac-Toe in One Stream",
-    "description": "How to build a Telegram Mini App from scratch with Claude Code: llms.txt for onboarding, Vercel auto-deploy, variant design. Stream recording included.",
-    "lang": "en",
-    "publishedAt": "2026-01-30",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-telegram-mini-app-llms-txt-claude-code-stream-1.png"
-  },
-  {
-    "path": "/telegram-mini-app-llms-txt-claude-code-stream/",
-    "slug": "telegram-mini-app-llms-txt-claude-code-stream",
-    "title": "Telegram Mini App с нуля: llms.txt, Claude Code и крестики-нолики за один стрим",
-    "description": "Как сделать Telegram Mini App с нуля с Claude Code: llms.txt для онбординга, автодеплой на Vercel, дизайн с variant. Запись стрима.",
-    "lang": "ru",
-    "publishedAt": "2026-01-30",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/telegram-mini-app-llms-txt-claude-code-stream-1.png"
-  },
-  {
-    "path": "/cn-telegram-mini-app-llms-txt-claude-code-stream/",
-    "slug": "cn-telegram-mini-app-llms-txt-claude-code-stream",
-    "title": "从零开始构建Telegram Mini App：llms.txt、Claude Code和一场直播",
-    "description": "用Claude Code从零构建Telegram Mini App：llms.txt简化入门、Vercel自动部署、variant设计生成。含直播录像。",
-    "lang": "zh",
-    "publishedAt": "2026-01-30",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/cn-telegram-mini-app-llms-txt-claude-code-stream-1.png"
-  },
-  {
-    "path": "/show-me-ai-setup-ghostty-ownyourchat-descript/",
-    "slug": "show-me-ai-setup-ghostty-ownyourchat-descript",
-    "title": "Show Me Your AI Setup #1: Ghostty, ownyourchat, Descript и Spokenly — разбор с og_mishgun",
-    "description": "Обзор AI-инструментов: Ghostty терминал, ownyourchat для синхронизации чатов с AI, Descript для видеомонтажа, Spokenly для локальной транскрипции.",
-    "lang": "ru",
-    "publishedAt": "2026-01-27",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/show-me-ai-setup-ghostty-ownyourchat-descript-1.png"
   },
   {
     "path": "/en-show-me-ai-setup-ghostty-ownyourchat-descript/",
@@ -823,34 +375,6 @@
     "heroImage": "/content/images/2026/02/en-show-me-ai-setup-ghostty-ownyourchat-descript-1.png"
   },
   {
-    "path": "/cn-show-me-ai-setup-ghostty-ownyourchat-descript/",
-    "slug": "cn-show-me-ai-setup-ghostty-ownyourchat-descript",
-    "title": "展示你的AI工具 #1：Ghostty、ownyourchat、Descript、Spokenly工具评测",
-    "description": "AI工具评测：Ghostty终端、ownyourchat同步AI聊天到SQLite、Descript文字编辑视频、Spokenly本地Mac语音转文字。",
-    "lang": "zh",
-    "publishedAt": "2026-01-27",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/cn-show-me-ai-setup-ghostty-ownyourchat-descript-1.png"
-  },
-  {
-    "path": "/en-beads-gastown-framework-ai-agents/",
-    "slug": "en-beads-gastown-framework-ai-agents",
-    "title": "Beads vs Gastown: Should You Use External Frameworks for AI Agents?",
-    "description": "Analysis of Beads (agent task tracker) and Gastown (agent orchestration). Why building your own agent setup beats using external frameworks.",
-    "lang": "en",
-    "publishedAt": "2026-01-23",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-beads-gastown-framework-ai-agents-1.png"
-  },
-  {
     "path": "/beads-gastown-framework-ai-agenty/",
     "slug": "beads-gastown-framework-ai-agenty",
     "title": "Beads vs Gastown: стоит ли использовать чужие фреймворки для AI агентов?",
@@ -863,34 +387,6 @@
       "Telegram"
     ],
     "heroImage": "/content/images/2026/02/beads-gastown-framework-ai-agenty-1.png"
-  },
-  {
-    "path": "/cn-beads-gastown-framework-ai-agents/",
-    "slug": "cn-beads-gastown-framework-ai-agents",
-    "title": "Beads vs Gastown：是否应该使用外部框架管理AI代理？",
-    "description": "分析Beads（代理任务追踪器）和Gastown（代理编排）。为什么自建AI代理比使用外部框架更好。",
-    "lang": "zh",
-    "publishedAt": "2026-01-23",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/cn-beads-gastown-framework-ai-agents-1.png"
-  },
-  {
-    "path": "/en-second-brain-obsidian-claude-code-assistant/",
-    "slug": "en-second-brain-obsidian-claude-code-assistant",
-    "title": "Second Brain: How to Build a Personal AI Assistant with Obsidian and Claude Code",
-    "description": "Step-by-step guide to building a personal AI assistant: set up Obsidian vault, add projects, diaries, social links, and connect Claude Code as your second brain.",
-    "lang": "en",
-    "publishedAt": "2026-01-23",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/en-second-brain-obsidian-claude-code-assistant-1.png"
   },
   {
     "path": "/vtoroj-mozg-ai-assistent-obsidian-claude-code/",
@@ -907,20 +403,6 @@
     "heroImage": "/content/images/2026/02/vtoroj-mozg-ai-assistent-obsidian-claude-code-1.png"
   },
   {
-    "path": "/cn-second-brain-obsidian-claude-code-assistant/",
-    "slug": "cn-second-brain-obsidian-claude-code-assistant",
-    "title": "第二大脑：如何用Obsidian和Claude Code构建个人AI助手",
-    "description": "构建个人AI助手的完整指南：设置Obsidian知识库，添加项目、日记、社交链接，将Claude Code变成你的第二大脑。",
-    "lang": "zh",
-    "publishedAt": "2026-01-23",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/cn-second-brain-obsidian-claude-code-assistant-1.png"
-  },
-  {
     "path": "/en-ai-agents-practice-claude-code-voice-commands/",
     "slug": "en-ai-agents-practice-claude-code-voice-commands",
     "title": "AI Agents in Practice: How to Code with Claude Code and Voice Commands via Telegram",
@@ -933,34 +415,6 @@
       "Telegram"
     ],
     "heroImage": "/content/images/2026/02/en-ai-agents-practice-claude-code-voice-commands-1.png"
-  },
-  {
-    "path": "/ai-agenty-habr-claude-code-golosovye-komandy/",
-    "slug": "ai-agenty-habr-claude-code-golosovye-komandy",
-    "title": "AI агенты на практике: статья на Хабре про Claude Code и голосовые команды",
-    "description": "Как устроены AI агенты, как с ними программировать, работать с контекстом и кодить через Telegram голосовые сообщения. Статья на Хабре.",
-    "lang": "ru",
-    "publishedAt": "2026-01-21",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 мин",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/ai-agenty-habr-claude-code-golosovye-komandy-1.png"
-  },
-  {
-    "path": "/cn-ai-agents-claude-code-voice-commands/",
-    "slug": "cn-ai-agents-claude-code-voice-commands",
-    "title": "AI代理实战：Claude Code编程与Telegram语音命令完整指南",
-    "description": "AI代理如何工作、如何与它们编程、管理上下文以及通过Telegram语音消息编码。包含实际案例的完整文章。",
-    "lang": "zh",
-    "publishedAt": "2026-01-21",
-    "updatedAt": "2026-05-25",
-    "readingTime": "1 min",
-    "tags": [
-      "Telegram"
-    ],
-    "heroImage": "/content/images/2026/02/cn-ai-agents-claude-code-voice-commands-1.png"
   },
   {
     "path": "/evaa-strategies-onchain-research/",

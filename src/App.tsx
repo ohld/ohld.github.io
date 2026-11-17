@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo } from 'react'
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { EnglishHome } from './pages/EnglishHome'
+import { NotFound } from './pages/NotFound'
 import { SiteHeader } from './components/SiteHeader'
 import { trackDocumentLinkClick, trackRouteView, useScrollDepth } from './analytics'
 import { enhanceCodeBlocks } from './codeBlocks'
@@ -246,7 +247,7 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/drafts/bot-revolution" element={<LegacyBotRevolutionRedirect />} />
           <Route path="/:slug" element={<ImportedArticle />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </>

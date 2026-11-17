@@ -130,9 +130,7 @@ export const englishArticleItems: BlogListItem[] = [
   ...generatedEnglishArticleItems,
   ...importedArticleListItems([
     '/web-scraping-ai-agents-2026/',
-    '/en-best-skills-mcp-claude-code-agent-browser/',
     '/claude-code-compaction-explained/',
-    '/en-beads-gastown-framework-ai-agents/',
   ]),
 ]
 
@@ -140,9 +138,8 @@ export const englishBlogItems: BlogListItem[] = withoutItemPaths([
   ...generatedEnglishBlogItems,
   ...importedArticleListItems([
     '/claude-code-setup-mcp-hooks-skills-2026/',
-    '/en-second-brain-obsidian-claude-code-assistant/',
+    '/second-brain-obsidian-claude-code/',
     '/web-scraping-ai-agents-2026/',
-    '/en-best-skills-mcp-claude-code-agent-browser/',
     '/en-show-me-ai-setup-ghostty-ownyourchat-descript/',
     '/ai-tools-setup-january-2026/',
   ]),

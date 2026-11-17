@@ -12,7 +12,7 @@ tags: TON, Dune Analytics, On-Chain Analytics, SQL, Telegram Stars, NFT Data
 coverImage: /assets/articles/how-to-analyze-ton-users-and-token-flows-on-dune/ton-users-token-flows-dune-guide.webp
 coverAlt: TON on-chain data analysis on Dune guide covering users, balances, token flows, Telegram Stars, and NFT volumes
 sourceTelegramId: 1538
-primaryKeyword: TON on-chain data analysis on Dune
+primaryKeyword: TON users and token flows on Dune
 secondaryKeywords: TON Dune SQL; analyze TON users; TON token flows; Telegram Stars Dune; TON NFT trading volume
 views: 11268
 forwards: 116
@@ -390,7 +390,7 @@ Star withdrawals manifest as TON transfers from Fragment addresses to user walle
 
 This data enables estimation of Telegram Stars volume flowing through individual addresses and quantification of users engaging in Star transactions.
 
-**Source:** https://dune.com/queries/4896663
+**Source:** [Telegram Stars Volumes](https://dune.com/queries/4896663)
 
 ## **4. Calculating On-Chain & Off-Chain NFT Trade Volumes**
 
@@ -567,7 +567,7 @@ Stay tuned for additional practical guides covering advanced analytics, fraud de
 ## **Related TON Data Guides**
 
 - [TON data: all guides and research](/topics/ton-data/)
-- [ton-analyst: an open-source AI skill for TON analysis on Dune](/en-ton-analyst-open-source-ai-skill-dune/)
-- [How I automated TON blockchain data analysis with an AI agent](/en-automated-ton-data-analysis-ai-agent-habr/)
+- [ton-analyst: an open-source AI skill for TON analysis on Dune](https://github.com/ohld/ton-analyst)
+- [How I automated TON blockchain data analysis with an AI agent (Habr, in Russian)](https://habr.com/ru/articles/996958/)
 - [Official TON analytics and data providers documentation](https://docs.ton.org/onboarding/analytics)
 - [Dune TON data catalog](https://docs.dune.com/data-catalog/ton/overview)

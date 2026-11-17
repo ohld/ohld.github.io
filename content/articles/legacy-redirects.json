@@ -6,39 +6,14 @@
     "note": "The Bot Revolution draft was published as a canonical Russian blog post."
   },
   {
-    "from": "/cn-claude-code-creator-tips-git-worktrees/",
-    "to": "/en-claude-code-creator-tips-git-worktrees/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved English Claude Code creator tips article."
-  },
-  {
     "from": "/kak-pravilno-pisat-skilly-claude-code-7-oshibok/",
     "to": "/ru/articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok/",
     "note": "Russian Claude Code skills article was expanded and moved into the maintained /ru/articles/ collection."
   },
   {
-    "from": "/cn-ai-agent-forum-telegram-chat/",
-    "to": "/en-ai-agent-forum-telegram-chat/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved English AI Agent Forum article."
-  },
-  {
     "from": "/cn-write-claude-code-skills-7-mistakes/",
-    "to": "/en-write-claude-code-skills-7-mistakes/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved English Claude Code skills article."
-  },
-  {
-    "from": "/cn-5-prompts-improved-ai-agent-workflow-claude-code/",
-    "to": "/en-5-prompts-improved-ai-agent-workflow-claude-code/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved English AI agent prompts article."
-  },
-  {
-    "from": "/cn-predictions-local-llm-apple-chips-lan-parties/",
-    "to": "/predskazaniya-lokalnye-llm-apple-lan-party/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved Russian local LLM predictions article."
-  },
-  {
-    "from": "/cn-legal-ai-setup-claude-codex-crontab/",
-    "to": "/legalnyj-ai-setup-claude-codex-crontab/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved Russian legal AI setup article."
+    "to": "/cn-claude-code-setup-mcp-hooks-skills-2026/",
+    "note": "Skills guidance is covered in the preserved Chinese Claude Code setup guide."
   },
   {
     "from": "/cn-vibe-analytics-claude-code-remotion-video/",
@@ -46,28 +21,122 @@
     "note": "Old Chinese URL has no preserved article body; redirect to the maintained Articles collection."
   },
   {
-    "from": "/cn-find-saas-ideas-acquire-com-ai-validation/",
-    "to": "/en-find-saas-ideas-acquire-com-ai-validation/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved English SaaS idea validation article."
-  },
-  {
     "from": "/cn-evolution-computer-work-code-specs-ai-agents/",
     "to": "/claude-code-workflow-2026/",
     "note": "Old Chinese URL has no preserved article body; redirect to the closest Claude Code workflow article."
   },
   {
-    "from": "/cn-automated-ton-data-analysis-ai-agent-habr/",
-    "to": "/en-automated-ton-data-analysis-ai-agent-habr/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved English TON data automation article."
+    "from": "/en-ton-analyst-open-source-ai-skill-dune/",
+    "to": "/en/articles/ton-on-chain-data-analysis-dune/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
   },
   {
-    "from": "/cn-botfather-mau-43-percent-growth-telegram-ai/",
-    "to": "/en-botfather-mau-43-percent-growth-telegram-ai/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved English BotFather MAU article."
+    "from": "/en-automated-ton-data-analysis-ai-agent-habr/",
+    "to": "/en/articles/ton-on-chain-data-analysis-dune/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
   },
   {
-    "from": "/cn-ton-analyst-open-source-ai-skill-dune/",
-    "to": "/en-ton-analyst-open-source-ai-skill-dune/",
-    "note": "Old Chinese URL is not maintained; redirect to the preserved English ton-analyst skill article."
+    "from": "/en-botfather-mau-43-percent-growth-telegram-ai/",
+    "to": "/183-ai-bots-telegram-44m-users/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/en-best-skills-mcp-claude-code-agent-browser/",
+    "to": "/claude-code-setup-mcp-hooks-skills-2026/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/en-ai-agent-forum-telegram-chat/",
+    "to": "/telegram-mcp-server-guide/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/en-claude-code-creator-tips-git-worktrees/",
+    "to": "/claude-code-workflow-2026/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/en-write-claude-code-skills-7-mistakes/",
+    "to": "/claude-code-setup-mcp-hooks-skills-2026/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/en-5-prompts-improved-ai-agent-workflow-claude-code/",
+    "to": "/claude-code-workflow-2026/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/en-beads-gastown-framework-ai-agents/",
+    "to": "/ai-tools-setup-january-2026/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/en-second-brain-obsidian-claude-code-assistant/",
+    "to": "/second-brain-obsidian-claude-code/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/ai-agenty-habr-claude-code-golosovye-komandy/",
+    "to": "/ru/blog/ai-agents-s-chego-nachat/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/show-me-ai-setup-ghostty-ownyourchat-descript/",
+    "to": "/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/telegram-mini-app-llms-txt-claude-code-stream/",
+    "to": "/ru/blog/vibecoding-telegram-mini-app-claude-code/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/legalnyj-ai-setup-claude-codex-crontab/",
+    "to": "/ru/blog/my-ai-setup-2026-claude-code-cursor-spokenly-ghostty/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/sovety-sozdatel-claude-code-git-worktrees/",
+    "to": "/claude-code-nastrojka-mcp-hooks-skills-2026/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/prompty-uluchshili-opyt-ai-agenty-5-lajfhakov/",
+    "to": "/ru/blog/improve-codebase-architecture-prompt/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/183-ai-bots-telegram-research/",
+    "to": "/ru/articles/telegram-bots-mini-apps-trends-august-2026/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/cn-best-skills-mcp-claude-code-agent-browser/",
+    "to": "/cn-claude-code-setup-mcp-hooks-skills-2026/",
+    "source": "content_prune",
+    "note": "Thin post pruned; redirect to the closest stronger page on the same intent and language."
+  },
+  {
+    "from": "/en-claude-codex-dual-review/",
+    "to": "/claude-code-setup-mcp-hooks-skills-2026/",
+    "source": "content_prune",
+    "note": "Thin post consolidated into the stronger English guide covering the same workflow."
   }
 ]

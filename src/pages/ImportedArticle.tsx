@@ -7,6 +7,7 @@ import {
   importedArticleAlternates,
 } from '../importedArticles'
 import { getLegacyRedirect } from '../legacyRedirects'
+import { NotFound } from './NotFound'
 
 export function ImportedArticle() {
   const location = useLocation()
@@ -33,7 +34,7 @@ export function ImportedArticle() {
   }, [article?.path, article, legacyRedirect])
 
   if (legacyRedirect) return <Navigate to={legacyRedirect} replace />
-  if (!article) return <Navigate to="/" replace />
+  if (!article) return <NotFound />
 
   return (
     <ArticleLayout

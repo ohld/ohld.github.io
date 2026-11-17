@@ -86,13 +86,13 @@ WHERE block_date >= NOW() - INTERVAL '30' DAY
 GROUP BY 1
 ```
 
-*Source: https://dune.com/queries/4681120*
+*Source: [Average TON Transactions per Second](https://dune.com/queries/4681120)*
 
 We can calculate the same transaction count not only using the `ton.transactions` table but also `ton.blocks` and `ton.messages`. Note that some transactions do not generate any messages, such as system tick-tock transactions by [Elector Contract](https://tonviewer.com/transaction/b56e8137446ad5b5ed26b675d500fab1b9fb1af311b18f04b83eef898a9bac45).
 
 ![Dune query comparing daily TON transaction counts from blocks, transactions, and messages](/assets/articles/ton-on-chain-data-analysis-dune/ton-transactions-tables.webp)
 
-*Source: https://dune.com/queries/4711221*
+*Source: [TON Transaction Counts Across Tables](https://dune.com/queries/4711221)*
 
 ## Direction of a message
 
@@ -187,7 +187,7 @@ ORDER BY 1 DESC
 
 ![Dune chart of daily TON USDT transfer volume and active wallets](/assets/articles/ton-on-chain-data-analysis-dune/ton-usdt-volume-active-wallets.webp)
 
-*Source: https://dune.com/queries/4711590*
+*Source: [TON USDT Transfer Volume and Active Wallets](https://dune.com/queries/4711590)*
 
 To find the addresses with the highest DEX trading volume in the last 30 days, you can use the `ton.dex_trades` table:
 ```javascript
@@ -204,7 +204,7 @@ ORDER BY 2 DESC
 LIMIT 100
 ```
 
-*Source: https://dune.com/queries/4711814*
+*Source: [Top TON DEX Traders](https://dune.com/queries/4711814)*
 
 ![Dune table of the top 100 TON DEX traders ranked by USD trading volume](/assets/articles/ton-on-chain-data-analysis-dune/ton-dex-traders-volume.webp)
 
@@ -216,14 +216,14 @@ A materialized view is a SQL query transformed into a real table to simplify cal
 
 ### Jetton metadata latest values
 
-Some jettons allow metadata updates even after contract deployment. To track these changes, all snapshots of metadata values are stored in `ton.jetton_metadata.` That said, it’s more practical to use the latest value of a jetton metadata to extract decimals or symbols. That’s why we created this materialized view: `dune.ton_foundation.result_ton_jettons_metadata_latest_values` (Source query: https://dune.com/queries/4412605)
+Some jettons allow metadata updates even after contract deployment. To track these changes, all snapshots of metadata values are stored in `ton.jetton_metadata.` That said, it’s more practical to use the latest value of a jetton metadata to extract decimals or symbols. That’s why we created this materialized view: `dune.ton_foundation.result_ton_jettons_metadata_latest_values` (Source query: [Latest Jetton Metadata](https://dune.com/queries/4412605))
 
 ### DEX pools latest and daily values
 
 The `ton.dex_pools` table contains all snapshots of a liquidity pool’s TVL. However, most queries only require:
 
-- Latest values: `dune.ton_foundation.result_dex_pools_latest` (Source query: https://dune.com/queries/4423827)
-- Daily values: `dune.ton_foundation.result_dex_pools_daily` (Source query: https://dune.com/queries/4414366)
+- Latest values: `dune.ton_foundation.result_dex_pools_latest` (Source query: [Latest DEX Pool Values](https://dune.com/queries/4423827))
+- Daily values: `dune.ton_foundation.result_dex_pools_daily` (Source query: [Daily DEX Pool Values](https://dune.com/queries/4414366))
 
 ### Jetton and TON daily prices
 
@@ -245,7 +245,7 @@ WHERE 1=1
     AND L.organization = 'evaa'
 ```
 
-Check Application Activity dashboard to see how these labels can be used: https://dune.com/ton_foundation/application-activity.
+Check [Application Activity dashboard](https://dune.com/ton_foundation/application-activity) to see how these labels can be used.
 
 ## Continue exploring TON data
 
@@ -272,7 +272,7 @@ Stay updated with the latest news, integrations, and data insights. The TON Data
 
 - [Advanced TON users, balances, and token-flow analysis on Dune](/en/articles/how-to-analyze-ton-users-and-token-flows-on-dune/)
 - [TON Data topic hub](/topics/ton-data/)
-- [ton-analyst: an open-source AI skill for TON analysis on Dune](/en-ton-analyst-open-source-ai-skill-dune/)
-- [Automated TON data analysis with an AI agent](/en-automated-ton-data-analysis-ai-agent-habr/)
+- [ton-analyst: an open-source AI skill for TON analysis on Dune](https://github.com/ohld/ton-analyst)
+- [Automated TON data analysis with an AI agent (Habr, in Russian)](https://habr.com/ru/articles/996958/)
 - [Current TON analytics documentation](https://docs.ton.org/onboarding/analytics)
 - [Dune TON data catalog](https://docs.dune.com/data-catalog/ton/overview)
