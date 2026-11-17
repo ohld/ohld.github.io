@@ -1,6 +1,6 @@
 # Daniil Okhlopkov
 
-> Head of Analytics @ TON Foundation. Пишу про AI-агентов, данные и крипту. Нахожусь в Лондоне, Японии, Таиланде, Дубае — кочующий аналитик. Forbes 30 under 30 (2022).
+> Strategic Analytics Lead @ TOP.co. Пишу про AI-агентов, данные и крипту. Нахожусь в Лондоне, Японии, Таиланде, Дубае — кочующий аналитик. Forbes 30 under 30 (2022).
 
 ## Кто я
 
@@ -13,7 +13,8 @@
 
 ## Чем занимаюсь
 
-- TON Foundation — Head of Analytics. Веду команду из 2 человек, подчиняюсь Anthony Tsivarev. Строю аналитику для TON блокчейна (Dune, on-chain research, контесты).
+- TOP.co — Strategic Analytics Lead.
+- Раньше руководил аналитикой в TON Foundation: Dune, on-chain research и контесты для аналитиков.
 - Бывший фаундер: InstaBot (10K профилей, $8K/мес), Shazam ботсети (13.7M юзеров, $22K/мес).
 - AI Agent Economy — основная ставка на 2026. Работаю над x402 спецификацией для TON.
 

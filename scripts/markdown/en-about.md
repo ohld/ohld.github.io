@@ -1,20 +1,22 @@
 # Daniil Okhlopkov — AI Agents, TON Analytics and Telegram
 
-> AI agents, on-chain analytics, Telegram workflows, data products and startups.
+> Strategic Analytics Lead @ TOP.co. AI agents, on-chain analytics, Telegram workflows, data products and startups.
 
-I lead analytics at TON Foundation and write about practical AI-agent workflows,
+I write about practical AI-agent workflows,
 on-chain data, Telegram automation and the tools I actually use.
 
-Before TON I was a startup CTO, data scientist in VC, Entrepreneur First founder
-in residence and Forbes 30 Under 30 Russia.
+I previously led analytics at TON Foundation. Before that, I was a startup CTO,
+a data scientist in VC and a founder in residence at Entrepreneur First. Forbes 30 Under 30 Russia.
 
 ## Experience
 
+### Strategic Analytics Lead — TOP.co
+
 ### Head of Analytics — TON Foundation
 
-Sep 2025 — now · London, Remote
+London, Remote
 
-Building analytics for TON Blockchain: Dune, on-chain research, analyst contests
+Built analytics for TON Blockchain: Dune, on-chain research, analyst contests
 and practical data infrastructure.
 
 ### Senior Data Scientist — Sequel

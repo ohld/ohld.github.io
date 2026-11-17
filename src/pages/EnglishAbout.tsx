@@ -7,11 +7,14 @@ import { useDocumentMeta } from '../useDocumentMeta'
 
 const experience = [
   {
+    title: 'Strategic Analytics Lead',
+    company: 'TOP.co',
+  },
+  {
     title: 'Head of Analytics',
     company: 'TON Foundation',
-    period: 'Sep 2025 — now',
     location: 'London, Remote',
-    description: 'Building analytics for TON Blockchain: Dune, on-chain research, analyst contests and practical data infrastructure.',
+    description: 'Built analytics for TON Blockchain: Dune, on-chain research, analyst contests and practical data infrastructure.',
     link: 'https://dune.com/blockchains/ton',
     linkLabel: 'Dune Dashboard',
   },
@@ -53,11 +56,11 @@ const profileSchema = {
     name: 'Daniil Okhlopkov',
     alternateName: 'Даниил Охлопков',
     url: absoluteUrl('/about/'),
-    jobTitle: 'Head of Analytics',
+    jobTitle: 'Strategic Analytics Lead',
     worksFor: {
       '@type': 'Organization',
-      name: 'TON Foundation',
-      url: 'https://ton.org/',
+      name: 'TOP.co',
+      url: 'https://top.co/',
     },
     sameAs: socialLinks.map((link) => link.url),
     knowsAbout: ['AI Agents', 'Claude Code', 'Codex', 'MCP', 'TON Analytics', 'Telegram Automation', 'Data Products'],
@@ -67,7 +70,7 @@ const profileSchema = {
 export function EnglishAbout() {
   useDocumentMeta({
     title: 'Daniil Okhlopkov — AI Agents, TON Analytics and Telegram',
-    description: 'Daniil Okhlopkov leads analytics at TON Foundation and writes about AI agents, on-chain analytics, Telegram workflows, data products and startups.',
+    description: 'Daniil Okhlopkov is Strategic Analytics Lead at TOP.co and writes about AI agents, on-chain analytics, Telegram workflows, data products and startups.',
     canonical: absoluteUrl('/en/about/'),
     lang: 'en',
     alternates: {
@@ -83,15 +86,15 @@ export function EnglishAbout() {
       <div className="subpage-header">
         <BackButton to="/en/" />
         <h1 className="subpage-title">About</h1>
-        <p className="subpage-subtitle">Data, crypto, AI agents. London.</p>
+        <p className="subpage-subtitle">Strategic Analytics Lead @ TOP.co</p>
       </div>
 
       <div className="info-card">
         <p>
-          I lead analytics at TON Foundation and write about practical AI-agent workflows, on-chain data, Telegram automation and the tools I actually use.
+          I write about practical AI-agent workflows, on-chain data, Telegram automation and the tools I actually use.
         </p>
         <p style={{ marginTop: 12 }}>
-          Before TON I was a startup CTO, data scientist in VC, Entrepreneur First founder in residence and Forbes 30 Under 30 Russia.
+          I previously led analytics at TON Foundation. Before that, I was a startup CTO, a data scientist in VC and a founder in residence at Entrepreneur First. Forbes 30 Under 30 Russia.
         </p>
       </div>
 
@@ -101,16 +104,18 @@ export function EnglishAbout() {
       </div>
 
       {experience.map((role) => (
-        <div key={`${role.company}-${role.period}`} className="experience-card">
+        <div key={`${role.company}-${role.title}`} className="experience-card">
           <div className="experience-header">
             <span className="experience-title">{role.title}</span>
             <span className="experience-company">{role.company}</span>
           </div>
-          <div className="experience-meta">
-            <span>{role.period}</span>
-            <span>{role.location}</span>
-          </div>
-          <p className="experience-desc">{role.description}</p>
+          {(role.period || role.location) && (
+            <div className="experience-meta">
+              {role.period && <span>{role.period}</span>}
+              {role.location && <span>{role.location}</span>}
+            </div>
+          )}
+          {role.description && <p className="experience-desc">{role.description}</p>}
           {role.link && (
             <span
               className="experience-link"

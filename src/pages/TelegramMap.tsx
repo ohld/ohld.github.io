@@ -61,7 +61,8 @@ const dateFormatter = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 
 const monthFormatter = new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' })
 const numberFormatter = new Intl.NumberFormat('ru-RU', { notation: 'compact', maximumFractionDigits: 1 })
 const CAREER_ROLES: CareerRole[] = [
-  { company: 'TON Foundation', role: 'Head of Analytics', start: Date.parse('2025-09-01T00:00:00Z'), end: Date.parse('2100-01-01T00:00:00Z') },
+  // Playback coverage ends after the July 16 atlas snapshot, when this role was still documented.
+  { company: 'TON Foundation', role: 'Head of Analytics', start: Date.parse('2025-09-01T00:00:00Z'), end: Date.parse('2026-07-17T00:00:00Z') },
   { company: 'TON Foundation', role: 'Research Analyst', start: Date.parse('2024-12-01T00:00:00Z'), end: Date.parse('2025-11-01T00:00:00Z') },
   { company: 'sequel', role: 'Senior Data Scientist', start: Date.parse('2024-01-01T00:00:00Z'), end: Date.parse('2024-12-01T00:00:00Z') },
   { company: 'Entrepreneur First', role: 'Founder In Residence', start: Date.parse('2023-09-01T00:00:00Z'), end: Date.parse('2024-01-01T00:00:00Z') },

@@ -4,7 +4,7 @@
 
 ## Short version
 
-I lead analytics at TON Foundation: on-chain data, research, ecosystem metrics and tools that help people understand the blockchain faster.
+I’m Strategic Analytics Lead at TOP.co.
 
 This site is a map of my evergreen work: practical AI-agent workflows, blog notes, articles and consulting context.
 

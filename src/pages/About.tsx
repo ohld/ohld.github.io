@@ -8,8 +8,8 @@ import { useDocumentMeta } from '../useDocumentMeta'
 interface Role {
   title: string
   company: string
-  period: string
-  location: string
+  period?: string
+  location?: string
   description?: string
   link?: string
   linkLabel?: string
@@ -17,11 +17,14 @@ interface Role {
 
 const experience: Role[] = [
   {
+    title: 'Strategic Analytics Lead',
+    company: 'TOP.co',
+  },
+  {
     title: 'Head of Analytics',
     company: 'TON Foundation',
-    period: 'Sep 2025 — now',
     location: 'London, Remote',
-    description: 'Строю аналитику для TON Blockchain. Dune, on-chain research, контесты для аналитиков.',
+    description: 'Строил аналитику для TON Blockchain. Dune, on-chain research, контесты для аналитиков.',
     link: 'https://dune.com/blockchains/ton',
     linkLabel: 'Dune Dashboard',
   },
@@ -79,11 +82,11 @@ const profileSchema = {
     name: 'Даниил Охлопков',
     alternateName: 'Daniil Okhlopkov',
     url: absoluteUrl('/about/'),
-    jobTitle: 'Head of Analytics',
+    jobTitle: 'Strategic Analytics Lead',
     worksFor: {
       '@type': 'Organization',
-      name: 'TON Foundation',
-      url: 'https://ton.org/',
+      name: 'TOP.co',
+      url: 'https://top.co/',
     },
     sameAs: socialLinks.map((link) => link.url),
     knowsAbout: ['AI Agents', 'Claude Code', 'Codex', 'MCP', 'TON Analytics', 'Telegram Automation', 'Data Products'],
@@ -93,7 +96,7 @@ const profileSchema = {
 export function About() {
   useDocumentMeta({
     title: 'Даниил Охлопков — AI-агенты, TON-аналитика и Telegram',
-    description: 'Даниил Охлопков: Head of Analytics @ TON Foundation, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.',
+    description: 'Даниил Охлопков: Strategic Analytics Lead @ TOP.co, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.',
     canonical: absoluteUrl('/about/'),
     alternates: {
       ru: absoluteUrl('/about/'),
@@ -107,12 +110,12 @@ export function About() {
       <div className="subpage-header">
         <BackButton />
         <h1 className="subpage-title">Обо мне</h1>
-        <p className="subpage-subtitle">Данные, крипта, стартапы. Лондон.</p>
+        <p className="subpage-subtitle">Strategic Analytics Lead @ TOP.co</p>
       </div>
 
       <div className="info-card">
         <p>
-          Head of Analytics @ TON Foundation. До этого — CTO стартапа с $2M fundraise,
+          Раньше руководил аналитикой в TON Foundation. До этого — CTO стартапа с $2M fundraise,
           data scientist в двух VC фондах, Entrepreneur First.
         </p>
         <p style={{ marginTop: 12 }}>
@@ -131,10 +134,12 @@ export function About() {
             <span className="experience-title">{role.title}</span>
             <span className="experience-company">{role.company}</span>
           </div>
-          <div className="experience-meta">
-            <span>{role.period}</span>
-            <span>{role.location}</span>
-          </div>
+          {(role.period || role.location) && (
+            <div className="experience-meta">
+              {role.period && <span>{role.period}</span>}
+              {role.location && <span>{role.location}</span>}
+            </div>
+          )}
           {role.description && (
             <p className="experience-desc">{role.description}</p>
           )}

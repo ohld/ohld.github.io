@@ -1,16 +1,18 @@
 # Даниил Охлопков — AI-агенты, TON-аналитика и Telegram
 
-> Head of Analytics @ TON Foundation, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.
+> Strategic Analytics Lead @ TOP.co, Forbes 30 under 30, бывший CTO Via Protocol. AI-агенты, on-chain analytics и Telegram.
 
-Head of Analytics @ TON Foundation. До этого — CTO стартапа с $2M fundraise, data scientist в двух VC фондах, Entrepreneur First.
+Раньше руководил аналитикой в TON Foundation. До этого — CTO стартапа с $2M fundraise, data scientist в двух VC фондах, Entrepreneur First.
 
 Пишу про AI-агентов, on-chain аналитику и то, как строить продукты с данными.
 
 ## Опыт
 
+### Strategic Analytics Lead — TOP.co
+
 ### Head of Analytics — TON Foundation
-**Sep 2025 — now** · London, Remote
-Строю аналитику для TON Blockchain. Dune, on-chain research, контесты для аналитиков.
+London, Remote
+Строил аналитику для TON Blockchain. Dune, on-chain research, контесты для аналитиков.
 Dune dashboard: https://dune.com/blockchains/ton
 
 ### Research Analyst — TON Foundation
