@@ -1,0 +1,29 @@
+name: Preflight
+
+# Same gate as the deploy workflow, without deploying or notifying IndexNow.
+# Review aid only: PRs are merged by Dan. No scheduling or self-merge.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preflight-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # check:editorial compares against origin/main
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run preflight:pages

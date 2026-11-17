@@ -12,6 +12,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { htmlToMarkdown } from './html-to-markdown.mjs'
 
 const dist = 'dist'
 const DEFAULT_SITE_URL = 'https://okhlopkov.com'
@@ -1051,7 +1052,8 @@ function faqSchema(route) {
     }
   }
 
-  const markdown = route.markdown || getRouteMd(route) || ''
+  // Imported articles declare FAQ only through the article-faq HTML section above.
+  const markdown = route.kind === 'article-page' ? '' : route.markdown || getRouteMd(route) || ''
   if (!markdown) return null
 
   const lines = markdown.replace(/\r\n/g, '\n').split('\n')
@@ -1910,16 +1912,16 @@ function xmlText(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
+// The .md writer adds the "# title" line, so this returns only what follows it.
 function articleMarkdown(article, body) {
-  const title = article.title || 'Daniil Okhlopkov'
-  const description = article.description ? `\n\n> ${article.description}` : ''
-  const sourceUrl = `${SITE_URL}${article.path}`
-  return `# ${title}${description}
+  const description = article.description ? `> ${article.description}\n\n` : ''
+  const markdown = htmlToMarkdown(body)
+  if (/<h[2-4]\b/i.test(body) && !/^#{2,4} /m.test(markdown)) {
+    throw new Error(`${article.path}: Markdown mirror lost the article headings`)
+  }
+  return `${description}Source: ${SITE_URL}${article.path}
 
-Source: ${sourceUrl}
-
-${stripTags(body)}
-`
+${markdown}`
 }
 
 for (const post of GENERATED_BLOG_POSTS) {

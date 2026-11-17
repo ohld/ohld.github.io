@@ -2,7 +2,6 @@
   "source": "user-reference-edited",
   "model": "local-pillow-edit",
   "provider": "codex-local",
-  "reference": "based directly on /Users/ohld/Desktop/433f2d8b956618eadb410731b690a7dd.jpg; original gritty top-down game screenshot vibe preserved, cropped to square-ish article flow",
   "prompt_text": "АГЕНТ НАШЕЛ / SHADOW ACCOUNTS / И СМОТРИТ В ТЕБЯ",
   "purpose": "mid-article vibe illustration for trendwatching section in /articles/ai-reels-seo-pipeline-telegram-claude-code/",
   "web_asset": {

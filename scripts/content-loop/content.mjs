@@ -31,6 +31,25 @@ export function parseMarkdown(text) {
   return { meta, body: match[2] }
 }
 
+export const PRIVATE_FIELDS = ['insight_id', 'evidence_urls', 'query_demand', 'metrics_plan', 'site_handoff', 'status']
+
+const CARD_FIELDS = ['slug', 'title', 'description', 'seoTitle', 'seoDescription', 'publishedAt', 'updatedAt', 'lang', 'readingTime', 'tags', 'coverImage', 'coverAlt', 'thumbnailImage']
+const cardLiteral = (value) => Array.isArray(value)
+  ? `[${value.map(cardLiteral).join(', ')}]`
+  : `'${String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\r/g, '\\r').replace(/\n/g, '\\n')}'`
+
+// The draft updater and full registry generator must produce byte-identical cards.
+export function renderCard(meta, previous = {}) {
+  const card = { ...previous }
+  for (const key of CARD_FIELDS) {
+    if (key === 'tags') card.tags = (meta.tags || '').split(',').map((tag) => tag.trim()).filter(Boolean)
+    else if (meta[key]) card[key] = meta[key]
+    else if (key !== 'thumbnailImage') delete card[key]
+  }
+  const keys = [...CARD_FIELDS.filter((key) => key in card), ...Object.keys(card).filter((key) => !CARD_FIELDS.includes(key))]
+  return `{\n${keys.map((key) => `    ${key}: ${cardLiteral(card[key])},\n`).join('')}  }`
+}
+
 export function inventory(root) {
   const items = []
   for (const [directory, section] of [['blog-posts', 'blog'], ['seo-articles', 'articles']]) {
@@ -52,11 +71,11 @@ export function inventory(root) {
   return items
 }
 
-function sourceFile(text, name) {
+export function sourceFile(text, name) {
   return ts.createSourceFile(name, text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS)
 }
 
-function arrayDeclaration(file, name) {
+export function arrayDeclaration(file, name) {
   for (const statement of file.statements) {
     if (!ts.isVariableStatement(statement)) continue
     for (const declaration of statement.declarationList.declarations) {
@@ -72,7 +91,7 @@ function literalValue(node) {
   throw new Error('Registry metadata must contain string literals or string arrays')
 }
 
-function objectValue(node, file) {
+export function objectValue(node, file) {
   assert(ts.isObjectLiteralExpression(node), 'Expected registry metadata object')
   return Object.fromEntries(node.properties.map((property) => {
     assert(ts.isPropertyAssignment(property), 'Unsupported registry metadata property')
@@ -88,7 +107,7 @@ export function prepareUpdate(root, target, draft) {
   const originals = Object.fromEntries([bodyPath, metadataPath, runtimePath].map((p) => [p, fs.readFileSync(path.join(root, p), 'utf8')]))
   const { meta } = parseMarkdown(draft)
   for (const field of ['canonical_path', 'content_file', 'format', 'section']) assert(!(field in meta), `Reserved inventory field cannot appear in draft frontmatter: ${field}`)
-  for (const field of ['insight_id', 'evidence_urls', 'query_demand', 'metrics_plan', 'site_handoff', 'status']) assert(!(field in meta), `Private handoff field cannot enter public frontmatter: ${field}`)
+  for (const field of PRIVATE_FIELDS) assert(!(field in meta), `Private handoff field cannot enter public frontmatter: ${field}`)
   assert(meta.lang === 'ru' && meta.slug === target.slug, 'Draft identity does not match the intended RU URL')
   assert(meta.publishedAt === target.publishedAt, 'Update must preserve publishedAt')
   assert(meta.updatedAt >= target.updatedAt, 'Update cannot move updatedAt backwards')
@@ -105,13 +124,7 @@ export function prepareUpdate(root, target, draft) {
   const matches = metadataArray.elements.map((node) => ({ node, value: objectValue(node, file) })).filter(({ value }) => value.slug === target.slug && value.lang === 'ru')
   assert(matches.length === 1, 'Article must appear exactly once in the card metadata registry')
   const { node, value } = matches[0]
-  const fields = ['slug', 'title', 'description', 'seoTitle', 'seoDescription', 'publishedAt', 'updatedAt', 'lang', 'readingTime', 'tags', 'coverImage', 'coverAlt']
-  for (const key of fields) {
-    if (key === 'tags') value[key] = (meta.tags || '').split(',').map((x) => x.trim()).filter(Boolean)
-    else if (meta[key]) value[key] = meta[key]
-    else delete value[key]
-  }
-  const replacement = '{\n' + Object.entries(value).map(([key, val]) => `    ${key}: ${JSON.stringify(val)},`).join('\n') + '\n  }'
+  const replacement = renderCard(meta, value)
   const metadata = originals[metadataPath].slice(0, node.getStart(file)) + replacement + originals[metadataPath].slice(node.end)
   return { originals, changes: { [bodyPath]: draft, [metadataPath]: metadata }, registered_body: runtimePath }
 }
