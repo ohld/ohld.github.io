@@ -69,3 +69,14 @@ export function imageDimensionsForUrl(url?: string): ImageDimensions | undefined
     return IMAGE_DIMENSIONS[url.split('?')[0]]
   }
 }
+
+const HERMES_SETUP_COVER = '/assets/articles/hermes-agent-vps-telegram-setup/hermes-vps-telegram-cover-20260811.webp'
+
+export function articleHeroSource(url?: string) {
+  if (url !== HERMES_SETUP_COVER) return undefined
+  const base = HERMES_SETUP_COVER.slice(0, -'.webp'.length)
+  return {
+    srcSet: `${base}-688.webp 688w, ${base}-1032.webp 1032w, ${url} 1376w`,
+    sizes: '(max-width: 900px) calc(100vw - 32px), 868px',
+  }
+}

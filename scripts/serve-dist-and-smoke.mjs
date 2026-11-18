@@ -116,7 +116,7 @@ function runSmoke(baseUrl) {
       },
       stdio: 'inherit',
     })
-    child.on('exit', (code) => resolve(code || 0))
+    child.on('exit', (code) => resolve(code ?? 1))
   })
 }
 
