@@ -90,6 +90,10 @@ export function checkEditorial(text, { isNew = true, section = 'blog', routes = 
   // Definitions are still checked, so reference-style Markdown cannot hide a broken target.
   const internal = new Set()
   const checkTarget = (target, where, count = true) => {
+    if (/(?:^|\/)cdn-cgi\//i.test(target.split(/[?#]/)[0])) {
+      errors.push(`Cloudflare /cdn-cgi/ link (${where}): use the original destination or plain text`)
+      return
+    }
     const local = target.replace(SITE, '') || '/'
     if (!local.startsWith('/') || local.startsWith('//')) return
     const pathname = local.split(/[?#]/)[0]
@@ -109,7 +113,10 @@ export function checkEditorial(text, { isNew = true, section = 'blog', routes = 
       checkTarget(target, at(index), !image)
       return ' '
     }).replace(/<[a-z][\w:-]*(?:[^<>"']|"[^"]*"|'[^']*')*>/gi, (tag) =>
-      tag.replace(/(?:href|src)\s*=\s*(["'])(.*?)\1/gi, (_match, _quote, target) => { checkTarget(target, at(index), false); return ' ' }))
+      tag.replace(/\b(?:href|src)\s*=\s*(?:(["'])(.*?)\1|([^\s>]+))/gi, (_match, _quote, quoted, unquoted) => {
+        checkTarget(quoted ?? unquoted, at(index), false)
+        return ' '
+      }))
     if (/https?:\/\/\S/i.test(withoutLinks)) errors.push(`bare URL (${at(index)}): write a Markdown link with a readable label`)
   })
   if (internal.size < 2) errors.push(`${internal.size} internal links to existing pages; a post needs at least 2`)

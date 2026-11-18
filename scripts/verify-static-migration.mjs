@@ -710,11 +710,11 @@ function assertNoMalformedExternalLinks(html, path) {
   const malformed = []
   for (const match of html.matchAll(/href=["']([^"']+)["']/g)) {
     const href = decodeHtml(match[1])
+    assert(!/(?:^|\/)cdn-cgi\//i.test(href.split(/[?#]/)[0]), `${path}: leaked Cloudflare /cdn-cgi/ link`)
     if (/^(?:[a-z][a-z0-9+.-]*:|[/?#]|mailto:|tel:)/i.test(href)) continue
     if (/^[^/\s]+\.[a-z]{2,}(?:[/?#]|$)/i.test(href)) malformed.push(href)
   }
   assert(malformed.length === 0, `${path}: malformed relative external links: ${[...new Set(malformed)].join(', ')}`)
-  assert(!html.includes('/cdn-cgi/l/email-protection'), `${path}: leaked Cloudflare email-protection link`)
 }
 
 async function verifyRootVerificationMeta() {
@@ -1206,10 +1206,10 @@ function verifyImportedInternalLinks(importedContent, migrationRows) {
 
   for (const article of importedContent) {
     for (const match of (article.bodyHtml || '').matchAll(/href=["']([^"']+)["']/g)) {
-      const href = match[1]
+      const href = decodeHtml(match[1])
+      assert(!/(?:^|\/)cdn-cgi\//i.test(href.split(/[?#]/)[0]), `${article.path}: leaked Cloudflare /cdn-cgi/ link`)
       if (!href.startsWith('/')) continue
       const url = new URL(href, siteUrl)
-      if (url.pathname.startsWith('/cdn-cgi/')) continue
       if (/\.[a-z0-9]{2,5}$/i.test(url.pathname)) continue
       const pathname = url.pathname.endsWith('/') ? url.pathname : `${url.pathname}/`
       if (knownPaths.has(pathname)) continue
