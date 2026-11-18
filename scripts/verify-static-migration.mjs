@@ -293,7 +293,9 @@ const generatedBlogChecks = generatedBlogPosts.map((post) => {
 const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
   path: generatedArticlePath(article),
   title: article.seoTitle || article.title,
-  requiredText: article.slug === 'dizayn-skilly-claude-code-codex'
+  requiredText: article.slug === 'pamyat-hermes-codex'
+    ? ['Что записать в Markdown', 'Когда переносить решения в GBrain', 'Проверь память в новом чате']
+    : article.slug === 'dizayn-skilly-claude-code-codex'
     ? ['Какие дизайн-скиллы выбрать', 'Как установить скиллы в Claude Code и Codex', 'Для игр: графика в одном стиле и удобный HUD', 'Как совместить скиллы в одной задаче']
     : article.slug === 'hermes-agent-vps-telegram-ustanovka'
     ? ['Что получится', 'Сначала заставить работать модель', 'Сделать проверку после перезагрузки', 'Если Telegram-бот молчит']

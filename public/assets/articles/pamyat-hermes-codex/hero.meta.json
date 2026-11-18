@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-11-18",
+  "caption": "Память для агентов",
+  "alt": "На розовом фоне персонаж аниме держит синий раскладной телефон. Справа надпись «Память для агентов».",
+  "generation": {
+    "model": "nano-banana-pro-2k",
+    "method": "Pinterest reference edit with original lettering"
+  },
+  "reference": {
+    "pinUrl": "https://www.pinterest.com/pin/839569555581759350/"
+  },
+  "output": {
+    "path": "/assets/articles/pamyat-hermes-codex/hero.webp",
+    "format": "webp",
+    "width": 1600,
+    "height": 900,
+    "bytes": 116890,
+    "sha256": "f4b6d913bc5b8ba64844538f958cd508de9ebbadd702fceaf72b9ee9794ac474"
+  }
+}
