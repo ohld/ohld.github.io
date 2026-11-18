@@ -12,6 +12,8 @@ const IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
   '/assets/articles/ton-on-chain-data-analysis-dune/ton-usdt-volume-active-wallets.webp': { width: 1600, height: 657 },
   '/assets/articles/ton-on-chain-data-analysis-dune/ton-dex-traders-volume.webp': { width: 1600, height: 598 },
   '/assets/articles/how-to-analyze-ton-users-and-token-flows-on-dune/ton-users-token-flows-dune-guide.webp': { width: 2160, height: 1280 },
+  '/assets/articles/telegram-bots-mini-apps-trends-november-2026/change-ru.webp': { width: 1000, height: 692 },
+  '/assets/articles/telegram-bots-mini-apps-trends-november-2026/change-en.webp': { width: 1000, height: 692 },
   '/assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-gift-casinos-growth.webp': { width: 1600, height: 900 },
   '/assets/articles/telegram-bots-mini-apps-trends-august-2026/mopsstars-freebie-retention.webp': { width: 2480, height: 1520 },
   '/assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-bot-doorways.webp': { width: 2480, height: 1520 },

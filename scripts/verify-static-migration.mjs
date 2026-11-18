@@ -299,6 +299,10 @@ const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
     ? ['Какие дизайн-скиллы выбрать', 'Как установить скиллы в Claude Code и Codex', 'Для игр: графика в одном стиле и удобный HUD', 'Как совместить скиллы в одной задаче']
     : article.slug === 'hermes-agent-vps-telegram-ustanovka'
     ? ['Что получится', 'Сначала заставить работать модель', 'Сделать проверку после перезагрузки', 'Если Telegram-бот молчит']
+    : article.slug === 'telegram-bots-mini-apps-trends-november-2026'
+    ? ['Где изменилась аудитория', 'Какие боты вошли в сравнение', 'change-ru.webp']
+    : article.slug === 'telegram-bot-trends-november-2026'
+    ? ['Which lists gained or lost audience?', 'Where the numbers come from', 'change-en.webp']
     : article.slug === 'telegram-bots-mini-apps-trends-august-2026'
     ? ['Карта трендов Telegram-ботов за август 2026', 'Казино на Telegram-подарках', 'Дорвеи', 'Что беру на карандаш к сентябрю']
     : article.slug === 'telegram-bot-trends-august-2026'

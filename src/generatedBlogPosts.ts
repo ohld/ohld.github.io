@@ -21,6 +21,8 @@ import articlePamyatHermesCodex from '../content/seo-articles/pamyat-hermes-code
 import articleTelegramBotApiVsMtprotoMethods from '../content/seo-articles/telegram-bot-api-vs-mtproto-methods.md?raw'
 import articleTelegramBotsMiniAppsTrendsAugust2026En from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026-en.md?raw'
 import articleTelegramBotsMiniAppsTrendsAugust2026 from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026.md?raw'
+import articleTelegramBotsMiniAppsTrendsNovember2026En from '../content/seo-articles/telegram-bots-mini-apps-trends-november-2026-en.md?raw'
+import articleTelegramBotsMiniAppsTrendsNovember2026 from '../content/seo-articles/telegram-bots-mini-apps-trends-november-2026.md?raw'
 import articleTonOnChainDataAnalysisDune from '../content/seo-articles/ton-on-chain-data-analysis-dune.md?raw'
 
 interface BlogListItem {
@@ -83,6 +85,8 @@ const articleSources = [
   articleTelegramBotApiVsMtprotoMethods,
   articleTelegramBotsMiniAppsTrendsAugust2026En,
   articleTelegramBotsMiniAppsTrendsAugust2026,
+  articleTelegramBotsMiniAppsTrendsNovember2026En,
+  articleTelegramBotsMiniAppsTrendsNovember2026,
   articleTonOnChainDataAnalysisDune,
 ]
 

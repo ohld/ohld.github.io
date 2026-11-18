@@ -6,7 +6,7 @@ description: Original August 2026 data on Telegram bot trends: gift casinos grew
 seoTitle: Telegram Bot Trends 2026: Casinos, Stars, Doorway Bots
 seoDescription: Original August 2026 data on Telegram bot trends: gift casinos grew 104%, Stars resellers fell 39%, and 104 doorway bots reached 20.3M combined MAU.
 publishedAt: 2026-09-02
-updatedAt: 2026-09-02
+updatedAt: 2026-11-18
 readingTime: 9 min
 tags: Telegram, Telegram Bots, Mini Apps, Data Analytics, Marketing
 coverImage: /assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-gift-casinos-growth-en.webp
@@ -23,6 +23,8 @@ reactions: 0
 Telegram shows a bot's monthly users once it passes 10,000 MAU. I collected those public numbers to map the main **Telegram bot trends in August 2026**.
 
 This is the next snapshot in my Telegram bot market research. In spring, I counted [183 AI bots on Telegram with a combined 44.3 million MAU](/183-ai-bots-telegram-44m-users/). This time I looked beyond AI: gift casinos, Telegram Stars resellers, group moderators, dating bots, video downloaders, VPNs, and doorway bots.
+
+For the next snapshot, see [how Telegram bot audiences changed in the 30 days to November 17](/en/articles/telegram-bot-trends-november-2026/).
 
 ## Telegram bot trends in August 2026: quick answer
 
