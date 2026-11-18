@@ -4,7 +4,7 @@ lang: ru
 title: Тренды Telegram-ботов и Mini Apps: август 2026
 description: Разобрал тренды Telegram-ботов и Mini Apps за август 2026: казино на подарках +104%, реселлеры Stars −39% и 104 бота-дорвея на 20,3 млн MAU.
 publishedAt: 2026-09-01
-updatedAt: 2026-09-02
+updatedAt: 2026-11-18
 readingTime: 8 мин
 tags: Telegram, Telegram Bots, Mini Apps, Data Analytics, Marketing
 coverImage: /assets/articles/telegram-bots-mini-apps-trends-august-2026/telegram-gift-casinos-growth.webp
@@ -21,6 +21,8 @@ reactions: 0
 Telegram показывает число пользователей бота, если им пользуются больше 10 тысяч человек в месяц. Как и в [прошлом месяце](https://habr.com/ru/articles/1066040/), я погрузился в данные, чтобы найти тренды экосистемы Telegram за август 2026.
 
 Это продолжение моих срезов рынка. Весной я отдельно разбирал [183 AI-бота в Telegram с 44 млн MAU](/183-ai-bots-telegram-44m-users/) (на английском), а теперь смотрю шире: от казино на подарках и реселлеров Stars до модераторов групп и ботов-дорвеев.
+
+Свежие данные — [как изменилась аудитория Telegram-ботов к 17 ноября](/ru/articles/telegram-bots-mini-apps-trends-november-2026/).
 
 ## Коротко
 

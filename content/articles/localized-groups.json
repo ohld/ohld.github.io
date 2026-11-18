@@ -6,5 +6,6 @@
   { "ru": "/claude-code-nastrojka-mcp-hooks-skills-2026/", "en": "/claude-code-setup-mcp-hooks-skills-2026/", "zh": "/cn-claude-code-setup-mcp-hooks-skills-2026/", "xDefault": "ru" },
   { "ru": "/telegram-mcp-server-kak-sdelat/", "en": "/telegram-mcp-server-guide/", "xDefault": "ru" },
   { "ru": "/ru/articles/hermes-agent-vps-telegram-ustanovka/", "en": "/en/articles/hermes-agent-vps-telegram-setup/", "xDefault": "ru" },
-  { "ru": "/ru/articles/telegram-bots-mini-apps-trends-august-2026/", "en": "/en/articles/telegram-bot-trends-august-2026/", "xDefault": "ru" }
+  { "ru": "/ru/articles/telegram-bots-mini-apps-trends-august-2026/", "en": "/en/articles/telegram-bot-trends-august-2026/", "xDefault": "ru" },
+  { "ru": "/ru/articles/telegram-bots-mini-apps-trends-november-2026/", "en": "/en/articles/telegram-bot-trends-november-2026/", "xDefault": "ru" }
 ]
