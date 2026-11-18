@@ -323,6 +323,8 @@ const generatedArticlePostMeta: GeneratedPostMeta[] = [
     lang: 'en',
     readingTime: '4 min',
     tags: ['Telegram', 'Telegram Bots', 'Mini Apps', 'Data Analytics'],
+    coverImage: '/assets/articles/telegram-bots-mini-apps-trends-november-2026/cover-en.webp',
+    coverAlt: 'A purple skeleton against a green background beside the words “Telegram bots, November 2026”.',
   },
   {
     slug: 'telegram-bots-mini-apps-trends-november-2026',
@@ -333,6 +335,8 @@ const generatedArticlePostMeta: GeneratedPostMeta[] = [
     lang: 'ru',
     readingTime: '4 мин',
     tags: ['Telegram', 'Telegram Bots', 'Mini Apps', 'Data Analytics'],
+    coverImage: '/assets/articles/telegram-bots-mini-apps-trends-november-2026/cover-ru.webp',
+    coverAlt: 'Фиолетовый скелет на зелёном фоне и надпись «Telegram-боты. Ноябрь 2026».',
   },
   {
     slug: 'ton-on-chain-data-analysis-dune',

@@ -7,6 +7,8 @@ publishedAt: 2026-11-18
 updatedAt: 2026-11-18
 readingTime: 4 мин
 tags: Telegram, Telegram Bots, Mini Apps, Data Analytics
+coverImage: /assets/articles/telegram-bots-mini-apps-trends-november-2026/cover-ru.webp
+coverAlt: Фиолетовый скелет на зелёном фоне и надпись «Telegram-боты. Ноябрь 2026».
 sourceTelegramId: 0
 primaryKeyword: аудитория Telegram-ботов в ноябре 2026
 ---
