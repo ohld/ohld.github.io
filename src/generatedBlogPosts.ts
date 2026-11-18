@@ -17,6 +17,7 @@ import articleHermesAgentVpsTelegramUstanovka from '../content/seo-articles/herm
 import articleHermesAgentVsOpenclaw from '../content/seo-articles/hermes-agent-vs-openclaw.md?raw'
 import articleHowToAnalyzeTonUsersAndTokenFlowsOnDune from '../content/seo-articles/how-to-analyze-ton-users-and-token-flows-on-dune.md?raw'
 import articleKakPravilnoPisatSkillyClaudeCode7Oshibok from '../content/seo-articles/kak-pravilno-pisat-skilly-claude-code-7-oshibok.md?raw'
+import articlePamyatHermesCodex from '../content/seo-articles/pamyat-hermes-codex.md?raw'
 import articleTelegramBotApiVsMtprotoMethods from '../content/seo-articles/telegram-bot-api-vs-mtproto-methods.md?raw'
 import articleTelegramBotsMiniAppsTrendsAugust2026En from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026-en.md?raw'
 import articleTelegramBotsMiniAppsTrendsAugust2026 from '../content/seo-articles/telegram-bots-mini-apps-trends-august-2026.md?raw'
@@ -78,6 +79,7 @@ const articleSources = [
   articleHermesAgentVsOpenclaw,
   articleHowToAnalyzeTonUsersAndTokenFlowsOnDune,
   articleKakPravilnoPisatSkillyClaudeCode7Oshibok,
+  articlePamyatHermesCodex,
   articleTelegramBotApiVsMtprotoMethods,
   articleTelegramBotsMiniAppsTrendsAugust2026En,
   articleTelegramBotsMiniAppsTrendsAugust2026,

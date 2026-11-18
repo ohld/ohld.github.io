@@ -264,6 +264,17 @@ const generatedArticlePostMeta: GeneratedPostMeta[] = [
     coverAlt: 'Мем-обложка SKILL.md / NOT PROMPT SOUP для статьи про Claude Code skills',
   },
   {
+    slug: 'pamyat-hermes-codex',
+    title: 'Как выбрать память для Hermes и Codex',
+    description: 'Где хранить решения проекта, чтобы Hermes и Codex находили их в новом чате. Пример записи в Markdown и простой тест, который покажет, пригодится ли тебе GBrain.',
+    seoTitle: 'Как выбрать память для Hermes и Codex: Markdown или GBrain',
+    publishedAt: '2026-11-18',
+    updatedAt: '2026-11-18',
+    lang: 'ru',
+    readingTime: '4 мин',
+    tags: ['Hermes Agent', 'Codex', 'GBrain', 'Markdown'],
+  },
+  {
     slug: 'telegram-bot-api-vs-mtproto-methods',
     title: 'Telegram Bot API vs MTProto: Methods Available to Bots',
     description: 'Which MTProto methods can Telegram bots call? A production-tested Bot API comparison with bot-token methods, user-only limits, and Telethon examples.',
