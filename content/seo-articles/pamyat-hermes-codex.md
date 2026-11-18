@@ -7,6 +7,8 @@ description: Где хранить решения проекта, чтобы Her
 publishedAt: 2026-11-18
 updatedAt: 2026-11-18
 readingTime: 4 мин
+coverImage: /assets/articles/pamyat-hermes-codex/hero.webp
+coverAlt: На розовом фоне персонаж аниме держит синий раскладной телефон. Справа надпись «Память для агентов».
 tags: Hermes Agent, Codex, GBrain, Markdown
 primaryKeyword: память для Hermes и Codex
 ---

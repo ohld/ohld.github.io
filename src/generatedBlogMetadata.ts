@@ -273,6 +273,8 @@ const generatedArticlePostMeta: GeneratedPostMeta[] = [
     lang: 'ru',
     readingTime: '4 мин',
     tags: ['Hermes Agent', 'Codex', 'GBrain', 'Markdown'],
+    coverImage: '/assets/articles/pamyat-hermes-codex/hero.webp',
+    coverAlt: 'На розовом фоне персонаж аниме держит синий раскладной телефон. Справа надпись «Память для агентов».',
   },
   {
     slug: 'telegram-bot-api-vs-mtproto-methods',
