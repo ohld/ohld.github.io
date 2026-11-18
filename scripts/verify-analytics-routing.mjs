@@ -771,7 +771,15 @@ async function run(baseUrl) {
   const executablePath = findExecutable()
   const launchOptions = executablePath ? { executablePath } : {}
   const browser = await chromium.launch({ headless: true, ...launchOptions })
-  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+  try {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+    await checkAnalyticsRouting(context, baseUrl)
+  } finally {
+    await browser.close()
+  }
+}
+
+async function checkAnalyticsRouting(context, baseUrl) {
   await installAnalyticsMocks(context)
 
   const page = await context.newPage()
@@ -823,7 +831,6 @@ async function run(baseUrl) {
   await assertBotRevolutionClipboardFailure(context, baseUrl)
   await assertMissingPagesStayNotFound(context, baseUrl)
 
-  await browser.close()
   console.log(`✓ analytics routing and click goals (${expectedPaths.join(', ')})`)
 }
 

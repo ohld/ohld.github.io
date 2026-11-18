@@ -63,4 +63,6 @@
 
 - [Полный контент-бандл](https://okhlopkov.com/llms-full.txt): все страницы в одном файле для one-shot fetch
 - [English homepage](https://okhlopkov.com/en/): English entry point
+- [English blog](https://okhlopkov.com/en/blog/)
+- [English articles](https://okhlopkov.com/en/articles/)
 - [GitHub](https://github.com/ohld): открытый код, MCP-серверы

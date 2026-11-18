@@ -6,14 +6,15 @@
  *    optional type-specific schema.org JSON-LD, and a static HTML body fallback
  *    inside #root (replaced by React's createRoot on mount; visible to crawlers
  *    and noJS clients).
- *  - dist/<slug>.md — plain Markdown version of the page for LLM crawlers
- *    (referenced from /llms.txt). Static-hosting equivalent of the
+ *  - dist/<slug>.md — plain Markdown version of the page for LLM crawlers.
+ *    Static-hosting equivalent of the
  *    "Markdown for Agents" Accept-negotiation pattern.
  */
 import fs from 'node:fs'
 import path from 'node:path'
 import { articleEndingHtml, articleEndingMarkdown } from '../src/articleEnding.mts'
 import { withSectionLinks } from '../src/articleSections.mts'
+import { articleHeroSource } from '../src/imageMetadata.ts'
 import { htmlToMarkdown } from './html-to-markdown.mjs'
 
 const dist = 'dist'
@@ -30,7 +31,6 @@ const LOCALIZED_GROUPS_PATH = path.join('content', 'articles', 'localized-groups
 const ARTICLE_SEO_ENHANCEMENTS_PATH = path.join('content', 'articles', 'seo-enhancements.json')
 const LEGACY_REDIRECTS_PATH = path.join('content', 'articles', 'legacy-redirects.json')
 const TOPIC_HUBS_PATH = path.join('content', 'topic-hubs.json')
-const HOME_IMAGE_PRELOAD = '    <link rel="preload" as="image" href="/assets/articles/gde-deshevle-kupit-telegram-stars/telegram-stars-cover-card.webp" fetchpriority="high" />\n'
 const BOT_REVOLUTION_IMAGE = '/assets/drafts/bot-revolution/bot-weather-map.webp'
 const BOT_REVOLUTION_IMAGE_SIZES = '(min-width: 1100px) 500px, (min-width: 760px) 46vw, calc(100vw - 44px)'
 
@@ -68,7 +68,7 @@ const NAV_LINKS_BY_SHELL_LANG = {
     ['/en/about/', 'About'],
     ['/archive/', 'Archive'],
     ['/privacy/', 'Privacy'],
-    ['/ru/', 'RU'],
+    ['/', 'RU'],
   ],
 }
 
@@ -598,7 +598,7 @@ for (const article of IMPORTED_ARTICLES) {
     lang: article.lang || 'ru',
     kind: 'article-page',
     publishedAt: article.publishedAt,
-    updatedAt: article.updatedAt || STATIC_UPDATED_DATE,
+    updatedAt: article.updatedAt,
     readingTime: article.readingTime,
     markdown: articleMarkdown(article, article.bodyHtml),
     bodyHtml: article.bodyHtml,
@@ -913,7 +913,7 @@ function imageMetadataForUrl(url = '') {
 
   try {
     const parsed = JSON.parse(fs.readFileSync(metaPath, 'utf8'))
-    const webAsset = parsed.web_asset || {}
+    const webAsset = parsed.web_asset || parsed.dimensions || {}
     if (Number.isFinite(webAsset.width)) metadata.imageWidth = webAsset.width
     if (Number.isFinite(webAsset.height)) metadata.imageHeight = webAsset.height
   } catch (error) {
@@ -928,6 +928,8 @@ function imageHtmlAttributes(url = '', { priority = false, lazy = true } = {}) {
   const attrs = ['decoding="async"']
   if (Number.isFinite(metadata.imageWidth)) attrs.push(`width="${metadata.imageWidth}"`)
   if (Number.isFinite(metadata.imageHeight)) attrs.push(`height="${metadata.imageHeight}"`)
+  const source = priority && articleHeroSource(url)
+  if (source) attrs.push(`srcset="${escape(source.srcSet)}"`, `sizes="${escape(source.sizes)}"`)
   if (priority) attrs.push('fetchpriority="high"')
   else if (lazy) attrs.push('loading="lazy"')
   return attrs.join(' ')
@@ -1465,11 +1467,10 @@ const BREADCRUMBS_BY_SLUG = {
   'about': [['Главная', `${SITE_URL}/`], ['Обо мне', `${SITE_URL}/about/`]],
   'ru-blog': [['Главная', `${SITE_URL}/`], ['Блог', `${SITE_URL}/ru/blog/`]],
   'ru-articles': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/ru/articles/`]],
-  'articles-ai-tools-for-designers-design-engineering-agents': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['AI-инструменты для дизайнеров', `${SITE_URL}/articles/ai-tools-for-designers-design-engineering-agents/`]],
   'ru-articles-ai-tools-for-designers-design-engineering-agents': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/ru/articles/`], ['AI-инструменты для дизайнеров', `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`]],
   'private-channel': [['Главная', `${SITE_URL}/`], ['Закрытый канал', `${SITE_URL}/private-channel/`]],
-  'markdown-vs-html': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/articles/`], ['Markdown vs HTML', `${SITE_URL}/articles/markdown-vs-html/`]],
-  'archive': [['Главная', `${SITE_URL}/ru/`], ['Архив', `${SITE_URL}/archive/`]],
+  'markdown-vs-html': [['Главная', `${SITE_URL}/`], ['Статьи', `${SITE_URL}/ru/articles/`], ['Markdown vs HTML', `${SITE_URL}/articles/markdown-vs-html/`]],
+  'archive': [['Главная', `${SITE_URL}/`], ['Архив', `${SITE_URL}/archive/`]],
   'karta-postov-telegram': [['Главная', `${SITE_URL}/`], ['Блог', `${SITE_URL}/ru/blog/`], ['Карта моих постов в Telegram', `${SITE_URL}/karta-postov-telegram/`]],
   'privacy': [['Home', `${SITE_URL}/`], ['Privacy Policy', `${SITE_URL}/privacy/`]],
 }
@@ -1477,9 +1478,7 @@ const BREADCRUMBS_BY_SLUG = {
 function buildBreadcrumb(route) {
   const items = route.kind === 'generated-blog-post'
     ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Blog' : 'Блог', `${SITE_URL}${route.lang === 'en' ? '/en/blog/' : '/ru/blog/'}`], [route.title, `${SITE_URL}${route.path}/`]]
-    : route.kind === 'generated-article-post'
-      ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/ru/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
-    : route.kind === 'article-page'
+    : route.kind === 'generated-article-post' || route.kind === 'article-page'
       ? [[route.lang === 'en' ? 'Home' : 'Главная', `${SITE_URL}${route.lang === 'en' ? '/en/' : '/'}`], [route.lang === 'en' ? 'Articles' : 'Статьи', `${SITE_URL}${route.lang === 'en' ? '/en/articles/' : '/ru/articles/'}`], [route.title, `${SITE_URL}${route.path}/`]]
     : route.kind === 'topic-page'
       ? [['Главная', `${SITE_URL}/`], ['Темы', `${SITE_URL}/ru/articles/`], [route.topicTitle || route.title, `${SITE_URL}${route.path}/`]]
@@ -1628,9 +1627,6 @@ function rewrite(html, route) {
   if (articleRoute) {
     out = out.replace('</head>', `${buildArticleOgMeta(route)}\n  </head>`)
   }
-  if (routePath === '/') {
-    out = out.replace('</head>', `${HOME_IMAGE_PRELOAD}</head>`)
-  }
   return out
 }
 
@@ -1646,11 +1642,6 @@ function buildHreflang(route, canonicalUrl) {
 
 // ---- HTML prerender ----
 let htmlCount = 0
-// Home: rewrite #root fallback in dist/index.html (vite build wrote it, we patch in place).
-const homeFallback = buildFallback('Даниил Охлопков', HOME_FALLBACK_MD.replace(/^#\s+[^\n]*\n+/, ''))
-const homeOut = applySiteUrl(indexHtml).replace('<!-- body-fallback -->', homeFallback)
-fs.writeFileSync(path.join(dist, 'index.html'), homeOut)
-
 for (const route of ROUTES) {
   const html = rewrite(indexHtml, route)
   const dir = path.join(dist, route.path)
@@ -1726,7 +1717,7 @@ for (const post of GENERATED_BLOG_POSTS) {
 }
 for (const article of GENERATED_SEO_ARTICLES) {
   const to = `${generatedArticlePath(article)}/`
-  const from = article.lang === 'en' ? `/articles/${article.slug}` : `/articles/${article.slug}`
+  const from = `/articles/${article.slug}`
   if (from !== to.replace(/\/+$/, '')) {
     REDIRECTS.push({
       from,
@@ -1752,8 +1743,6 @@ for (const redirect of LEGACY_REDIRECTS) {
     toSlug: to.replace(/^\/+|\/+$/g, '').replace(/\/+/g, '-') || 'home',
   })
 }
-const INDEXABLE_CANONICALIZING_REDIRECTS = new Set([])
-
 function routeForPath(pathname) {
   const canonical = canonicalPathname(pathname)
   return ROUTES.find((route) => canonicalPathname(route.path) === canonical) || null
@@ -1774,10 +1763,6 @@ let redirectCount = 0
 for (const r of REDIRECTS) {
   const targetUrl = `${SITE_URL}${r.to}`
   const redirectDescription = `Legacy okhlopkov.com URL moved to ${targetUrl}.`
-  const sourcePath = canonicalPathname(r.from)
-  const robotsMeta = INDEXABLE_CANONICALIZING_REDIRECTS.has(sourcePath)
-    ? ''
-    : '  <meta name="robots" content="noindex, follow" />\n'
   const alternateTags = alternateTagsForRedirectTarget(r.to, targetUrl)
   const stub = `<!doctype html>
 <html lang="ru">
@@ -1786,7 +1771,8 @@ for (const r of REDIRECTS) {
   <title>Redirecting…</title>
   <meta name="description" content="${escape(redirectDescription)}" />
   <link rel="canonical" href="${targetUrl}" />
-${alternateTags ? `${alternateTags}\n` : ''}${robotsMeta}  <meta http-equiv="refresh" content="0; url=${r.to}" />
+${alternateTags ? `${alternateTags}\n` : ''}  <meta name="robots" content="noindex, follow" />
+  <meta http-equiv="refresh" content="0; url=${r.to}" />
   <script>window.location.replace(${JSON.stringify(r.to)} + window.location.search + window.location.hash)</script>
 </head>
 <body>
@@ -1827,76 +1813,18 @@ if (fs.existsSync(llmsPath)) {
   fs.writeFileSync(llmsPath, applySiteUrl(fs.readFileSync(llmsPath, 'utf8')))
 }
 
-fs.writeFileSync(path.join(dist, 'robots.txt'), `User-agent: Yandex
-Disallow: /*.md$
-Disallow: /*.md
-Disallow: /llms.txt
-Disallow: /llms-full.txt
-
-User-agent: OAI-SearchBot
-User-agent: ChatGPT-User
-User-agent: GPTBot
-User-agent: ClaudeBot
-User-agent: anthropic-ai
-User-agent: PerplexityBot
-Allow: /
-Allow: /*.md$
-Allow: /*.md
-Allow: /llms.txt
-Allow: /llms-full.txt
-
-User-agent: *
-Allow: /
-Disallow: /*.md$
-Disallow: /*.md
-
-# Content usage policy for crawlers that honor Content-Signal.
-Content-Signal: ai-input=yes
-Content-Signal: ai-train=no
-
-Sitemap: ${SITE_URL}/sitemap.xml
-`)
+const robotsPath = path.join(dist, 'robots.txt')
+fs.writeFileSync(robotsPath, applySiteUrl(fs.readFileSync(robotsPath, 'utf8')))
 
 // ---- Minimal XML sitemap for Google Search Console ----
-const routeLastmodByLoc = new Map(
-  ROUTES
-    .filter((route) => route.updatedAt)
-    .map((route) => [
-      route.path === '/' ? `${SITE_URL}/` : `${SITE_URL}${route.path}/`,
-      route.updatedAt,
-    ]),
-)
+const sitemapRoutes = ROUTES.filter((route) => !route.robots?.startsWith('noindex'))
 
-const SITEMAP_URLS = [
-  `${SITE_URL}/`,
-  `${SITE_URL}/en/`,
-  `${SITE_URL}/about/`,
-  `${SITE_URL}/en/about/`,
-  `${SITE_URL}/ru/blog/`,
-  `${SITE_URL}/en/blog/`,
-  `${SITE_URL}/ru/articles/`,
-  `${SITE_URL}/en/articles/`,
-  `${SITE_URL}/archive/`,
-  `${SITE_URL}/karta-postov-telegram/`,
-  `${SITE_URL}/ru/articles/ai-tools-for-designers-design-engineering-agents/`,
-  `${SITE_URL}/articles/markdown-vs-html/`,
-  `${SITE_URL}/privacy/`,
-].map((loc) => ({
-  loc,
-  lastmod: routeLastmodByLoc.get(loc) || STATIC_UPDATED_DATE,
-}))
-
-function addSitemapUrl(pathname, lastmod = STATIC_UPDATED_DATE) {
-  SITEMAP_URLS.push({
-    loc: `${SITE_URL}${pathname}`,
-    lastmod,
-  })
-}
-
-function sitemapUrlXml({ loc, lastmod }) {
+function sitemapUrlXml(route) {
+  const loc = `${SITE_URL}${routePathname(route)}`
+  const lastmod = route.updatedAt || route.publishedAt
+  const date = lastmod ? `\n    <lastmod>${xmlText(lastmod)}</lastmod>` : ''
   return `  <url>
-    <loc>${xmlText(loc)}</loc>
-    <lastmod>${xmlText(lastmod)}</lastmod>
+    <loc>${xmlText(loc)}</loc>${date}
   </url>`
 }
 
@@ -1916,25 +1844,12 @@ function articleMarkdown(article, body) {
 ${markdown}`
 }
 
-for (const post of GENERATED_BLOG_POSTS) {
-  addSitemapUrl(`${generatedBlogPath(post)}/`, post.updatedAt || STATIC_UPDATED_DATE)
-}
-for (const article of GENERATED_SEO_ARTICLES) {
-  addSitemapUrl(`${generatedArticlePath(article)}/`, article.updatedAt || STATIC_UPDATED_DATE)
-}
-for (const topic of TOPIC_HUBS) {
-  if (isTopicIndexable(topic)) addSitemapUrl(`/topics/${topic.slug}/`)
-}
-for (const article of IMPORTED_ARTICLES) {
-  if (article.path) addSitemapUrl(article.path, article.updatedAt || STATIC_UPDATED_DATE)
-}
-
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${SITEMAP_URLS.map(sitemapUrlXml).join('\n')}
+${sitemapRoutes.map(sitemapUrlXml).join('\n')}
 </urlset>
 `
 fs.writeFileSync(path.join(dist, 'sitemap.xml'), sitemap)
-console.log(`✓ Sitemap: generated ${SITEMAP_URLS.length} canonical URLs`)
+console.log(`✓ Sitemap: generated ${sitemapRoutes.length} canonical URLs`)
 
 console.log(`✓ Prerendered ${htmlCount} HTML routes + ${mdCount} Markdown files + ${redirectCount} redirects + ${IMPORTED_ARTICLES.length} imported articles + llms-full.txt`)

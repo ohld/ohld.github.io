@@ -3,7 +3,7 @@ import { ArticleEnding } from './ArticleEnding'
 import { BackButton } from './BackButton'
 import { Footer } from './Footer'
 import { enhanceCodeBlocks } from '../codeBlocks'
-import { imageDimensionsForUrl } from '../imageMetadata'
+import { articleHeroSource, imageDimensionsForUrl } from '../imageMetadata'
 import { absoluteUrl } from '../site'
 import { buildArticleStructuredData, faqItemsFromHtml, htmlToPlainText } from '../structuredData'
 import { useArticleSectionLinks } from '../useArticleSectionLinks'
@@ -116,6 +116,7 @@ export function ArticleLayout({
           <figure className="article-hero-image">
             <img
               src={heroImage}
+              {...articleHeroSource(heroImage)}
               alt={heroAlt || title}
               width={heroDimensions?.width}
               height={heroDimensions?.height}

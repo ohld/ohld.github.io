@@ -7,6 +7,8 @@ Disallow: /llms-full.txt
 User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
 User-agent: GPTBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
 User-agent: ClaudeBot
 User-agent: anthropic-ai
 User-agent: PerplexityBot

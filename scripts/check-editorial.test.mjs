@@ -113,6 +113,13 @@ test('an HTTPS link to a different hostname is external; protocol-relative site 
   assert.equal(result.errors.filter((error) => /not in the route inventory/.test(error)).length, 1)
 })
 
+test('Cloudflare paths are rejected in Markdown and HTML links', () => {
+  const result = check(`${good}\n\n[email](/cdn-cgi/l/email-protection)\n\n[source]: <https://example.org/cdn-cgi/trace>\n\n<a href="https://okhlopkov.com/cdn-cgi/l/email-protection">email</a>\n\n<a href=/cdn-cgi/trace>trace</a>`)
+  assert.equal(result.errors.length, 4)
+  for (const error of result.errors) assert.match(error, /Cloudflare \/cdn-cgi\/ link \(line \d+\)/)
+  assert.deepEqual(check(`${good}\n\nDiscuss the path \`/cdn-cgi/\` in code.`).errors, [])
+})
+
 test('numeric limits need a date or source hint; vague limits are left to review', () => {
   const result = check(`${good}\n\nЛимит 100 запросов.\n\nQuota: 20 calls.\n\n100 requests/minute.\n\nЛимит 50 запросов по [документации](https://example.com).\n\nЛимиты бывают разными.`)
   assert.deepEqual(result.errors, [])

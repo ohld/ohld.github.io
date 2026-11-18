@@ -27,7 +27,7 @@ const ahrefsAnalyticsDataKey = 'aESMV3ihrQNdn9aJ9GkE0Q'
 const yandexMetrikaId = '46266270'
 const yandexVerificationIds = ['1b82de56693018c1', '3553f1209d48d2c4']
 const baiduVerificationId = 'codeva-qMNbDqnUbd'
-const expectedSitemapLastmod = process.env.VERIFY_EXPECTED_SITEMAP_LASTMOD || '2026-05-26'
+const expectedSitemapLastmod = process.env.VERIFY_EXPECTED_SITEMAP_LASTMOD
 const indexNowKey = '16f3585acc2f41a2b4ff657222850145'
 const nativeBlogForbiddenPhrases = [
   'Что было в исходном посте',
@@ -712,11 +712,11 @@ function assertNoMalformedExternalLinks(html, path) {
   const malformed = []
   for (const match of html.matchAll(/href=["']([^"']+)["']/g)) {
     const href = decodeHtml(match[1])
+    assert(!/(?:^|\/)cdn-cgi\//i.test(href.split(/[?#]/)[0]), `${path}: leaked Cloudflare /cdn-cgi/ link`)
     if (/^(?:[a-z][a-z0-9+.-]*:|[/?#]|mailto:|tel:)/i.test(href)) continue
     if (/^[^/\s]+\.[a-z]{2,}(?:[/?#]|$)/i.test(href)) malformed.push(href)
   }
   assert(malformed.length === 0, `${path}: malformed relative external links: ${[...new Set(malformed)].join(', ')}`)
-  assert(!html.includes('/cdn-cgi/l/email-protection'), `${path}: leaked Cloudflare email-protection link`)
 }
 
 async function verifyRootVerificationMeta() {
@@ -1013,10 +1013,10 @@ async function verifySitemap(migrationRows) {
   const res = await fetchManual('/sitemap.xml')
   assert(res.status === 200, `/sitemap.xml: expected 200, got ${res.status}`)
   const xml = await res.text()
-  const sitemapRows = [...xml.matchAll(/<url>\s*<loc>([\s\S]*?)<\/loc>\s*<lastmod>([\s\S]*?)<\/lastmod>\s*<\/url>/g)]
+  const sitemapRows = [...xml.matchAll(/<url>\s*<loc>([^<]+)<\/loc>\s*(?:<lastmod>([^<]+)<\/lastmod>\s*)?<\/url>/g)]
     .map((match) => ({
       loc: decodeXml(match[1].trim()),
-      lastmod: decodeXml(match[2].trim()),
+      lastmod: match[2] === undefined ? undefined : decodeXml(match[2].trim()),
     }))
   const actualLocs = new Set(sitemapRows.map((row) => row.loc))
   const lastmodByLoc = new Map(sitemapRows.map((row) => [row.loc, row.lastmod]))
@@ -1034,7 +1034,9 @@ async function verifySitemap(migrationRows) {
       .map((row) => canonicalUrl(row.new_path))
   )
 
-  assert(sitemapRows.length > 0, '/sitemap.xml: missing <url><loc><lastmod> entries')
+  assert(sitemapRows.length > 0, '/sitemap.xml: missing <url><loc> entries')
+  assert(sitemapRows.length === [...xml.matchAll(/<url>/g)].length, '/sitemap.xml: malformed URL entry')
+  assert(sitemapRows.length === actualLocs.size, '/sitemap.xml: duplicate URL')
   for (const loc of expectedLocs) {
     assert(actualLocs.has(loc), `/sitemap.xml: missing ${loc}`)
     const actualLastmod = lastmodByLoc.get(loc)
@@ -1044,7 +1046,7 @@ async function verifySitemap(migrationRows) {
   for (const loc of actualLocs) {
     assert(expectedLocs.has(loc), `/sitemap.xml: unexpected ${loc}`)
   }
-  console.log(`✓ sitemap (${actualLocs.size} URLs, lastmod ${expectedSitemapLastmod})`)
+  console.log(`✓ sitemap (${actualLocs.size} URLs, ${sitemapRows.filter((row) => row.lastmod).length} dated)`)
 }
 
 async function verifyCrawlerFiles() {
@@ -1206,10 +1208,10 @@ function verifyImportedInternalLinks(importedContent, migrationRows) {
 
   for (const article of importedContent) {
     for (const match of (article.bodyHtml || '').matchAll(/href=["']([^"']+)["']/g)) {
-      const href = match[1]
+      const href = decodeHtml(match[1])
+      assert(!/(?:^|\/)cdn-cgi\//i.test(href.split(/[?#]/)[0]), `${article.path}: leaked Cloudflare /cdn-cgi/ link`)
       if (!href.startsWith('/')) continue
       const url = new URL(href, siteUrl)
-      if (url.pathname.startsWith('/cdn-cgi/')) continue
       if (/\.[a-z0-9]{2,5}$/i.test(url.pathname)) continue
       const pathname = url.pathname.endsWith('/') ? url.pathname : `${url.pathname}/`
       if (knownPaths.has(pathname)) continue
