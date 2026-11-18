@@ -68,7 +68,7 @@ const NAV_LINKS_BY_SHELL_LANG = {
     ['/en/about/', 'About'],
     ['/archive/', 'Archive'],
     ['/privacy/', 'Privacy'],
-    ['/ru/', 'RU'],
+    ['/', 'RU'],
   ],
 }
 
