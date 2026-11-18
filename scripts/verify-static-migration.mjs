@@ -300,9 +300,9 @@ const generatedSeoArticleChecks = generatedSeoArticles.map((article) => ({
     : article.slug === 'hermes-agent-vps-telegram-ustanovka'
     ? ['Что получится', 'Сначала заставить работать модель', 'Сделать проверку после перезагрузки', 'Если Telegram-бот молчит']
     : article.slug === 'telegram-bots-mini-apps-trends-november-2026'
-    ? ['Где изменилась аудитория', 'Какие боты вошли в сравнение', 'change-ru.webp']
+    ? ['Главное', 'Десять ботов с наибольшим приростом MAU', 'Пять ботов с наибольшим снижением MAU', 'change-ru.webp', 'movers-ru.webp']
     : article.slug === 'telegram-bot-trends-november-2026'
-    ? ['Which lists gained or lost audience?', 'Where the numbers come from', 'change-en.webp']
+    ? ['November at a glance', 'Ten Telegram bots with the largest MAU gains', 'Five Telegram bots with the largest MAU declines', 'change-en.webp', 'movers-en.webp']
     : article.slug === 'telegram-bots-mini-apps-trends-august-2026'
     ? ['Карта трендов Telegram-ботов за август 2026', 'Казино на Telegram-подарках', 'Дорвеи', 'Что беру на карандаш к сентябрю']
     : article.slug === 'telegram-bot-trends-august-2026'

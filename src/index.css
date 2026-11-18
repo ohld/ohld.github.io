@@ -1288,6 +1288,36 @@ button:focus-visible,
   border-bottom: none;
 }
 
+/* Keep bot handles and their dated counters together in the November report. */
+.article-body:has(img[src*="/telegram-bots-mini-apps-trends-november-2026/"]) {
+  table { font-variant-numeric: tabular-nums; }
+  th:first-child { width: 38%; }
+  th, td { padding-inline: 8px; }
+
+  @media (max-width: 640px) {
+    table, thead, tbody { display: block; }
+    tr {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-bottom: 1px solid var(--border-light);
+    }
+    tr:has(> :nth-child(5)) {
+      grid-template-columns: 1.25fr .74fr .85fr 1.3fr;
+    }
+    th, td {
+      padding: 4px 5px 8px;
+      border: 0;
+      font-size: 14px;
+    }
+    tr > :first-child {
+      grid-column: 1 / -1;
+      width: auto;
+      padding: 8px 5px 2px;
+    }
+    td:not(:first-child) { white-space: nowrap; }
+  }
+}
+
 .code-block {
   max-width: 100%;
   min-width: 0;
