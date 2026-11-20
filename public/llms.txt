@@ -8,7 +8,7 @@
 - **Telegram:** [@danokhlopkov](https://t.me/danokhlopkov) (RU)
 - **X / Twitter:** [@danokhlopkov](https://x.com/danokhlopkov) (EN)
 - **Блог:** [okhlopkov.com](https://okhlopkov.com) (RU/EN)
-- **Бот:** [@ohldbot](https://t.me/ohldbot)
+- **Бот:** [@ohldbot](https://t.me/ohldbot?start=danokhlopkov)
 - **GitHub:** [@ohld](https://github.com/ohld)
 
 ## Чем занимаюсь
@@ -50,7 +50,7 @@
 
 ## Связаться
 
-- **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot) или [страницу обо мне](https://okhlopkov.com/about/)
+- **Консалтинг:** AI-агенты, web3, TON-экосистема. Через [@ohldbot](https://t.me/ohldbot?start=danokhlopkov) или [страницу обо мне](https://okhlopkov.com/about/)
 
 ## Использование
 
