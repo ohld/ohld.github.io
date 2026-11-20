@@ -1,5 +1,6 @@
 ---
 slug: business-on-ai-agent-claude-code-paperclip-gstack
+lang: ru
 title: AI-агенты ведут проект, пока я в отпуске: Claude Code, Paperclip и GStack без магии
 description: Как я настроил AI-агентов на проект, что сработало во время отпуска, что сломалось и какой workflow нужен, чтобы агент не просто менял код туда-сюда.
 publishedAt: 2026-05-26
@@ -44,7 +45,7 @@ reactions: 31
 7. Агент проверяет, что на проде все ок.
 8. В параллель регулярно постится build in public в канал проекта.
 
-Для проекта вроде [ffmemesbot](https://t.me/ffmemesbot) этого уже достаточно, чтобы не оставлять продукт совсем без присмотра.
+Для проекта вроде [ffmemesbot](https://t.me/ffmemesbot?start=danokhlopkov) этого уже достаточно, чтобы не оставлять продукт совсем без присмотра.
 
 ## Что работало плохо
 

@@ -86,7 +86,7 @@ Telegram Stars resellers grew 4.5 times in July because several bots launched fr
 
 This type of campaign attracts users quickly, but many of them do not pay. They leave as soon as the free offer ends or a paywall appears.
 
-[@mopsstarsbot](https://t.me/mopsstarsbot) sells Telegram Stars. On July 12, it launched a giveaway and grew from 436,000 to 2.29 million MAU in one day. The campaign continued for a month, and the bot reached 3.03 million MAU.
+[@mopsstarsbot](https://t.me/mopsstarsbot?start=danokhlopkov) sells Telegram Stars. On July 12, it launched a giveaway and grew from 436,000 to 2.29 million MAU in one day. The campaign continued for a month, and the bot reached 3.03 million MAU.
 
 One month later, the rolling MAU window moved past the first campaign day. On August 13, the visible number fell 58%. This suggests that most of the measured activity happened on that single day.
 
@@ -118,7 +118,7 @@ This Telegram bot trend is less about product engagement and more about controll
 
 ![GroupHelp clones hold 93% of the measured audience for Telegram group moderation bots](/assets/articles/telegram-bots-mini-apps-trends-august-2026/grouphelp-bot-clones-en.webp)
 
-Group moderation also has a clone pattern, partly because of Telegram Bot API limits. GroupHelp is the largest cluster. The main [@GroupHelpBot](https://t.me/GroupHelpBot) had 2 million MAU, while one official clone, [@GHClone1Bot](https://t.me/GHClone1Bot), had 2.5 million.
+Group moderation also has a clone pattern, partly because of Telegram Bot API limits. GroupHelp is the largest cluster. The main [@GroupHelpBot](https://t.me/GroupHelpBot?start=danokhlopkov) had 2 million MAU, while one official clone, [@GHClone1Bot](https://t.me/GHClone1Bot?start=danokhlopkov), had 2.5 million.
 
 Few chats are likely to add several GroupHelp clones at once, but the real user count is still hard to estimate. Bots inside group chats can build large MAU numbers because messages from group members may count as interactions even when nobody mentions the bot directly.
 

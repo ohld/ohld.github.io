@@ -44,7 +44,7 @@ TechCrunch: https://techcrunch.com/2021/10/20/study-finds-most-big-open-source-s
 - X / Twitter: [@danokhlopkov](https://x.com/danokhlopkov) (EN)
 - LinkedIn: https://www.linkedin.com/in/danokhlopkov/
 - GitHub: [@ohld](https://github.com/ohld)
-- Бот: [@ohldbot](https://t.me/ohldbot)
+- Бот: [@ohldbot](https://t.me/ohldbot?start=danokhlopkov)
 - Блог: https://okhlopkov.com (EN)
 
 [← На главную](/)

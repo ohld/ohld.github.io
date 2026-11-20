@@ -1,5 +1,6 @@
 ---
 slug: vibecoding-telegram-mini-app-claude-code
+lang: ru
 title: Telegram Mini App с Claude Code: llms.txt, крестики-нолики и деплой без чтения доков
 description: Как я собрал source pack для Telegram Mini Apps, сделал llms.txt, сгенерил TMA с Claude Code и задеплоил игру. Чеклист, что ломается чаще всего.
 publishedAt: 2026-05-26
@@ -31,7 +32,7 @@ reactions: 36
 
 Потом провели стрим, где я с нуля сделал, задизайнил и задеплоил простую игру:
 
-- app: [t.me/gtrendbot](https://t.me/gtrendbot)
+- app: [t.me/gtrendbot](https://t.me/gtrendbot?start=danokhlopkov)
 - code: [github.com/ohld/tic-tac-tma](https://github.com/ohld/tic-tac-tma)
 - video: [youtu.be/s92JCCQB9fk](https://www.youtube.com/watch?v=s92JCCQB9fk)
 

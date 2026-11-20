@@ -139,18 +139,18 @@ Warnings about optional tools you have not configured are normal. A missing work
 
 ## 3. Create the Telegram bot
 
-Open Telegram's official [@BotFather](https://t.me/BotFather) bot:
+Open Telegram's official [@BotFather](https://t.me/BotFather?start=danokhlopkov) bot:
 
 1. send `/newbot`;
 2. choose a display name;
 3. choose a username ending in `bot`;
 4. save the token BotFather returns.
 
-A bot token looks like `123456789:AA...`. Treat it as a password. Do not paste it into a chat, commit it to Git, or leave it visible in screenshots.
+A [bot token](/en/articles/telegram-bot-api-vs-mtproto-methods/) looks like `123456789:AA...`. Treat it as a password. Do not paste it into a chat, commit it to Git, or leave it visible in screenshots.
 
 If the token leaks, revoke it immediately with `/revoke` in @BotFather, then repeat the gateway setup with the replacement token.
 
-Next, get the **numeric ID of your human Telegram account**. Messaging [@userinfobot](https://t.me/userinfobot) is the simplest route. Do not use your `@username`, and do not use the numeric prefix from the bot token.
+Next, get the **numeric ID of your human Telegram account**. Messaging [@userinfobot](https://t.me/userinfobot?start=danokhlopkov) is the simplest route. Do not use your `@username`, and do not use the numeric prefix from the bot token.
 
 ## 4. Connect Telegram to Hermes
 
